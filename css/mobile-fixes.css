@@ -1,0 +1,628 @@
+/* ========================================
+   CORRECCIONES MÓVIL - ARCHIVO MAESTRO
+   Este archivo arregla TODOS los problemas de móvil
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* ============================================
+       CONTENEDOR PRINCIPAL Y ESPACIADO
+       ============================================ */
+
+    .container {
+        padding: 0 15px;
+    }
+
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION - Reducir altura
+       ============================================ */
+
+    .hero-section,
+    .hero-main-carousel,
+    .hero-carousel {
+        min-height: 400px !important;
+        max-height: 450px !important;
+        height: 400px !important;
+    }
+
+    .hero-slide {
+        height: 400px !important;
+    }
+
+    /* Videos del hero proporcionados */
+    .hero-background-video,
+    .hero-video,
+    .hero-grid-video {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* ============================================
+       IMÁGENES - Todas proporcionales
+       ============================================ */
+
+    img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Tarjetas de producto */
+    .product-card img,
+    .product-image img,
+    .card-image img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: cover;
+    }
+
+    /* ============================================
+       TARJETAS DE PRODUCTO - PÁGINA INICIO
+       ============================================ */
+
+    .products-section {
+        padding: 30px 15px;
+    }
+
+    /* Fila superior - 2 tarjetas en horizontal */
+    .products-row.row-top {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .row-top .product-card {
+        width: 48% !important;
+        max-width: 48% !important;
+        min-width: 150px !important;
+        height: 200px !important;
+        flex: 1 !important;
+    }
+
+    /* Fila inferior - 3 tarjetas en horizontal */
+    .products-row.row-bottom {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        flex-wrap: nowrap !important;
+        margin-top: 10px !important;
+    }
+
+    .row-bottom .product-card {
+        width: 32% !important;
+        max-width: 32% !important;
+        min-width: 100px !important;
+        height: 180px !important;
+        flex: 1 !important;
+    }
+
+    /* Videos dentro de las tarjetas */
+    .product-card-video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    /* Botones más pequeños */
+    .product-card .btn-peach {
+        padding: 6px 12px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* Otras tarjetas de producto (no inicio) */
+    .products-grid,
+    .products-row:not(.row-top):not(.row-bottom) {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .product-card:not(.row-top .product-card):not(.row-bottom .product-card) {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: auto !important;
+        height: auto !important;
+        min-height: 300px;
+        margin: 0 auto;
+    }
+
+    /* ============================================
+       SECCIÓN NUESTRA HISTORIA - Video después del texto
+       ============================================ */
+
+    .our-story-section {
+        padding: 30px 15px !important;
+    }
+
+    .our-story-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 25px !important;
+    }
+
+    /* Video al final (order: 2) */
+    .our-story-video-container {
+        order: 2 !important;
+        width: 100% !important;
+    }
+
+    .our-story-video {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 300px !important;
+        object-fit: cover !important;
+    }
+
+    /* Texto primero (order: 1) */
+    .our-story-grid > div:not(.our-story-video-container) {
+        order: 1 !important;
+        text-align: center !important;
+    }
+
+    .our-story-grid .intro-text-modern {
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+    }
+
+    /* ============================================
+       SECCIÓN INFORMACIÓN IMPORTANTE - 2x2 en móvil
+       ============================================ */
+
+    .important-info-section {
+        padding: 25px 15px !important;
+    }
+
+    .info-cards-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+        margin-top: 20px !important;
+    }
+
+    .info-card-modern {
+        padding: 15px 10px !important;
+        min-height: auto !important;
+    }
+
+    .info-card-icon {
+        margin-bottom: 8px !important;
+    }
+
+    .icon-circle {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .icon-img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .info-card-title {
+        font-size: 0.85rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .info-card-text {
+        font-size: 0.7rem !important;
+        line-height: 1.3 !important;
+    }
+
+    .section-title-elegant {
+        font-size: 1.3rem !important;
+    }
+
+    .section-subtitle-elegant {
+        font-size: 0.85rem !important;
+    }
+
+    /* ============================================
+       CARRUSELES - Proporcionales
+       ============================================ */
+
+    .carousel,
+    .flickity-viewport {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .carousel-cell {
+        width: 100%;
+        margin-right: 15px;
+    }
+
+    .carousel-cell img {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+        object-fit: cover;
+    }
+
+    /* ============================================
+       SECCIONES DE CONTENIDO
+       ============================================ */
+
+    section {
+        padding: 30px 15px !important;
+    }
+
+    .section-title,
+    .title {
+        font-size: 1.8rem !important;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        font-size: 1rem !important;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    /* ============================================
+       BOTONES
+       ============================================ */
+
+    .btn,
+    .button,
+    .cta-button {
+        padding: 12px 24px !important;
+        font-size: 0.9rem !important;
+        width: auto;
+        max-width: 100%;
+    }
+
+    /* ============================================
+       GRIDS - Convertir a columna única
+       ============================================ */
+
+    .grid,
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    /* ============================================
+       MODALES
+       ============================================ */
+
+    .modal-content,
+    .product-modal-content {
+        width: 95% !important;
+        max-width: 95% !important;
+        padding: 20px !important;
+        margin: 20px auto !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-image {
+        max-height: 250px !important;
+        width: 100% !important;
+        object-fit: cover;
+    }
+
+    /* Ocultar modal completamente en móvil */
+    .product-modal-overlay {
+        display: none !important;
+    }
+
+    .product-modal-overlay.active {
+        display: none !important;
+    }
+
+    /* ============================================
+       TEXTO Y TIPOGRAFÍA
+       ============================================ */
+
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    h2 {
+        font-size: 1.6rem !important;
+    }
+
+    h3 {
+        font-size: 1.3rem !important;
+    }
+
+    h4 {
+        font-size: 1.1rem !important;
+    }
+
+    p {
+        font-size: 0.95rem !important;
+        line-height: 1.5;
+    }
+
+    /* ============================================
+       ESPACIADO VERTICAL
+       ============================================ */
+
+    .spacing-top,
+    .mt-large {
+        margin-top: 30px !important;
+    }
+
+    .spacing-bottom,
+    .mb-large {
+        margin-bottom: 30px !important;
+    }
+
+    /* ============================================
+       FOOTER - Compacto sin Acordeón
+       ============================================ */
+
+    .modern-footer {
+        padding: 20px 0 !important;
+    }
+
+    .footer-main {
+        padding: 15px !important;
+    }
+
+    /* Grid del footer - Todo en columna única */
+    .footer-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    /* ===== SECCIÓN 1: LAUREN + REDES SOCIALES ===== */
+    .footer-column:first-child {
+        text-align: center !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+        order: 1 !important;
+    }
+
+    .footer-column:first-child .footer-column-title {
+        font-size: 1.3rem !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 3px !important;
+        color: var(--primary-lilac) !important;
+    }
+
+    .footer-brand-text {
+        font-size: 0.9rem !important;
+        margin: 8px 0 15px 0 !important;
+        font-style: italic !important;
+    }
+
+    /* Ocultar descripción larga en móvil */
+    .footer-description {
+        display: none !important;
+    }
+
+    /* Iconos sociales centrados y grandes */
+    .footer-social-icons {
+        justify-content: center !important;
+        gap: 20px !important;
+        margin-top: 15px !important;
+    }
+
+    .footer-social-link {
+        width: 44px !important;
+        height: 44px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .footer-social-link:hover {
+        background: rgba(255, 255, 255, 0.25) !important;
+        transform: scale(1.1) !important;
+    }
+
+    .footer-social-link svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* ===== SECCIÓN 2: CONTACTO (Siempre visible) ===== */
+    .footer-column:nth-child(3) {
+        order: 2 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(3) .footer-column-title {
+        display: none !important;
+    }
+
+    .footer-contact-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .footer-contact-list li {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+    }
+
+    .footer-contact-list svg {
+        width: 18px !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .footer-contact-list a {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        transition: color 0.3s ease !important;
+    }
+
+    .footer-contact-list a:hover {
+        color: var(--secondary-peach) !important;
+    }
+
+    /* ===== SECCIÓN 3: NAVEGACIÓN (Siempre visible, 2 columnas) ===== */
+    .footer-column:nth-child(2) {
+        order: 3 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(2) .footer-column-title {
+        font-size: 0.95rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+        color: var(--primary-lilac) !important;
+    }
+
+    .footer-links {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px 20px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .footer-links li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    .footer-links a {
+        font-size: 0.85rem !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        text-decoration: none !important;
+        transition: color 0.3s ease !important;
+        display: inline-block !important;
+    }
+
+    .footer-links a:hover {
+        color: var(--secondary-peach) !important;
+    }
+
+    /* ===== SECCIÓN 4: INFORMACIÓN (Siempre visible, compacta) ===== */
+    .footer-column:nth-child(4) {
+        order: 4 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(4) .footer-column-title {
+        font-size: 0.95rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+        color: var(--primary-lilac) !important;
+    }
+
+    .footer-info-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .footer-info-list li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    .footer-info-list li strong {
+        font-size: 0.85rem !important;
+        display: block !important;
+        margin-bottom: 6px !important;
+        color: var(--secondary-peach) !important;
+    }
+
+    .footer-info-list li span {
+        font-size: 0.75rem !important;
+        display: block !important;
+        line-height: 1.4 !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* ===== FOOTER BOTTOM ===== */
+    .footer-bottom {
+        padding: 15px !important;
+        font-size: 0.7rem !important;
+        background: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column !important;
+        gap: 6px !important;
+        text-align: center !important;
+    }
+
+    .footer-bottom-content p {
+        margin: 0 !important;
+        font-size: 0.7rem !important;
+        opacity: 0.8 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ============================================
+       AJUSTES PARA MÓVILES MUY PEQUEÑOS
+       ============================================ */
+
+    .hero-section,
+    .hero-main-carousel {
+        min-height: 300px !important;
+        max-height: 350px !important;
+        height: 300px !important;
+    }
+
+    .section-title,
+    .title {
+        font-size: 1.5rem !important;
+    }
+
+    h1 {
+        font-size: 1.7rem !important;
+    }
+
+    h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    section {
+        padding: 25px 12px !important;
+    }
+
+    .product-card {
+        min-height: 250px;
+    }
+
+    .carousel-cell img {
+        max-height: 200px;
+    }
+}

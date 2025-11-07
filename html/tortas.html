@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lauren - Tortas Personalizadas | Diseños Únicos y Sabores Premium</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Tortas personalizadas con diseños únicos. Sabores premium: chocolate, red velvet, vainilla y zanahoria. Tortas vintage y sencillas para toda ocasión en Colombia.">
+    <meta name="keywords" content="tortas personalizadas, tortas vintage, tortas decoradas, repostería, Lauren, Colombia, chocolate, red velvet, vainilla">
+    <meta name="author" content="Lauren Repostería">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Lauren - Tortas Personalizadas">
+    <meta property="og:description" content="Tortas personalizadas con diseños únicos y sabores premium. Creaciones de ensueño para tu celebración.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/imagenes-tortas/01-hero-carousel/Gemini_Generated_Image_wupy5fwupy5fwupy.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lauren - Tortas Personalizadas">
+    <meta name="twitter:description" content="Tortas personalizadas con diseños únicos y sabores premium.">
+
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/tortas-styles.css">
+    <link rel="stylesheet" href="../css/quick-view-modal.css">
+    <link rel="stylesheet" href="../css/mobile-fixes.css">
+    <link rel="stylesheet" href="../css/hide-modal.css">
+
+    <style>
+        /* ========================================
+           PRODUCT QUICK VIEW MODAL
+           ======================================== */
+
+        .product-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .product-modal-container {
+            background: white;
+            border-radius: 16px;
+            max-width: 1100px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-modal-overlay.active .product-modal-container {
+            transform: scale(1);
+        }
+
+        .product-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-modal-close:hover {
+            background: #f5f5f5;
+            transform: rotate(90deg);
+        }
+
+        .product-modal-close svg {
+            width: 20px;
+            height: 20px;
+            color: #333;
+        }
+
+        .product-modal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        /* Columna Izquierda - Imágenes */
+        .product-modal-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            align-self: start;
+        }
+
+        .product-modal-image-main {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #f8f8f8;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-modal-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .product-modal-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .product-modal-thumbnail:hover {
+            border-color: #F9B58C;
+        }
+
+        .product-modal-thumbnail.active {
+            border-color: #F4A67C;
+        }
+
+        .product-modal-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Columna Derecha - Información */
+        .product-modal-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-modal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .product-modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c2c2c;
+            margin: 0;
+            letter-spacing: 0.3px;
+        }
+
+        .product-modal-price-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-modal-price {
+            display: inline-block;
+            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 15px rgba(249, 181, 140, 0.3);
+            align-self: flex-start;
+        }
+
+        .product-modal-price-note {
+            font-size: 0.75rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .product-modal-description {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #555;
+            margin: 0;
+        }
+
+        .product-modal-section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .product-modal-includes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-modal-includes-list li {
+            font-size: 0.8rem;
+            color: #555;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .product-modal-includes-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #F9B58C;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        /* Opciones Configurables */
+        .product-modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .product-modal-option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .product-modal-option-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .product-modal-option-label .required-badge {
+            background: #F9B58C;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .product-modal-option-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-modal-option-choice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .product-modal-option-choice:hover {
+            border-color: #F9B58C;
+            background: #FFF9F5;
+        }
+
+        .product-modal-option-choice input[type="radio"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            accent-color: #F4A67C;
+        }
+
+        .product-modal-option-choice label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .product-modal-option-choice.selected {
+            border-color: #F4A67C;
+            background: #FFF9F5;
+        }
+
+        /* Select multiple */
+        .product-modal-option-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .product-modal-option-chip {
+            padding: 6px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            background: white;
+        }
+
+        .product-modal-option-chip:hover {
+            border-color: #F9B58C;
+            background: #FFF9F5;
+        }
+
+        .product-modal-option-chip.selected {
+            border-color: #F4A67C;
+            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
+            color: white;
+        }
+
+        /* Toggle */
+        .product-modal-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .product-modal-toggle-label {
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .product-modal-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #e0e0e0;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .product-modal-toggle.active {
+            background: #F4A67C;
+        }
+
+        .product-modal-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-modal-toggle.active::after {
+            transform: translateX(24px);
+        }
+
+        /* Personalización */
+        .product-modal-personalization {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px;
+            background: #FFF9F5;
+            border-radius: 10px;
+            border: 1px solid #F9B58C;
+        }
+
+        .product-modal-personalization-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-modal-personalization-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2c2c2c;
+        }
+
+        .product-modal-personalization-input {
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .product-modal-personalization-input:focus {
+            outline: none;
+            border-color: #F4A67C;
+        }
+
+        .product-modal-personalization-note {
+            font-size: 0.7rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* CTA Button */
+        .product-modal-actions {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        .product-modal-cta-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .product-modal-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .product-modal-cta-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1024px) {
+            .product-modal-content {
+                gap: 30px;
+                padding: 30px;
+            }
+
+            .product-modal-title {
+                font-size: 1.3rem;
+            }
+
+            .product-modal-price {
+                font-size: 1rem;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .product-modal-overlay {
+                padding: 0;
+            }
+
+            .product-modal-container {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .product-modal-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 20px;
+                padding-top: 60px;
+            }
+
+            .product-modal-left {
+                position: static;
+            }
+
+            .product-modal-close {
+                top: 15px;
+                right: 15px;
+                width: 36px;
+                height: 36px;
+            }
+
+            .product-modal-title {
+                font-size: 1.2rem;
+            }
+
+            .product-modal-price {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+
+            .product-modal-description {
+                font-size: 0.8rem;
+            }
+
+            .product-modal-image-main {
+                aspect-ratio: 1;
+            }
+
+            .product-modal-thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+
+            .product-modal-cta-btn {
+                font-size: 0.85rem;
+                padding: 12px 18px;
+            }
+
+            .product-modal-info {
+                gap: 14px;
+            }
+
+            .product-modal-section-title {
+                font-size: 0.8rem;
+                margin-bottom: 6px;
+            }
+
+            .product-modal-includes-list li {
+                font-size: 0.75rem;
+            }
+
+            .product-modal-option-label {
+                font-size: 0.75rem;
+            }
+
+            .product-modal-option-choice label {
+                font-size: 0.75rem;
+            }
+
+            .product-modal-option-chip {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header minimalista -->
+    <header class="minimal-header">
+        <div class="header-container">
+            <!-- Lado izquierdo: Logo + Navegación -->
+            <div class="header-left">
+                <div class="logo-container">
+                    <img src="../assets/logos/LOGOS LAUREN PNG-55.png" alt="Lauren Logo" class="logo-img">
+                </div>
+
+                <nav class="minimal-nav" id="minimalNav">
+                    <a href="inicio.html" class="nav-item">Inicio</a>
+                    <a href="tortas.html" class="nav-item active">Tortas</a>
+                    <a href="alfajores.html" class="nav-item">Alfajores</a>
+                    <a href="brownies-galletas.html" class="nav-item">Brownies y Galletas</a>
+                    <a href="detalles.html" class="nav-item">Detalles</a>
+                </nav>
+            </div>
+
+            <!-- Botón Hamburguesa -->
+            <button class="menu-toggle-minimal" aria-label="Abrir menú de navegación" aria-expanded="false">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+
+            <!-- Botón desplegable de Contacto (derecha) -->
+            <div class="contact-dropdown">
+                <button class="contact-dropdown-btn" aria-label="Contacto" aria-expanded="false">
+                    Contacto
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow">
+                        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="contact-dropdown-menu">
+                        <a href="https://wa.me/573104442796" class="contact-dropdown-item whatsapp-item" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366"/>
+                            </svg>
+                            WhatsApp
+                        </a>
+                        <a href="https://instagram.com/laurenreposteria22" class="contact-dropdown-item instagram-item" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="instagramGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#f09433;stop-opacity:1" />
+                                        <stop offset="25%" style="stop-color:#e6683c;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#dc2743;stop-opacity:1" />
+                                        <stop offset="75%" style="stop-color:#cc2366;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#bc1888;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="url(#instagramGradient2)"/>
+                            </svg>
+                            Instagram
+                        </a>
+                        <a href="https://www.tiktok.com/@laurenreposteria" class="contact-dropdown-item tiktok-item" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" fill="#000000"/>
+                            </svg>
+                            TikTok
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN 1: Hero Video con logo superpuesto -->
+    <section class="hero-main-carousel">
+        <div class="carousel-wrapper">
+            <video class="hero-background-video" autoplay muted loop playsinline>
+                <source src="../assets/imagenes-tortas/herotortas/VideoHero.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-content-box">
+                <img src="../assets/logos/LOGOS LAUREN PNG-59.png" alt="Lauren Logo" class="hero-logo-translucent">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: Introducción -->
+    <section class="intro-section-modern">
+        <div class="container">
+            <div class="intro-content-wrapper">
+                <div class="intro-icon-container">
+                    <div class="intro-icon-circle">
+                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Lauren Logo" class="intro-main-icon-img">
+                    </div>
+                </div>
+                <div class="section-header-decorated">
+                    <div class="section-decoration-left"></div>
+                    <div class="section-title-wrapper">
+                        <h2 class="section-title-elegant">CREA TU TORTA PERFECTA</h2>
+                    </div>
+                    <div class="section-decoration-right"></div>
+                </div>
+                <p class="section-subtitle-elegant-center">Elige cada detalle de tu celebración</p>
+                <p class="intro-text-modern">Diseña la torta de tus sueños en 3 simples pasos. Selecciona tu bizcocho favorito, el relleno que más te guste y el estilo que combine con tu ocasión especial.</p>
+
+                <div class="intro-steps">
+                    <div class="intro-step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Bizcocho</h3>
+                        <p class="step-text">Elige tu sabor base</p>
+                    </div>
+                    <div class="intro-arrow">→</div>
+                    <div class="intro-step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Relleno</h3>
+                        <p class="step-text">Selecciona el corazón</p>
+                    </div>
+                    <div class="intro-arrow">→</div>
+                    <div class="intro-step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Estilo</h3>
+                        <p class="step-text">Vintage o Sencilla</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: PASO 1 y PASO 2 - Bizcochos y Rellenos -->
+    <section class="fillings-section">
+        <div class="container">
+            <!-- Grid con Bizcochos y Rellenos lado a lado -->
+            <div class="sabores-grid">
+                <!-- COLUMNA IZQUIERDA: Bizcochos -->
+                <div class="sabor-column">
+                    <h2 class="sabor-subtitle">Elige tu Bizcocho</h2>
+                    <p class="paso-description">La base de tu creación</p>
+                    <div class="fillings-carousel bizcochos-carousel">
+                        <div class="fillings-carousel-wrapper bizcochos-carousel-wrapper">
+                            <div class="fillings-slide bizcochos-slide active">
+                                <img src="../assets/imagenes-tortas/03-sabores/chocolate.png" alt="Chocolate" class="fillings-img bizcocho-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Chocolate</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide bizcochos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/Red velvet.png" alt="Red Velvet" class="fillings-img bizcocho-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Red Velvet</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide bizcochos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/vainilla.png" alt="Vainilla" class="fillings-img bizcocho-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Vainilla</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide bizcochos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/zanahoria con nueces.png" alt="Zanahoria con Nueces" class="fillings-img bizcocho-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Zanahoria con Nueces</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fillings-indicators bizcochos-indicators">
+                            <span class="fillings-dot bizcochos-dot active" data-slide="0"></span>
+                            <span class="fillings-dot bizcochos-dot" data-slide="1"></span>
+                            <span class="fillings-dot bizcochos-dot" data-slide="2"></span>
+                            <span class="fillings-dot bizcochos-dot" data-slide="3"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: Rellenos -->
+                <div class="sabor-column">
+                    <h2 class="sabor-subtitle">Selecciona tu Relleno</h2>
+                    <p class="paso-description">El corazón de cada bocado</p>
+                    <div class="fillings-carousel">
+                        <div class="fillings-carousel-wrapper rellenos-carousel-wrapper">
+                            <div class="fillings-slide rellenos-slide active">
+                                <img src="../assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de arequipe.png" alt="Arequipe" class="fillings-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Arequipe</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide rellenos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de crema de queso.png" alt="Crema de Queso" class="fillings-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Crema de Queso</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide rellenos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/Sabores de los rellenos/rellenos de frutos rojos.png" alt="Frutos Rojos" class="fillings-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Frutos Rojos</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide rellenos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de chocolate.png" alt="Chocolate" class="fillings-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Chocolate</h3>
+                                </div>
+                            </div>
+                            <div class="fillings-slide rellenos-slide">
+                                <img src="../assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de nutella.png" alt="Nutella" class="fillings-img">
+                                <div class="fillings-slide-overlay">
+                                    <h3>Nutella</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fillings-indicators rellenos-indicators">
+                            <span class="fillings-dot rellenos-dot active" data-slide="0"></span>
+                            <span class="fillings-dot rellenos-dot" data-slide="1"></span>
+                            <span class="fillings-dot rellenos-dot" data-slide="2"></span>
+                            <span class="fillings-dot rellenos-dot" data-slide="3"></span>
+                            <span class="fillings-dot rellenos-dot" data-slide="4"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: Escoge tu Estilo -->
+    <section class="cakes-gallery-section">
+        <div class="container">
+            <div class="section-header-decorated">
+                <div class="section-decoration-left"></div>
+                <div class="section-title-wrapper">
+                    <h2 class="section-title-main-center paso-3-title">ESCOGE TU ESTILO</h2>
+                </div>
+                <div class="section-decoration-right"></div>
+            </div>
+            <p class="section-subtitle-elegant-center">¿Vintage, sencilla o quieres algo más personalizado?</p>
+
+            <div class="cakes-grid">
+                <!-- COLUMNA IZQUIERDA: Tortas Vintage -->
+                <div class="cake-column vintage-column">
+                    <h4 class="gallery-title">Tortas Vintage</h4>
+
+                    <div class="vintage-carousel-wrapper">
+                        <!-- Grupo 1 - 4 imágenes -->
+                        <div class="vintage-carousel-group active">
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_dkkjybdkkjybdkkj.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Grupo 2 - 4 imágenes -->
+                        <div class="vintage-carousel-group">
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_eikri2eikri2eikr.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_gdft0agdft0agdft.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Grupo 3 - 4 imágenes -->
+                        <div class="vintage-carousel-group">
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_mepzrdmepzrdmepz.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_p4cxfop4cxfop4cx.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Grupo 4 - 3 imágenes -->
+                        <div class="vintage-carousel-group">
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_vc8skmvc8skmvc8s.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_wupy5fwupy5fwupy.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                            <div class="vintage-gallery-item">
+                                <img src="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png" alt="Torta Vintage" class="vintage-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Indicadores del carrusel vintage -->
+                        <div class="vintage-carousel-dots">
+                            <span class="vintage-dot active" data-group="0"></span>
+                            <span class="vintage-dot" data-group="1"></span>
+                            <span class="vintage-dot" data-group="2"></span>
+                            <span class="vintage-dot" data-group="3"></span>
+                        </div>
+
+                        <!-- Botón Ver Precios -->
+                        <div class="pricing-btn-wrapper">
+                            <button class="pricing-btn-integrated" id="vintagePricingBtn">
+                                Ver Precios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: Tortas Sencillas -->
+                <div class="cake-column simple-column">
+                    <h4 class="gallery-title">Tortas Sencillas</h4>
+
+                    <div class="simple-carousel-wrapper">
+                        <!-- Grupo 1 - 3 imágenes mosaico -->
+                        <div class="simple-carousel-group active">
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Grupo 2 - 3 imágenes mosaico -->
+                        <div class="simple-carousel-group">
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_qkg1s1qkg1s1qkg1.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_uf79j3uf79j3uf79.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_jn1a7hjn1a7hjn1a.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Grupo 3 - 3 imágenes mosaico -->
+                        <div class="simple-carousel-group">
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_n63ggwn63ggwn63g.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_oduc9yoduc9yoduc.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                            <div class="simple-gallery-item">
+                                <img src="../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_hbvjg9hbvjg9hbvj.png" alt="Torta Sencilla" class="simple-gallery-img">
+                            </div>
+                        </div>
+
+                        <!-- Indicadores del carrusel simple -->
+                        <div class="simple-carousel-dots">
+                            <span class="simple-dot active" data-group="0"></span>
+                            <span class="simple-dot" data-group="1"></span>
+                            <span class="simple-dot" data-group="2"></span>
+                        </div>
+
+                        <!-- Botón Ver Precios -->
+                        <div class="pricing-btn-wrapper">
+                            <button class="pricing-btn-integrated" id="sencillasPricingBtn">
+                                Ver Precios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: INSPIRACIÓN - Carrusel Infinito -->
+    <section class="infinite-carousel-section-modern">
+        <div class="container">
+            <div class="section-header-decorated">
+                <div class="section-decoration-left"></div>
+                <div class="section-title-wrapper">
+                    <h2 class="section-title-elegant">INSPIRACIÓN</h2>
+                </div>
+                <div class="section-decoration-right"></div>
+            </div>
+            <p class="section-subtitle-elegant-center">Nuestras creaciones favoritas</p>
+        </div>
+
+        <div class="infinite-carousel-wrapper">
+            <div class="infinite-carousel-track">
+                <!-- Las imágenes se duplicarán automáticamente con JavaScript -->
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1ajezk1ajezk1aje.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1sxlka1sxlka1sxl.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_reksf1reksf1reks.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1wcap71wcap71wca.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_3cka7v3cka7v3cka.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4muicc4muicc4mui.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4tb78o4tb78o4tb7.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_56upo756upo756up.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_5swvyo5swvyo5swv.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_825mmt825mmt825m.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c13mpgc13mpgc13m.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_9kd0vj9kd0vj9kd0.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_a1gscga1gscga1gs.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_aoou3xaoou3xaoou.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c9gdx4c9gdx4c9gd.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_dkkjybdkkjybdkkj.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_eikri2eikri2eikr.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_gdft0agdft0agdft.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_hn2hn0hn2hn0hn2h.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jjxzizjjxzizjjxz.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jo8490jo8490jo84.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ky1jm0ky1jm0ky1j.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_mepzrdmepzrdmepz.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_nojag2nojag2noja.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_oniqbwoniqbwoniq.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_outffkoutffkoutf.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_p4cxfop4cxfop4cx.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ukit36ukit36ukit.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vapovavapovavapo.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vqymkkvqymkkvqym.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_wupy5fwupy5fwupy.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_x5wo4bx5wo4bx5wo.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_xnv7qfxnv7qfxnv7.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ynlk7yynlk7yynlk.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_yy5wqdyy5wqdyy5w.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zeeuvzzeeuvzzeeu.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+                <div class="infinite-carousel-item">
+                    <img src="../assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png" alt="Torta Lauren" class="infinite-carousel-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de adicionales -->
+    <!-- SECCIÓN 6: PERSONALIZA AÚN MÁS -->
+    <section class="extras-section">
+        <div class="container">
+            <div class="extras-header">
+                <div class="section-header-decorated">
+                    <div class="section-decoration-left"></div>
+                    <div class="section-title-wrapper">
+                        <h2 class="section-title-elegant">¿QUIERES AGREGAR MÁS DETALLES A TU CREACIÓN?</h2>
+                    </div>
+                    <div class="section-decoration-right"></div>
+                </div>
+                <p class="section-subtitle-elegant" style="text-align: center;">Añade ese toque especial que lo hace único</p>
+            </div>
+
+            <div class="extras-grid">
+                <div class="extra-card">
+                    <div class="extra-icon-wrapper">
+                        <img src="../assets/logos/Detalles adicionales/moño.png" alt="Moño" class="extra-icon-img">
+                    </div>
+                    <div class="extra-content">
+                        <h3 class="extra-title">Moños Decorativos</h3>
+                        <p class="extra-description">Elegantes moños en fondant para decorar tu torta</p>
+                        <div class="extra-price-tag">
+                            <span class="price-range">$2.000 - $3.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra-card">
+                    <div class="extra-icon-wrapper">
+                        <img src="../assets/logos/Detalles adicionales/mariposa.png" alt="Mariposa" class="extra-icon-img">
+                    </div>
+                    <div class="extra-content">
+                        <h3 class="extra-title">Mariposas</h3>
+                        <p class="extra-description">Delicadas mariposas decorativas (no comestibles)</p>
+                        <div class="extra-price-tag">
+                            <span class="price-range">$2.000 - $3.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra-card featured-extra">
+                    <div class="extra-badge">Popular</div>
+                    <div class="extra-icon-wrapper">
+                        <img src="../assets/logos/Detalles adicionales/HB (1).png" alt="Happy Birthday" class="extra-icon-img">
+                    </div>
+                    <div class="extra-content">
+                        <h3 class="extra-title">Happy Birthday</h3>
+                        <p class="extra-description">Letras en aplique o toppers personalizados</p>
+                        <div class="extra-price-tag">
+                            <span class="price-range">$5.000 - $8.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra-card">
+                    <div class="extra-icon-wrapper">
+                        <img src="../assets/logos/Detalles adicionales/perla.png" alt="Perla" class="extra-icon-img">
+                    </div>
+                    <div class="extra-content">
+                        <h3 class="extra-title">Perlas Comestibles</h3>
+                        <p class="extra-description">Perlas en mayor cantidad para un acabado lujoso</p>
+                        <div class="extra-price-tag">
+                            <span class="price-range">$5.000 - $10.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra-card special-extra">
+                    <div class="extra-icon-wrapper">
+                        <img src="../assets/logos/Detalles adicionales/corona.png" alt="Corona" class="extra-icon-img">
+                    </div>
+                    <div class="extra-content">
+                        <h3 class="extra-title">Coronas Especiales</h3>
+                        <p class="extra-description">Diseños personalizados y únicos</p>
+                        <div class="extra-price-tag special-price">
+                            <span class="price-range">Precio en asesoría</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Información importante -->
+    <section class="important-info-section">
+        <div class="container">
+            <div class="info-header">
+                <div class="section-header-decorated">
+                    <div class="section-decoration-left"></div>
+                    <div class="section-title-wrapper">
+                        <h2 class="section-title-elegant">INFORMACIÓN IMPORTANTE</h2>
+                    </div>
+                    <div class="section-decoration-right"></div>
+                </div>
+                <p class="section-subtitle-elegant" style="text-align: center;">Porque queremos que todo salga perfecto</p>
+            </div>
+
+            <div class="info-cards-grid">
+                <div class="info-card-modern">
+                    <div class="info-card-icon">
+                        <div class="icon-circle">
+                            <img src="../assets/logos/Detalles adicionales/pedido.png" alt="Pedido" class="icon-img">
+                        </div>
+                    </div>
+                    <div class="info-card-content">
+                        <h3 class="info-card-title">Pedido y Frescura</h3>
+                        <p class="info-card-text">Para garantizar la calidad y frescura, es importante que tu pedido se realice con tiempo. Consulta en la asesoría la disponibilidad para el día que la requieras.</p>
+                    </div>
+                    <div class="info-card-decoration"></div>
+                </div>
+
+                <div class="info-card-modern">
+                    <div class="info-card-icon">
+                        <div class="icon-circle">
+                            <img src="../assets/logos/Detalles adicionales/diseños.png" alt="Diseños" class="icon-img">
+                        </div>
+                    </div>
+                    <div class="info-card-content">
+                        <h3 class="info-card-title">Diseños Personalizados</h3>
+                        <p class="info-card-text">Si requieres otro tipo de diseño, su valor se definirá durante la asesoría. Nos adaptamos a tus ideas y celebración especial.</p>
+                    </div>
+                    <div class="info-card-decoration"></div>
+                </div>
+
+                <div class="info-card-modern">
+                    <div class="info-card-icon">
+                        <div class="icon-circle">
+                            <img src="../assets/logos/Detalles adicionales/unica.png" alt="Única" class="icon-img">
+                        </div>
+                    </div>
+                    <div class="info-card-content">
+                        <h3 class="info-card-title">Cada Torta es Única</h3>
+                        <p class="info-card-text">Tomamos en cuenta tus especificaciones, pero es un proceso artístico; pueden existir pequeñas variaciones respecto a la referencia o colores.</p>
+                    </div>
+                    <div class="info-card-decoration"></div>
+                </div>
+
+                <div class="info-card-modern">
+                    <div class="info-card-icon">
+                        <div class="icon-circle">
+                            <img src="../assets/logos/Detalles adicionales/letras.png" alt="Letras" class="icon-img">
+                        </div>
+                    </div>
+                    <div class="info-card-content">
+                        <h3 class="info-card-title">Letras y Detalles</h3>
+                        <p class="info-card-text">Todas las letras se realizan con moldes para garantizar un acabado profesional. No se hacen en crema para mayor durabilidad.</p>
+                    </div>
+                    <div class="info-card-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Completo -->
+    <footer class="modern-footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Columna 1: Sobre Lauren -->
+                    <div class="footer-column">
+                        <h3 class="footer-column-title">LAUREN</h3>
+                        <p class="footer-brand-text">Bocado de Alegría</p>
+                        <p class="footer-description">Creando momentos dulces y memorables desde 2022. Repostería artesanal con amor en cada detalle.</p>
+                        <div class="footer-social-icons">
+                            <a href="https://wa.me/573104442796" class="footer-social-link" target="_blank" aria-label="WhatsApp">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366"/>
+                                </svg>
+                            </a>
+                            <a href="https://instagram.com/laurenreposteria22" class="footer-social-link" target="_blank" aria-label="Instagram">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="instagram-gradient-footer-new" x1="0%" y1="100%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="url(#instagram-gradient-footer-new)"/>
+                                </svg>
+                            </a>
+                            <a href="https://www.tiktok.com/@laurenreposteria" class="footer-social-link" target="_blank" aria-label="TikTok">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" fill="#000000"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna 2: Navegación Rápida -->
+                    <div class="footer-column">
+                        <h3 class="footer-column-title">Navegación</h3>
+                        <ul class="footer-links">
+                            <li><a href="inicio.html">Inicio</a></li>
+                            <li><a href="tortas.html">Tortas</a></li>
+                            <li><a href="alfajores.html">Alfajores</a></li>
+                            <li><a href="brownies-galletas.html">Brownies y Galletas</a></li>
+                            <li><a href="detalles.html">Detalles</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 3: Contacto -->
+                    <div class="footer-column">
+                        <h3 class="footer-column-title">Contacto</h3>
+                        <ul class="footer-contact-list">
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z" fill="currentColor"/>
+                                    <path d="M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2zm3.422 5.443a1.001 1.001 0 00-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 00.043-1.391L6.859 3.513a1.001 1.001 0 00-1.391-.087l-2.17 1.861a1 1 0 00-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 00.648-.291l1.86-2.171a1 1 0 00-.086-1.391l-4.064-3.696z" fill="currentColor"/>
+                                </svg>
+                                <a href="https://wa.me/573104442796" target="_blank">310 444 27 96</a>
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 6.223-8-6.222V6h16zM4 18V9.044l7.386 5.745a.994.994 0 001.228 0L20 9.044 20.002 18H4z" fill="currentColor"/>
+                                </svg>
+                                <a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+                                </svg>
+                                <span>Medellín, Colombia</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Información Útil -->
+                    <div class="footer-column">
+                        <h3 class="footer-column-title">Información</h3>
+                        <ul class="footer-info-list">
+                            <li>
+                                <strong>Horario de Atención:</strong>
+                                <span>Lunes - Sábado</span>
+                                <span>9:00 AM - 6:00 PM</span>
+                            </li>
+                            <li>
+                                <strong>Formas de Pago:</strong>
+                                <span>Transferencias bancarias</span>
+                                <span>Efectivo</span>
+                            </li>
+                            <li>
+                                <strong>Pedidos:</strong>
+                                <span>Mínimo 1 día de anticipación</span>
+                                <span>Consultar disponibilidad</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright Bar -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Lauren Repostería. Todos los derechos reservados.</p>
+                    <p class="footer-made-with">Hecho con amor en Medellín, Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">&times;</button>
+            <button class="lightbox-prev" id="lightboxPrev">‹</button>
+            <button class="lightbox-next" id="lightboxNext">›</button>
+            <img src="" alt="Torta expandida" class="lightbox-img" id="lightboxImg">
+        </div>
+    </div>
+
+    <!-- Botón Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Volver arriba" style="position: fixed !important; bottom: 30px !important; right: 30px !important; width: 50px !important; height: 50px !important; background: #F9B58C !important; color: white !important; border: none !important; border-radius: 50% !important; font-size: 1.5rem !important; cursor: pointer !important; z-index: 9999 !important; box-shadow: 0 4px 15px rgba(249, 181, 140, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; opacity: 0; visibility: hidden; transition: all 0.3s ease !important;">
+        ↑
+    </button>
+
+    <!-- Product Quick View Modal -->
+    <div class="product-modal-overlay" id="productModalOverlay">
+        <div class="product-modal-container" id="productModalContainer">
+            <!-- Botón Cerrar -->
+            <button class="product-modal-close" id="productModalClose" aria-label="Cerrar modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Contenido del Modal -->
+            <div class="product-modal-content">
+                <!-- Columna Izquierda: Imágenes -->
+                <div class="product-modal-left">
+                    <div class="product-modal-image-main">
+                        <img src="" alt="" id="productModalMainImage" class="modal-main-image">
+                    </div>
+                    <div class="product-modal-thumbnails" id="productModalThumbnails">
+                        <!-- Miniaturas se generarán dinámicamente si hay múltiples imágenes -->
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Información -->
+                <div class="product-modal-right">
+                    <div class="product-modal-info">
+                        <!-- Nombre del Producto -->
+                        <h2 class="product-modal-title" id="productModalTitle"></h2>
+
+                        <!-- Precio -->
+                        <div class="product-modal-price-wrapper">
+                            <span class="product-modal-price" id="productModalPrice"></span>
+                            <span class="product-modal-price-note" id="productModalPriceNote" style="display: none;"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <p class="product-modal-description" id="productModalDescription"></p>
+
+                        <!-- Qué Incluye -->
+                        <div class="product-modal-includes">
+                            <h3 class="product-modal-section-title">¿Qué incluye?</h3>
+                            <ul class="product-modal-includes-list" id="productModalIncludesList"></ul>
+                        </div>
+
+                        <!-- Opciones Configurables -->
+                        <div class="product-modal-options" id="productModalOptions">
+                            <!-- Las opciones se generarán dinámicamente -->
+                        </div>
+
+                        <!-- Campo de Personalización -->
+                        <div class="product-modal-personalization" id="productModalPersonalization" style="display: none;">
+                            <!-- Los campos de personalización se generarán dinámicamente -->
+                        </div>
+
+                        <!-- Botón de Contacto para Pedido -->
+                        <div class="product-modal-actions">
+                            <a href="#" class="product-modal-cta-btn" id="productModalCTA" target="_blank">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor"/>
+                                </svg>
+                                Hacer Pedido por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts del sistema de modal -->
+    <script src="../js/tortas-data.js"></script>
+    <script src="../js/quick-view-modal.js"></script>
+    <script src="../js/tortas-script.js"></script>
+
+    <!-- Script de integración del Quick View Modal con las galerías -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Integrar galerías VINTAGE con el Quick View Modal
+            const vintageItems = document.querySelectorAll('.vintage-gallery-item, .vintage-carousel-group .vintage-gallery-item');
+            vintageItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Encontrar el grupo específico al que pertenece esta imagen
+                    const clickedGroup = item.closest('.vintage-carousel-group');
+
+                    if (clickedGroup && typeof openQuickView === 'function' && detallesProductsData['torta-vintage']) {
+                        // Recopilar TODAS las imágenes del grupo clickeado
+                        const imagesInGroup = [];
+                        const imgsInGroup = clickedGroup.querySelectorAll('.vintage-gallery-img');
+
+                        imgsInGroup.forEach(img => {
+                            if (img.src) {
+                                imagesInGroup.push(img.src);
+                            }
+                        });
+
+                        // Crear una copia del producto con las imágenes del grupo seleccionado
+                        const productWithImages = {
+                            ...detallesProductsData['torta-vintage'],
+                            images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-vintage'].images,
+                            mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-vintage'].mainImage
+                        };
+
+                        // Crear un objeto temporal con el producto modificado
+                        const tempData = {
+                            'torta-vintage': productWithImages
+                        };
+
+                        // Abrir el modal con las imágenes del grupo seleccionado
+                        openQuickView('torta-vintage', tempData);
+                    }
+                });
+                item.style.cursor = 'pointer';
+            });
+
+            // Integrar galerías SENCILLAS con el Quick View Modal
+            const simpleItems = document.querySelectorAll('.simple-gallery-item, .simple-carousel-group .simple-gallery-item');
+            simpleItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Encontrar el grupo específico al que pertenece esta imagen
+                    const clickedGroup = item.closest('.simple-carousel-group');
+
+                    if (clickedGroup && typeof openQuickView === 'function' && detallesProductsData['torta-sencilla']) {
+                        // Recopilar TODAS las imágenes del grupo clickeado
+                        const imagesInGroup = [];
+                        const imgsInGroup = clickedGroup.querySelectorAll('.simple-gallery-img');
+
+                        imgsInGroup.forEach(img => {
+                            if (img.src) {
+                                imagesInGroup.push(img.src);
+                            }
+                        });
+
+                        // Crear una copia del producto con las imágenes del grupo seleccionado
+                        const productWithImages = {
+                            ...detallesProductsData['torta-sencilla'],
+                            images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-sencilla'].images,
+                            mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-sencilla'].mainImage
+                        };
+
+                        // Crear un objeto temporal con el producto modificado
+                        const tempData = {
+                            'torta-sencilla': productWithImages
+                        };
+
+                        // Abrir el modal con las imágenes del grupo seleccionado
+                        openQuickView('torta-sencilla', tempData);
+                    }
+                });
+                item.style.cursor = 'pointer';
+            });
+
+            console.log('%c🎂 Quick View Modal integrado en Tortas con imágenes dinámicas por grupo!', 'color: #d4a574; font-weight: bold;');
+        });
+    </script>
+
+    <script>
+        // ========================================
+        // CONECTAR BOTONES "VER PRECIOS" AL QUICK VIEW MODAL
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Conectar botón de Tortas Vintage
+            const vintagePricingBtn = document.getElementById('vintagePricingBtn');
+            if (vintagePricingBtn) {
+                vintagePricingBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                        // Detectar el grupo activo actualmente visible
+                        const activeGroup = document.querySelector('.vintage-carousel-group.active');
+
+                        if (activeGroup) {
+                            // Recopilar todas las imágenes del grupo activo
+                            const imagesInGroup = [];
+                            const imgsInGroup = activeGroup.querySelectorAll('.vintage-gallery-img');
+
+                            imgsInGroup.forEach(img => {
+                                if (img.src) {
+                                    imagesInGroup.push(img.src);
+                                }
+                            });
+
+                            // Crear una copia del producto con las imágenes del grupo activo
+                            const productWithImages = {
+                                ...detallesProductsData['torta-vintage'],
+                                images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-vintage'].images,
+                                mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-vintage'].mainImage
+                            };
+
+                            // Crear un objeto temporal con el producto modificado
+                            const tempData = {
+                                'torta-vintage': productWithImages
+                            };
+
+                            // Abrir el modal con las imágenes del grupo activo
+                            openQuickView('torta-vintage', tempData);
+                        } else {
+                            // Si no hay grupo activo, usar las imágenes por defecto
+                            openQuickView('torta-vintage', detallesProductsData);
+                        }
+                    }
+                });
+            }
+
+            // Conectar botón de Tortas Sencillas
+            const sencillasPricingBtn = document.getElementById('sencillasPricingBtn');
+            if (sencillasPricingBtn) {
+                sencillasPricingBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                        // Detectar el grupo activo actualmente visible
+                        const activeGroup = document.querySelector('.simple-carousel-group.active');
+
+                        if (activeGroup) {
+                            // Recopilar todas las imágenes del grupo activo
+                            const imagesInGroup = [];
+                            const imgsInGroup = activeGroup.querySelectorAll('.simple-gallery-img');
+
+                            imgsInGroup.forEach(img => {
+                                if (img.src) {
+                                    imagesInGroup.push(img.src);
+                                }
+                            });
+
+                            // Crear una copia del producto con las imágenes del grupo activo
+                            const productWithImages = {
+                                ...detallesProductsData['torta-sencilla'],
+                                images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-sencilla'].images,
+                                mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-sencilla'].mainImage
+                            };
+
+                            // Crear un objeto temporal con el producto modificado
+                            const tempData = {
+                                'torta-sencilla': productWithImages
+                            };
+
+                            // Abrir el modal con las imágenes del grupo activo
+                            openQuickView('torta-sencilla', tempData);
+                        } else {
+                            // Si no hay grupo activo, usar las imágenes por defecto
+                            openQuickView('torta-sencilla', detallesProductsData);
+                        }
+                    }
+                });
+            }
+
+            console.log('%c✅ Botones "Ver Precios" de Tortas conectados al Quick View Modal', 'color: #4CAF50; font-weight: bold;');
+        });
+    </script>
+
+    <script src="../js/scroll-to-top.js"></script>
+</body>
+</html>

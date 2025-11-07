@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════════
+   INSTRUCCIONES - CARRUSEL INFINITO DE DETALLES
+═══════════════════════════════════════════════════════════════
+
+📁 ESTRUCTURA DE CARPETAS CREADA:
+└── assets/
+    └── imagenes-detalles/
+        └── carrusel-infinito/    ← COLOCA TUS IMÁGENES AQUÍ
+
+
+📸 CÓMO ORGANIZAR LAS IMÁGENES:
+
+1. Coloca todas las imágenes de tus detalles en la carpeta:
+   "carrusel-infinito"
+
+2. Nombra las imágenes de forma ordenada, por ejemplo:
+   - 1.jpg
+   - 2.jpg
+   - 3.png
+   - 4.jpg
+   - 5.png
+   ... etc
+
+3. CANTIDAD RECOMENDADA:
+   Mínimo 6-8 imágenes para que el carrusel se vea fluido
+
+4. FORMATO DE IMÁGENES:
+   - Formatos permitidos: .jpg, .jpeg, .png
+   - Orientación: Horizontal preferiblemente
+   - Calidad: Alta resolución para que se vean bien
+
+
+💡 TIPOS DE IMÁGENES SUGERIDAS PARA DETALLES:
+   - Osos de chocolate (pequeños, grandes, con fresas)
+   - Detalles clásicos (brownie, HBD, margarita, con torta)
+   - Detalles Mix (con iniciales y letras)
+   - Detalles Golden (con torta vasca)
+   - Cajas completas armadas
+   - Close-ups de productos
+   - Presentaciones especiales
+
+
+⚠️ IMPORTANTE:
+   Cuando termines de colocar las imágenes, avísame para
+   actualizar el código HTML y CSS del carrusel.
+
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,245 @@
+/* ============================================
+   FOOTER MÓVIL - REORGANIZADO Y COMPACTO
+   Solo se aplica en pantallas menores a 768px
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Forzar estructura del footer */
+    footer.modern-footer {
+        padding: 20px 0 !important;
+        background: linear-gradient(135deg, #4A3C52 0%, #5C4D66 100%) !important;
+    }
+
+    footer.modern-footer .footer-main {
+        padding: 15px !important;
+    }
+
+    /* Grid del footer - columna única pero las últimas 2 en fila */
+    footer.modern-footer .footer-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0 !important;
+    }
+
+    /* Las primeras columnas ocupan full width */
+    footer.modern-footer .footer-column:nth-child(1),
+    footer.modern-footer .footer-column:nth-child(3) {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    /* ===== SECCIÓN 1: LAUREN + REDES SOCIALES ===== */
+    footer.modern-footer .footer-column:nth-child(1) {
+        order: 1 !important;
+        text-align: center !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    footer.modern-footer .footer-column:nth-child(1) .footer-column-title {
+        font-size: 1.3rem !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 3px !important;
+        text-align: center !important;
+    }
+
+    footer.modern-footer .footer-column:nth-child(1) .footer-brand-text {
+        font-size: 0.9rem !important;
+        margin: 8px 0 15px 0 !important;
+        text-align: center !important;
+    }
+
+    /* Ocultar descripción larga */
+    footer.modern-footer .footer-column:nth-child(1) .footer-description {
+        display: none !important;
+    }
+
+    /* Redes sociales */
+    footer.modern-footer .footer-social-icons {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 20px !important;
+        margin-top: 15px !important;
+    }
+
+    footer.modern-footer .footer-social-link {
+        width: 44px !important;
+        height: 44px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    footer.modern-footer .footer-social-link svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* ===== SECCIÓN 2: CONTACTO (orden 2) ===== */
+    footer.modern-footer .footer-column:nth-child(3) {
+        order: 2 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    /* Ocultar título de Contacto */
+    footer.modern-footer .footer-column:nth-child(3) .footer-column-title {
+        display: none !important;
+    }
+
+    footer.modern-footer .footer-contact-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    footer.modern-footer .footer-contact-list li {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    footer.modern-footer .footer-contact-list svg {
+        width: 18px !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
+    }
+
+    footer.modern-footer .footer-contact-list a {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+    }
+
+    /* ===== CONTENEDOR DE NAVEGACIÓN E INFORMACIÓN (lado a lado) ===== */
+    /* Wrapper especial para contener columnas 2 y 4 lado a lado */
+    footer.modern-footer .footer-column:nth-child(2),
+    footer.modern-footer .footer-column:nth-child(4) {
+        width: 50% !important;
+        flex: 0 0 50% !important;
+        box-sizing: border-box !important;
+        border-bottom: none !important;
+    }
+
+    /* ===== SECCIÓN 3: NAVEGACIÓN (orden 3, izquierda) ===== */
+    footer.modern-footer .footer-column:nth-child(2) {
+        order: 3 !important;
+        padding: 20px 10px 20px 15px !important;
+        border-right: 1px solid rgba(200, 165, 216, 0.2) !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    footer.modern-footer .footer-column:nth-child(2) .footer-column-title {
+        font-size: 0.9rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
+        display: block !important;
+        cursor: default !important;
+    }
+
+    /* Navegación en columna única ahora */
+    footer.modern-footer .footer-links {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    footer.modern-footer .footer-links li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    footer.modern-footer .footer-links a {
+        font-size: 0.8rem !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+    }
+
+    /* ===== SECCIÓN 4: INFORMACIÓN (orden 3 también para que queden en la misma fila) ===== */
+    footer.modern-footer .footer-column:nth-child(4) {
+        order: 3 !important;
+        padding: 20px 15px 20px 10px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    footer.modern-footer .footer-column:nth-child(4) .footer-column-title {
+        font-size: 0.9rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
+        display: block !important;
+        cursor: default !important;
+    }
+
+    footer.modern-footer .footer-info-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    footer.modern-footer .footer-info-list li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    footer.modern-footer .footer-info-list li strong {
+        font-size: 0.8rem !important;
+        display: block !important;
+        margin-bottom: 4px !important;
+        color: #F9B58C !important;
+    }
+
+    footer.modern-footer .footer-info-list li span {
+        font-size: 0.7rem !important;
+        display: block !important;
+        line-height: 1.3 !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+
+    /* ===== FOOTER BOTTOM ===== */
+    footer.modern-footer .footer-bottom {
+        padding: 15px !important;
+        font-size: 0.7rem !important;
+        background: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    footer.modern-footer .footer-bottom-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        text-align: center !important;
+        align-items: center !important;
+    }
+
+    footer.modern-footer .footer-bottom-content p {
+        margin: 0 !important;
+        font-size: 0.7rem !important;
+        opacity: 0.8 !important;
+    }
+
+    /* Remover cualquier pseudo-elemento de acordeón */
+    footer.modern-footer .footer-column-title::after {
+        display: none !important;
+        content: none !important;
+    }
+}

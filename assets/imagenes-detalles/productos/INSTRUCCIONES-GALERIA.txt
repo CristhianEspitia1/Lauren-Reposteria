@@ -1,0 +1,58 @@
+═══════════════════════════════════════════════════════════════
+   INSTRUCCIONES - GALERÍA DE PRODUCTOS DETALLES
+═══════════════════════════════════════════════════════════════
+
+📁 ESTRUCTURA DE CARPETAS CREADA:
+└── assets/
+    └── imagenes-detalles/
+        └── productos/
+            ├── osos/           ← Osos de Chocolate
+            ├── clasicos/       ← Detalles Clásicos
+            ├── mix/            ← Detalles Mix
+            └── golden/         ← Detalles Golden
+
+
+📸 IMÁGENES REQUERIDAS (Formato: nombre_archivo.jpg/png):
+
+🧸 OSOS DE CHOCOLATE (carpeta: osos/)
+   - oso-pequeno.jpg       → Oso Pequeño ($27.000)
+   - oso-grande.jpg        → Oso Grande ($49.000)
+   - oso-fresas.jpg        → Oso con Fresas ($59.000)
+
+🎁 DETALLES CLÁSICOS (carpeta: clasicos/)
+   - detalle-brownie.jpg   → Detalle Brownie ($60.000)
+   - detalle-hbd.jpg       → Detalle HBD ($92.000)
+   - detalle-margarita.jpg → Detalle Margarita ($65.000)
+   - detalle-torta.jpg     → Detalle con Torta ($105.000)
+
+🎁 DETALLES MIX (carpeta: mix/)
+   - mix-opcion1.jpg       → Detalle Mix Opción 1 ($50.000)
+   - mix-opcion2.jpg       → Detalle Mix Opción 2 ($56.000)
+
+✨ DETALLES GOLDEN (carpeta: golden/)
+   - golden-1.jpg          → Detalle Golden 1 ($83.000)
+   - golden-2.jpg          → Detalle Golden 2 ($86.000)
+   - golden-3.jpg          → Detalle Golden 3 ($88.000 / $94.000)
+
+
+⚙️ ESPECIFICACIONES TÉCNICAS:
+   - Formato: JPG o PNG
+   - Orientación: CUADRADA (1:1 ratio)
+   - Tamaño recomendado: 800x800px o 1000x1000px
+   - Calidad: Alta resolución
+   - Fondo: Limpio y profesional
+
+
+💡 CONSEJOS:
+   - Usa fotos con buena iluminación
+   - Procura que todas las imágenes tengan un estilo similar
+   - Las imágenes cuadradas se verán mejor en la galería
+   - Si tienes imágenes rectangulares, recórtalas a cuadrado
+
+
+⚠️ IMPORTANTE:
+   Cuando termines de agregar las imágenes, avísame y yo
+   actualizaré el HTML con las rutas correctas.
+
+
+═══════════════════════════════════════════════════════════════

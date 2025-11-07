@@ -1,0 +1,34 @@
+/* ========================================
+   OCULTAR MODAL DE PRODUCTO COMPLETAMENTE
+   Aplica a todas las resoluciones
+   ======================================== */
+
+/* Ocultar modal de producto en todas las páginas */
+.product-modal-overlay,
+#productModalOverlay {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Ocultar incluso cuando esté activo */
+.product-modal-overlay.active,
+#productModalOverlay.active {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Ocultar contenedor del modal */
+.product-modal-container,
+#productModalContainer {
+    display: none !important;
+}
+
+/* Ocultar botón de WhatsApp del modal */
+.product-modal-cta-btn,
+#productModalCTA {
+    display: none !important;
+}
