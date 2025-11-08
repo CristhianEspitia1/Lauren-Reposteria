@@ -246,7 +246,6 @@ document.querySelectorAll('.fillings-content, .team-content').forEach(content =>
 // Variable global para pausar carruseles durante scroll
 let allCarousels = [];
 let scrollPauseTimer;
-let isScrolling = false;
 
 function createCarousel(config) {
     const {
