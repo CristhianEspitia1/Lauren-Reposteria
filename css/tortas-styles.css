@@ -1820,7 +1820,7 @@ html {
     margin-top: 80px;
     position: relative;
     width: 100%;
-    height: 840px; /* Aumentado 20% desde 700px */
+    height: 924px; /* Aumentado 10% adicional desde 840px (total: 32% desde 700px) */
     overflow: hidden;
     will-change: transform;
 }
@@ -2708,7 +2708,7 @@ html {
 
 @media (max-width: 768px) {
     .hero-main-carousel {
-        height: 750px; /* Aumentado 20% desde 625px */
+        height: 900px; /* Aumentado 20% adicional desde 750px (total: 44% desde 625px) */
         margin-top: 45px;
     }
 
