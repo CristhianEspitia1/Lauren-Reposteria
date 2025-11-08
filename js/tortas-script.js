@@ -5,19 +5,17 @@
 
 // Animación de aparición al hacer scroll
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.05,
+    rootMargin: '0px 0px 100px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            // Solo animar si no estamos en scroll activo
-            if (!isScrolling) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-            // Dejar de observar una vez que se hizo visible para no causar repaints constantes
+            // Siempre mostrar el elemento cuando sea visible
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            // Dejar de observar una vez que se hizo visible
             observer.unobserve(entry.target);
         }
     });
@@ -85,12 +83,15 @@ document.querySelectorAll('.intro-step').forEach((step, index) => {
 // });
 
 // Observar header de inspiración
+// DESHABILITADO: Causaba conflictos con el carrusel infinito
+/*
 document.querySelectorAll('.inspiration-header').forEach(header => {
     header.style.opacity = '0';
     header.style.transform = 'translateY(30px)';
     header.style.transition = 'all 0.8s ease-out';
     observer.observe(header);
 });
+*/
 
 // Observar cards de contacto
 document.querySelectorAll('.contact-card-modern').forEach((card, index) => {
@@ -130,21 +131,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// DESHABILITADO COMPLETAMENTE: Este scroll listener causaba parpadeo en toda la página
+// El problema era la manipulación constante de body.is-scrolling y el parallax en cada frame
+/*
 // Efecto parallax suave en el hero - OPTIMIZADO
 let ticking = false;
 let bodyHasScrollClass = false;
+
+// CACHEAR elementos fuera del scroll listener para evitar querySelector en cada frame
+const heroCarousel = document.querySelector('.hero-carousel') || document.querySelector('.hero-main-carousel');
+const heroHeight = heroCarousel ? heroCarousel.offsetHeight : 0;
 
 window.addEventListener('scroll', () => {
     if (!ticking) {
         window.requestAnimationFrame(() => {
             const scrolled = window.pageYOffset;
 
-            // Buscar cualquier hero (hero-carousel o hero-main-carousel)
-            const heroCarousel = document.querySelector('.hero-carousel') || document.querySelector('.hero-main-carousel');
-
-            if (heroCarousel && scrolled < heroCarousel.offsetHeight) {
+            // Solo aplicar parallax si existe el hero y estamos en su área
+            if (heroCarousel && scrolled < heroHeight) {
                 const parallaxSpeed = 0.3;
-                // CRÍTICO: Usar translate3d para acelación GPU
+                // CRÍTICO: Usar translate3d para aceleración GPU
                 heroCarousel.style.transform = `translate3d(0, ${scrolled * parallaxSpeed}px, 0)`;
             }
 
@@ -160,17 +166,23 @@ window.addEventListener('scroll', () => {
                 document.body.classList.remove('is-scrolling');
                 bodyHasScrollClass = false;
                 isScrolling = false;
-                // Reanudar carruseles
+                // Reanudar carruseles (excepto el infinito que nunca se pausa)
                 allCarousels.forEach(c => {
                     if (c.startAutoplay) c.startAutoplay();
                 });
-            }, 150);
+            }, 300); // Aumentado de 150ms a 300ms para reducir parpadeo
 
             ticking = false;
         });
         ticking = true;
     }
 }, { passive: true });
+*/
+
+// Variables para compatibilidad con el resto del código
+let ticking = false;
+let bodyHasScrollClass = false;
+let isScrolling = false;
 
 // Animación del título al cargar
 window.addEventListener('load', () => {
@@ -367,24 +379,64 @@ const rellenosCarousel = createCarousel({
 });
 
 // ========================================
-// CARRUSEL INFINITO - Scroll Automático
+// CARRUSEL INFINITO - DESHABILITADO
 // ========================================
-document.addEventListener('DOMContentLoaded', () => {
+// DESHABILITADO: La clonación dinámica causaba parpadeos
+// Ahora las imágenes se duplican manualmente en el HTML
+// Esto elimina completamente los problemas de:
+// - Clonación que dispara eventos de load
+// - Cambios en el DOM durante scroll
+// - IntersectionObserver observando elementos clonados
+/*
+(function initInfiniteCarousel() {
     const track = document.querySelector('.infinite-carousel-track');
+    const wrapper = document.querySelector('.infinite-carousel-wrapper');
 
-    if (track) {
+    if (track && wrapper) {
+        // CRÍTICO: Pausar la animación temporalmente durante la clonación
+        const originalAnimation = track.style.animation;
+        track.style.animation = 'none';
+
+        // Forzar reflow para asegurar que la animación se pause
+        void track.offsetHeight;
+
+        // CRÍTICO: Fijar el height del wrapper para prevenir layout shift
+        const wrapperHeight = wrapper.offsetHeight;
+        wrapper.style.minHeight = wrapperHeight + 'px';
+
         // Clonar todos los items para crear el efecto infinito
         const items = Array.from(track.children);
+
+        // IMPORTANTE: Usar DocumentFragment para evitar reflows múltiples
+        const fragment = document.createDocumentFragment();
 
         // Duplicar los items para el loop infinito
         items.forEach(item => {
             const clone = item.cloneNode(true);
-            track.appendChild(clone);
+            // Marcar clones para identificarlos después
+            clone.setAttribute('data-cloned', 'true');
+            fragment.appendChild(clone);
+        });
+
+        // Agregar todos los clones de una sola vez
+        track.appendChild(fragment);
+
+        // Restaurar la animación después de un pequeño delay
+        requestAnimationFrame(() => {
+            track.style.animation = originalAnimation || '';
         });
 
         console.log('%c✨ Carrusel Infinito Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
+    } else {
+        // Si no está listo, intentar de nuevo cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initInfiniteCarousel);
+        }
     }
-});
+})();
+*/
+
+console.log('%c✨ Carrusel Infinito (sin clonación JS) Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 
 // ========================================
 // LIGHTBOX - SOLO Carrusel Infinito (NO vintage, NO sencillas)
@@ -400,8 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentImageIndex = 0;
     let allImagesSrc = [];
 
-    // Recopilar SOLO las imágenes del carrusel infinito
+    // Recopilar SOLO las imágenes ORIGINALES del carrusel infinito (NO clonadas)
     carouselItems.forEach((item, index) => {
+        // Ignorar elementos clonados
+        if (item.hasAttribute('data-cloned')) {
+            return;
+        }
+
         const img = item.querySelector('.infinite-carousel-img');
         if (img) {
             allImagesSrc.push(img.src);
@@ -1212,6 +1269,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // CRÍTICO: Ignorar imágenes del carrusel infinito para evitar parpadeos
+        if (img.classList.contains('infinite-carousel-img')) {
+            return;
+        }
+
         img.addEventListener('error', function() {
             console.error('❌ Error cargando imagen:', this.src);
 
@@ -1226,13 +1288,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // DESHABILITADO: Los console.log en load causan ralentización
+        /*
         img.addEventListener('load', function() {
             if (this.complete && this.naturalHeight !== 0) {
                 console.log('✅ Imagen cargada correctamente:', this.src);
             }
         });
+        */
     });
 
-    const validImages = Array.from(images).filter(img => img.hasAttribute('src') && img.getAttribute('src') !== '');
-    console.log(`🖼️ Monitoreando ${validImages.length} imágenes para detectar errores`);
+    const validImages = Array.from(images).filter(img =>
+        img.hasAttribute('src') &&
+        img.getAttribute('src') !== '' &&
+        !img.classList.contains('infinite-carousel-img')
+    );
+    console.log(`🖼️ Monitoreando ${validImages.length} imágenes para detectar errores (excluyendo carrusel infinito)`);
 });

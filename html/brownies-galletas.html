@@ -100,11 +100,11 @@
         }
 
         /* Compactar sección de información importante */
-        .extras-section {
+        .important-info-section {
             padding: 30px 20px !important;
         }
 
-        .extras-header {
+        .info-header {
             margin-bottom: 1rem !important;
         }
 
@@ -188,13 +188,56 @@
                 flex: none !important;
             }
 
+            /* Tarjetas de información en grid 2x2 */
             .info-cards-grid {
-                flex-direction: column !important;
-                align-items: center !important;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: auto auto !important;
+                gap: 0.8rem !important;
+                padding: 0 0.5rem !important;
+                margin: 1.5rem auto !important;
             }
 
             .info-card-modern {
+                flex: none !important;
                 max-width: 100% !important;
+                min-width: 0 !important;
+                padding: 0.8rem 0.5rem !important;
+            }
+
+            .info-card-icon {
+                margin: 0 auto 0.5rem !important;
+            }
+
+            .icon-circle {
+                width: 45px !important;
+                height: 45px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 auto !important;
+            }
+
+            .icon-img {
+                width: 32px !important;
+                height: 32px !important;
+                object-fit: contain !important;
+            }
+
+            .info-card-title {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.4rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .info-card-text {
+                font-size: 0.6rem !important;
+                line-height: 1.3 !important;
+                padding: 0 0.3rem !important;
+            }
+
+            .info-card-content {
+                padding: 0 !important;
             }
         }
 
@@ -1169,9 +1212,9 @@
     </section>
 
     <!-- SECCIÓN: Información Adicional -->
-    <section class="extras-section">
+    <section class="important-info-section">
         <div class="container">
-            <div class="extras-header">
+            <div class="info-header">
                 <div class="section-header-decorated">
                     <div class="section-decoration-left"></div>
                     <div class="section-title-wrapper">
@@ -1179,10 +1222,10 @@
                     </div>
                     <div class="section-decoration-right"></div>
                 </div>
-                <p class="section-subtitle-elegant" style="text-align: center; margin-top: 1rem;">Todo lo que necesitas saber sobre nuestros brownies y galletas</p>
+                <p class="section-subtitle-elegant" style="text-align: center;">Para disfrutar al máximo cada bocado</p>
             </div>
 
-            <div class="info-cards-grid" style="margin-top: 3rem;">
+            <div class="info-cards-grid">
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
@@ -1221,6 +1264,19 @@
                     </div>
                     <div class="info-card-decoration"></div>
                 </div>
+
+                <div class="info-card-modern">
+                    <div class="info-card-icon">
+                        <div class="icon-circle">
+                            <img src="../assets/logos/Detalles adicionales/diseños.png" alt="Toppings y Sabores" class="icon-img">
+                        </div>
+                    </div>
+                    <div class="info-card-content">
+                        <h3 class="info-card-title">Toppings y Sabores</h3>
+                        <p class="info-card-text">Personaliza tus brownies con toppings como Nutella, Arequipe, M&M, Hershey's Blanca u Oreo. Las galletas vienen en sabores únicos: Chips, Red Velvet, Cocoa, Pistachos, Chocolate Blanco y Panelita Copelia.</p>
+                    </div>
+                    <div class="info-card-decoration"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -1232,8 +1288,9 @@
                 <div class="footer-grid">
                     <!-- Columna 1: Sobre Lauren -->
                     <div class="footer-column">
-                        <h4 class="footer-column-title">LAUREN</h4>
-                        <p class="footer-description">Repostería artesanal hecha con amor. Endulzando momentos especiales desde el corazón de Medellín.</p>
+                        <h3 class="footer-column-title">LAUREN</h3>
+                        <p class="footer-brand-text">Bocado de Alegría</p>
+                        <p class="footer-description">Creando momentos dulces y memorables desde 2022. Repostería artesanal con amor en cada detalle.</p>
                         <div class="footer-social-icons">
                             <a href="https://wa.me/573104442796" class="footer-social-link" target="_blank" aria-label="WhatsApp">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1260,9 +1317,9 @@
                         </div>
                     </div>
 
-                    <!-- Columna 2: Enlaces Rápidos -->
+                    <!-- Columna 2: Navegación Rápida -->
                     <div class="footer-column">
-                        <h4 class="footer-column-title">NAVEGACIÓN</h4>
+                        <h3 class="footer-column-title">Navegación</h3>
                         <ul class="footer-links">
                             <li><a href="inicio.html">Inicio</a></li>
                             <li><a href="tortas.html">Tortas</a></li>
@@ -1272,42 +1329,50 @@
                         </ul>
                     </div>
 
-                    <!-- Columna 3: Productos -->
+                    <!-- Columna 3: Contacto -->
                     <div class="footer-column">
-                        <h4 class="footer-column-title">NUESTROS PRODUCTOS</h4>
-                        <ul class="footer-links">
-                            <li>Tortas Vintage</li>
-                            <li>Tortas Sencillas</li>
-                            <li>Alfajores de Maicena</li>
-                            <li>Brownies Premium</li>
-                            <li>Galletas Artesanales</li>
-                            <li>Detalles Personalizados</li>
-                        </ul>
-                    </div>
-
-                    <!-- Columna 4: Contacto -->
-                    <div class="footer-column">
-                        <h4 class="footer-column-title">CONTACTO</h4>
+                        <h3 class="footer-column-title">Contacto</h3>
                         <ul class="footer-contact-list">
                             <li>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                    <circle cx="12" cy="10" r="3"/>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z" fill="currentColor"/>
+                                    <path d="M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2zm3.422 5.443a1.001 1.001 0 00-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 00.043-1.391L6.859 3.513a1.001 1.001 0 00-1.391-.087l-2.17 1.861a1 1 0 00-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 00.648-.291l1.86-2.171a1 1 0 00-.086-1.391l-4.064-3.696z" fill="currentColor"/>
+                                </svg>
+                                <a href="https://wa.me/573104442796" target="_blank">310 444 27 96</a>
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 6.223-8-6.222V6h16zM4 18V9.044l7.386 5.745a.994.994 0 001.228 0L20 9.044 20.002 18H4z" fill="currentColor"/>
+                                </svg>
+                                <a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
                                 </svg>
                                 <span>Medellín, Colombia</span>
                             </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Información Útil -->
+                    <div class="footer-column">
+                        <h3 class="footer-column-title">Información</h3>
+                        <ul class="footer-info-list">
                             <li>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                </svg>
-                                <span>302 368 7321</span>
+                                <strong>Horario de Atención:</strong>
+                                <span>Lunes - Sábado</span>
+                                <span>9:00 AM - 6:00 PM</span>
                             </li>
                             <li>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12 6 12 12 16 14"/>
-                                </svg>
-                                <span>Pedidos con 2 días de anticipación</span>
+                                <strong>Formas de Pago:</strong>
+                                <span>Transferencias bancarias</span>
+                                <span>Efectivo</span>
+                            </li>
+                            <li>
+                                <strong>Pedidos:</strong>
+                                <span>Mínimo 1 día de anticipación</span>
+                                <span>Consultar disponibilidad</span>
                             </li>
                         </ul>
                     </div>
@@ -1315,12 +1380,12 @@
             </div>
         </div>
 
-        <!-- Footer Bottom -->
+        <!-- Copyright Bar -->
         <div class="footer-bottom">
             <div class="container">
                 <div class="footer-bottom-content">
-                    <p>&copy; 2025 Lauren Repostería. Todos los derechos reservados.</p>
-                    <p>Hecho con 💜 en Medellín, Colombia</p>
+                    <p>&copy; 2024 Lauren Repostería. Todos los derechos reservados.</p>
+                    <p class="footer-made-with">Hecho con amor en Medellín, Colombia</p>
                 </div>
             </div>
         </div>
@@ -2086,6 +2151,120 @@
                 }
             });
         })();
+    </script>
+
+    <!-- Script para Header Minimalista: Menú Hamburguesa y Contacto -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Inicializando header...');
+
+            // ========================================
+            // MENÚ HAMBURGUESA
+            // ========================================
+            const menuToggle = document.querySelector('.menu-toggle-minimal');
+            const mainNav = document.getElementById('minimalNav');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            console.log('Menu Toggle:', menuToggle);
+            console.log('Main Nav:', mainNav);
+            console.log('Nav Items:', navItems.length);
+
+            if (menuToggle && mainNav) {
+                console.log('✅ Elementos del menú encontrados');
+
+                // Toggle menu al hacer click en el botón
+                menuToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                    console.log('Click en hamburguesa. Expandido:', isExpanded);
+
+                    menuToggle.setAttribute('aria-expanded', !isExpanded);
+                    menuToggle.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+
+                    console.log('Nav classes:', mainNav.className);
+
+                    // Prevenir scroll cuando el menú está abierto
+                    if (!isExpanded) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Cerrar menú al hacer click en un enlace
+                navItems.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mainNav.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    });
+                });
+
+                // Cerrar menú con tecla ESC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+            } else {
+                console.error('❌ No se encontraron los elementos del menú');
+            }
+
+            // ========================================
+            // BOTÓN DE CONTACTO DROPDOWN
+            // ========================================
+            const contactBtn = document.querySelector('.contact-dropdown-btn');
+            const contactMenu = document.querySelector('.contact-dropdown-menu');
+            const contactDropdown = document.querySelector('.contact-dropdown');
+
+            console.log('Contact Btn:', contactBtn);
+            console.log('Contact Menu:', contactMenu);
+
+            if (contactBtn && contactMenu) {
+                console.log('✅ Elementos de contacto encontrados');
+
+                // Toggle dropdown al hacer click
+                contactBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
+                    console.log('Click en contacto. Expandido:', isExpanded);
+
+                    contactBtn.setAttribute('aria-expanded', !isExpanded);
+                    contactMenu.classList.toggle('active');
+
+                    console.log('Contact menu classes:', contactMenu.className);
+                });
+
+                // Cerrar dropdown al hacer click fuera
+                document.addEventListener('click', (e) => {
+                    if (!contactDropdown.contains(e.target)) {
+                        contactMenu.classList.remove('active');
+                        contactBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Cerrar dropdown con tecla ESC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && contactMenu.classList.contains('active')) {
+                        contactMenu.classList.remove('active');
+                        contactBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            } else {
+                console.error('❌ No se encontraron los elementos de contacto');
+            }
+
+            console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
+        });
     </script>
 </body>
 </html>

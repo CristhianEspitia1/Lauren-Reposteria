@@ -930,43 +930,26 @@
             </div>
             <p class="section-subtitle-elegant-center">Alfajores de maicena rellenos de arequipe</p>
 
-            <!-- Galería de cajas con estilo de sabores -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; margin-top: 3rem;">
-                <!-- Caja x6 -->
-                <div class="alfajor-caja-wrapper">
-                    <div class="alfajor-caja-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores x6.png" alt="Caja x6 Alfajores" class="alfajor-caja-img" id="cajaX6Img" style="cursor: pointer;">
+            <!-- Galería estilo mosaico vintage -->
+            <div class="cajas-carousel-wrapper">
+                <div class="cajas-carousel-group active">
+                    <div class="cajas-gallery-item">
+                        <img src="../assets/imagenes-alfajores/Alfajores x6.png" alt="Caja x6 Alfajores" class="cajas-gallery-img">
                     </div>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <button class="pricing-btn-integrated" id="cajaX6Btn">
-                            $22.000
-                        </button>
+                    <div class="cajas-gallery-item">
+                        <img src="../assets/imagenes-alfajores/Alfajores vaso mini.jpg" alt="Vaso de Mini Alfajores" class="cajas-gallery-img">
+                    </div>
+                    <div class="cajas-gallery-item">
+                        <img src="../assets/imagenes-alfajores/Alfajores x12.png" alt="Caja x12 Alfajores" class="cajas-gallery-img">
                     </div>
                 </div>
+            </div>
 
-                <!-- Vaso de minis -->
-                <div class="alfajor-caja-wrapper">
-                    <div class="alfajor-caja-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores vaso mini.jpg" alt="Vaso de Mini Alfajores" class="alfajor-caja-img" id="vasoMinisImg" style="cursor: pointer;">
-                    </div>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <button class="pricing-btn-integrated" id="vasoMinisBtn">
-                            $27.000
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Caja x12 -->
-                <div class="alfajor-caja-wrapper">
-                    <div class="alfajor-caja-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores x12.png" alt="Caja x12 Alfajores" class="alfajor-caja-img" id="cajaX12Img" style="cursor: pointer;">
-                    </div>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <button class="pricing-btn-integrated" id="cajaX12Btn">
-                            $37.000
-                        </button>
-                    </div>
-                </div>
+            <!-- Botón Ver Precios centrado -->
+            <div style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; width: 100%;">
+                <button class="pricing-btn-integrated" id="cajasPricingBtn">
+                    Ver Precios
+                </button>
             </div>
         </div>
     </section>
@@ -1466,83 +1449,23 @@
                 });
             }
 
-            // Conectar botón de Caja x6
-            const cajaX6Btn = document.getElementById('cajaX6Btn');
-            if (cajaX6Btn) {
-                cajaX6Btn.addEventListener('click', (e) => {
+            // Conectar IMÁGENES del mosaico de cajas al modal
+            const cajasGalleryItems = document.querySelectorAll('.cajas-gallery-item');
+            cajasGalleryItems.forEach((item, index) => {
+                item.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
 
                     if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x6', detallesProductsData);
+                        // Mapear índice a producto
+                        const productMap = ['caja-x6', 'vaso-minis', 'caja-x12'];
+                        const productId = productMap[index];
+                        if (productId) {
+                            openQuickView(productId, detallesProductsData);
+                        }
                     }
                 });
-            }
-
-            // Conectar botón de Vaso de Minis
-            const vasoMinisBtn = document.getElementById('vasoMinisBtn');
-            if (vasoMinisBtn) {
-                vasoMinisBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('vaso-minis', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Caja x12
-            const cajaX12Btn = document.getElementById('cajaX12Btn');
-            if (cajaX12Btn) {
-                cajaX12Btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x12', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Caja x6
-            const cajaX6Img = document.getElementById('cajaX6Img');
-            if (cajaX6Img) {
-                cajaX6Img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x6', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Vaso de Minis
-            const vasoMinisImg = document.getElementById('vasoMinisImg');
-            if (vasoMinisImg) {
-                vasoMinisImg.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('vaso-minis', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Caja x12
-            const cajaX12Img = document.getElementById('cajaX12Img');
-            if (cajaX12Img) {
-                cajaX12Img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x12', detallesProductsData);
-                    }
-                });
-            }
+            });
 
             console.log('%c✅ Botones e Imágenes "Ver Precios" de Alfajores conectados al Quick View Modal', 'color: #4CAF50; font-weight: bold;');
         });

@@ -15,16 +15,23 @@
 
         console.log('✅ Botón scroll-to-top encontrado, inicializando...');
 
-        // Mostrar/ocultar botón según scroll
+        // Mostrar/ocultar botón según scroll - OPTIMIZADO con throttle
+        let scrollTicking = false;
         window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                scrollToTopBtn.style.opacity = '1';
-                scrollToTopBtn.style.visibility = 'visible';
-            } else {
-                scrollToTopBtn.style.opacity = '0';
-                scrollToTopBtn.style.visibility = 'hidden';
+            if (!scrollTicking) {
+                window.requestAnimationFrame(function() {
+                    if (window.pageYOffset > 300) {
+                        scrollToTopBtn.style.opacity = '1';
+                        scrollToTopBtn.style.visibility = 'visible';
+                    } else {
+                        scrollToTopBtn.style.opacity = '0';
+                        scrollToTopBtn.style.visibility = 'hidden';
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
             }
-        });
+        }, { passive: true });
 
         // Scroll suave al hacer click
         scrollToTopBtn.addEventListener('click', function() {

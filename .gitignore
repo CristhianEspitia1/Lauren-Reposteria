@@ -1,0 +1,24 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Backups automáticos
+*_backup_*
+*.backup
+
+# Node modules (si usas npm en el futuro)
+node_modules/
+
+# Logs
+*.log
+
+# Carpetas temporales
+temp/
+tmp/
