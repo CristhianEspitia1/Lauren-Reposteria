@@ -912,57 +912,59 @@ if (scrollToTopBtn) {
 // ========================================
 // MENÚ DESPLEGABLE DE CONTACTO
 // ========================================
-const contactDropdownBtn = document.querySelector('.contact-dropdown-btn');
-const contactDropdownMenu = document.querySelector('.contact-dropdown-menu');
-const dropdownArrow = document.querySelector('.dropdown-arrow');
+document.addEventListener('DOMContentLoaded', () => {
+    const contactDropdownBtn = document.querySelector('.contact-dropdown-btn');
+    const contactDropdownMenu = document.querySelector('.contact-dropdown-menu');
+    const dropdownArrow = document.querySelector('.dropdown-arrow');
 
-if (contactDropdownBtn && contactDropdownMenu) {
-    // Resetear estado del dropdown al cargar la página
-    contactDropdownBtn.setAttribute('aria-expanded', 'false');
-    contactDropdownMenu.classList.remove('active');
-    if (dropdownArrow) {
-        dropdownArrow.style.transform = 'rotate(0deg)';
-    }
-
-    // Alternar dropdown al hacer click en el botón
-    contactDropdownBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isExpanded = contactDropdownBtn.getAttribute('aria-expanded') === 'true';
-        contactDropdownBtn.setAttribute('aria-expanded', !isExpanded);
-        contactDropdownMenu.classList.toggle('active');
-
-        // Rotar la flecha
+    if (contactDropdownBtn && contactDropdownMenu) {
+        // Resetear estado del dropdown al cargar la página
+        contactDropdownBtn.setAttribute('aria-expanded', 'false');
+        contactDropdownMenu.classList.remove('active');
         if (dropdownArrow) {
-            dropdownArrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+            dropdownArrow.style.transform = 'rotate(0deg)';
         }
-    });
 
-    // Cerrar dropdown al hacer click fuera
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.contact-dropdown')) {
-            contactDropdownBtn.setAttribute('aria-expanded', 'false');
-            contactDropdownMenu.classList.remove('active');
+        // Alternar dropdown al hacer click en el botón
+        contactDropdownBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isExpanded = contactDropdownBtn.getAttribute('aria-expanded') === 'true';
+            contactDropdownBtn.setAttribute('aria-expanded', !isExpanded);
+            contactDropdownMenu.classList.toggle('active');
+
+            // Rotar la flecha
             if (dropdownArrow) {
-                dropdownArrow.style.transform = 'rotate(0deg)';
+                dropdownArrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
             }
-        }
-    });
+        });
 
-    // Cerrar dropdown con tecla ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && contactDropdownMenu.classList.contains('active')) {
-            contactDropdownBtn.setAttribute('aria-expanded', 'false');
-            contactDropdownMenu.classList.remove('active');
-            if (dropdownArrow) {
-                dropdownArrow.style.transform = 'rotate(0deg)';
+        // Cerrar dropdown al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.contact-dropdown')) {
+                contactDropdownBtn.setAttribute('aria-expanded', 'false');
+                contactDropdownMenu.classList.remove('active');
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
             }
-        }
-    });
+        });
 
-    console.log('%c📞 Menú Desplegable de Contacto Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
-}
+        // Cerrar dropdown con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && contactDropdownMenu.classList.contains('active')) {
+                contactDropdownBtn.setAttribute('aria-expanded', 'false');
+                contactDropdownMenu.classList.remove('active');
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+
+        console.log('%c📞 Menú Desplegable de Contacto Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
+    }
+});
 
 // ========================================
 // MODAL PRECIOS TORTAS DE ALFAJOR
