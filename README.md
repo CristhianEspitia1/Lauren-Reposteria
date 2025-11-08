@@ -1,43 +1,135 @@
-  # 🎂 Lauren Repostería - Sitio Web Oficial
+# 🎂 Lauren Repostería - Sitio Web Oficial
 
-  ![Lauren Repostería](assets/logos/LOGOS%20LAUREN%20PNG-55.png)
+![Lauren Repostería](assets/logos/LOGOS%20LAUREN%20PNG-55.png)
 
-  **Bocado de Alegría desde 2022**
+**Bocado de Alegría desde 2022**
 
-  Sitio web oficial de Lauren Repostería - Repostería artesanal en Medellín, Colombia.
+Sitio web oficial de Lauren Repostería - Repostería artesanal en Medellín, Colombia.
 
-  ## 📖 Descripción
+---
 
-  Página web moderna para Lauren Repostería con catálogo de productos, sistema de pedidos por WhatsApp y diseño
-  responsive.
+## 🚀 INICIO RÁPIDO
 
-  ### Productos:
-  - 🎂 Tortas personalizadas
-  - 🍪 Alfajores artesanales
-  - 🍫 Brownies
-  - 🍪 Galletas decoradas
-  - 🎁 Detalles especiales
+### Abrir el sitio localmente:
+1. Navega a: `C:\Users\crizc\OneDrive\Escritorio\LaurenReposteria\html\`
+2. Abre `tortas.html` en tu navegador
 
-  ## 🛠️ Tecnologías
+---
 
-  - HTML5
-  - CSS3
-  - JavaScript
+## 📁 Estructura del Proyecto
 
-  ## 📁 Estructura
+```
+LaurenReposteria/
+├── html/                    # Páginas HTML
+│   ├── tortas.html         # ⭐ Página principal de tortas
+│   ├── alfajores.html
+│   ├── brownies-galletas.html
+│   └── detalles.html
+├── css/                     # Hojas de estilo
+│   ├── tortas-styles.css   # ⭐ Estilos principales
+│   ├── header.css
+│   ├── mobile-fixes.css
+│   └── ...
+├── js/                      # Scripts JavaScript
+│   ├── tortas-script.js    # ⭐ Script principal
+│   ├── tortas-data.js
+│   ├── scroll-to-top.js
+│   └── ...
+├── assets/                  # Recursos multimedia
+│   ├── imagenes-tortas/
+│   ├── logos/
+│   └── ...
+├── backups/                 # Respaldos automáticos
+├── GUIA-MANTENIMIENTO.md   # 📖 Guía de mantenimiento
+├── crear-respaldo.bat      # 💾 Crear respaldo antes de cambios
+└── restaurar-respaldo.bat  # ↩️ Restaurar si algo falla
+```
 
-  LaurenReposteria/
-  ├── html/          # Páginas del sitio
-  ├── css/           # Estilos
-  ├── js/            # Scripts
-  ├── assets/        # Imágenes y videos
-  └── fonts/         # Fuentes personalizadas
+---
 
-  ## 🚀 Cómo usar
+## ⚠️ ANTES DE HACER CAMBIOS
 
-  1. Descarga o clona este repositorio
-  2. Abre `html/inicio.html` en tu navegador
-  3. ¡Listo!
+### Opción 1: Usar Git (Recomendado)
+```bash
+cd C:\Users\crizc\OneDrive\Escritorio\LaurenReposteria
+git add .
+git commit -m "Descripción de lo que vas a cambiar"
+```
+
+### Opción 2: Usar script de respaldo
+1. Doble click en `crear-respaldo.bat`
+2. Espera a que termine
+3. Haz tus cambios
+
+---
+
+## 🆘 SI ALGO SE ROMPE
+
+### Método 1: Restaurar con script
+1. Doble click en `restaurar-respaldo.bat`
+2. Confirma la restauración
+3. Abre el navegador y presiona **Ctrl+Shift+R**
+
+### Método 2: Revertir con Git
+```bash
+# Ver historial de cambios
+git log --oneline
+
+# Volver al commit anterior
+git reset --hard HEAD~1
+
+# O volver a la versión estable
+git reset --hard 148eecc
+```
+
+### Método 3: Copiar del respaldo principal
+Los archivos originales funcionales están en:
+```
+C:\LaurenReposteria\
+```
+
+---
+
+## 📖 DOCUMENTACIÓN IMPORTANTE
+
+- **[GUIA-MANTENIMIENTO.md](GUIA-MANTENIMIENTO.md)** - Reglas para el carrusel infinito
+- **Commits importantes:**
+  - `148eecc` - Versión estable con carrusel funcionando
+  - `cc1984a` - Guía de mantenimiento agregada
+  - `0d68b04` - Scripts de respaldo agregados
+
+---
+
+## 🎯 CARACTERÍSTICAS PRINCIPALES
+
+### Productos:
+- 🎂 Tortas personalizadas
+- 🍪 Alfajores artesanales
+- 🍫 Brownies
+- 🍪 Galletas decoradas
+- 🎁 Detalles especiales
+
+### Carrusel Infinito
+- ✅ 80 elementos HTML estáticos (40 + 40 duplicados)
+- ✅ Animación CSS pura sin JavaScript
+- ✅ Sin parpadeo durante el scroll
+- ✅ Hover effects suaves
+- ✅ Compatible con todos los navegadores
+
+### Optimizaciones
+- Scroll listener deshabilitado
+- Clonación JavaScript deshabilitada
+- CSS optimizado con transitions
+- Error handlers que excluyen el carrusel
+
+---
+
+## 🛠️ Tecnologías
+
+- HTML5
+- CSS3 (Animaciones, Flexbox, Grid)
+- JavaScript (Vanilla, sin frameworks)
+- Git (Control de versiones)
 
   ## 📞 Contacto
 
