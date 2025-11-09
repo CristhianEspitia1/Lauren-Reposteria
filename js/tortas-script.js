@@ -246,6 +246,7 @@ document.querySelectorAll('.fillings-content, .team-content').forEach(content =>
 // Variable global para pausar carruseles durante scroll
 let allCarousels = [];
 let scrollPauseTimer;
+let isScrolling = false;
 
 function createCarousel(config) {
     const {
@@ -911,7 +912,6 @@ if (scrollToTopBtn) {
 // ========================================
 // MENÚ DESPLEGABLE DE CONTACTO
 // ========================================
-document.addEventListener('DOMContentLoaded', () => {
 const contactDropdownBtn = document.querySelector('.contact-dropdown-btn');
 const contactDropdownMenu = document.querySelector('.contact-dropdown-menu');
 const dropdownArrow = document.querySelector('.dropdown-arrow');
@@ -963,7 +963,6 @@ if (contactDropdownBtn && contactDropdownMenu) {
 
     console.log('%c📞 Menú Desplegable de Contacto Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 }
-});
 
 // ========================================
 // MODAL PRECIOS TORTAS DE ALFAJOR

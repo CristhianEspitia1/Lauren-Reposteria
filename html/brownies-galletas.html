@@ -2156,8 +2156,6 @@
     <!-- Script para Header Minimalista: Menú Hamburguesa y Contacto -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 Inicializando header...');
-
             // ========================================
             // MENÚ HAMBURGUESA
             // ========================================
@@ -2165,26 +2163,13 @@
             const mainNav = document.getElementById('minimalNav');
             const navItems = document.querySelectorAll('.nav-item');
 
-            console.log('Menu Toggle:', menuToggle);
-            console.log('Main Nav:', mainNav);
-            console.log('Nav Items:', navItems.length);
-
             if (menuToggle && mainNav) {
-                console.log('✅ Elementos del menú encontrados');
-
                 // Toggle menu al hacer click en el botón
-                menuToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
+                menuToggle.addEventListener('click', () => {
                     const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                    console.log('Click en hamburguesa. Expandido:', isExpanded);
-
                     menuToggle.setAttribute('aria-expanded', !isExpanded);
                     menuToggle.classList.toggle('active');
                     mainNav.classList.toggle('active');
-
-                    console.log('Nav classes:', mainNav.className);
 
                     // Prevenir scroll cuando el menú está abierto
                     if (!isExpanded) {
@@ -2213,8 +2198,6 @@
                         document.body.style.overflow = '';
                     }
                 });
-            } else {
-                console.error('❌ No se encontraron los elementos del menú');
             }
 
             // ========================================
@@ -2224,24 +2207,13 @@
             const contactMenu = document.querySelector('.contact-dropdown-menu');
             const contactDropdown = document.querySelector('.contact-dropdown');
 
-            console.log('Contact Btn:', contactBtn);
-            console.log('Contact Menu:', contactMenu);
-
             if (contactBtn && contactMenu) {
-                console.log('✅ Elementos de contacto encontrados');
-
                 // Toggle dropdown al hacer click
                 contactBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
                     e.stopPropagation();
-
                     const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
-                    console.log('Click en contacto. Expandido:', isExpanded);
-
                     contactBtn.setAttribute('aria-expanded', !isExpanded);
                     contactMenu.classList.toggle('active');
-
-                    console.log('Contact menu classes:', contactMenu.className);
                 });
 
                 // Cerrar dropdown al hacer click fuera
@@ -2259,8 +2231,6 @@
                         contactBtn.setAttribute('aria-expanded', 'false');
                     }
                 });
-            } else {
-                console.error('❌ No se encontraron los elementos de contacto');
             }
 
             console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
