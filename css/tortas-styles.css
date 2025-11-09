@@ -1822,7 +1822,7 @@ html {
     width: 100%;
     height: 924px; /* Aumentado 10% adicional desde 840px (total: 32% desde 700px) */
     overflow: hidden;
-    will-change: transform;
+    /* will-change removido - el parallax está deshabilitado, no necesita GPU layer */
 }
 
 .carousel-wrapper {
@@ -1841,7 +1841,7 @@ html {
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    will-change: transform;
+    /* will-change removido - video estático sin transforms */
     background: #E8D4C8;
 }
 
