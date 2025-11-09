@@ -1820,9 +1820,9 @@ html {
     margin-top: 80px;
     position: relative;
     width: 100%;
-    height: 924px; /* Aumentado 10% adicional desde 840px (total: 32% desde 700px) */
+    height: 924px;
     overflow: hidden;
-    /* will-change removido - el parallax está deshabilitado, no necesita GPU layer */
+    will-change: transform;
 }
 
 .carousel-wrapper {
@@ -1841,7 +1841,7 @@ html {
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    /* will-change removido - video estático sin transforms */
+    will-change: transform;
     background: #E8D4C8;
 }
 
@@ -2637,7 +2637,7 @@ html {
 /* Responsive para las nuevas secciones */
 @media (max-width: 1024px) {
     .hero-main-carousel {
-        height: 720px; /* Aumentado 20% desde 600px */
+        height: 720px;
     }
 
     .hero-video-grid {
@@ -2708,7 +2708,7 @@ html {
 
 @media (max-width: 768px) {
     .hero-main-carousel {
-        height: 900px; /* Aumentado 20% adicional desde 750px (total: 44% desde 625px) */
+        height: 900px;
         margin-top: 45px;
     }
 
