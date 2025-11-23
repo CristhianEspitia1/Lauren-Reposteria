@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lauren - Alfajores | Tradicionales y Personalizados</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Alfajores de maicena rellenos de arequipe. Cajas, tortas de alfajor y diseños personalizados. Lauren Repostería - Medellín, Colombia.">
-    <meta name="keywords" content="alfajores, alfajores de maicena, tortas de alfajor, alfajores personalizados, Lauren, Medellín, Colombia">
+    <meta name="description"
+        content="Alfajores de maicena rellenos de arequipe. Cajas, tortas de alfajor y diseños personalizados. Lauren Repostería - Medellín, Colombia.">
+    <meta name="keywords"
+        content="alfajores, alfajores de maicena, tortas de alfajor, alfajores personalizados, Lauren, Medellín, Colombia">
     <meta name="author" content="Lauren Repostería">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Lauren - Alfajores Artesanales">
-    <meta property="og:description" content="Alfajores de maicena rellenos de arequipe. Tradicionales y personalizados.">
+    <meta property="og:description"
+        content="Alfajores de maicena rellenos de arequipe. Tradicionales y personalizados.">
     <meta property="og:type" content="website">
 
+    <!-- Google Fonts para Header de Lujo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/glass-nav.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/tortas-styles.css">
     <link rel="stylesheet" href="../css/quick-view-modal.css">
@@ -22,6 +34,169 @@
     <link rel="stylesheet" href="../css/footer-mobile.css">
     <link rel="stylesheet" href="../css/hide-modal.css">
     <style>
+        /* ===== HEADER DE LUJO - FLOATING PILL NAVIGATION ===== */
+        .luxury-nav-container {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 1100px;
+            animation: navSlideDown 0.8s ease-out;
+        }
+
+        .luxury-nav-pill {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 100px;
+            padding: 1.2rem 2.5rem;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.06),
+                0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .luxury-nav-pill:hover {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow:
+                0 12px 40px rgba(0, 0, 0, 0.08),
+                0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .luxury-nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        /* Nav Links */
+        .luxury-nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .luxury-nav-links.left {
+            justify-content: flex-end;
+            flex: 1;
+        }
+
+        .luxury-nav-links.right {
+            justify-content: flex-start;
+            flex: 1;
+        }
+
+        .luxury-nav-link {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.5rem 0;
+        }
+
+        .luxury-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 100%;
+            height: 2px;
+            background: #b8a4d4;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .luxury-nav-link:hover {
+            color: #b8a4d4;
+        }
+
+        .luxury-nav-link:hover::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* Logo Central */
+        .luxury-nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .luxury-nav-logo:hover {
+            color: #b8a4d4;
+            transform: scale(1.05);
+        }
+
+        /* Animación de entrada */
+        @keyframes navSlideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .luxury-nav-content {
+                gap: 1rem;
+            }
+
+            .luxury-nav-links {
+                gap: 1.5rem;
+            }
+
+            .luxury-nav-link {
+                font-size: 0.85rem;
+            }
+
+            .luxury-nav-logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .luxury-nav-container {
+                width: 95%;
+                top: 1rem;
+            }
+
+            .luxury-nav-pill {
+                padding: 1rem 1.5rem;
+            }
+
+            .luxury-nav-links {
+                display: none;
+            }
+
+            .luxury-nav-content {
+                justify-content: center;
+            }
+
+            .luxury-nav-logo {
+                font-size: 1.3rem;
+            }
+        }
+
         /* ESTILOS ESPECÍFICOS PARA HERO DE ALFAJORES - NO AFECTA TORTAS */
         .hero-video-grid {
             position: absolute !important;
@@ -757,78 +932,70 @@
             }
         }
     </style>
+
+    <!-- Google Fonts para Footer -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/luxury-footer.css">
 </head>
+
 <body>
-    <!-- Header minimalista -->
-    <header class="minimal-header">
-        <div class="header-container">
-            <!-- Lado izquierdo: Logo + Navegación -->
-            <div class="header-left">
-                <div class="logo-container">
-                    <img src="../assets/logos/LOGOS LAUREN PNG-55.png" alt="Lauren Logo" class="logo-img">
+    <!-- Glass Navigation Header -->
+    <nav class="glass-nav">
+        <div class="glass-nav-container">
+            <div class="glass-nav-content">
+                <!-- Menú Desplegable (izquierda) -->
+                <div class="nav-menu-wrapper">
+                    <button class="nav-menu-btn">Menú</button>
+                    <div class="nav-menu-dropdown">
+                        <a href="inicio.html">Inicio</a>
+                        <a href="tortas.html">Tortas</a>
+                        <a href="alfajores.html" class="active">Alfajores</a>
+                        <a href="brownies-galletas.html">Brownies y Galletas</a>
+                        <a href="detalles.html">Detalles</a>
+                    </div>
                 </div>
 
-                <nav class="minimal-nav" id="minimalNav">
-                    <a href="inicio.html" class="nav-item">Inicio</a>
-                    <a href="tortas.html" class="nav-item">Tortas</a>
-                    <a href="alfajores.html" class="nav-item active">Alfajores</a>
-                    <a href="brownies-galletas.html" class="nav-item">Brownies y Galletas</a>
-                    <a href="detalles.html" class="nav-item">Detalles</a>
-                </nav>
-            </div>
+                <!-- Logo Centrado -->
+                <div class="nav-logo-wrapper">
+                    <a href="inicio.html" class="nav-logo">Lauren</a>
+                </div>
 
-            <!-- Botón Hamburguesa -->
-            <button class="menu-toggle-minimal" aria-label="Abrir menú de navegación" aria-expanded="false">
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-            </button>
-
-            <!-- Botón desplegable de Contacto (derecha) -->
-            <div class="contact-dropdown">
-                <button class="contact-dropdown-btn" aria-label="Contacto" aria-expanded="false">
-                    Contacto
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow">
-                        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Ícono Carrito (derecha) -->
+                <div class="nav-icon" role="button" aria-label="Carrito de compras">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                        <path
+                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
                     </svg>
-                </button>
-                <div class="contact-dropdown-menu">
-                        <a href="https://wa.me/573104442796" class="contact-dropdown-item whatsapp-item" target="_blank">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366"/>
-                            </svg>
-                            WhatsApp
-                        </a>
-                        <a href="https://instagram.com/laurenreposteria22" class="contact-dropdown-item instagram-item" target="_blank">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="instagramGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#f09433;stop-opacity:1" />
-                                        <stop offset="25%" style="stop-color:#e6683c;stop-opacity:1" />
-                                        <stop offset="50%" style="stop-color:#dc2743;stop-opacity:1" />
-                                        <stop offset="75%" style="stop-color:#cc2366;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#bc1888;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="url(#instagramGradient2)"/>
-                            </svg>
-                            Instagram
-                        </a>
-                        <a href="https://www.tiktok.com/@laurenreposteria" class="contact-dropdown-item tiktok-item" target="_blank">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" fill="#000000"/>
-                            </svg>
-                            TikTok
-                        </a>
-                    </div>
+                    <span class="cart-badge">0</span>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- SECCIÓN Hero -->
     <section class="hero-main-carousel">
         <div class="carousel-wrapper">
-            <div class="hero-video-grid"><video class="hero-grid-video" autoplay muted loop playsinline><source src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 18.49.06_b744266c.mp4" type="video/mp4"></video><video class="hero-grid-video" autoplay muted loop playsinline><source src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.03.14_47e3c110.mp4" type="video/mp4"></video><video class="hero-grid-video" autoplay muted loop playsinline><source src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.16.16_fb5b3673.mp4" type="video/mp4"></video><video class="hero-grid-video" autoplay muted loop playsinline><source src="../assets/imagenes-alfajores/heroalfajores/Nuestro arbolito de navidad nos dio muchas alegrías la navidad pasada 🥹Y lo tendremos disponibl.mp4" type="video/mp4"></video></div>
+            <div class="hero-video-grid"><video class="hero-grid-video" autoplay muted loop playsinline>
+                    <source
+                        src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 18.49.06_b744266c.mp4"
+                        type="video/mp4">
+                </video><video class="hero-grid-video" autoplay muted loop playsinline>
+                    <source
+                        src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.03.14_47e3c110.mp4"
+                        type="video/mp4">
+                </video><video class="hero-grid-video" autoplay muted loop playsinline>
+                    <source
+                        src="../assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.16.16_fb5b3673.mp4"
+                        type="video/mp4">
+                </video><video class="hero-grid-video" autoplay muted loop playsinline>
+                    <source
+                        src="../assets/imagenes-alfajores/heroalfajores/Nuestro arbolito de navidad nos dio muchas alegrías la navidad pasada 🥹Y lo tendremos disponibl.mp4"
+                        type="video/mp4">
+                </video></div>
             <div class="hero-overlay"></div>
             <div class="hero-content-box">
                 <img src="../assets/logos/LOGOS LAUREN PNG-59.png" alt="Lauren Logo" class="hero-logo-translucent">
@@ -843,7 +1010,8 @@
                 <!-- Ícono flotante que cae -->
                 <div class="intro-icon-container">
                     <div class="intro-icon-circle">
-                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Lauren Logo" class="intro-main-icon-img">
+                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Lauren Logo"
+                            class="intro-main-icon-img">
                     </div>
                 </div>
                 <!-- Header -->
@@ -854,8 +1022,12 @@
                     </div>
                     <div class="section-decoration-right"></div>
                 </div>
-                <p class="section-subtitle-elegant-center" style="margin-bottom: 1rem;">Dale un toque especial a tus celebraciones</p>
-                <p class="intro-text-modern" style="max-width: 800px; margin: 0 auto;">Nuestros alfajores de maicena están hechos con ingredientes de primera calidad y rellenos con el mejor arequipe. Cada alfajor es preparado artesanalmente para garantizar ese sabor tradicional que tanto te gusta. Perfectos para compartir o regalar en cualquier ocasión especial.</p>
+                <p class="section-subtitle-elegant-center" style="margin-bottom: 1rem;">Dale un toque especial a tus
+                    celebraciones</p>
+                <p class="intro-text-modern" style="max-width: 800px; margin: 0 auto;">Nuestros alfajores de maicena
+                    están hechos con ingredientes de primera calidad y rellenos con el mejor arequipe. Cada alfajor es
+                    preparado artesanalmente para garantizar ese sabor tradicional que tanto te gusta. Perfectos para
+                    compartir o regalar en cualquier ocasión especial.</p>
             </div>
         </div>
     </section>
@@ -866,46 +1038,60 @@
             <div class="infinite-carousel-track" id="alfajoresPersonalizadosCarousel">
                 <!-- Imágenes del carrusel - Orden alfabético -->
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/aaa.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/aaa.jpg" alt="Alfajor Personalizado"
+                        class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/b.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/b.jpg" alt="Alfajor Personalizado"
+                        class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/bb.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/bb.jpg" alt="Alfajor Personalizado"
+                        class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
                 <div class="infinite-carousel-item">
-                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.jpg" alt="Alfajor Personalizado" class="infinite-carousel-img">
+                    <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.jpg"
+                        alt="Alfajor Personalizado" class="infinite-carousel-img">
                 </div>
             </div>
         </div>
@@ -934,22 +1120,22 @@
             <div class="cajas-carousel-wrapper">
                 <div class="cajas-carousel-group active">
                     <div class="cajas-gallery-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores x6.png" alt="Caja x6 Alfajores" class="cajas-gallery-img">
+                        <img src="../assets/imagenes-alfajores/Alfajores x6.png" alt="Caja x6 Alfajores"
+                            class="cajas-gallery-img">
+                        <!-- Botón Ver Precios integrado -->
+                        <button class="pricing-btn-integrated cajas-pricing-btn-overlay" id="cajasPricingBtn">
+                            Ver Precios
+                        </button>
                     </div>
                     <div class="cajas-gallery-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores vaso mini.jpg" alt="Vaso de Mini Alfajores" class="cajas-gallery-img">
+                        <img src="../assets/imagenes-alfajores/Alfajores vaso mini.jpg" alt="Vaso de Mini Alfajores"
+                            class="cajas-gallery-img">
                     </div>
                     <div class="cajas-gallery-item">
-                        <img src="../assets/imagenes-alfajores/Alfajores x12.png" alt="Caja x12 Alfajores" class="cajas-gallery-img">
+                        <img src="../assets/imagenes-alfajores/Alfajores x12.png" alt="Caja x12 Alfajores"
+                            class="cajas-gallery-img">
                     </div>
                 </div>
-            </div>
-
-            <!-- Botón Ver Precios centrado -->
-            <div style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; width: 100%;">
-                <button class="pricing-btn-integrated" id="cajasPricingBtn">
-                    Ver Precios
-                </button>
             </div>
         </div>
     </section>
@@ -964,22 +1150,32 @@
                 </div>
                 <div class="section-decoration-right"></div>
             </div>
-            <p class="section-subtitle-elegant-center">Todas nuestras tortas de alfajor vienen rellenas de arequipe y traen 3 capas de relleno</p>
+            <p class="section-subtitle-elegant-center">Todas nuestras tortas de alfajor vienen rellenas de arequipe y
+                traen 3 capas de relleno</p>
 
             <!-- Galería de imágenes de tortas de alfajor -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
-                <div class="torta-alfajor-item" style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                    <img src="../assets/imagenes-alfajores/TortaAlfajor1.png" alt="Torta de Alfajor" class="torta-alfajor-img" style="width: 100%; height: 416px; object-fit: cover; object-position: center 20%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                <div class="torta-alfajor-item"
+                    style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <img src="../assets/imagenes-alfajores/TortaAlfajor1.png" alt="Torta de Alfajor"
+                        class="torta-alfajor-img"
+                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 20%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
                 </div>
-                <div class="torta-alfajor-item" style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                    <img src="../assets/imagenes-alfajores/TortaAlfajor2.png" alt="Torta de Alfajor" class="torta-alfajor-img" style="width: 100%; height: 416px; object-fit: cover; object-position: center 60%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
+                <div class="torta-alfajor-item"
+                    style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <img src="../assets/imagenes-alfajores/TortaAlfajor2.png" alt="Torta de Alfajor"
+                        class="torta-alfajor-img"
+                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 60%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
                 </div>
             </div>
 
             <!-- Botón Ver Precios y Porciones -->
-            <div style="display: flex; justify-content: center; align-items: center; margin-top: 3rem; margin-bottom: 2rem; width: 100%;">
+            <div
+                style="display: flex; justify-content: center; align-items: center; margin-top: 3rem; margin-bottom: 2rem; width: 100%;">
                 <button class="pricing-btn-integrated" id="tortasPricingBtn">
-                    Ver Precios y Porciones
+                    <span class="btn-text-mobile">Ver Precios</span>
+                    <span class="btn-text-desktop">Ver Precios y Porciones</span>
                 </button>
             </div>
 
@@ -997,33 +1193,44 @@
                     </div>
                     <div class="section-decoration-right"></div>
                 </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Esta presentación se vende a partir de 6 unidades por referencia o tamaño, empacados en bolsas</p>
+                <p class="section-subtitle-elegant" style="text-align: center;">Esta presentación se vende a partir de 6
+                    unidades por referencia o tamaño, empacados en bolsas</p>
             </div>
 
             <!-- Galería de imágenes de alfajores individuales con botón -->
             <div style="max-width: 984px; margin: 3rem auto 0; padding: 0 20px;">
                 <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem;">
                     <!-- Imagen de alfajores en bolsitas (Minis x3 y x6) - MÁS GRANDE -->
-                    <div class="alfajor-individual-item" style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
-                        <img src="../assets/imagenes-alfajores/AlfajorBolsita.png" alt="Alfajores en Bolsita" class="alfajor-bolsita-img" style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <div class="alfajor-individual-item"
+                        style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
+                        <img src="../assets/imagenes-alfajores/AlfajorBolsita.png" alt="Alfajores en Bolsita"
+                            class="alfajor-bolsita-img"
+                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
                         <!-- Overlay sutil -->
-                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;"></div>
-                        <!-- Botón Ver Precios -->
-                        <button class="pricing-btn-integrated" id="individualesPricingBtn" style="position: absolute; bottom: 20px; left: 20px; z-index: 10; padding: 10px 24px; font-size: 0.9rem;">
-                            Ver Precios
-                        </button>
+                        <div
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
+                        </div>
                     </div>
 
                     <!-- Imagen de alfajor unitario (Pequeño, Mediano, Grande) -->
-                    <div class="alfajor-individual-item" style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
-                        <img src="../assets/imagenes-alfajores/AlfajorUnidad.png" alt="Alfajor Unitario" class="alfajor-unitario-img" style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <div class="alfajor-individual-item"
+                        style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
+                        <img src="../assets/imagenes-alfajores/AlfajorUnidad.png" alt="Alfajor Unitario"
+                            class="alfajor-unitario-img"
+                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
                         <!-- Overlay sutil -->
-                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;"></div>
-                        <!-- Botón Ver Precios -->
-                        <button class="pricing-btn-integrated" id="individualesPricingBtn2" style="position: absolute; bottom: 20px; left: 20px; z-index: 10; padding: 10px 24px; font-size: 0.9rem;">
-                            Ver Precios
-                        </button>
+                        <div
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
+                        </div>
                     </div>
+                </div>
+
+                <!-- Botón Ver Precios centrado debajo de las imágenes -->
+                <div
+                    style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; width: 100%;">
+                    <button class="pricing-btn-integrated" id="individualesPricingBtn">
+                        Ver Precios
+                    </button>
                 </div>
             </div>
         </div>
@@ -1040,7 +1247,8 @@
                     </div>
                     <div class="section-decoration-right"></div>
                 </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Porque queremos que todo salga perfecto</p>
+                <p class="section-subtitle-elegant" style="text-align: center;">Porque queremos que todo salga perfecto
+                </p>
             </div>
 
             <div class="info-cards-grid">
@@ -1052,7 +1260,9 @@
                     </div>
                     <div class="info-card-content">
                         <h3 class="info-card-title">Pedido y Frescura</h3>
-                        <p class="info-card-text">Para garantizar la calidad y frescura, es importante que tu pedido se realice con tiempo. Consulta en la asesoría la disponibilidad para el día que lo requieras.</p>
+                        <p class="info-card-text">Para garantizar la calidad y frescura, es importante que tu pedido se
+                            realice con tiempo. Consulta en la asesoría la disponibilidad para el día que lo requieras.
+                        </p>
                     </div>
                     <div class="info-card-decoration"></div>
                 </div>
@@ -1065,7 +1275,8 @@
                     </div>
                     <div class="info-card-content">
                         <h3 class="info-card-title">Diseños Personalizados</h3>
-                        <p class="info-card-text">Si requieres otro tipo de diseño en los alfajores personalizados, su valor se definirá durante la asesoría. Nos adaptamos a tus ideas.</p>
+                        <p class="info-card-text">Si requieres otro tipo de diseño en los alfajores personalizados, su
+                            valor se definirá durante la asesoría. Nos adaptamos a tus ideas.</p>
                     </div>
                     <div class="info-card-decoration"></div>
                 </div>
@@ -1078,7 +1289,8 @@
                     </div>
                     <div class="info-card-content">
                         <h3 class="info-card-title">Producto Artesanal</h3>
-                        <p class="info-card-text">Cada alfajor es único y hecho a mano con ingredientes de primera calidad. Pueden existir pequeñas variaciones respecto a las referencias.</p>
+                        <p class="info-card-text">Cada alfajor es único y hecho a mano con ingredientes de primera
+                            calidad. Pueden existir pequeñas variaciones respecto a las referencias.</p>
                     </div>
                     <div class="info-card-decoration"></div>
                 </div>
@@ -1086,12 +1298,14 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/letras.png" alt="Venta mínima" class="icon-img">
+                            <img src="../assets/logos/Detalles adicionales/letras.png" alt="Venta mínima"
+                                class="icon-img">
                         </div>
                     </div>
                     <div class="info-card-content">
                         <h3 class="info-card-title">Venta Mínima</h3>
-                        <p class="info-card-text">Los alfajores individuales se venden a partir de 6 unidades por referencia o tamaño, empacados en bolsas.</p>
+                        <p class="info-card-text">Los alfajores individuales se venden a partir de 6 unidades por
+                            referencia o tamaño, empacados en bolsas.</p>
                     </div>
                     <div class="info-card-decoration"></div>
                 </div>
@@ -1100,132 +1314,115 @@
     </section>
 
     <!-- Footer Completo -->
-    <footer class="modern-footer">
-        <div class="footer-main">
-            <div class="container">
-                <div class="footer-grid">
-                    <!-- Columna 1: Sobre Lauren -->
-                    <div class="footer-column">
-                        <h3 class="footer-column-title">LAUREN</h3>
-                        <p class="footer-brand-text">Bocado de Alegría</p>
-                        <p class="footer-description">Creando momentos dulces y memorables desde 2022. Repostería artesanal con amor en cada detalle.</p>
-                        <div class="footer-social-icons">
-                            <a href="https://wa.me/573104442796" class="footer-social-link" target="_blank" aria-label="WhatsApp">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366"/>
-                                </svg>
-                            </a>
-                            <a href="https://instagram.com/laurenreposteria22" class="footer-social-link" target="_blank" aria-label="Instagram">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="instagram-gradient-footer-new" x1="0%" y1="100%" x2="100%" y2="0%">
-                                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
-                                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
-                                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="url(#instagram-gradient-footer-new)"/>
-                                </svg>
-                            </a>
-                            <a href="https://www.tiktok.com/@laurenreposteria" class="footer-social-link" target="_blank" aria-label="TikTok">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" fill="#000000"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Columna 2: Navegación Rápida -->
-                    <div class="footer-column">
-                        <h3 class="footer-column-title">Navegación</h3>
-                        <ul class="footer-links">
-                            <li><a href="inicio.html">Inicio</a></li>
-                            <li><a href="tortas.html">Tortas</a></li>
-                            <li><a href="alfajores.html">Alfajores</a></li>
-                            <li><a href="brownies-galletas.html">Brownies y Galletas</a></li>
-                            <li><a href="detalles.html">Detalles</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Columna 3: Contacto -->
-                    <div class="footer-column">
-                        <h3 class="footer-column-title">Contacto</h3>
-                        <ul class="footer-contact-list">
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z" fill="currentColor"/>
-                                    <path d="M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2zm3.422 5.443a1.001 1.001 0 00-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 00.043-1.391L6.859 3.513a1.001 1.001 0 00-1.391-.087l-2.17 1.861a1 1 0 00-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 00.648-.291l1.86-2.171a1 1 0 00-.086-1.391l-4.064-3.696z" fill="currentColor"/>
-                                </svg>
-                                <a href="https://wa.me/573104442796" target="_blank">310 444 27 96</a>
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 6.223-8-6.222V6h16zM4 18V9.044l7.386 5.745a.994.994 0 001.228 0L20 9.044 20.002 18H4z" fill="currentColor"/>
-                                </svg>
-                                <a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
-                                </svg>
-                                <span>Medellín, Colombia</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Columna 4: Información Útil -->
-                    <div class="footer-column">
-                        <h3 class="footer-column-title">Información</h3>
-                        <ul class="footer-info-list">
-                            <li>
-                                <strong>Horario de Atención:</strong>
-                                <span>Lunes - Sábado</span>
-                                <span>9:00 AM - 6:00 PM</span>
-                            </li>
-                            <li>
-                                <strong>Formas de Pago:</strong>
-                                <span>Transferencias bancarias</span>
-                                <span>Efectivo</span>
-                            </li>
-                            <li>
-                                <strong>Pedidos:</strong>
-                                <span>Mínimo 1 día de anticipación</span>
-                                <span>Consultar disponibilidad</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <!-- LUXURY FOOTER - Minimalista High-End -->
+    <!-- LUXURY FOOTER - Minimalista High-End -->
+    <footer class="luxury-footer">
+        <!-- Logo -->
+        <div class="footer-logo">
+            <img src="../assets/logos/footer-logo.png" alt="Lauren Repostería">
         </div>
 
-        <!-- Copyright Bar -->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="footer-bottom-content">
-                    <p>&copy; 2024 Lauren Repostería. Todos los derechos reservados.</p>
-                    <p class="footer-made-with">Hecho con amor en Medellín, Colombia</p>
-                </div>
-            </div>
+        <!-- Iconos de Redes Sociales con colores de marca -->
+        <div class="footer-social">
+            <!-- Instagram con gradiente característico -->
+            <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="instagram-gradient-footer" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+                        fill="url(#instagram-gradient-footer)" />
+                </svg>
+            </a>
+
+            <!-- WhatsApp verde característico -->
+            <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+                        fill="#25D366" />
+                </svg>
+            </a>
+
+            <!-- TikTok negro característico -->
+            <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
+                aria-label="TikTok">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"
+                        fill="#000000" />
+                </svg>
+            </a>
         </div>
+
+        <!-- Línea Separadora -->
+        <div class="footer-divider"></div>
+
+        <!-- Copyright -->
+        <p class="footer-copyright">
+            © 2025 Lauren Repostería<br>
+            Creando momentos dulces y memorables desde 2022.<br>
+            Repostería artesanal con amor en cada detalle.<br>
+            Medellín, Colombia
+        </p>
     </footer>
 
     <!-- Botón Scroll to Top -->
-    <button class="scroll-to-top" id="scrollToTop" aria-label="Volver arriba" style="position: fixed !important; bottom: 30px !important; right: 30px !important; width: 50px !important; height: 50px !important; background: #F9B58C !important; color: white !important; border: none !important; border-radius: 50% !important; font-size: 1.5rem !important; cursor: pointer !important; z-index: 9999 !important; box-shadow: 0 4px 15px rgba(249, 181, 140, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; opacity: 0; visibility: hidden; transition: all 0.3s ease !important;">
-        ↑
+    <!-- Botón Flotante de Contacto -->
+    <button class="contact-fab" id="contactFab" aria-label="Menú de contacto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
     </button>
+
+    <!-- Menú de Redes Sociales -->
+    <div class="contact-menu" id="contactMenu">
+        <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" class="social-fab whatsapp"
+            aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+            </svg>
+        </a>
+
+        <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
+            class="social-fab instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
+        </a>
+
+        <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
+            class="social-fab tiktok" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
+            </svg>
+        </a>
+    </div>
+
 
     <!-- Lightbox Modal -->
     <div class="lightbox-modal" id="lightboxModal">
         <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar lightbox">&times;</button>
         <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Imagen anterior">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
             </svg>
         </button>
         <img alt="Imagen ampliada" id="lightboxImg" class="lightbox-img">
         <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Imagen siguiente">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
             </svg>
         </button>
     </div>
@@ -1236,7 +1433,8 @@
             <!-- Botón Cerrar -->
             <button class="product-modal-close" id="productModalClose" aria-label="Cerrar modal">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
             </button>
 
@@ -1261,7 +1459,8 @@
                         <!-- Precio -->
                         <div class="product-modal-price-wrapper">
                             <span class="product-modal-price" id="productModalPrice"></span>
-                            <span class="product-modal-price-note" id="productModalPriceNote" style="display: none;"></span>
+                            <span class="product-modal-price-note" id="productModalPriceNote"
+                                style="display: none;"></span>
                         </div>
 
                         <!-- Descripción -->
@@ -1279,15 +1478,19 @@
                         </div>
 
                         <!-- Campo de Personalización -->
-                        <div class="product-modal-personalization" id="productModalPersonalization" style="display: none;">
+                        <div class="product-modal-personalization" id="productModalPersonalization"
+                            style="display: none;">
                             <!-- Los campos de personalización se generarán dinámicamente -->
                         </div>
 
                         <!-- Botón de Contacto para Pedido -->
                         <div class="product-modal-actions">
                             <a href="#" class="product-modal-cta-btn" id="productModalCTA" target="_blank">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor"/>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+                                        fill="currentColor" />
                                 </svg>
                                 Hacer Pedido por WhatsApp
                             </a>
@@ -1382,7 +1585,7 @@
         // ========================================
         // CONECTAR BOTONES "VER PRECIOS" AL QUICK VIEW MODAL
         // ========================================
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Conectar botón de Alfajores Personalizados
             const personalizadosPricingBtn = document.getElementById('personalizadosPricingBtn');
             if (personalizadosPricingBtn) {
@@ -1531,6 +1734,91 @@
         });
     </script>
 
-    <script src="../js/scroll-to-top.js"></script>
+    <script src="../js/contact-fab.js"></script>
+
+    <!-- JavaScript del Header (Menú Hamburguesa y Dropdown de Contacto) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ========================================
+            // MENÚ HAMBURGUESA
+            // ========================================
+            const menuToggle = document.querySelector('.menu-toggle-minimal');
+            const mainNav = document.getElementById('minimalNav');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            if (menuToggle && mainNav) {
+                // Toggle menu al hacer click en el botón
+                menuToggle.addEventListener('click', () => {
+                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                    menuToggle.setAttribute('aria-expanded', !isExpanded);
+                    menuToggle.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+
+                    // Prevenir scroll cuando el menú está abierto
+                    if (!isExpanded) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Cerrar menú al hacer click en un enlace
+                navItems.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mainNav.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    });
+                });
+
+                // Cerrar menú con tecla ESC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // ========================================
+            // BOTÓN DE CONTACTO DROPDOWN
+            // ========================================
+            const contactBtn = document.querySelector('.contact-dropdown-btn');
+            const contactMenu = document.querySelector('.contact-dropdown-menu');
+            const contactDropdown = document.querySelector('.contact-dropdown');
+
+            if (contactBtn && contactMenu) {
+                // Toggle dropdown al hacer click
+                contactBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
+                    contactBtn.setAttribute('aria-expanded', !isExpanded);
+                    contactMenu.classList.toggle('active');
+                });
+
+                // Cerrar dropdown al hacer click fuera
+                document.addEventListener('click', (e) => {
+                    if (!contactDropdown.contains(e.target)) {
+                        contactMenu.classList.remove('active');
+                        contactBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Cerrar dropdown con tecla ESC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && contactMenu.classList.contains('active')) {
+                        contactMenu.classList.remove('active');
+                        contactBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
+        });
+    </script>
 </body>
+
 </html>

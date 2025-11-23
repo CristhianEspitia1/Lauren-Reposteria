@@ -208,7 +208,7 @@ window.addEventListener('load', () => {
 
 // Tracking de clicks en botones de contacto
 document.querySelectorAll('.contact-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
         const type = this.classList.contains('whatsapp-btn') ? 'WhatsApp' : 'Instagram';
         console.log(`Click en botón de contacto: ${type}`);
     });
@@ -246,7 +246,7 @@ document.querySelectorAll('.fillings-content, .team-content').forEach(content =>
 // Variable global para pausar carruseles durante scroll
 let allCarousels = [];
 let scrollPauseTimer;
-let isScrolling = false;
+// isScrolling ya declarado en línea 185
 
 function createCarousel(config) {
     const {
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cerrar con tecla ESC y navegación con flechas
     document.addEventListener('keydown', (e) => {
-        if (lightboxModal.classList.contains('active')) {
+        if (lightboxModal && lightboxModal.classList.contains('active')) {
             if (e.key === 'Escape') {
                 closeLightbox();
             } else if (e.key === 'ArrowLeft') {
@@ -1239,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const videos = document.querySelectorAll('video');
 
     videos.forEach(video => {
-        video.addEventListener('error', function() {
+        video.addEventListener('error', function () {
             console.error('❌ Error cargando video:', this.src || this.querySelector('source')?.src);
 
             // Ocultar el video que falló
@@ -1249,7 +1249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('⚠️ Video ocultado para evitar pantalla negra');
         });
 
-        video.addEventListener('loadeddata', function() {
+        video.addEventListener('loadeddata', function () {
             console.log('✅ Video cargado correctamente:', this.src || this.querySelector('source')?.src);
         });
     });
@@ -1274,7 +1274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        img.addEventListener('error', function() {
+        img.addEventListener('error', function () {
             console.error('❌ Error cargando imagen:', this.src);
 
             // Intentar cargar logo de Lauren como fallback

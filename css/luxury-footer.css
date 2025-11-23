@@ -1,0 +1,164 @@
+/* 
+ * LUXURY FOOTER - Minimalista High-End
+ * Para Lauren Repostería
+ * Color: Tono Tierra / Nude (#E5C8BA)
+ * Logo: Imagen footer-logo.png
+ * Espaciado: Reducido 30% para diseño más compacto
+ *  
+ * Uso: Incluir este CSS en tu página y copiar el HTML del footer
+ */
+
+/* Google Fonts - Agregar en el <head> */
+/*
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+*/
+
+/* FOOTER HIGH-END */
+.luxury-footer {
+    background: #E5C8BA;
+    /* Tono Tierra / Nude - Pantone 7611 C */
+    padding: 2rem 2rem 2.5rem;
+    /* Padding-top reducido 50% de 4rem a 2rem */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    /* Reducido 30% de 2rem */
+}
+
+/* Logo (Imagen) */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.18rem;
+    /* Reducido 50% de 0.35rem */
+}
+
+.footer-logo img {
+    height: 158px;
+    /* Aumentado 10% adicional (144px × 1.10) */
+    width: auto;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.footer-logo img:hover {
+    opacity: 1;
+}
+
+/* Iconos de Redes Sociales */
+.footer-social {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin: 0.35rem 0;
+    /* Reducido 30% de 0.5rem */
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-social a:hover {
+    transform: scale(1.15);
+    opacity: 0.85;
+}
+
+.footer-social svg {
+    width: 28px;
+    height: 28px;
+    /* Icons have their own brand colors (Instagram gradient, WhatsApp green, TikTok black) */
+}
+
+/* Línea Separadora */
+.footer-divider {
+    width: 80%;
+    max-width: 400px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    /* Línea oscura para fondo tierra */
+    margin: 0.35rem 0;
+    /* Reducido 30% de 0.5rem */
+}
+
+/* Copyright */
+.footer-copyright {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #2c2c2c;
+    /* Texto oscuro para fondo tierra */
+    text-align: center;
+    line-height: 1.6;
+    max-width: 600px;
+    opacity: 0.85;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+    .luxury-footer {
+        padding: 1.5rem 1.5rem 2rem;
+        /* Padding-top reducido 50% de 3rem a 1.5rem */
+        gap: 1.05rem;
+        /* Reducido 30% de 1.5rem */
+    }
+
+    .footer-logo img {
+        height: 132px;
+        /* Aumentado 10% adicional (120px × 1.10) */
+    }
+
+    .footer-social {
+        gap: 1.5rem;
+    }
+
+    .footer-social a {
+        width: 38px;
+        height: 38px;
+    }
+
+    .footer-social svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .footer-copyright {
+        font-size: 0.75rem;
+        max-width: 90%;
+    }
+
+    .footer-divider {
+        width: 90%;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .footer-logo img {
+        height: 106px;
+        /* Aumentado 10% adicional (96px × 1.10) */
+    }
+
+    .footer-social {
+        gap: 1.2rem;
+    }
+
+    .footer-social a {
+        width: 36px;
+        height: 36px;
+    }
+
+    .footer-social svg {
+        width: 22px;
+        height: 22px;
+    }
+}

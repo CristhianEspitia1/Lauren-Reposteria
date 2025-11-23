@@ -3,6 +3,15 @@
    Este archivo arregla TODOS los problemas de móvil
    ======================================== */
 
+/* Desktop: Mostrar texto completo del botón */
+.btn-text-mobile {
+    display: none;
+}
+
+.btn-text-desktop {
+    display: inline;
+}
+
 @media (max-width: 768px) {
     /* ============================================
        CONTENEDOR PRINCIPAL Y ESPACIADO
@@ -251,11 +260,143 @@
     }
 
     /* ============================================
+       CARRUSEL INFINITO (INSPIRACIÓN) - 20% más pequeño
+       ============================================ */
+
+    .infinite-carousel-item {
+        width: 224px !important;
+        height: 224px !important;
+    }
+
+    .infinite-carousel-track {
+        gap: 24px !important;
+        animation: scroll-left 300s linear infinite !important;
+    }
+
+    .intro-section-modern {
+        padding: 25px 13px 5px !important;
+    }
+
+    .infinite-carousel-section-modern {
+        padding: 0px 10px 15px !important;
+    }
+
+    /* Botón Ver Precios del carrusel infinito */
+    .infinite-carousel-section-modern > div[style*="margin-top"] {
+        margin-top: 0.5rem !important;
+        padding-bottom: 0rem !important;
+    }
+
+    /* ============================================
        SECCIONES DE CONTENIDO
        ============================================ */
 
     section {
         padding: 30px 15px !important;
+    }
+
+    /* Eliminar espacio entre botón Ver Precios y Cajas de Alfajores */
+    .fillings-section {
+        padding-top: 0 !important;
+        margin-top: -20px !important;
+    }
+
+    .fillings-section .section-header-decorated {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Botón Ver Precios integrado en mosaico de cajas */
+    .cajas-gallery-item {
+        position: relative !important;
+    }
+
+    .cajas-pricing-btn-overlay {
+        position: absolute !important;
+        bottom: 15px !important;
+        left: 15px !important;
+        z-index: 10 !important;
+        padding: 8px 20px !important;
+        font-size: 0.75rem !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Tortas de Alfajor - Lado a lado sin espacios */
+    .fillings-section > .container > div[style*="grid-template-columns"] {
+        display: grid !important;
+        grid-template-columns: 1.35fr 1fr !important;
+        gap: 0 !important;
+        margin: 1.5rem 0 !important;
+    }
+
+    .torta-alfajor-item {
+        border-radius: 0 !important;
+        width: 100% !important;
+    }
+
+    .torta-alfajor-item:first-child {
+        border-radius: 20px 0 0 20px !important;
+    }
+
+    .torta-alfajor-item:last-child {
+        border-radius: 0 20px 20px 0 !important;
+    }
+
+    .torta-alfajor-img {
+        height: auto !important;
+        min-height: 200px !important;
+    }
+
+    /* Botón de tortas - Mostrar solo "Ver Precios" en móvil */
+    .btn-text-desktop {
+        display: none !important;
+    }
+
+    .btn-text-mobile {
+        display: inline !important;
+    }
+
+    /* Alfajores Individuales - Lado a lado sin espacios */
+    .extras-section .container > div > div[style*="grid-template-columns"] {
+        display: grid !important;
+        grid-template-columns: 1.64fr 1.05fr !important;
+        gap: 0 !important;
+        margin: 1.5rem auto 0 !important;
+        padding: 0 10px !important;
+    }
+
+    .alfajor-individual-item {
+        border-radius: 0 !important;
+        width: 100% !important;
+    }
+
+    .alfajor-individual-item:first-child {
+        border-radius: 20px 0 0 20px !important;
+    }
+
+    .alfajor-individual-item:last-child {
+        border-radius: 0 20px 20px 0 !important;
+    }
+
+    .alfajor-bolsita-img,
+    .alfajor-unitario-img {
+        height: auto !important;
+        min-height: 200px !important;
+    }
+
+    /* Zoom a la imagen de la derecha (alfajor unitario) */
+    .alfajor-unitario-img {
+        transform: scale(1.2) !important;
+    }
+
+    /* Botón Ver Precios de Alfajores Individuales */
+    .extras-section .container > div > div[style*="margin-top"] {
+        margin-top: 0.5rem !important;
+    }
+
+    /* Eliminar overlays de Alfajores Individuales en móvil */
+    .alfajor-individual-item > div[style*="gradient"] {
+        display: none !important;
     }
 
     .section-title,

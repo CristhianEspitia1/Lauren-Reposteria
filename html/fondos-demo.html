@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Opciones de Fondos - Lauren Repostería</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            text-align: center;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .backgrounds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .background-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .background-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .background-preview {
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-info {
+            padding: 2rem;
+        }
+
+        .background-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #b8a4d4;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .background-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .background-features {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .background-features li {
+            padding: 0.4rem 0;
+            color: #666;
+            font-size: 0.9rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .background-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #F9B58C;
+            font-weight: bold;
+        }
+
+        .sample-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .sample-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .sample-content p {
+            font-size: 1.1rem;
+            color: #666;
+            text-shadow: 0 1px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        /* OPCIÓN 1: GRADIENTE ORGÁNICO SUAVE */
+        .bg-option-1 {
+            background: linear-gradient(135deg, #FFFCFA 0%, #FFF9F5 25%, #FFFAF7 50%, #FFF9F5 75%, #FFFCFA 100%);
+            position: relative;
+        }
+
+        .bg-option-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(249, 181, 140, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(209, 181, 215, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 50% 10%, rgba(249, 181, 140, 0.05) 0%, transparent 55%),
+                radial-gradient(circle at 30% 90%, rgba(232, 212, 200, 0.05) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 2: DIAGONAL ELEGANTE */
+        .bg-option-2 {
+            background: linear-gradient(135deg, #FFFCFA 0%, #FFF5EE 20%, #FFE8DC 40%, #FFE0CE 60%, #F9B58C 100%);
+            position: relative;
+        }
+
+        .bg-option-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(200, 165, 216, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(200, 165, 216, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 3: RADIAL DREAMY */
+        .bg-option-3 {
+            background: radial-gradient(ellipse at center, #FFFCFA 0%, #FFF9F5 30%, #FFE8DC 60%, #F9B58C 100%);
+            position: relative;
+        }
+
+        .bg-option-3::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(184, 164, 212, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 75% 75%, rgba(249, 181, 140, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(232, 212, 200, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 15% 85%, rgba(184, 164, 212, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 85% 15%, rgba(249, 181, 140, 0.1) 0%, transparent 30%);
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 4: MESH GRADIENT MODERNO */
+        .bg-option-4 {
+            background:
+                linear-gradient(135deg, rgba(255, 252, 250, 0.9) 0%, transparent 70%),
+                linear-gradient(45deg, rgba(255, 250, 247, 0.8) 10%, transparent 80%),
+                linear-gradient(225deg, rgba(245, 235, 242, 0.7) 20%, transparent 90%),
+                linear-gradient(315deg, rgba(249, 181, 140, 0.6) 30%, transparent 70%),
+                linear-gradient(180deg, #FFFCFA 0%, #F9B58C 100%);
+            position: relative;
+        }
+
+        .bg-option-4::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(209, 181, 215, 0.03) 35px, rgba(209, 181, 215, 0.03) 70px);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 5: CONFETTI SUTIL */
+        .bg-option-5 {
+            background: linear-gradient(180deg, #FFFCFA 0%, #FFF9F5 50%, #F9B58C 100%);
+            position: relative;
+        }
+
+        .bg-option-5::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle, rgba(184, 164, 212, 0.15) 1px, transparent 1px),
+                radial-gradient(circle, rgba(249, 181, 140, 0.15) 1px, transparent 1px),
+                radial-gradient(circle, rgba(232, 212, 200, 0.12) 1px, transparent 1px);
+            background-size: 80px 80px, 120px 120px, 60px 60px;
+            background-position: 0 0, 40px 40px, 20px 20px;
+            pointer-events: none;
+        }
+
+        .bg-option-5::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(ellipse at 30% 40%, rgba(184, 164, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(249, 181, 140, 0.1) 0%, transparent 50%);
+            filter: blur(40px);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 6: ONDAS FLOTANTES */
+        .bg-option-6 {
+            background: linear-gradient(0deg, #FFFCFA 0%, #FFF9F5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-option-6::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image:
+                radial-gradient(ellipse 800px 100px at 50% 20%, rgba(184, 164, 212, 0.08) 0%, transparent 100%),
+                radial-gradient(ellipse 700px 80px at 30% 50%, rgba(249, 181, 140, 0.08) 0%, transparent 100%),
+                radial-gradient(ellipse 900px 120px at 70% 80%, rgba(232, 212, 200, 0.06) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 7: HORIZONTAL SUAVE */
+        .bg-option-7 {
+            background: linear-gradient(90deg, #FFFCFA 0%, #FFF9F5 25%, #FFE8DC 50%, #FFF9F5 75%, #FFFCFA 100%);
+            position: relative;
+        }
+
+        .bg-option-7::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(90deg, transparent 0%, rgba(249, 181, 140, 0.05) 50%, transparent 100%),
+                radial-gradient(circle at 25% 50%, rgba(184, 164, 212, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 8: CÍRCULOS CONCÉNTRICOS */
+        .bg-option-8 {
+            background: #FFFCFA;
+            position: relative;
+        }
+
+        .bg-option-8::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle, transparent 10%, rgba(249, 181, 140, 0.03) 10%, rgba(249, 181, 140, 0.03) 15%, transparent 15%),
+                radial-gradient(circle, transparent 25%, rgba(184, 164, 212, 0.03) 25%, rgba(184, 164, 212, 0.03) 30%, transparent 30%),
+                radial-gradient(circle, transparent 40%, rgba(232, 212, 200, 0.03) 40%, rgba(232, 212, 200, 0.03) 45%, transparent 45%),
+                radial-gradient(circle, transparent 60%, rgba(249, 181, 140, 0.02) 60%, rgba(249, 181, 140, 0.02) 65%, transparent 65%);
+            background-size: 100% 100%;
+            pointer-events: none;
+        }
+
+        .bg-option-8::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, #FFF9F5 100%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 9: GEOMÉTRICO DELICADO */
+        .bg-option-9 {
+            background: linear-gradient(135deg, #FFFCFA 0%, #FFF9F5 100%);
+            position: relative;
+        }
+
+        .bg-option-9::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(184, 164, 212, 0.02) 100px, rgba(184, 164, 212, 0.02) 200px),
+                repeating-linear-gradient(-45deg, transparent, transparent 100px, rgba(249, 181, 140, 0.02) 100px, rgba(249, 181, 140, 0.02) 200px);
+            pointer-events: none;
+        }
+
+        .bg-option-9::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(232, 212, 200, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(184, 164, 212, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* OPCIÓN 10: AURORA GRADIENT */
+        .bg-option-10 {
+            background: linear-gradient(135deg, #FFFCFA 0%, #FFF9F5 100%);
+            position: relative;
+        }
+
+        .bg-option-10::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(115deg, transparent 0%, rgba(184, 164, 212, 0.15) 30%, transparent 60%),
+                linear-gradient(245deg, transparent 0%, rgba(249, 181, 140, 0.15) 30%, transparent 60%),
+                linear-gradient(175deg, transparent 20%, rgba(232, 212, 200, 0.12) 50%, transparent 80%);
+            filter: blur(50px);
+            pointer-events: none;
+        }
+
+        .bg-option-10::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(255, 252, 250, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        /* Código CSS para copiar */
+        .css-code-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .css-code-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 181, 140, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .backgrounds-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .background-preview {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-container">
+        <h1>🎨 10 Opciones de Fondos para Lauren</h1>
+        <p class="subtitle">Basados en tu branding actual: colores lila, durazno y crema</p>
+
+        <div class="backgrounds-grid">
+            <!-- Opción 1 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-1">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 1</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 1: Gradiente Orgánico Suave</h3>
+                    <p class="background-description">
+                        Fondo actual mejorado con gradientes crema sutiles y círculos radiantes en lila y durazno.
+                        Perfecto para mantener la elegancia sin distracciones.
+                    </p>
+                    <ul class="background-features">
+                        <li>Muy suave y minimalista</li>
+                        <li>Mantiene el estilo actual</li>
+                        <li>Ideal para todas las páginas</li>
+                        <li>Profesional y limpio</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 2 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-2">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 2</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 2: Diagonal Elegante</h3>
+                    <p class="background-description">
+                        Gradiente diagonal desde crema hasta durazno con toques de lila.
+                        Añade dinamismo y sofisticación con un acabado cálido.
+                    </p>
+                    <ul class="background-features">
+                        <li>Más vibrante y cálido</li>
+                        <li>Dirección diagonal moderna</li>
+                        <li>Destaca el color durazno</li>
+                        <li>Elegante y premium</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 3 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-3">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 3</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 3: Radial Dreamy</h3>
+                    <p class="background-description">
+                        Gradiente radial que irradia desde el centro con efectos bokeh difuminados.
+                        Crea un ambiente soñador y romántico ideal para repostería.
+                    </p>
+                    <ul class="background-features">
+                        <li>Efecto dreamy y romántico</li>
+                        <li>Círculos bokeh difuminados</li>
+                        <li>Centro luminoso</li>
+                        <li>Perfecto para páginas principales</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 4 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-4">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 4</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 4: Mesh Gradient Moderno</h3>
+                    <p class="background-description">
+                        Gradientes en malla superpuestos con textura sutil de líneas.
+                        Estilo contemporáneo y artístico que destaca entre la competencia.
+                    </p>
+                    <ul class="background-features">
+                        <li>Muy moderno y actual</li>
+                        <li>Múltiples capas de color</li>
+                        <li>Textura sutil integrada</li>
+                        <li>Distintivo y memorable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 5 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-5">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 5</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 5: Confetti Sutil</h3>
+                    <p class="background-description">
+                        Gradiente vertical con puntos delicados tipo confetti en lila y durazno.
+                        Agrega celebración y alegría sin ser abrumador.
+                    </p>
+                    <ul class="background-features">
+                        <li>Festivo y alegre</li>
+                        <li>Puntos decorativos sutiles</li>
+                        <li>Efecto de celebración</li>
+                        <li>Ideal para página de inicio</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 6 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-6">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 6</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 6: Ondas Flotantes</h3>
+                    <p class="background-description">
+                        Ondas elípticas horizontales en lila, durazno y crema que fluyen sutilmente.
+                        Evoca movimiento suave y delicadeza, perfecto para un look elegante y fluido.
+                    </p>
+                    <ul class="background-features">
+                        <li>Efecto de ondas suaves</li>
+                        <li>Sensación de movimiento</li>
+                        <li>Elegante y fluido</li>
+                        <li>Ideal para páginas con scroll largo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 7 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-7">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 7</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 7: Horizontal Suave</h3>
+                    <p class="background-description">
+                        Gradiente horizontal de izquierda a derecha con transiciones sutiles entre crema y durazno.
+                        Perfecto para dar amplitud visual y modernidad.
+                    </p>
+                    <ul class="background-features">
+                        <li>Dirección horizontal única</li>
+                        <li>Amplitud visual</li>
+                        <li>Muy suave y moderno</li>
+                        <li>Ideal para layouts anchos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 8 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-8">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 8</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 8: Círculos Concéntricos</h3>
+                    <p class="background-description">
+                        Anillos concéntricos desde el centro con colores alternados en lila, durazno y crema.
+                        Crea un punto focal central y profundidad visual sutil.
+                    </p>
+                    <ul class="background-features">
+                        <li>Punto focal centrado</li>
+                        <li>Profundidad visual</li>
+                        <li>Único y distintivo</li>
+                        <li>Perfecto para hero sections</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 9 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-9">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 9</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 9: Geométrico Delicado</h3>
+                    <p class="background-description">
+                        Líneas diagonales cruzadas muy sutiles creando un patrón geométrico delicado.
+                        Agrega textura visual sin ser invasivo, moderno y refinado.
+                    </p>
+                    <ul class="background-features">
+                        <li>Patrón geométrico sutil</li>
+                        <li>Textura refinada</li>
+                        <li>Aspecto profesional</li>
+                        <li>Ideal para portafolios de productos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opción 10 -->
+            <div class="background-card">
+                <div class="background-preview bg-option-10">
+                    <div class="sample-content">
+                        <h2>Lauren</h2>
+                        <p>Opción 10</p>
+                    </div>
+                </div>
+                <div class="background-info">
+                    <h3 class="background-title">Opción 10: Aurora Gradient</h3>
+                    <p class="background-description">
+                        Franjas de color difuminadas tipo aurora boreal en lila, durazno y crema.
+                        Efecto mágico y único que captura la atención con sutileza.
+                    </p>
+                    <ul class="background-features">
+                        <li>Efecto aurora mágico</li>
+                        <li>Muy artístico y único</li>
+                        <li>Captura la atención</li>
+                        <li>Perfecto para destacar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de implementación -->
+        <div class="css-code-section">
+            <h2>📋 Cómo implementar tu fondo favorito</h2>
+            <p style="color: #666; margin-bottom: 1rem;">
+                Una vez que elijas tu opción favorita, solo necesitas copiar el CSS correspondiente y aplicarlo al
+                <code>body</code> de tus páginas HTML.
+            </p>
+            <p style="color: #666; margin-bottom: 1rem;">
+                <strong>Consejo:</strong> Puedes usar diferentes fondos para diferentes páginas. Por ejemplo:
+            </p>
+            <ul style="color: #666; line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Inicio:</strong> Opción 3 (Radial Dreamy), Opción 5 (Confetti) o Opción 10 (Aurora)</li>
+                <li><strong>Tortas:</strong> Opción 2 (Diagonal Elegante) o Opción 6 (Ondas Flotantes)</li>
+                <li><strong>Alfajores:</strong> Opción 1 (Orgánico Suave) o Opción 7 (Horizontal Suave)</li>
+                <li><strong>Brownies/Galletas:</strong> Opción 4 (Mesh Gradient) o Opción 9 (Geométrico)</li>
+                <li><strong>Detalles:</strong> Opción 8 (Círculos Concéntricos) o Opción 5 (Confetti)</li>
+            </ul>
+            <p style="color: #999; font-size: 0.9rem; font-style: italic;">
+                💡 El código CSS completo está visible inspeccionando esta página con las herramientas de desarrollador
+                del navegador.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Efecto de hover mejorado para las tarjetas
+        document.querySelectorAll('.background-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-8px)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        console.log('%c✨ Lauren Repostería - 10 Fondos Demo', 'color: #F9B58C; font-size: 16px; font-weight: bold;');
+        console.log('%cCreado con amor 💜', 'color: #b8a4d4; font-size: 12px;');
+    </script>
+</body>
+
+</html>

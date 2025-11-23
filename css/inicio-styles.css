@@ -67,7 +67,7 @@
     background: transparent;
     border: none;
     box-shadow: none;
-    transition: transform 0.3s ease;
+    transition: all 0.4s ease;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -83,8 +83,27 @@
     justify-content: flex-end;
 }
 
+.product-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to top, rgba(249, 181, 140, 0.15), transparent);
+    transition: height 0.4s ease;
+    z-index: 2;
+    border-radius: 15px;
+    pointer-events: none;
+}
+
 .product-card:hover {
     transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(249, 181, 140, 0.25);
+}
+
+.product-card:hover::before {
+    height: 60%;
 }
 
 /* Video de fondo en la tarjeta */
@@ -106,7 +125,7 @@
 /* Overlay semitransparente */
 .product-card-overlay {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     text-align: center;
     padding: 0;
     margin: 0;
@@ -216,6 +235,7 @@
 
 /* Responsive - Desktop */
 @media (min-width: 769px) {
+
     /* Fila superior - 2 tarjetas */
     .row-top .product-card {
         width: 300px !important;
@@ -265,9 +285,16 @@
         padding: 1.5rem 1.5rem 1.5rem;
     }
 
+    /* Bajar botones un 15% más abajo */
+    .card-cta {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0;
+    }
+
     .btn-peach {
         font-size: 0.95rem;
         padding: 11px 28px;
+        transform: translateY(15%);
     }
 
     /* Nuestra Historia - Responsive */
@@ -276,11 +303,11 @@
         gap: 2rem !important;
     }
 
-    .our-story-grid > div:first-child {
+    .our-story-grid>div:first-child {
         order: 1;
     }
 
-    .our-story-grid > div:last-child {
+    .our-story-grid>div:last-child {
         order: 2;
     }
 }
@@ -299,8 +326,15 @@
         padding: 1.2rem 1.2rem 1.2rem;
     }
 
+    /* Bajar botones un 15% más abajo */
+    .card-cta {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0;
+    }
+
     .btn-peach {
         font-size: 0.9rem;
         padding: 10px 24px;
+        transform: translateY(15%);
     }
 }

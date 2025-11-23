@@ -1,0 +1,371 @@
+/* =====================================================
+   LUXURY HEADER - FLOATING PILL NAVIGATION + HERO
+   Diseño premium con Glassmorphism
+   ===================================================== */
+
+/* ===== VARIABLES CSS (Fácil personalización) ===== */
+:root {
+    /* Colores principales */
+    --luxury-primary: #1a1a1a;
+    --luxury-accent: #b8a4d4;
+    --luxury-accent-soft: #d4c4e8;
+    --luxury-white: #ffffff;
+    --luxury-bg: #fafafa;
+    
+    /* Tipografías */
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Manrope', 'Inter', sans-serif;
+    
+    /* Espaciado */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 6rem;
+    
+    /* Transiciones */
+    --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Navegación */
+    --nav-top-spacing: 2rem;
+    --nav-max-width: 1100px;
+    --nav-blur: 16px;
+}
+
+/* ===== RESET BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== FLOATING PILL NAVIGATION ===== */
+.luxury-nav-container {
+    position: fixed;
+    top: var(--nav-top-spacing);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: var(--nav-max-width);
+    animation: navSlideDown 0.8s ease-out;
+}
+
+.luxury-nav-pill {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(var(--nav-blur));
+    -webkit-backdrop-filter: blur(var(--nav-blur));
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 100px;
+    padding: 1.2rem 2.5rem;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.06),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all var(--transition-smooth);
+}
+
+.luxury-nav-pill:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.luxury-nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+}
+
+/* Nav Links */
+.luxury-nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.luxury-nav-links.left {
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.luxury-nav-links.right {
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.luxury-nav-link {
+    text-decoration: none;
+    color: var(--luxury-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    font-family: var(--font-body);
+    letter-spacing: 0.5px;
+    position: relative;
+    transition: all var(--transition-smooth);
+    padding: 0.5rem 0;
+}
+
+.luxury-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 100%;
+    height: 2px;
+    background: var(--luxury-accent);
+    transition: transform var(--transition-smooth);
+}
+
+.luxury-nav-link:hover {
+    color: var(--luxury-accent);
+}
+
+.luxury-nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+.luxury-nav-link.active {
+    color: var(--luxury-accent);
+}
+
+.luxury-nav-link.active::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Logo Central */
+.luxury-nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--luxury-primary);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all var(--transition-smooth);
+}
+
+.luxury-nav-logo:hover {
+    color: var(--luxury-accent);
+    transform: scale(1.05);
+}
+
+/* ===== HERO SECTION ===== */
+.luxury-hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg) var(--spacing-md);
+    position: relative;
+    overflow: hidden;
+    background-color: var(--luxury-bg);
+}
+
+/* Gradientes de fondo sutiles */
+.luxury-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle,
+            rgba(184, 164, 212, 0.08) 0%,
+            transparent 70%);
+    pointer-events: none;
+    animation: float 20s ease-in-out infinite;
+}
+
+.luxury-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle,
+            rgba(212, 196, 232, 0.06) 0%,
+            transparent 70%);
+    pointer-events: none;
+    animation: float 15s ease-in-out infinite reverse;
+}
+
+/* Contenido del Hero */
+.luxury-hero-content {
+    text-align: center;
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 1s ease-out;
+}
+
+/* Badge "Est. XXXX" */
+.luxury-badge {
+    display: inline-block;
+    padding: 0.6rem 1.8rem;
+    background: rgba(184, 164, 212, 0.1);
+    border: 1px solid rgba(184, 164, 212, 0.2);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--luxury-accent);
+    margin-bottom: var(--spacing-md);
+    animation: fadeUp 1s ease-out 0.2s both;
+    font-family: var(--font-body);
+}
+
+/* Título Hero */
+.luxury-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 12vw, 8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-md);
+    color: var(--luxury-primary);
+}
+
+.luxury-hero-title .line-1 {
+    display: block;
+    animation: fadeUp 1s ease-out 0.4s both;
+}
+
+.luxury-hero-title .line-2 {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--luxury-accent);
+    animation: fadeUp 1s ease-out 0.6s both;
+}
+
+/* Subtítulo Hero */
+.luxury-hero-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 300;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto var(--spacing-lg) auto;
+    line-height: 1.6;
+    animation: fadeUp 1s ease-out 0.8s both;
+}
+
+/* Línea vertical decorativa */
+.luxury-hero-divider {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--luxury-accent) 50%, 
+        transparent 100%);
+    margin: 0 auto;
+    animation: fadeUp 1s ease-out 1s both;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes navSlideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.05);
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .luxury-nav-content {
+        gap: var(--spacing-sm);
+    }
+    
+    .luxury-nav-links {
+        gap: 1.5rem;
+    }
+    
+    .luxury-nav-link {
+        font-size: 0.85rem;
+    }
+    
+    .luxury-nav-logo {
+        font-size: 1.5rem;
+    }
+    
+    .luxury-hero {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --nav-top-spacing: 1rem;
+    }
+    
+    .luxury-nav-container {
+        width: 95%;
+    }
+    
+    .luxury-nav-pill {
+        padding: 1rem 1.5rem;
+    }
+    
+    .luxury-nav-links {
+        display: none;
+    }
+    
+    .luxury-nav-content {
+        justify-content: center;
+    }
+    
+    .luxury-nav-logo {
+        font-size: 1.3rem;
+    }
+    
+    .luxury-badge {
+        font-size: 0.65rem;
+        padding: 0.5rem 1.2rem;
+    }
+    
+    .luxury-hero-divider {
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .luxury-hero-title {
+        font-size: clamp(2.5rem, 10vw, 5rem);
+    }
+    
+    .luxury-hero-subtitle {
+        font-size: 0.95rem;
+    }
+}
