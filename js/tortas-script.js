@@ -569,15 +569,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img) {
             allVintageImagesSrc.push(img.src);
 
-            // DESACTIVADO: Ya no queremos el lightbox antiguo, ahora usamos Product Quick View Modal
-            // item.addEventListener('click', (e) => {
-            //     if (e.target.closest('.pricing-btn-integrated')) {
-            //         return;
-            //     }
-            //     currentVintageIndex = index;
-            //     isVintageLightboxActive = true;
-            //     openVintageLightbox(img.src);
-            // });
+            // ACTIVADO: Al hacer click en la imagen, abrir el modal de precios (Quick View)
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Simular click en el botón de ver precios para abrir el modal con la configuración correcta
+                const btn = document.getElementById('vintagePricingBtn');
+                if (btn) btn.click();
+            });
         }
     });
 
@@ -717,15 +716,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img) {
             allSimpleImagesSrc.push(img.src);
 
-            // DESACTIVADO: Ya no queremos el lightbox antiguo, ahora usamos Product Quick View Modal
-            // item.addEventListener('click', (e) => {
-            //     if (e.target.closest('.pricing-btn-integrated')) {
-            //         return;
-            //     }
-            //     currentSimpleIndex = index;
-            //     isSimpleLightboxActive = true;
-            //     openSimpleLightbox(img.src);
-            // });
+            // ACTIVADO: Al hacer click en la imagen, abrir el modal de precios (Quick View)
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Simular click en el botón de ver precios para abrir el modal con la configuración correcta
+                const btn = document.getElementById('sencillasPricingBtn');
+                if (btn) btn.click();
+            });
         }
     });
 

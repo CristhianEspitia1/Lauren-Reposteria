@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos - Lauren Repostería</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #d4a574;
+            /* Gold */
+            --secondary-color: #e8b4b8;
+            /* Soft Pink */
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f9f9f9;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            width: 300px;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-print {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .btn-save {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            box-shadow: 0 4px 10px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-save:hover,
+        .btn-print:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #fff0f3;
+            /* Very light pink */
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        /* Column specific */
+        .col-img img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .col-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .col-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .col-cat {
+            text-transform: capitalize;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge-tortas {
+            background-color: #ffe4e1;
+            color: #d63384;
+        }
+
+        .badge-alfajores {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-brownies {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-detalles {
+            background-color: #e2e3e5;
+            color: #41464b;
+        }
+
+        .badge-extras {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #ddd;
+        }
+
+        /* Editable fields */
+        [contenteditable="true"] {
+            border-bottom: 1px dashed #ccc;
+            padding: 2px 5px;
+            transition: all 0.2s;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: #fff;
+            border-bottom: 2px solid var(--primary-color);
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: #fcfcfc;
+            border-bottom-color: #aaa;
+        }
+
+        /* Footer */
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Catálogo de Productos</h1>
+            <p class="subtitle">Lauren Repostería - Lista Maestra de Precios</p>
+        </header>
+
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-box" placeholder="Buscar producto...">
+            <div class="action-buttons">
+                <button onclick="window.downloadUpdatedFile()" class="btn-save">💾 Guardar Cambios</button>
+                <button onclick="window.print()" class="btn-print">🖨️ Imprimir</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="productsTable">
+                <thead>
+                    <tr>
+                        <th width="10%">Imagen</th>
+                        <th width="25%">Producto (Editable)</th>
+                        <th width="15%">Categoría</th>
+                        <th width="20%">Precio (Editable)</th>
+                        <th width="30%">Descripción (Editable)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Content will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-note">
+            <p>Edita los campos directamente en la tabla y haz clic en "Guardar Cambios" para descargar el archivo
+                actualizado.</p>
+        </div>
+    </div>
+
+    <!-- Load Data -->
+    <script src="../js/catalog-data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.getElementById('tableBody');
+            const searchInput = document.getElementById('searchInput');
+
+            // State to hold current data
+            let currentData = { ...catalogData };
+
+            function renderTable(filterText = '') {
+                tableBody.innerHTML = '';
+
+                const products = Object.values(currentData);
+
+                products.forEach(product => {
+                    // Filter logic
+                    if (filterText) {
+                        const searchStr = (product.name + product.category + product.description).toLowerCase();
+                        if (!searchStr.includes(filterText.toLowerCase())) return;
+                    }
+
+                    const row = document.createElement('tr');
+
+                    // Category Badge Class
+                    let badgeClass = 'badge-extras';
+                    if (product.category === 'tortas') badgeClass = 'badge-tortas';
+                    if (product.category === 'alfajores') badgeClass = 'badge-alfajores';
+                    if (product.category === 'brownies') badgeClass = 'badge-brownies';
+                    if (product.category === 'detalles') badgeClass = 'badge-detalles';
+
+                    row.innerHTML = `
+                        <td class="col-img">
+                            <img src="${product.mainImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'">
+                        </td>
+                        <td class="col-name" contenteditable="true" data-field="name" data-id="${product.id}">${product.name}</td>
+                        <td><span class="badge ${badgeClass}">${product.category}</span></td>
+                        <td class="col-price" contenteditable="true" data-field="priceFormatted" data-id="${product.id}">${product.priceFormatted}</td>
+                        <td style="font-size: 0.9rem; color: #666;" contenteditable="true" data-field="description" data-id="${product.id}">${product.description || ''}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+
+                // Add listeners to editable cells
+                document.querySelectorAll('[contenteditable="true"]').forEach(cell => {
+                    cell.addEventListener('blur', handleEdit);
+                    cell.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            cell.blur();
+                        }
+                    });
+                });
+            }
+
+            function handleEdit(e) {
+                const cell = e.target;
+                const id = cell.dataset.id;
+                const field = cell.dataset.field;
+                const newValue = cell.innerText.trim();
+
+                // Update data model
+                if (currentData[id]) {
+                    currentData[id][field] = newValue;
+
+                    // Special handling for price
+                    if (field === 'priceFormatted') {
+                        // Try to extract number for the numeric price field
+                        const numericPrice = parseInt(newValue.replace(/\D/g, ''));
+                        if (!isNaN(numericPrice)) {
+                            currentData[id].price = numericPrice;
+                        }
+                    }
+
+                    // Visual feedback
+                    cell.style.backgroundColor = '#e8f5e9';
+                    setTimeout(() => {
+                        cell.style.backgroundColor = '';
+                    }, 500);
+                }
+            }
+
+            // Function to generate JS file content
+            window.downloadUpdatedFile = function () {
+                let jsContent = `/**
+ * CATÁLOGO DE PRODUCTOS - LAUREN REPOSTERÍA
+ * Actualizado desde el Tablero Visual
+ */
+
+const catalogData = {\n`;
+
+                // Iterate and format each product
+                Object.values(currentData).forEach(product => {
+                    jsContent += `    '${product.id}': {\n`;
+                    jsContent += `        id: '${product.id}',\n`;
+                    jsContent += `        name: '${product.name.replace(/'/g, "\\'")}',\n`;
+                    jsContent += `        price: ${product.price},\n`;
+                    jsContent += `        priceFormatted: '${product.priceFormatted.replace(/'/g, "\\'")}',\n`;
+                    jsContent += `        category: '${product.category}',\n`;
+                    jsContent += `        description: '${(product.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n")}',\n`;
+                    jsContent += `        mainImage: '${product.mainImage}',\n`;
+
+                    if (product.images) jsContent += `        images: ${JSON.stringify(product.images, null, 4).replace(/\n/g, '\n        ')},\n`;
+                    if (product.includes) jsContent += `        includes: ${JSON.stringify(product.includes, null, 4).replace(/\n/g, '\n        ')},\n`;
+                    if (product.customizable !== undefined) jsContent += `        customizable: ${product.customizable},\n`;
+                    if (product.options) {
+                        jsContent += `        options: ${JSON.stringify(product.options, null, 4).replace(/\n/g, '\n        ')},\n`;
+                    }
+                    if (product.personalization) {
+                        jsContent += `        personalization: ${JSON.stringify(product.personalization, null, 4).replace(/\n/g, '\n        ')}\n`;
+                    } else {
+                        jsContent += `        personalization: null\n`;
+                    }
+
+                    jsContent += `    },\n\n`;
+                });
+
+                jsContent += `};\n\n`;
+                jsContent += `// Compatibilidad\n`;
+                jsContent += `const detallesProductsData = catalogData;\n`;
+                jsContent += `const productCardMapping = {};\n`;
+                jsContent += `// Mapeo automático de nombres a IDs\n`;
+                jsContent += `Object.values(catalogData).forEach(p => { productCardMapping[p.name] = p.id; });\n`;
+
+                // Create blob and download
+                const blob = new Blob([jsContent], { type: 'text/javascript' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'catalog-data.js';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert('¡Archivo generado! 🚀\\n\\n1. Busca "catalog-data.js" en tus descargas.\\n2. Reemplaza el archivo original en la carpeta "js".\\n3. ¡Tus cambios estarán en vivo!');
+            };
+
+            // Initial Render
+            renderTable();
+
+            // Search Listener
+            searchInput.addEventListener('input', (e) => {
+                renderTable(e.target.value);
+            });
+        });
+    </script>
+</body>
+
+</html>

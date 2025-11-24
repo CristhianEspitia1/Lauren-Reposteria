@@ -200,9 +200,6 @@ class QuickViewModal {
         });
     }
 
-    /**
-     * Renderizar información del producto
-     */
     renderProductInfo(product) {
         const infoContainer = document.getElementById('quickViewInfo');
         if (!infoContainer) return;
@@ -225,12 +222,25 @@ class QuickViewModal {
 
             <!-- Campo de personalización -->
             ${this.renderPersonalization(product)}
+
+            <!-- Botón Agregar al Carrito -->
+            <div class="quick-view-cart-actions">
+                <button class="quick-view-add-to-cart-btn" id="addToCartBtn" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z"/>
+                    </svg>
+                    Agregar al Carrito
+                </button>
+            </div>
         `;
 
         infoContainer.innerHTML = html;
 
         // Adjuntar eventos a las opciones
         this.attachOptionListeners(product);
+
+        // Adjuntar evento al botón de carrito
+        this.attachCartButtonListener(product);
     }
 
     /**
@@ -328,9 +338,9 @@ class QuickViewModal {
                 ${note ? `<p class="quick-view-option-note">${note}</p>` : ''}
                 <div class="quick-view-select-chips" data-option-id="${option.id}" data-max-selection="${option.maxSelection || 1}">
                     ${option.choices.map(choice => {
-                        // Agregar clase de color si el chip representa un color
-                        const colorClass = this.getColorClass(choice.value);
-                        return `
+                // Agregar clase de color si el chip representa un color
+                const colorClass = this.getColorClass(choice.value);
+                return `
                             <button
                                 type="button"
                                 class="quick-view-select-chip ${colorClass}"
@@ -339,7 +349,7 @@ class QuickViewModal {
                                 ${choice.label}
                             </button>
                         `;
-                    }).join('')}
+            }).join('')}
                 </div>
             `;
         }
@@ -652,6 +662,186 @@ class QuickViewModal {
         if (priceElement) {
             priceElement.textContent = this.formatPrice(newPrice);
         }
+    }
+
+    /**
+     * Adjuntar event listener al botón de agregar al carrito
+     */
+    /**
+     * Adjuntar event listener al botón de agregar al carrito
+     */
+    attachCartButtonListener(product) {
+        // Intentar buscar por ID y por clase para mayor seguridad
+        const addToCartBtn = document.getElementById('addToCartBtn') ||
+            document.querySelector('.quick-view-add-to-cart-btn');
+
+        if (!addToCartBtn) {
+            console.error('[QuickViewModal] Botón "Agregar al Carrito" no encontrado en el DOM');
+            return;
+        }
+
+        // Eliminar listeners previos para evitar duplicados
+        const newBtn = addToCartBtn.cloneNode(true);
+        addToCartBtn.parentNode.replaceChild(newBtn, addToCartBtn);
+
+        newBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('[QuickViewModal] Click en agregar al carrito');
+
+            // Validar opciones requeridas
+            if (!this.validateRequiredOptions(product)) {
+                this.showValidationError();
+                return;
+            }
+
+            // Obtener personalización si existe
+            const personalization = this.getPersonalizationValue();
+
+            // Validar personalización requerida
+            if (product.personalization?.required && !personalization) {
+                this.showValidationError('Por favor complete el campo de personalización');
+                return;
+            }
+
+            // Preparar datos del producto para el carrito
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: this.currentPrice,
+                image: product.mainImage || product.images?.[0] || '',
+                options: this.getFormattedOptions(product),
+                personalization: personalization
+            };
+
+            // Agregar al carrito
+            if (window.cartManager) {
+                const success = window.cartManager.addItem(cartItem);
+                if (success) {
+                    console.log('[QuickViewModal] Producto agregado exitosamente:', cartItem);
+                    // Mostrar feedback visual adicional si es necesario
+                } else {
+                    console.error('[QuickViewModal] Error al agregar item al carrito');
+                }
+            } else {
+                console.error('[QuickViewModal] cartManager no está disponible (window.cartManager is undefined)');
+                alert('Lo sentimos, el carrito no está disponible en este momento. Por favor recarga la página.');
+            }
+        });
+    }
+
+    /**
+     * Validar que todas las opciones requeridas estén seleccionadas
+     */
+    validateRequiredOptions(product) {
+        if (!product.options) return true;
+
+        for (const option of product.options) {
+            // Verificar si la opción es visible según sus dependencias
+            if (option.dependsOn) {
+                const parentValue = this.selectedOptions[option.dependsOn];
+                let isVisible = false;
+
+                if (Array.isArray(option.showWhen)) {
+                    isVisible = option.showWhen.includes(parentValue);
+                } else {
+                    isVisible = option.showWhen === parentValue;
+                }
+
+                // Si la opción no es visible, no es requerida
+                if (!isVisible) continue;
+            }
+
+            if (option.required) {
+                const value = this.selectedOptions[option.id];
+
+                // Para radio buttons, siempre debe haber un valor
+                if (option.type === 'radio' && !value) {
+                    return false;
+                }
+
+                // Para select múltiple, debe haber al menos una selección
+                if (option.type === 'select' && option.multiple) {
+                    if (!value || (Array.isArray(value) && value.length === 0)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Obtener valor del campo de personalización
+     */
+    getPersonalizationValue() {
+        const input = document.getElementById('personalization-input');
+        return input ? input.value.trim() : '';
+    }
+
+    /**
+     * Obtener opciones formateadas para mostrar en el carrito
+     */
+    getFormattedOptions(product) {
+        const formatted = {};
+
+        if (!product.options) return formatted;
+
+        product.options.forEach(option => {
+            const value = this.selectedOptions[option.id];
+            if (!value) return;
+
+            // Encontrar el label legible para el valor
+            if (option.type === 'radio' || option.type === 'select') {
+                const choice = option.choices?.find(c => c.value === value);
+                if (choice) {
+                    formatted[option.label] = choice.label;
+                }
+            } else if (option.type === 'select' && Array.isArray(value)) {
+                // Para selección múltiple
+                const labels = value.map(v => {
+                    const choice = option.choices?.find(c => c.value === v);
+                    return choice ? choice.label : v;
+                });
+                formatted[option.label] = labels.join(', ');
+            } else if (option.type === 'toggle') {
+                formatted[option.label] = value ? 'Sí' : 'No';
+            }
+        });
+
+        return formatted;
+    }
+
+    /**
+     * Mostrar mensaje de error de validación
+     */
+    showValidationError(message = 'Por favor selecciona todas las opciones requeridas') {
+        // Crear toast de error
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            z-index: 10001;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: slideInRight 0.4s ease, slideOutRight 0.4s ease 2.6s;
+        `;
+        toast.textContent = `⚠️ ${message}`;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     }
 
     /**
