@@ -23,7 +23,7 @@
 
     body {
         overflow-x: hidden;
-        width: 100%;
+        /* REMOVED width: 100%; - Caused scrollbar jumping */
     }
 
     /* ============================================
@@ -175,7 +175,7 @@
     }
 
     /* Texto primero (order: 1) */
-    .our-story-grid > div:not(.our-story-video-container) {
+    .our-story-grid>div:not(.our-story-video-container) {
         order: 1 !important;
         text-align: center !important;
     }
@@ -282,7 +282,7 @@
     }
 
     /* Botón Ver Precios del carrusel infinito */
-    .infinite-carousel-section-modern > div[style*="margin-top"] {
+    .infinite-carousel-section-modern>div[style*="margin-top"] {
         margin-top: 0.5rem !important;
         padding-bottom: 0rem !important;
     }
@@ -322,7 +322,7 @@
     }
 
     /* Tortas de Alfajor - Lado a lado sin espacios */
-    .fillings-section > .container > div[style*="grid-template-columns"] {
+    .fillings-section>.container>div[style*="grid-template-columns"] {
         display: grid !important;
         grid-template-columns: 1.35fr 1fr !important;
         gap: 0 !important;
@@ -357,7 +357,7 @@
     }
 
     /* Alfajores Individuales - Lado a lado sin espacios */
-    .extras-section .container > div > div[style*="grid-template-columns"] {
+    .extras-section .container>div>div[style*="grid-template-columns"] {
         display: grid !important;
         grid-template-columns: 1.64fr 1.05fr !important;
         gap: 0 !important;
@@ -390,12 +390,12 @@
     }
 
     /* Botón Ver Precios de Alfajores Individuales */
-    .extras-section .container > div > div[style*="margin-top"] {
+    .extras-section .container>div>div[style*="margin-top"] {
         margin-top: 0.5rem !important;
     }
 
     /* Eliminar overlays de Alfajores Individuales en móvil */
-    .alfajor-individual-item > div[style*="gradient"] {
+    .alfajor-individual-item>div[style*="gradient"] {
         display: none !important;
     }
 
@@ -759,11 +759,216 @@
         padding: 25px 12px !important;
     }
 
+    .footer-social-link:hover {
+        background: rgba(255, 255, 255, 0.25) !important;
+        transform: scale(1.1) !important;
+    }
+
+    .footer-social-link svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* ===== SECCIÓN 2: CONTACTO (Siempre visible) ===== */
+    .footer-column:nth-child(3) {
+        order: 2 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(3) .footer-column-title {
+        display: none !important;
+    }
+
+    .footer-contact-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .footer-contact-list li {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+    }
+
+    .footer-contact-list svg {
+        width: 18px !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .footer-contact-list a {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        transition: color 0.3s ease !important;
+    }
+
+    .footer-contact-list a:hover {
+        color: var(--secondary-peach) !important;
+    }
+
+    /* ===== SECCIÓN 3: NAVEGACIÓN (Siempre visible, 2 columnas) ===== */
+    .footer-column:nth-child(2) {
+        order: 3 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(2) .footer-column-title {
+        font-size: 0.95rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+        color: var(--primary-lilac) !important;
+    }
+
+    .footer-links {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px 20px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .footer-links li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    .footer-links a {
+        font-size: 0.85rem !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        text-decoration: none !important;
+        transition: color 0.3s ease !important;
+        display: inline-block !important;
+    }
+
+    .footer-links a:hover {
+        color: var(--secondary-peach) !important;
+    }
+
+    /* ===== SECCIÓN 4: INFORMACIÓN (Siempre visible, compacta) ===== */
+    .footer-column:nth-child(4) {
+        order: 4 !important;
+        padding: 20px 15px !important;
+        border-bottom: 1px solid rgba(200, 165, 216, 0.2) !important;
+    }
+
+    .footer-column:nth-child(4) .footer-column-title {
+        font-size: 0.95rem !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+        color: var(--primary-lilac) !important;
+    }
+
+    .footer-info-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .footer-info-list li {
+        margin: 0 !important;
+        text-align: center !important;
+        list-style: none !important;
+    }
+
+    .footer-info-list li strong {
+        font-size: 0.85rem !important;
+        display: block !important;
+        margin-bottom: 6px !important;
+        color: var(--secondary-peach) !important;
+    }
+
+    .footer-info-list li span {
+        font-size: 0.75rem !important;
+        display: block !important;
+        line-height: 1.4 !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* ===== FOOTER BOTTOM ===== */
+    .footer-bottom {
+        padding: 15px !important;
+        font-size: 0.7rem !important;
+        background: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column !important;
+        gap: 6px !important;
+        text-align: center !important;
+    }
+
+    .footer-bottom-content p {
+        margin: 0 !important;
+        font-size: 0.7rem !important;
+        opacity: 0.8 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ============================================
+       AJUSTES PARA MÓVILES MUY PEQUEÑOS
+       ============================================ */
+
+    .hero-section,
+    .hero-main-carousel {
+        min-height: 300px !important;
+        max-height: 350px !important;
+        height: 300px !important;
+    }
+
+    .section-title,
+    .title {
+        font-size: 1.5rem !important;
+    }
+
+    h1 {
+        font-size: 1.7rem !important;
+    }
+
+    h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    section {
+        padding: 25px 12px !important;
+    }
+
     .product-card {
         min-height: 250px;
     }
 
     .carousel-cell img {
         max-height: 200px;
+    }
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
     }
 }

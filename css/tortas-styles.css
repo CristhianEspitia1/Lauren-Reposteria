@@ -15,6 +15,11 @@
     --light-text: #8B7B9A;
 }
 
+/* CRITICAL FIX: Force scrollbar to always be visible to prevent layout shift */
+html {
+    overflow-y: scroll;
+}
+
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: var(--dark-text);
@@ -24,9 +29,16 @@ body {
     position: relative;
 }
 
+/* Optimize animations */
+.scroll-row,
+.infinite-carousel-track {
+    will-change: transform;
+}
+
+
+/* DISABLED: This was causing visual flicker and z-index conflicts
 body::before {
-    content: '';
-    position: fixed;
+    content: '';\n    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -35,8 +47,7 @@ body::before {
         radial-gradient(circle at 20% 30%, rgba(249, 181, 140, 0.06) 0%, transparent 60%),
         radial-gradient(circle at 80% 70%, rgba(209, 181, 215, 0.05) 0%, transparent 60%),
         radial-gradient(circle at 50% 10%, rgba(249, 181, 140, 0.05) 0%, transparent 55%),
-        radial-gradient(circle at 30% 90%, rgba(232, 212, 200, 0.05) 0%, transparent 55%);
-    pointer-events: none;
+        radial-gradient(circle at 30% 90%, rgba(232, 212, 200, 0.05) 0%, transparent 55%);\n    pointer-events: none;
     z-index: 0;
 }
 
@@ -44,6 +55,7 @@ body>* {
     position: relative;
     z-index: 1;
 }
+*/
 
 .container {
     max-width: 1200px;
@@ -290,13 +302,22 @@ body>* {
 */
 
 /* Hero Carousel */
-.hero-carousel {
+.hero-carousel,
+.hero-main-carousel {
     margin-top: 80px;
     position: relative;
     height: 600px;
     overflow: hidden;
     background: linear-gradient(135deg, var(--light-lilac) 0%, var(--secondary-peach) 100%);
+    /* FIX: Prevent layout thrashing */
+    contain: strict;
 }
+
+/* FIX: Prevent scroll anchoring jumps */
+body {
+    overflow-anchor: none;
+}
+
 
 .carousel-container {
     position: relative;
@@ -1112,10 +1133,12 @@ html {
 .vintage-carousel-group.active {
     opacity: 1;
     visibility: visible;
-    position: relative;
+    /* FIX: Keep absolute to prevent height jump */
+    position: absolute;
     transition: opacity 0.6s ease-in-out, visibility 0s linear 0s;
     z-index: 2;
 }
+
 
 /* Items individuales - 3 FOTOS MUY GRANDES */
 .vintage-gallery-item {
@@ -1596,10 +1619,12 @@ html {
 .simple-carousel-group.active {
     opacity: 1;
     visibility: visible;
-    position: relative;
+    /* FIX: Keep absolute to prevent height jump */
+    position: absolute;
     transition: opacity 0.6s ease-in-out, visibility 0s linear 0s;
     z-index: 2;
 }
+
 
 /* Items individuales simple - 3 FOTOS MUY GRANDES */
 .simple-gallery-item {
@@ -2127,6 +2152,8 @@ html {
 .infinite-carousel-track {
     display: flex;
     gap: 30px;
+    padding-right: 30px;
+    /* Fix for seamless loop calculation */
     animation: scroll-left 300s linear infinite;
     /* Velocidad reducida */
     width: max-content;
