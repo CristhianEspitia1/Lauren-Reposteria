@@ -109,18 +109,31 @@ C:\LaurenReposteria\
 - 🍪 Galletas decoradas
 - 🎁 Detalles especiales
 
-### Carrusel Infinito
+### Quick View Modal 🆕
+- ✅ Vista rápida de productos sin recargar la página
+- ✅ Selección dinámica de opciones y precios
+- ✅ Integración con carrito de compras
+- ✅ Disponible en Alfajores, Brownies y Galletas
+
+### Carruseles Automáticos 🆕
+- ✅ Rotación automática de imágenes en Brownies y Galletas
+- ✅ Pausa inteligente al pasar el mouse (hover)
+- ✅ Navegación manual con indicadores (dots)
+- ✅ Transiciones suaves
+
+### Carrusel Infinito (Tortas)
 - ✅ 80 elementos HTML estáticos (40 + 40 duplicados)
 - ✅ Animación CSS pura sin JavaScript
 - ✅ Sin parpadeo durante el scroll
 - ✅ Hover effects suaves
 - ✅ Compatible con todos los navegadores
 
-### Optimizaciones
-- Scroll listener deshabilitado
-- Clonación JavaScript deshabilitada
-- CSS optimizado con transitions
-- Error handlers que excluyen el carrusel
+### Optimizaciones y Correcciones
+- ✅ Restauración crítica de scripts en `alfajores.html`
+- ✅ Integración robusta de `catalog-data.js` y `quick-view-modal.js`
+- ✅ Scroll listener deshabilitado donde no es necesario
+- ✅ CSS optimizado con transitions
+- ✅ Error handlers mejorados
 
 ---
 
