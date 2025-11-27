@@ -107,6 +107,16 @@ class QuickViewModal {
         this.selectedOptions = {};
         this.currentPrice = productData.price || 0;
 
+        // Inicializar opciones requeridas con su primer valor
+        if (productData.options && productData.options.length > 0) {
+            productData.options.forEach(option => {
+                // Para opciones tipo radio requeridas, seleccionar automáticamente la primera opción
+                if (option.required && option.type === 'radio' && option.choices && option.choices.length > 0) {
+                    this.selectedOptions[option.id] = option.choices[0].value;
+                }
+            });
+        }
+
         // Renderizar contenido
         this.renderProduct(productData);
 
@@ -238,6 +248,24 @@ class QuickViewModal {
 
         // Adjuntar eventos a las opciones
         this.attachOptionListeners(product);
+
+        // Aplicar estilos visuales a las opciones pre-seleccionadas
+        Object.keys(this.selectedOptions).forEach(optionId => {
+            const selectedValue = this.selectedOptions[optionId];
+            const selectedChoice = document.querySelector(`[data-option-id="${optionId}"][data-value="${selectedValue}"]`);
+            if (selectedChoice) {
+                selectedChoice.classList.add('selected');
+            }
+        });
+
+        // Calcular precio inicial basado en opciones pre-seleccionadas
+        if (product.options && product.options.length > 0) {
+            product.options.forEach(option => {
+                if (this.selectedOptions[option.id]) {
+                    this.updatePrice(product, option, this.selectedOptions[option.id]);
+                }
+            });
+        }
 
         // Adjuntar evento al botón de carrito
         this.attachCartButtonListener(product);

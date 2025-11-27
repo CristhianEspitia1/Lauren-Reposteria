@@ -1537,337 +1537,385 @@
                                     <path
                                         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
                                         fill="currentColor" />
-                                </svg>
-                                Hacer Pedido por WhatsApp
-                            </a>
+                                    <div class="product-modal-info">
+                                        <!-- Nombre del Producto -->
+                                        <h2 class="product-modal-title" id="productModalTitle"></h2>
+
+                                        <!-- Precio -->
+                                        <div class="product-modal-price-wrapper">
+                                            <span class="product-modal-price" id="productModalPrice"></span>
+                                            <span class="product-modal-price-note" id="productModalPriceNote"
+                                                style="display: none;"></span>
+                                        </div>
+
+                                        <!-- Descripción -->
+                                        <p class="product-modal-description" id="productModalDescription"></p>
+
+                                        <!-- Qué Incluye -->
+                                        <div class="product-modal-includes">
+                                            <h3 class="product-modal-section-title">¿Qué incluye?</h3>
+                                            <ul class="product-modal-includes-list" id="productModalIncludesList"></ul>
+                                        </div>
+
+                                        <!-- Opciones Configurables -->
+                                        <div class="product-modal-options" id="productModalOptions">
+                                            <!-- Las opciones se generarán dinámicamente -->
+                                        </div>
+
+                                        <!-- Campo de Personalización -->
+                                        <div class="product-modal-personalization" id="productModalPersonalization"
+                                            style="display: none;">
+                                            <!-- Los campos de personalización se generarán dinámicamente -->
+                                        </div>
+
+                                        <!-- Botón de Contacto para Pedido -->
+                                        <div class="product-modal-actions">
+                                            <a href="#" class="product-modal-cta-btn" id="productModalCTA"
+                                                target="_blank">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                                Hacer Pedido por WhatsApp
+                                            </a>
+                                        </div>
+                                    </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Scripts del sistema de modal -->
-    <script src="../js/alfajores-data.js"></script>
-    <script src="../js/quick-view-modal.js"></script>
-    <script src="../js/tortas-script.js"></script>
+            <!-- Scripts del sistema de modal -->
+            <script src="../js/alfajores-data.js"></script>
+            <script src="../js/quick-view-modal.js"></script>
+            <script src="../js/tortas-script.js"></script>
 
-    <!-- Script de integración del Quick View Modal con productos de alfajores -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Función para abrir modal basado en el nombre del producto
-            function openModalFromCard(card) {
-                const nameElement = card.querySelector('h3');
-                if (nameElement) {
-                    const productName = nameElement.textContent.trim();
+            <!-- Script de integración del Quick View Modal con productos de alfajores -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Función para abrir modal basado en el nombre del producto
+                    function openModalFromCard(card) {
+                        const nameElement = card.querySelector('h3');
+                        if (nameElement) {
+                            const productName = nameElement.textContent.trim();
 
-                    if (productCardMapping && productCardMapping[productName]) {
-                        const productId = productCardMapping[productName];
-                        if (typeof openQuickView === 'function') {
-                            openQuickView(productId, detallesProductsData);
+                            if (productCardMapping && productCardMapping[productName]) {
+                                const productId = productCardMapping[productName];
+                                if (typeof openQuickView === 'function') {
+                                    openQuickView(productId, detallesProductsData);
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            // Integrar Carrusel Infinito de Alfajores Personalizados
-            const carouselItems = document.querySelectorAll('.infinite-carousel-item');
-            carouselItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    // Integrar Carrusel Infinito de Alfajores Personalizados
+                    const carouselItems = document.querySelectorAll('.infinite-carousel-item');
+                    carouselItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
 
-                    if (typeof openQuickView === 'function') {
-                        openQuickView('alfajor-personalizado', detallesProductsData);
-                    }
-                });
-                item.style.cursor = 'pointer';
-            });
-
-            // Integrar Caja x6, Caja x12, Vaso de Minis
-            const cajaItems = document.querySelectorAll('.alfajor-caja-item');
-            cajaItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openModalFromCard(item);
-                });
-                item.style.cursor = 'pointer';
-            });
-
-            // Integrar Tortas de Alfajor
-            const tortaItems = document.querySelectorAll('.torta-alfajor-item');
-            tortaItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function') {
-                        openQuickView('torta-alfajor', detallesProductsData);
-                    }
-                });
-                item.style.cursor = 'pointer';
-            });
-
-            // Integrar Alfajores Individuales
-            const individualItems = document.querySelectorAll('.alfajor-individual-item');
-            individualItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function') {
-                        openQuickView('alfajor-individual', detallesProductsData);
-                    }
-                });
-                item.style.cursor = 'pointer';
-            });
-
-            console.log('%c🍪 Quick View Modal integrado en Alfajores!', 'color: #d4a574; font-weight: bold;');
-        });
-    </script>
-
-    <script>
-        // ========================================
-        // CONECTAR BOTONES "VER PRECIOS" AL QUICK VIEW MODAL
-        // ========================================
-        document.addEventListener('DOMContentLoaded', function () {
-            // Conectar botón de Alfajores Personalizados
-            const personalizadosPricingBtn = document.getElementById('personalizadosPricingBtn');
-            if (personalizadosPricingBtn) {
-                personalizadosPricingBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('alfajor-personalizado', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Cajas de Alfajores
-            const cajasPricingBtn = document.getElementById('cajasPricingBtn');
-            if (cajasPricingBtn) {
-                cajasPricingBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        // Abrir modal con la primera caja por defecto (Caja x6)
-                        openQuickView('caja-x6', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Tortas de Alfajor
-            const tortasPricingBtn = document.getElementById('tortasPricingBtn');
-            if (tortasPricingBtn) {
-                tortasPricingBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('torta-alfajor', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Alfajores Individuales (primer botón)
-            const individualesPricingBtn = document.getElementById('individualesPricingBtn');
-            if (individualesPricingBtn) {
-                individualesPricingBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('alfajor-individual', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Alfajores Individuales (segundo botón)
-            const individualesPricingBtn2 = document.getElementById('individualesPricingBtn2');
-            if (individualesPricingBtn2) {
-                individualesPricingBtn2.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('alfajor-individual', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Caja x6
-            const cajaX6Btn = document.getElementById('cajaX6Btn');
-            if (cajaX6Btn) {
-                cajaX6Btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x6', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Vaso de Minis
-            const vasoMinisBtn = document.getElementById('vasoMinisBtn');
-            if (vasoMinisBtn) {
-                vasoMinisBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('vaso-minis', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar botón de Caja x12
-            const cajaX12Btn = document.getElementById('cajaX12Btn');
-            if (cajaX12Btn) {
-                cajaX12Btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x12', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Caja x6
-            const cajaX6Img = document.getElementById('cajaX6Img');
-            if (cajaX6Img) {
-                cajaX6Img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x6', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Vaso de Minis
-            const vasoMinisImg = document.getElementById('vasoMinisImg');
-            if (vasoMinisImg) {
-                vasoMinisImg.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('vaso-minis', detallesProductsData);
-                    }
-                });
-            }
-
-            // Conectar imagen de Caja x12
-            const cajaX12Img = document.getElementById('cajaX12Img');
-            if (cajaX12Img) {
-                cajaX12Img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                        openQuickView('caja-x12', detallesProductsData);
-                    }
-                });
-            }
-
-            console.log('%c✅ Botones e Imágenes "Ver Precios" de Alfajores conectados al Quick View Modal', 'color: #4CAF50; font-weight: bold;');
-        });
-    </script>
-
-    <script src="../js/contact-fab.js"></script>
-
-    <!-- JavaScript del Header (Menú Hamburguesa y Dropdown de Contacto) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // ========================================
-            // MENÚ HAMBURGUESA
-            // ========================================
-            const menuToggle = document.querySelector('.menu-toggle-minimal');
-            const mainNav = document.getElementById('minimalNav');
-            const navItems = document.querySelectorAll('.nav-item');
-
-            if (menuToggle && mainNav) {
-                // Toggle menu al hacer click en el botón
-                menuToggle.addEventListener('click', () => {
-                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                    menuToggle.setAttribute('aria-expanded', !isExpanded);
-                    menuToggle.classList.toggle('active');
-                    mainNav.classList.toggle('active');
-
-                    // Prevenir scroll cuando el menú está abierto
-                    if (!isExpanded) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                });
-
-                // Cerrar menú al hacer click en un enlace
-                navItems.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mainNav.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
+                            if (typeof openQuickView === 'function') {
+                                openQuickView('alfajor-personalizado', detallesProductsData);
+                            }
+                        });
+                        item.style.cursor = 'pointer';
                     });
-                });
 
-                // Cerrar menú con tecla ESC
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-                        mainNav.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
+                    // Integrar Caja x6, Caja x12, Vaso de Minis
+                    // CORRECCIÓN: Usar el selector correcto .cajas-gallery-item y mapear por índice
+                    const cajaGalleryItems = document.querySelectorAll('.cajas-gallery-item');
+                    cajaGalleryItems.forEach((item, index) => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            // Mapear cada imagen a su producto correspondiente: 0=Caja x6, 1=Vaso, 2=Caja x12
+                            const productMap = ['caja-x6', 'vaso-minis', 'caja-x12'];
+                            const productId = productMap[index];
+
+                            if (productId && typeof openQuickView === 'function') {
+                                openQuickView(productId, detallesProductsData);
+                            }
+                        });
+                        item.style.cursor = 'pointer';
+                    });
+
+                    // Integrar Tortas de Alfajor
+                    const tortaItems = document.querySelectorAll('.torta-alfajor-item');
+                    tortaItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function') {
+                                openQuickView('torta-alfajor', detallesProductsData);
+                            }
+                        });
+                        item.style.cursor = 'pointer';
+                    });
+
+                    // Integrar Alfajores Individuales
+                    const individualItems = document.querySelectorAll('.alfajor-individual-item');
+                    individualItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function') {
+                                openQuickView('alfajor-individual', detallesProductsData);
+                            }
+                        });
+                        item.style.cursor = 'pointer';
+                    });
+
+                    console.log('%c🍪 Quick View Modal integrado en Alfajores!', 'color: #d4a574; font-weight: bold;');
+                });
+            </script>
+
+            <script>
+                // ========================================
+                // CONECTAR BOTONES "VER PRECIOS" AL QUICK VIEW MODAL
+                // ========================================
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Conectar botón de Alfajores Personalizados
+                    const personalizadosPricingBtn = document.getElementById('personalizadosPricingBtn');
+                    if (personalizadosPricingBtn) {
+                        personalizadosPricingBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('alfajor-personalizado', detallesProductsData);
+                            }
+                        });
                     }
-                });
-            }
 
-            // ========================================
-            // BOTÓN DE CONTACTO DROPDOWN
-            // ========================================
-            const contactBtn = document.querySelector('.contact-dropdown-btn');
-            const contactMenu = document.querySelector('.contact-dropdown-menu');
-            const contactDropdown = document.querySelector('.contact-dropdown');
+                    // Conectar botón de Cajas de Alfajores
+                    const cajasPricingBtn = document.getElementById('cajasPricingBtn');
+                    if (cajasPricingBtn) {
+                        cajasPricingBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
 
-            if (contactBtn && contactMenu) {
-                // Toggle dropdown al hacer click
-                contactBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
-                    contactBtn.setAttribute('aria-expanded', !isExpanded);
-                    contactMenu.classList.toggle('active');
-                });
-
-                // Cerrar dropdown al hacer click fuera
-                document.addEventListener('click', (e) => {
-                    if (!contactDropdown.contains(e.target)) {
-                        contactMenu.classList.remove('active');
-                        contactBtn.setAttribute('aria-expanded', 'false');
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                // Abrir modal con la primera caja por defecto (Caja x6)
+                                openQuickView('caja-x6', detallesProductsData);
+                            }
+                        });
                     }
-                });
 
-                // Cerrar dropdown con tecla ESC
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && contactMenu.classList.contains('active')) {
-                        contactMenu.classList.remove('active');
-                        contactBtn.setAttribute('aria-expanded', 'false');
+                    // Conectar botón de Tortas de Alfajor
+                    const tortasPricingBtn = document.getElementById('tortasPricingBtn');
+                    if (tortasPricingBtn) {
+                        tortasPricingBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('torta-alfajor', detallesProductsData);
+                            }
+                        });
                     }
-                });
-            }
 
-            console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
-        });
-    </script>
-    <!-- Scripts del carrito -->
-    <script src="../js/cart-manager.js"></script>
-    <script src="../js/cart-ui.js"></script>
+                    // Conectar botón de Alfajores Individuales (primer botón)
+                    const individualesPricingBtn = document.getElementById('individualesPricingBtn');
+                    if (individualesPricingBtn) {
+                        individualesPricingBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('alfajor-individual', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar botón de Alfajores Individuales (segundo botón)
+                    const individualesPricingBtn2 = document.getElementById('individualesPricingBtn2');
+                    if (individualesPricingBtn2) {
+                        individualesPricingBtn2.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('alfajor-individual', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar botón de Caja x6
+                    const cajaX6Btn = document.getElementById('cajaX6Btn');
+                    if (cajaX6Btn) {
+                        cajaX6Btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('caja-x6', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar botón de Vaso de Minis
+                    const vasoMinisBtn = document.getElementById('vasoMinisBtn');
+                    if (vasoMinisBtn) {
+                        vasoMinisBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('vaso-minis', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar botón de Caja x12
+                    const cajaX12Btn = document.getElementById('cajaX12Btn');
+                    if (cajaX12Btn) {
+                        cajaX12Btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('caja-x12', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar imagen de Caja x6
+                    const cajaX6Img = document.getElementById('cajaX6Img');
+                    if (cajaX6Img) {
+                        cajaX6Img.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('caja-x6', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar imagen de Vaso de Minis
+                    const vasoMinisImg = document.getElementById('vasoMinisImg');
+                    if (vasoMinisImg) {
+                        vasoMinisImg.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('vaso-minis', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    // Conectar imagen de Caja x12
+                    const cajaX12Img = document.getElementById('cajaX12Img');
+                    if (cajaX12Img) {
+                        cajaX12Img.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
+                                openQuickView('caja-x12', detallesProductsData);
+                            }
+                        });
+                    }
+
+                    console.log('%c✅ Botones e Imágenes "Ver Precios" de Alfajores conectados al Quick View Modal', 'color: #4CAF50; font-weight: bold;');
+                });
+            </script>
+
+            <script src="../js/contact-fab.js"></script>
+
+            <!-- JavaScript del Header (Menú Hamburguesa y Dropdown de Contacto) -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // ========================================
+                    // MENÚ HAMBURGUESA
+                    // ========================================
+                    const menuToggle = document.querySelector('.menu-toggle-minimal');
+                    const mainNav = document.getElementById('minimalNav');
+                    const navItems = document.querySelectorAll('.nav-item');
+
+                    if (menuToggle && mainNav) {
+                        // Toggle menu al hacer click en el botón
+                        menuToggle.addEventListener('click', () => {
+                            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                            menuToggle.setAttribute('aria-expanded', !isExpanded);
+                            menuToggle.classList.toggle('active');
+                            mainNav.classList.toggle('active');
+
+                            // Prevenir scroll cuando el menú está abierto
+                            if (!isExpanded) {
+                                document.body.style.overflow = 'hidden';
+                            } else {
+                                document.body.style.overflow = '';
+                            }
+                        });
+
+                        // Cerrar menú al hacer click en un enlace
+                        navItems.forEach(link => {
+                            link.addEventListener('click', () => {
+                                mainNav.classList.remove('active');
+                                menuToggle.classList.remove('active');
+                                menuToggle.setAttribute('aria-expanded', 'false');
+                                document.body.style.overflow = '';
+                            });
+                        });
+
+                        // Cerrar menú con tecla ESC
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                                mainNav.classList.remove('active');
+                                menuToggle.classList.remove('active');
+                                menuToggle.setAttribute('aria-expanded', 'false');
+                                document.body.style.overflow = '';
+                            }
+                        });
+                    }
+
+                    // ========================================
+                    // BOTÓN DE CONTACTO DROPDOWN
+                    // ========================================
+                    const contactBtn = document.querySelector('.contact-dropdown-btn');
+                    const contactMenu = document.querySelector('.contact-dropdown-menu');
+                    const contactDropdown = document.querySelector('.contact-dropdown');
+
+                    if (contactBtn && contactMenu) {
+                        // Toggle dropdown al hacer click
+                        contactBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
+                            contactBtn.setAttribute('aria-expanded', !isExpanded);
+                            contactMenu.classList.toggle('active');
+                        });
+
+                        // Cerrar dropdown al hacer click fuera
+                        document.addEventListener('click', (e) => {
+                            if (!contactDropdown.contains(e.target)) {
+                                contactMenu.classList.remove('active');
+                                contactBtn.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+
+                        // Cerrar dropdown con tecla ESC
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === 'Escape' && contactMenu.classList.contains('active')) {
+                                contactMenu.classList.remove('active');
+                                contactBtn.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    }
+
+                    console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
+                });
+            </script>
+            <!-- Scripts del carrito -->
+            <script src="../js/cart-manager.js"></script>
+            <script src="../js/cart-ui.js"></script>
 
 </body>
 
