@@ -134,6 +134,56 @@ C:\LaurenReposteria\
 - ✅ Scroll listener deshabilitado donde no es necesario
 - ✅ CSS optimizado con transitions
 - ✅ Error handlers mejorados
+- ✅ **Fix crítico de case-sensitivity** para imágenes en servidores Linux (GitHub Pages)
+
+---
+
+## 🌐 DESPLIEGUE Y PRODUCCIÓN
+
+### Sitio Web en Vivo
+**URL:** https://CristhianEspitia1.github.io/Lauren-Reposteria/
+
+### Actualizar el Sitio Web
+```bash
+# 1. Hacer cambios locales y probar
+# 2. Guardar con Git
+git add .
+git commit -m "Descripción del cambio"
+
+# 3. Subir a GitHub (el sitio se actualiza automáticamente en 2-3 minutos)
+git push origin main
+```
+
+### Verificar Despliegue
+- Ve a: https://github.com/CristhianEspitia1/Lauren-Reposteria/actions
+- Espera a ver el ✅ verde
+- Recarga tu sitio con `Ctrl + Shift + R`
+
+---
+
+## ⚠️ IMPORTANTE: Case-Sensitivity en Nombres de Archivo
+
+**CRÍTICO:** GitHub Pages usa servidores Linux que **SÍ distinguen mayúsculas/minúsculas**.
+
+### ❌ Problema Común:
+```
+Windows:   "Imagen.jpg" = "imagen.jpg"  (son el mismo)
+Linux:     "Imagen.jpg" ≠ "imagen.jpg"  (son diferentes!)
+```
+
+### ✅ Solución:
+1. **Usa siempre minúsculas** en nombres de archivo
+2. **Reemplaza espacios con guiones**: `mi-imagen.jpg`
+3. **Sé consistente** entre HTML y archivo
+
+### Cómo Renombrar Correctamente:
+```bash
+# Si Windows no detecta el cambio de mayúsculas:
+git rm --cached "assets/imagen/Foto.jpg"
+git add "assets/imagen/foto.jpg"
+git commit -m "Fix: Rename file for case-sensitivity"
+git push origin main
+```
 
 ---
 
@@ -142,24 +192,59 @@ C:\LaurenReposteria\
 - HTML5
 - CSS3 (Animaciones, Flexbox, Grid)
 - JavaScript (Vanilla, sin frameworks)
-- Git (Control de versiones)
+- Git & GitHub (Control de versiones y despliegue)
+- GitHub Pages (Hosting)
 
-  ## 📞 Contacto
+---
 
-  - **WhatsApp**: 310 444 27 96
-  - **Instagram**: @laurenreposteria22
-  - **TikTok**: @laurenreposteria
-  - **Email**: reposterialauren@gmail.com
-  - **Ubicación**: Medellín, Colombia
+## 📊 ESTADÍSTICAS DEL PROYECTO
 
-  ## 📝 Información
+- **Páginas HTML**: 5 páginas completas
+- **Productos**: 50+ productos con imágenes y precios
+- **Scripts JS**: 10+ módulos organizados  
+- **Archivos CSS**: 8 hojas de estilo optimizadas
+- **Commits**: 100+ commits documentados
+- **Estado**: ✅ En producción y funcionando
 
-  - ⏰ Horario: Lunes a Sábado, 9:00 AM - 6:00 PM
-  - 📅 Pedidos con mínimo 1 día de anticipación
-  - 🎨 Productos 100% personalizables
+---
 
-  ---
+## 📞 CONTACTO
 
-  © 2024 Lauren Repostería. Todos los derechos reservados.
+**Lauren Repostería**  
+📍 Medellín, Colombia
 
-  **Hecho con 💜 en Medellín, Colombia**
+- 📱 **WhatsApp**: [+57 310 444 2796](https://wa.me/573104442796)
+- 📸 **Instagram**: [@laurenreposteria22](https://instagram.com/laurenreposteria22)
+- 🎵 **TikTok**: @laurenreposteria
+- 📧 **Email**: reposterialauren@gmail.com
+
+### 📝 Información de Servicio
+
+- ⏰ **Horario**: Lunes a Sábado, 9:00 AM - 6:00 PM
+- 📅 **Pedidos**: Mínimo 1 día de anticipación
+- 🎨 **Personalización**: 100% productos personalizables
+- 🚚 **Entregas**: Disponibles en Medellín
+
+---
+
+## 📌 NOTAS IMPORTANTES
+
+### Commits Clave:
+- `6979cf3` - ✅ **Fix crítico de case-sensitivity** (28/11/2025)
+- `bcbbdb5` - Restauración completa de detalles.html con grid de productos
+- `148eecc` - Versión estable con carrusel funcionando
+- `cc1984a` - Guía de mantenimiento agregada
+
+### Para Desarrolladores:
+- Siempre probar localmente antes de hacer push
+- Usar `Ctrl + Shift + R` para hard refresh
+- Revisar la consola del navegador para errores
+- Verificar el estado de despliegue en GitHub Actions
+
+---
+
+**© 2025 Lauren Repostería**. Todos los derechos reservados.
+
+**Hecho con 💜 en Medellín, Colombia**
+
+*Última actualización: 28 de noviembre de 2025*
