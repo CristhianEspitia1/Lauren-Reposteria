@@ -92,6 +92,7 @@ C:\LaurenReposteria\
 
 ## 📖 DOCUMENTACIÓN IMPORTANTE
 
+- **[PROBLEMAS-PENDIENTES.md](PROBLEMAS-PENDIENTES.md)** - 🆕 Lista verificada de problemas a resolver (actualizado 29/11/2025)
 - **[GUIA-MANTENIMIENTO.md](GUIA-MANTENIMIENTO.md)** - Reglas para el carrusel infinito
 - **Commits importantes:**
   - `148eecc` - Versión estable con carrusel funcionando
