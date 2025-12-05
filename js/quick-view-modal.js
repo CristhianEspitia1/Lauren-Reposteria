@@ -634,19 +634,25 @@ class QuickViewModal {
         product.options?.forEach(opt => {
             const selectedValue = this.selectedOptions[opt.id];
 
-            if (opt.priceModifier === true && selectedValue) {
+            // Verificar si esta opción está visible (respeta dependencias)
+            let isOptionVisible = true;
+            if (opt.dependsOn) {
+                const parentValue = this.selectedOptions[opt.dependsOn];
+                if (Array.isArray(opt.showWhen)) {
+                    isOptionVisible = opt.showWhen.includes(parentValue);
+                } else {
+                    isOptionVisible = opt.showWhen === parentValue;
+                }
+            }
+
+            // Solo procesar opciones visibles
+            if (opt.priceModifier === true && selectedValue && isOptionVisible) {
                 const choice = opt.choices?.find(c => c.value === selectedValue);
 
                 if (choice && choice.price !== undefined) {
                     // Si la opción es "presentacion"
                     if (opt.id === 'presentacion') {
-                        // Solo usar el precio de presentación si NO es 'individual'
-                        if (selectedValue !== 'individual') {
-                            basePrice = choice.price;
-                        } else {
-                            // Para individual, el precio se define por sabor + cantidad
-                            basePrice = choice.price; // Precio base individual
-                        }
+                        basePrice = choice.price;
                     }
                     // Si la opción es "porciones" (para tortas)
                     else if (opt.id === 'porciones') {
@@ -654,6 +660,10 @@ class QuickViewModal {
                     }
                     // Si la opción es "tamano" (para torta de alfajor)
                     else if (opt.id === 'tamano') {
+                        basePrice = choice.price;
+                    }
+                    // Si la opción es "diseno" (para alfajores personalizados)
+                    else if (opt.id === 'diseno') {
                         basePrice = choice.price;
                     }
                     // Si la opción es "sabor" (para galletas/brownies individuales)

@@ -40,6 +40,7 @@ const detallesProductsData = {
                 label: 'Tipo de diseño',
                 type: 'radio',
                 required: true,
+                priceModifier: true,
                 choices: [
                     { value: 'basico', label: 'Diseño Básico - $60.000 (unidad)', price: 60000 }
                 ]
@@ -67,8 +68,8 @@ const detallesProductsData = {
     'caja-x6': {
         id: 'caja-x6',
         name: 'Caja x6 Alfajores',
-        price: 16000,
-        priceFormatted: '$16.000',
+        price: 22000,
+        priceFormatted: '$22.000',
         category: 'cajas',
         description: 'Deliciosos alfajores de maicena rellenos de arequipe. Perfectos para compartir o regalar. Presentación en caja elegante.',
         mainImage: '../assets/imagenes-alfajores/Alfajores x6.png',
@@ -89,8 +90,8 @@ const detallesProductsData = {
     'caja-x12': {
         id: 'caja-x12',
         name: 'Caja x12 Alfajores',
-        price: 32000,
-        priceFormatted: '$32.000',
+        price: 37000,
+        priceFormatted: '$37.000',
         category: 'cajas',
         description: 'Docena de alfajores de maicena rellenos de arequipe. Ideal para compartir en reuniones o como regalo especial.',
         mainImage: '../assets/imagenes-alfajores/Alfajores x12.png',
@@ -111,8 +112,8 @@ const detallesProductsData = {
     'vaso-minis': {
         id: 'vaso-minis',
         name: 'Vaso de Mini Alfajores',
-        price: 14000,
-        priceFormatted: '$14.000',
+        price: 27000,
+        priceFormatted: '$27.000',
         category: 'minis',
         description: 'Vaso decorativo lleno de mini alfajores. Perfecto para regalar o disfrutar en porciones pequeñas.',
         mainImage: '../assets/imagenes-alfajores/Alfajores vaso mini.jpg',
@@ -133,10 +134,10 @@ const detallesProductsData = {
     'torta-alfajor': {
         id: 'torta-alfajor',
         name: 'Torta de Alfajor',
-        price: 50000,
-        priceFormatted: 'Desde $50.000',
+        price: 25000,
+        priceFormatted: 'Desde $25.000',
         category: 'tortas',
-        description: 'Torta especial hecha con capas de alfajor de maicena y relleno de arequipe. Una experiencia única y deliciosa.',
+        description: 'Torta de alfajor rellena de arequipe con 3 capas de relleno. Una experiencia única y deliciosa.',
         mainImage: '../assets/imagenes-alfajores/TortaAlfajor1.png',
         images: [
             '../assets/imagenes-alfajores/TortaAlfajor1.png',
@@ -144,8 +145,8 @@ const detallesProductsData = {
         ],
         includes: [
             'Torta de alfajor según tamaño',
+            '3 capas de relleno de arequipe',
             'Capas de alfajor de maicena',
-            'Relleno de arequipe',
             'Decoración elegante'
         ],
         customizable: true,
@@ -157,10 +158,10 @@ const detallesProductsData = {
                 required: true,
                 priceModifier: true,
                 choices: [
-                    { value: 'personal', label: 'Personal (8 cm)', price: 50000 },
-                    { value: '4-6', label: '4-6 porciones (11 cm)', price: 62000 },
-                    { value: '6-8', label: '6-8 porciones (13 cm)', price: 72000 },
-                    { value: '10-12', label: '10-12 porciones (16 cm)', price: 87000 }
+                    { value: 'personal', label: 'Personal (8 cm)', price: 25000 },
+                    { value: '4-6', label: '4-6 porciones (11 cm)', price: 38000 },
+                    { value: '6-8', label: '6-8 porciones (13 cm)', price: 45000 },
+                    { value: '10-12', label: '10-12 porciones (16 cm)', price: 60000 }
                 ]
             }
         ],
@@ -199,6 +200,7 @@ const detallesProductsData = {
                 label: 'Presentación y precio por unidad',
                 type: 'radio',
                 required: true,
+                priceModifier: true,
                 choices: [
                     { value: 'mini-3', label: 'Minis x3 (2 cm c/u) - $3.000', price: 3000 },
                     { value: 'mini-6', label: 'Minis x6 (2 cm c/u) - $5.000', price: 5000 },

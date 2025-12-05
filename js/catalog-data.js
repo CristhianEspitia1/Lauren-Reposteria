@@ -716,8 +716,6 @@ const catalogData = {
                 "label": "Sabor de la galleta",
                 "type": "radio",
                 "required": true,
-                "dependsOn": "presentacion",
-                "showWhen": "individual",
                 "priceModifier": true,
                 "choices": [
                     {
@@ -757,8 +755,6 @@ const catalogData = {
                 "label": "Cantidad (mínimo 3 galletas)",
                 "type": "radio",
                 "required": true,
-                "dependsOn": "presentacion",
-                "showWhen": "individual",
                 "priceModifier": true,
                 "choices": [
                     {
