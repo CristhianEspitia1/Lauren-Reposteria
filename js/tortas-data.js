@@ -57,9 +57,7 @@ const detallesProductsData = {
                 choices: [
                     { value: '8-10', label: '8-10 porciones', price: 95000 },
                     { value: '15-20', label: '15-20 porciones', price: 145000 },
-                    { value: '25-30', label: '25-30 porciones', price: 210000 },
-                    { value: '30-40', label: '30-40 porciones', price: 280000 },
-                    { value: '40-50', label: '40-50 porciones', price: 350000 }
+                    { value: '25-30', label: '25-30 porciones', price: 210000 }
                 ]
             }
         ],
@@ -129,9 +127,7 @@ const detallesProductsData = {
                 choices: [
                     { value: '8-10', label: '8-10 porciones', price: 70000 },
                     { value: '15-20', label: '15-20 porciones', price: 110000 },
-                    { value: '25-30', label: '25-30 porciones', price: 165000 },
-                    { value: '30-40', label: '30-40 porciones', price: 220000 },
-                    { value: '40-50', label: '40-50 porciones', price: 275000 }
+                    { value: '25-30', label: '25-30 porciones', price: 165000 }
                 ]
             }
         ],
