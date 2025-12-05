@@ -742,7 +742,7 @@ const catalogData = {
                     },
                     {
                         "value": "chocolate-blanco",
-                        "label": "Chocolate Blanco + Mermelada de Frambuesa (Especial)",
+                        "label": "Galleta con trozos de Chocolate Blanco + Mermelada de Frambuesa (Especial)",
                         "price": 10000
                     },
                     {

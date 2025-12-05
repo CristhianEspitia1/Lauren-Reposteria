@@ -5,10 +5,10 @@ const detallesProductsData = {
     'torta-vintage': {
         id: 'torta-vintage',
         name: 'Torta Vintage',
-        price: 95000,
-        priceFormatted: 'Desde $95.000',
+        price: 65000,
+        priceFormatted: 'Desde $65.000',
         category: 'vintage',
-        description: 'Torta vintage con decoración artesanal, flores en fondant y acabado rústico elegante. Cada torta es única y personalizada según tus preferencias.',
+        description: 'Torta vintage con bordes arriba, abajo y también en los laterales. Decoración artesanal, flores en fondant y acabado rústico elegante.',
         mainImage: '../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png',
         images: [
             '../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png',
@@ -54,10 +54,13 @@ const detallesProductsData = {
                 label: 'Número de porciones',
                 type: 'radio',
                 required: true,
+                priceModifier: true,
                 choices: [
-                    { value: '8-10', label: '8-10 porciones', price: 95000 },
-                    { value: '15-20', label: '15-20 porciones', price: 145000 },
-                    { value: '25-30', label: '25-30 porciones', price: 210000 }
+                    { value: '4-5', label: '4-5 porciones', price: 65000 },
+                    { value: '8-10', label: '8-10 porciones', price: 105000 },
+                    { value: '12-15', label: '12-15 porciones', price: 150000 },
+                    { value: '18-20', label: '18-20 porciones', price: 172000 },
+                    { value: '25-30', label: '25-30 porciones', price: 235000 }
                 ]
             }
         ],
@@ -75,10 +78,10 @@ const detallesProductsData = {
     'torta-sencilla': {
         id: 'torta-sencilla',
         name: 'Torta Sencilla',
-        price: 70000,
-        priceFormatted: 'Desde $70.000',
+        price: 58000,
+        priceFormatted: 'Desde $58.000',
         category: 'sencilla',
-        description: 'Torta sencilla y elegante con acabado liso en crema. Perfecta para quienes buscan un diseño minimalista pero delicioso.',
+        description: 'Torta sencilla y elegante sin bordes o crema adicional al de la cubierta. Perfecta para quienes buscan un diseño minimalista.',
         mainImage: '../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png',
         images: [
             '../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png',
@@ -124,10 +127,13 @@ const detallesProductsData = {
                 label: 'Número de porciones',
                 type: 'radio',
                 required: true,
+                priceModifier: true,
                 choices: [
-                    { value: '8-10', label: '8-10 porciones', price: 70000 },
-                    { value: '15-20', label: '15-20 porciones', price: 110000 },
-                    { value: '25-30', label: '25-30 porciones', price: 165000 }
+                    { value: '4-5', label: '4-5 porciones', price: 58000 },
+                    { value: '8-10', label: '8-10 porciones', price: 90000 },
+                    { value: '12-15', label: '12-15 porciones', price: 135000 },
+                    { value: '18-20', label: '18-20 porciones', price: 155000 },
+                    { value: '25-30', label: '25-30 porciones', price: 215000 }
                 ]
             }
         ],

@@ -121,7 +121,7 @@ const detallesProductsData = {
         ],
         includes: [
             'Vaso decorativo',
-            'Mini alfajores (aprox. 15-20 unidades)',
+            'Mini alfajores (30 unidades)',
             'Relleno de arequipe',
             'Presentación especial'
         ],
@@ -136,7 +136,7 @@ const detallesProductsData = {
         price: 50000,
         priceFormatted: 'Desde $50.000',
         category: 'tortas',
-        description: 'Torta especial hecha con capas de alfajor de maicena, relleno de arequipe y cobertura de chocolate. Una experiencia única y deliciosa.',
+        description: 'Torta especial hecha con capas de alfajor de maicena y relleno de arequipe. Una experiencia única y deliciosa.',
         mainImage: '../assets/imagenes-alfajores/TortaAlfajor1.png',
         images: [
             '../assets/imagenes-alfajores/TortaAlfajor1.png',
@@ -146,7 +146,6 @@ const detallesProductsData = {
             'Torta de alfajor según tamaño',
             'Capas de alfajor de maicena',
             'Relleno de arequipe',
-            'Cobertura de chocolate',
             'Decoración elegante'
         ],
         customizable: true,
@@ -156,6 +155,7 @@ const detallesProductsData = {
                 label: 'Tamaño de la torta',
                 type: 'radio',
                 required: true,
+                priceModifier: true,
                 choices: [
                     { value: 'personal', label: 'Personal (8 cm)', price: 50000 },
                     { value: '4-6', label: '4-6 porciones (11 cm)', price: 62000 },

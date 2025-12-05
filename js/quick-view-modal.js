@@ -648,6 +648,14 @@ class QuickViewModal {
                             basePrice = choice.price; // Precio base individual
                         }
                     }
+                    // Si la opción es "porciones" (para tortas)
+                    else if (opt.id === 'porciones') {
+                        basePrice = choice.price;
+                    }
+                    // Si la opción es "tamano" (para torta de alfajor)
+                    else if (opt.id === 'tamano') {
+                        basePrice = choice.price;
+                    }
                     // Si la opción es "sabor" (para galletas/brownies individuales)
                     else if (opt.id === 'sabor') {
                         basePrice = choice.price;
