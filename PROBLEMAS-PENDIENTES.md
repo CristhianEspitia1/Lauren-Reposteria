@@ -1,7 +1,7 @@
 # 🔧 Problemas Pendientes - Lauren Repostería
 
-**Última actualización:** 4 de diciembre de 2025, 10:14 PM  
-**Última verificación:** 4 de diciembre de 2025 - Los 3 problemas confirmados en el código  
+**Última actualización:** 29 de diciembre de 2025, 05:40 AM  
+**Última verificación:** 29 de diciembre de 2025 - Sistema de datos unificado  
 **Estado del sitio:** ✅ Funcional - No hay errores críticos
 
 ---
@@ -15,63 +15,27 @@ El sitio web **FUNCIONA CORRECTAMENTE** en su estado actual. Los siguientes son 
 - ✅ Modal de productos se abre correctamente
 - ✅ Carrito de compras funciona
 - ✅ No hay errores JavaScript críticos en consola
+- ✅ Sistema de datos unificado en catalog-data.js
 
 ---
 
-## 🔴 PRIORIDAD ALTA
+## ✅ RESUELTO: Sistema de Datos Unificado
 
-### 1. Sistema de Datos Mixto (Dinámico vs. Estático)
+### ~~1. Sistema de Datos Mixto (Dinámico vs. Estático)~~
 
-**Estado:** ✅ Confirmado  
-**Impacto:** Alto - Dificulta mantenimiento de productos y precios  
-**Esfuerzo:** Alto
+**Estado:** ✅ RESUELTO (29/12/2025)  
+**Solución aplicada:** Todas las páginas ahora usan `catalog-data.js` como fuente única de datos.
 
-#### Descripción del Problema:
-El sitio usa **DOS sistemas diferentes** para gestionar datos de productos:
+**Cambios realizados:**
+1. ✅ `tortas.html` ahora usa `catalog-data.js`
+2. ✅ `alfajores.html` ahora usa `catalog-data.js`
+3. ✅ `catalog-data.js` actualizado con precios correctos de tortas y alfajores
+4. ⚠️ `tortas-data.js` y `alfajores-data.js` pueden eliminarse (obsoletos)
 
-**Sistema Dinámico (Moderno):**
-- `js/catalog-data.js` - Catálogo centralizado
-- Páginas que lo usan:
-  - ✅ `brownies-galletas.html`
-  - ✅ `detalles.html`
-  - ✅ `tabla-productos.html` (editor)
-
-**Sistema Estático (Antiguo):**
-- `js/tortas-data.js` - Datos solo de tortas
-- `js/alfajores-data.js` - Datos solo de alfajores
-- Páginas que lo usan:
-  - ❌ `tortas.html`
-  - ❌ `alfajores.html`
-
-#### Evidencia:
-```bash
-# Verificado con grep
-grep "catalog-data.js" html/tortas.html     → No results
-grep "catalog-data.js" html/alfajores.html  → No results
-grep "catalog-data.js" html/brownies-galletas.html → FOUND (línea 2131)
-grep "catalog-data.js" html/detalles.html   → FOUND (línea 1630)
-```
-
-#### Consecuencias:
-- ❌ Al actualizar precios, debes editar 2 archivos diferentes
-- ❌ Riesgo de datos desincronizados
-- ❌ Confusión sobre qué archivo editar
-- ❌ El editor visual (`tabla-productos.html`) solo actualiza `catalog-data.js`, no afecta tortas/alfajores
-
-#### Solución Propuesta:
-1. Migrar `tortas.html` para usar `catalog-data.js`
-2. Migrar `alfajores.html` para usar `catalog-data.js`
-3. Eliminar `tortas-data.js` y `alfajores-data.js`
-4. Verificar que `catalog-data.js` tenga todos los productos
-
-#### Archivos Afectados:
-```
-html/tortas.html       → Modificar scripts
-html/alfajores.html    → Modificar scripts
-js/tortas-data.js      → Deprecar
-js/alfajores-data.js   → Deprecar
-js/catalog-data.js     → Verificar completitud
-```
+**Beneficios:**
+- ✅ Un solo archivo para actualizar precios
+- ✅ Datos consistentes en todo el sitio
+- ✅ El editor visual (`tabla-productos.html`) funciona para todos los productos
 
 ---
 

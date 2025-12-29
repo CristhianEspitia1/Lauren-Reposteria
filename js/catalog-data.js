@@ -7,10 +7,10 @@ const catalogData = {
     'torta-vintage': {
         id: 'torta-vintage',
         name: 'Torta Vintage',
-        price: 96000,
-        priceFormatted: 'Desde $96.000',
+        price: 65000,
+        priceFormatted: 'Desde $65.000',
         category: 'tortas',
-        description: 'Torta vintage con decoración artesanal, flores en fondant y acabado rústico elegante. Cada torta es única y personalizada según tus preferencias.',
+        description: 'Torta vintage con bordes arriba, abajo y también en los laterales. Decoración artesanal, flores en fondant y acabado rústico elegante.',
         mainImage: '../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png',
         images: [
             "../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png",
@@ -85,29 +85,29 @@ const catalogData = {
                 "required": true,
                 "choices": [
                     {
-                        "value": "8-10",
-                        "label": "8-10 porciones",
-                        "price": 95000
+                        "value": "4-5",
+                        "label": "4-5 porciones",
+                        "price": 65000
                     },
                     {
-                        "value": "15-20",
-                        "label": "15-20 porciones",
-                        "price": 145000
+                        "value": "8-10",
+                        "label": "8-10 porciones",
+                        "price": 105000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12-15 porciones",
+                        "price": 150000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18-20 porciones",
+                        "price": 172000
                     },
                     {
                         "value": "25-30",
                         "label": "25-30 porciones",
-                        "price": 210000
-                    },
-                    {
-                        "value": "30-40",
-                        "label": "30-40 porciones",
-                        "price": 280000
-                    },
-                    {
-                        "value": "40-50",
-                        "label": "40-50 porciones",
-                        "price": 350000
+                        "price": 235000
                     }
                 ]
             }
@@ -126,10 +126,10 @@ const catalogData = {
     'torta-sencilla': {
         id: 'torta-sencilla',
         name: 'Torta Sencilla',
-        price: 70000,
-        priceFormatted: 'Desde $70.000',
+        price: 58000,
+        priceFormatted: 'Desde $58.000',
         category: 'tortas',
-        description: 'Torta sencilla y elegante con acabado liso en crema. Perfecta para quienes buscan un diseño minimalista pero delicioso.',
+        description: 'Torta sencilla y elegante sin bordes o crema adicional al de la cubierta. Perfecta para quienes buscan un diseño minimalista.',
         mainImage: '../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png',
         images: [
             "../assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png",
@@ -204,29 +204,29 @@ const catalogData = {
                 "required": true,
                 "choices": [
                     {
-                        "value": "8-10",
-                        "label": "8-10 porciones",
-                        "price": 70000
+                        "value": "4-5",
+                        "label": "4-5 porciones",
+                        "price": 58000
                     },
                     {
-                        "value": "15-20",
-                        "label": "15-20 porciones",
-                        "price": 110000
+                        "value": "8-10",
+                        "label": "8-10 porciones",
+                        "price": 90000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12-15 porciones",
+                        "price": 135000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18-20 porciones",
+                        "price": 155000
                     },
                     {
                         "value": "25-30",
                         "label": "25-30 porciones",
-                        "price": 165000
-                    },
-                    {
-                        "value": "30-40",
-                        "label": "30-40 porciones",
-                        "price": 220000
-                    },
-                    {
-                        "value": "40-50",
-                        "label": "40-50 porciones",
-                        "price": 275000
+                        "price": 215000
                     }
                 ]
             }
@@ -368,8 +368,8 @@ const catalogData = {
     'caja-x6': {
         id: 'caja-x6',
         name: 'Caja x6 Alfajores',
-        price: 16000,
-        priceFormatted: '$16.000',
+        price: 22000,
+        priceFormatted: '$22.000',
         category: 'alfajores',
         description: 'Deliciosos alfajores de maicena rellenos de arequipe. Perfectos para compartir o regalar. Presentación en caja elegante.',
         mainImage: '../assets/imagenes-alfajores/Alfajores x6.png',
@@ -389,8 +389,8 @@ const catalogData = {
     'caja-x12': {
         id: 'caja-x12',
         name: 'Caja x12 Alfajores',
-        price: 32000,
-        priceFormatted: '$32.000',
+        price: 37000,
+        priceFormatted: '$37.000',
         category: 'alfajores',
         description: 'Docena de alfajores de maicena rellenos de arequipe. Ideal para compartir en reuniones o como regalo especial.',
         mainImage: '../assets/imagenes-alfajores/Alfajores x12.png',
@@ -410,8 +410,8 @@ const catalogData = {
     'vaso-minis': {
         id: 'vaso-minis',
         name: 'Vaso de Mini Alfajores',
-        price: 14000,
-        priceFormatted: '$14.000',
+        price: 27000,
+        priceFormatted: '$27.000',
         category: 'alfajores',
         description: 'Vaso decorativo lleno de mini alfajores. Perfecto para regalar o disfrutar en porciones pequeñas.',
         mainImage: '../assets/imagenes-alfajores/Alfajores vaso mini.jpg',
@@ -420,7 +420,7 @@ const catalogData = {
         ],
         includes: [
             "Vaso decorativo",
-            "Mini alfajores (aprox. 15-20 unidades)",
+            "Mini alfajores (30 unidades)",
             "Relleno de arequipe",
             "Presentación especial"
         ],
@@ -431,10 +431,10 @@ const catalogData = {
     'torta-alfajor': {
         id: 'torta-alfajor',
         name: 'Torta de Alfajor',
-        price: 50000,
-        priceFormatted: 'Desde $50.000',
+        price: 25000,
+        priceFormatted: 'Desde $25.000',
         category: 'alfajores',
-        description: 'Torta especial hecha con capas de alfajor de maicena, relleno de arequipe y cobertura de chocolate. Una experiencia única y deliciosa.',
+        description: 'Torta de alfajor rellena de arequipe con 3 capas de relleno. Una experiencia única y deliciosa.',
         mainImage: '../assets/imagenes-alfajores/TortaAlfajor1.png',
         images: [
             "../assets/imagenes-alfajores/TortaAlfajor1.png",
@@ -442,9 +442,8 @@ const catalogData = {
         ],
         includes: [
             "Torta de alfajor según tamaño",
+            "3 capas de relleno de arequipe",
             "Capas de alfajor de maicena",
-            "Relleno de arequipe",
-            "Cobertura de chocolate",
             "Decoración elegante"
         ],
         customizable: true,
@@ -458,22 +457,22 @@ const catalogData = {
                     {
                         "value": "personal",
                         "label": "Personal (8 cm)",
-                        "price": 50000
+                        "price": 25000
                     },
                     {
                         "value": "4-6",
                         "label": "4-6 porciones (11 cm)",
-                        "price": 62000
+                        "price": 38000
                     },
                     {
                         "value": "6-8",
                         "label": "6-8 porciones (13 cm)",
-                        "price": 72000
+                        "price": 45000
                     },
                     {
                         "value": "10-12",
                         "label": "10-12 porciones (16 cm)",
-                        "price": 87000
+                        "price": 60000
                     }
                 ]
             }
@@ -1396,91 +1395,13 @@ const catalogData = {
     'detalle-golden-1': {
         id: 'detalle-golden-1',
         name: 'Detalle Golden',
-        price: 83000,
-        priceFormatted: '$83.000',
-        category: 'detalles',
-        description: 'Mini torta vasca, trufas de oreo, brownie grande y alfajor especial.',
-        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden.jpg',
-        images: [
-            "../assets/imagenes-detalles/productos/golden/Detalle Golden.jpg"
-        ],
-        includes: [
-            "Mini torta vasca",
-            "4 trufas de oreo",
-            "Brownie grande",
-            "Alfajor mostacho"
-        ],
-        customizable: true,
-        options: [
-            {
-                "id": "relleno-torta-vasca",
-                "label": "Relleno de la torta vasca",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "mermelada",
-                        "label": "Mermelada"
-                    },
-                    {
-                        "value": "arequipe",
-                        "label": "Arequipe"
-                    }
-                ]
-            }
-        ],
-        personalization: null
-    },
-
-    'detalle-golden-2': {
-        id: 'detalle-golden-2',
-        name: 'Detalle Golden Rosa',
-        price: 86000,
-        priceFormatted: '$86.000',
-        category: 'detalles',
-        description: 'Mini torta vasca, trufas, brownie y mini galletas.',
-        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg',
-        images: [
-            "../assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg"
-        ],
-        includes: [
-            "Mini torta vasca",
-            "3 trufas de oreo",
-            "Brownie grande",
-            "7 mini galletas"
-        ],
-        customizable: true,
-        options: [
-            {
-                "id": "relleno-torta-vasca",
-                "label": "Relleno de la torta vasca",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "mermelada",
-                        "label": "Mermelada"
-                    },
-                    {
-                        "value": "arequipe",
-                        "label": "Arequipe"
-                    }
-                ]
-            }
-        ],
-        personalization: null
-    },
-
-    'detalle-golden-3': {
-        id: 'detalle-golden-3',
-        name: 'Detalle Golden Mostacho',
         price: 88000,
         priceFormatted: '$88.000',
         category: 'detalles',
         description: 'Mini torta vasca, trufas, galleta especial y alfajores.',
-        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg',
+        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden.jpg',
         images: [
-            "../assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg"
+            "../assets/imagenes-detalles/productos/golden/Detalle Golden.jpg"
         ],
         includes: [
             "Mini torta vasca",
@@ -1566,6 +1487,84 @@ const catalogData = {
                     {
                         "value": "panelita-copelia",
                         "label": "Panelita Copelia (Arequipe)"
+                    }
+                ]
+            }
+        ],
+        personalization: null
+    },
+
+    'detalle-golden-2': {
+        id: 'detalle-golden-2',
+        name: 'Detalle Golden Rosa',
+        price: 86000,
+        priceFormatted: '$86.000',
+        category: 'detalles',
+        description: 'Mini torta vasca, trufas, brownie y mini galletas.',
+        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg',
+        images: [
+            "../assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg"
+        ],
+        includes: [
+            "Mini torta vasca",
+            "3 trufas de oreo",
+            "Brownie grande",
+            "7 mini galletas"
+        ],
+        customizable: true,
+        options: [
+            {
+                "id": "relleno-torta-vasca",
+                "label": "Relleno de la torta vasca",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "mermelada",
+                        "label": "Mermelada"
+                    },
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    }
+                ]
+            }
+        ],
+        personalization: null
+    },
+
+    'detalle-golden-3': {
+        id: 'detalle-golden-3',
+        name: 'Detalle Golden Mostacho',
+        price: 83000,
+        priceFormatted: '$83.000',
+        category: 'detalles',
+        description: 'Mini torta vasca, trufas de oreo, brownie grande y alfajor especial.',
+        mainImage: '../assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg',
+        images: [
+            "../assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg"
+        ],
+        includes: [
+            "Mini torta vasca",
+            "4 trufas de oreo",
+            "Brownie grande",
+            "Alfajor mostacho"
+        ],
+        customizable: true,
+        options: [
+            {
+                "id": "relleno-torta-vasca",
+                "label": "Relleno de la torta vasca",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "mermelada",
+                        "label": "Mermelada"
+                    },
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
                     }
                 ]
             }

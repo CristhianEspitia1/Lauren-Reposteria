@@ -2155,14 +2155,18 @@ html {
     padding-right: 30px;
     /* Fix for seamless loop calculation */
     animation: scroll-left 300s linear infinite;
-    /* Velocidad reducida */
+    /* Velocidad normal */
     width: max-content;
     /* SIMPLIFICADO: Removidas optimizaciones conflictivas */
 }
 
+/* DESHABILITADO: El carrusel ya no se detiene al hacer hover
 .infinite-carousel-track:hover {
     animation-play-state: paused;
 }
+*/
+
+
 
 @keyframes scroll-left {
     0% {
@@ -2825,6 +2829,8 @@ html {
         gap: 20px;
         animation: scroll-left 300s linear infinite !important;
     }
+
+
 
     .fillings-text,
     .team-text {
