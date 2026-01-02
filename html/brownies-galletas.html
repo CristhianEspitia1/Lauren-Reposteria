@@ -2148,8 +2148,39 @@
                         e.preventDefault();
                         e.stopPropagation();
 
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined') {
-                            openQuickView('brownies', catalogData);
+                        // Obtener la imagen que fue clickeada
+                        const clickedImg = item.querySelector('.brownies-gallery-img');
+                        const clickedImgSrc = clickedImg ? clickedImg.src : null;
+
+                        // Encontrar el grupo al que pertenece
+                        const clickedGroup = item.closest('.brownies-carousel-group');
+
+                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined' && catalogData['brownies']) {
+                            // Recopilar todas las imágenes del grupo
+                            const imagesInGroup = [];
+                            if (clickedGroup) {
+                                const imgsInGroup = clickedGroup.querySelectorAll('.brownies-gallery-img');
+                                imgsInGroup.forEach(img => {
+                                    if (img.src) imagesInGroup.push(img.src);
+                                });
+                            }
+
+                            // REORDENAR: Poner la imagen clickeada primero
+                            let reorderedImages = [...imagesInGroup];
+                            if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
+                                reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
+                                reorderedImages.unshift(clickedImgSrc);
+                            }
+
+                            // Crear copia del producto con la imagen clickeada como principal
+                            const productWithImages = {
+                                ...catalogData['brownies'],
+                                images: reorderedImages.length > 0 ? reorderedImages : catalogData['brownies'].images,
+                                mainImage: clickedImgSrc || catalogData['brownies'].mainImage
+                            };
+
+                            const tempData = { 'brownies': productWithImages };
+                            openQuickView('brownies', tempData);
                         }
                     });
                     item.style.cursor = 'pointer';
@@ -2182,8 +2213,39 @@
                         e.preventDefault();
                         e.stopPropagation();
 
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined') {
-                            openQuickView('galletas', catalogData);
+                        // Obtener la imagen que fue clickeada
+                        const clickedImg = item.querySelector('.galletas-gallery-img');
+                        const clickedImgSrc = clickedImg ? clickedImg.src : null;
+
+                        // Encontrar el grupo al que pertenece
+                        const clickedGroup = item.closest('.galletas-carousel-group');
+
+                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined' && catalogData['galletas']) {
+                            // Recopilar todas las imágenes del grupo
+                            const imagesInGroup = [];
+                            if (clickedGroup) {
+                                const imgsInGroup = clickedGroup.querySelectorAll('.galletas-gallery-img');
+                                imgsInGroup.forEach(img => {
+                                    if (img.src) imagesInGroup.push(img.src);
+                                });
+                            }
+
+                            // REORDENAR: Poner la imagen clickeada primero
+                            let reorderedImages = [...imagesInGroup];
+                            if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
+                                reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
+                                reorderedImages.unshift(clickedImgSrc);
+                            }
+
+                            // Crear copia del producto con la imagen clickeada como principal
+                            const productWithImages = {
+                                ...catalogData['galletas'],
+                                images: reorderedImages.length > 0 ? reorderedImages : catalogData['galletas'].images,
+                                mainImage: clickedImgSrc || catalogData['galletas'].mainImage
+                            };
+
+                            const tempData = { 'galletas': productWithImages };
+                            openQuickView('galletas', tempData);
                         }
                     });
                     item.style.cursor = 'pointer';
