@@ -27,28 +27,42 @@
     }
 
     /* ============================================
-       HERO SECTION - Reducir altura
+       HERO SECTION - Altura expandida para video
        ============================================ */
 
     .hero-section,
     .hero-main-carousel,
     .hero-carousel {
-        min-height: 400px !important;
-        max-height: 450px !important;
-        height: 400px !important;
+        min-height: 550px !important;
+        max-height: 600px !important;
+        height: 550px !important;
+        overflow: hidden !important;
     }
 
     .hero-slide {
-        height: 400px !important;
+        height: 550px !important;
     }
 
-    /* Videos del hero proporcionados */
+    .carousel-wrapper {
+        overflow: hidden !important;
+    }
+
+    /* Videos del hero - ZOOM para eliminar franjas negras (tortas e inicio) */
     .hero-background-video,
-    .hero-video,
     .hero-grid-video {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
+        transform: scale(1.3) !important;
+        transform-origin: center center !important;
+    }
+
+    /* Excluir .hero-video para no afectar la página de detalles */
+    .hero-video {
+        /* Mantener estilos originales sin zoom adicional */
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
     }
 
     /* ============================================
@@ -735,9 +749,16 @@
 
     .hero-section,
     .hero-main-carousel {
-        min-height: 300px !important;
-        max-height: 350px !important;
-        height: 300px !important;
+        min-height: 450px !important;
+        max-height: 500px !important;
+        height: 450px !important;
+        overflow: hidden !important;
+    }
+
+    /* Videos del hero - ZOOM más agresivo en móviles pequeños (tortas e inicio) */
+    .hero-background-video,
+    .hero-grid-video {
+        transform: scale(1.4) !important;
     }
 
     .section-title,
