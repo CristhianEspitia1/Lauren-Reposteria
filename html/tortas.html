@@ -2052,6 +2052,9 @@
 
                     // Encontrar el grupo específico al que pertenece esta imagen
                     const clickedGroup = item.closest('.vintage-carousel-group');
+                    // Obtener la imagen que fue clickeada
+                    const clickedImg = item.querySelector('.vintage-gallery-img');
+                    const clickedImgSrc = clickedImg ? clickedImg.src : null;
 
                     if (clickedGroup && typeof openQuickView === 'function' && detallesProductsData['torta-vintage']) {
                         // Recopilar TODAS las imágenes del grupo clickeado
@@ -2064,11 +2067,20 @@
                             }
                         });
 
-                        // Crear una copia del producto con las imágenes del grupo seleccionado
+                        // REORDENAR: Poner la imagen clickeada primero
+                        let reorderedImages = [...imagesInGroup];
+                        if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
+                            // Remover la imagen clickeada de su posición actual
+                            reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
+                            // Ponerla al principio
+                            reorderedImages.unshift(clickedImgSrc);
+                        }
+
+                        // Crear una copia del producto con las imágenes reordenadas
                         const productWithImages = {
                             ...detallesProductsData['torta-vintage'],
-                            images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-vintage'].images,
-                            mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-vintage'].mainImage
+                            images: reorderedImages.length > 0 ? reorderedImages : detallesProductsData['torta-vintage'].images,
+                            mainImage: clickedImgSrc || (reorderedImages.length > 0 ? reorderedImages[0] : detallesProductsData['torta-vintage'].mainImage)
                         };
 
                         // Crear un objeto temporal con el producto modificado
@@ -2076,7 +2088,7 @@
                             'torta-vintage': productWithImages
                         };
 
-                        // Abrir el modal con las imágenes del grupo seleccionado
+                        // Abrir el modal con la imagen clickeada como principal
                         openQuickView('torta-vintage', tempData);
                     }
                 });
@@ -2092,6 +2104,9 @@
 
                     // Encontrar el grupo específico al que pertenece esta imagen
                     const clickedGroup = item.closest('.simple-carousel-group');
+                    // Obtener la imagen que fue clickeada
+                    const clickedImg = item.querySelector('.simple-gallery-img');
+                    const clickedImgSrc = clickedImg ? clickedImg.src : null;
 
                     if (clickedGroup && typeof openQuickView === 'function' && detallesProductsData['torta-sencilla']) {
                         // Recopilar TODAS las imágenes del grupo clickeado
@@ -2104,11 +2119,20 @@
                             }
                         });
 
-                        // Crear una copia del producto con las imágenes del grupo seleccionado
+                        // REORDENAR: Poner la imagen clickeada primero
+                        let reorderedImages = [...imagesInGroup];
+                        if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
+                            // Remover la imagen clickeada de su posición actual
+                            reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
+                            // Ponerla al principio
+                            reorderedImages.unshift(clickedImgSrc);
+                        }
+
+                        // Crear una copia del producto con las imágenes reordenadas
                         const productWithImages = {
                             ...detallesProductsData['torta-sencilla'],
-                            images: imagesInGroup.length > 0 ? imagesInGroup : detallesProductsData['torta-sencilla'].images,
-                            mainImage: imagesInGroup.length > 0 ? imagesInGroup[0] : detallesProductsData['torta-sencilla'].mainImage
+                            images: reorderedImages.length > 0 ? reorderedImages : detallesProductsData['torta-sencilla'].images,
+                            mainImage: clickedImgSrc || (reorderedImages.length > 0 ? reorderedImages[0] : detallesProductsData['torta-sencilla'].mainImage)
                         };
 
                         // Crear un objeto temporal con el producto modificado
@@ -2116,7 +2140,7 @@
                             'torta-sencilla': productWithImages
                         };
 
-                        // Abrir el modal con las imágenes del grupo seleccionado
+                        // Abrir el modal con la imagen clickeada como principal
                         openQuickView('torta-sencilla', tempData);
                     }
                 });
