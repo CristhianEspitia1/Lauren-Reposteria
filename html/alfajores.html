@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lauren - Alfajores | Tradicionales y Personalizados</title>
+    <link rel="canonical" href="https://laurenreposteria.com/html/alfajores.html">
+    <link rel="icon" type="image/png" href="../assets/logos/LOGOS%20LAUREN%20PNG-13.png">
 
     <!-- SEO Meta Tags -->
     <meta name="description"
@@ -18,21 +20,31 @@
     <meta property="og:description"
         content="Alfajores de maicena rellenos de arequipe. Tradicionales y personalizados.">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Lauren Repostería">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:url" content="https://laurenreposteria.com/html/alfajores.html">
+    <meta property="og:image" content="https://laurenreposteria.com/assets/logos/LOGOS%20LAUREN%20PNG-55.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lauren - Alfajores | Tradicionales y Personalizados">
+    <meta name="twitter:description" content="Alfajores de maicena rellenos de arequipe. Cajas, tortas de alfajor y diseños personalizados. Lauren Repostería - Medellín, Colombia.">
+    <meta name="twitter:image" content="https://laurenreposteria.com/assets/logos/LOGOS%20LAUREN%20PNG-55.png">
 
     <!-- Google Fonts para Header de Lujo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="../css/glass-nav.css">
     <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/tortas-styles.css">
+    <link rel="stylesheet" href="../css/tortas-styles.css?v=20260516-hero-logo-stable">
     <link rel="stylesheet" href="../css/quick-view-modal.css">
     <link rel="stylesheet" href="../css/cart-button-styles.css">
     <link rel="stylesheet" href="../css/cart.css">
-    <link rel="stylesheet" href="../css/mobile-fixes.css">
+    <link rel="stylesheet" href="../css/mobile-fixes.css?v=20260516-hero-logo-stable">
     <link rel="stylesheet" href="../css/footer-mobile.css">
     <link rel="stylesheet" href="../css/hide-modal.css">
     <style>
@@ -939,20 +951,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&amp;family=Manrope:wght@400;500;600&amp;display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../css/luxury-footer.css">
 </head>
 
 <body>
+    <h1 class="visually-hidden">Alfajores artesanales Lauren Repostería</h1>
     <!-- Glass Navigation Header -->
     <nav class="glass-nav">
         <div class="glass-nav-container">
             <div class="glass-nav-content">
                 <!-- Menú Desplegable (izquierda) -->
                 <div class="nav-menu-wrapper">
-                    <button class="nav-menu-btn">Menú</button>
-                    <div class="nav-menu-dropdown">
+                    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mainNavMenu">Menú</button>
+                    <div class="nav-menu-dropdown" id="mainNavMenu">
                         <a href="inicio.html">Inicio</a>
                         <a href="tortas.html">Tortas</a>
                         <a href="alfajores.html" class="active">Alfajores</a>
@@ -967,13 +980,13 @@
                 </div>
 
                 <!-- Ícono Carrito (derecha) -->
-                <div class="nav-icon" role="button" aria-label="Carrito de compras">
+                <button class="nav-icon" type="button" aria-label="Abrir carrito de compras">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                         <path
                             d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
                     </svg>
                     <span class="cart-badge">0</span>
-                </div>
+                </button>
             </div>
         </div>
     </nav>
@@ -995,7 +1008,7 @@
                     <p class="cart-count">0 productos</p>
                 </div>
             </div>
-            <button class="cart-close-btn">
+            <button class="cart-close-btn" type="button" aria-label="Cerrar carrito">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
@@ -1010,7 +1023,7 @@
                 <span class="cart-total-label">Total:</span>
                 <span class="cart-total-value">$0</span>
             </div>
-            <button class="cart-checkout-btn">
+            <button class="cart-checkout-btn" type="button">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
@@ -1023,7 +1036,7 @@
 
 
     <!-- SECCIÓN Hero -->
-    <section class="hero-main-carousel">
+    <section class="hero-main-carousel hero-main-carousel--alfajores">
         <div class="carousel-wrapper">
             <div class="hero-video-grid"><video class="hero-grid-video" autoplay muted loop playsinline
                     poster="../assets/imagenes-alfajores/Alfajores x12.png">
@@ -1061,7 +1074,7 @@
                 <div class="intro-icon-container">
                     <div class="intro-icon-circle">
                         <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Lauren Logo"
-                            class="intro-main-icon-img">
+                            class="intro-main-icon-img" loading="lazy" decoding="async">
                     </div>
                 </div>
                 <!-- Header -->
@@ -1090,66 +1103,66 @@
                 <!-- Imágenes del carrusel - Orden alfabético -->
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/aaa.jpg" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img">
+                        class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/b.jpg" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img">
+                        class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/bb.jpg" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img">
+                        class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
                 <div class="infinite-carousel-item">
                     <img src="../assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.jpg"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img">
+                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
                 </div>
             </div>
         </div>
 
         <!-- Botón Ver Precios -->
         <div style="text-align: center; margin-top: 2.5rem; padding-bottom: 1.5rem;">
-            <button class="pricing-btn-integrated" id="personalizadosPricingBtn">
+            <button class="pricing-btn-integrated" type="button" id="personalizadosPricingBtn">
                 Ver Precios
             </button>
         </div>
@@ -1172,19 +1185,19 @@
                 <div class="cajas-carousel-group active">
                     <div class="cajas-gallery-item">
                         <img src="../assets/imagenes-alfajores/Alfajores x6.png" alt="Caja x6 Alfajores"
-                            class="cajas-gallery-img">
+                            class="cajas-gallery-img" loading="lazy" decoding="async">
                         <!-- Botón Ver Precios integrado -->
-                        <button class="pricing-btn-integrated cajas-pricing-btn-overlay" id="cajasPricingBtn">
+                        <button class="pricing-btn-integrated cajas-pricing-btn-overlay" type="button" id="cajasPricingBtn">
                             Ver Precios
                         </button>
                     </div>
                     <div class="cajas-gallery-item">
                         <img src="../assets/imagenes-alfajores/Alfajores vaso mini.jpg" alt="Vaso de Mini Alfajores"
-                            class="cajas-gallery-img">
+                            class="cajas-gallery-img" loading="lazy" decoding="async">
                     </div>
                     <div class="cajas-gallery-item">
                         <img src="../assets/imagenes-alfajores/Alfajores x12.png" alt="Caja x12 Alfajores"
-                            class="cajas-gallery-img">
+                            class="cajas-gallery-img" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -1211,20 +1224,20 @@
                     style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
                     <img src="../assets/imagenes-alfajores/TortaAlfajor1.png" alt="Torta de Alfajor"
                         class="torta-alfajor-img"
-                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 20%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
+                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 20%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);" loading="lazy" decoding="async">
                 </div>
                 <div class="torta-alfajor-item"
                     style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
                     <img src="../assets/imagenes-alfajores/TortaAlfajor2.png" alt="Torta de Alfajor"
                         class="torta-alfajor-img"
-                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 60%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);">
+                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 60%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);" loading="lazy" decoding="async">
                 </div>
             </div>
 
             <!-- Botón Ver Precios y Porciones -->
             <div
                 style="display: flex; justify-content: center; align-items: center; margin-top: 3rem; margin-bottom: 2rem; width: 100%;">
-                <button class="pricing-btn-integrated" id="tortasPricingBtn">
+                <button class="pricing-btn-integrated" type="button" id="tortasPricingBtn">
                     <span class="btn-text-mobile">Ver Precios</span>
                     <span class="btn-text-desktop">Ver Precios y Porciones</span>
                 </button>
@@ -1256,7 +1269,7 @@
                         style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
                         <img src="../assets/imagenes-alfajores/AlfajorBolsita.png" alt="Alfajores en Bolsita"
                             class="alfajor-bolsita-img"
-                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" loading="lazy" decoding="async">
                         <!-- Overlay sutil -->
                         <div
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
@@ -1268,7 +1281,7 @@
                         style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
                         <img src="../assets/imagenes-alfajores/AlfajorUnidad.png" alt="Alfajor Unitario"
                             class="alfajor-unitario-img"
-                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" loading="lazy" decoding="async">
                         <!-- Overlay sutil -->
                         <div
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
@@ -1279,7 +1292,7 @@
                 <!-- Botón Ver Precios centrado debajo de las imágenes -->
                 <div
                     style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; width: 100%;">
-                    <button class="pricing-btn-integrated" id="individualesPricingBtn">
+                    <button class="pricing-btn-integrated" type="button" id="individualesPricingBtn">
                         Ver Precios
                     </button>
                 </div>
@@ -1306,7 +1319,7 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/pedido.png" alt="Pedido" class="icon-img">
+                            <img src="../assets/logos/Detalles adicionales/pedido.png" alt="Pedido" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -1321,7 +1334,7 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/diseños.png" alt="Diseños" class="icon-img">
+                            <img src="../assets/logos/Detalles adicionales/diseños.png" alt="Diseños" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -1335,7 +1348,7 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/unica.png" alt="Única" class="icon-img">
+                            <img src="../assets/logos/Detalles adicionales/unica.png" alt="Única" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -1350,7 +1363,7 @@
                     <div class="info-card-icon">
                         <div class="icon-circle">
                             <img src="../assets/logos/Detalles adicionales/letras.png" alt="Venta mínima"
-                                class="icon-img">
+                                class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -1370,7 +1383,7 @@
     <footer class="luxury-footer">
         <!-- Logo -->
         <div class="footer-logo">
-            <img src="../assets/logos/footer-logo.png" alt="Lauren Repostería">
+            <img src="../assets/logos/footer-logo.png" alt="Lauren Repostería" loading="lazy" decoding="async">
         </div>
 
         <!-- Iconos de Redes Sociales con colores de marca -->
@@ -1426,7 +1439,7 @@
 
     <!-- Botón Scroll to Top -->
     <!-- Botón Flotante de Contacto -->
-    <button class="contact-fab" id="contactFab" aria-label="Menú de contacto">
+    <button class="contact-fab" id="contactFab" type="button" aria-label="Menú de contacto" aria-controls="contactMenu" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
@@ -1462,15 +1475,15 @@
 
     <!-- Lightbox Modal -->
     <div class="lightbox-modal" id="lightboxModal">
-        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar lightbox">&times;</button>
-        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Imagen anterior">
+        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Cerrar imagen ampliada">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Imagen anterior">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
             </svg>
         </button>
-        <img alt="Imagen ampliada" id="lightboxImg" class="lightbox-img">
-        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Imagen siguiente">
+        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Imagen ampliada" id="lightboxImg" class="lightbox-img">
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Imagen siguiente">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -1478,121 +1491,7 @@
         </button>
     </div>
 
-    <!-- Product Quick View Modal -->
-    <div class="product-modal-overlay" id="productModalOverlay">
-        <div class="product-modal-container" id="productModalContainer">
-            <!-- Botón Cerrar -->
-            <button class="product-modal-close" id="productModalClose" aria-label="Cerrar modal">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </button>
-
-            <!-- Contenido del Modal -->
-            <div class="product-modal-content">
-                <!-- Columna Izquierda: Imágenes -->
-                <div class="product-modal-left">
-                    <div class="product-modal-image-main">
-                        <img alt="Producto" id="productModalMainImage" class="modal-main-image">
-                    </div>
-                    <div class="product-modal-thumbnails" id="productModalThumbnails">
-                        <!-- Miniaturas se generarán dinámicamente si hay múltiples imágenes -->
-                    </div>
-                </div>
-
-                <!-- Columna Derecha: Información -->
-                <div class="product-modal-right">
-                    <div class="product-modal-info">
-                        <!-- Nombre del Producto -->
-                        <h2 class="product-modal-title" id="productModalTitle"></h2>
-
-                        <!-- Precio -->
-                        <div class="product-modal-price-wrapper">
-                            <span class="product-modal-price" id="productModalPrice"></span>
-                            <span class="product-modal-price-note" id="productModalPriceNote"
-                                style="display: none;"></span>
-                        </div>
-
-                        <!-- Descripción -->
-                        <p class="product-modal-description" id="productModalDescription"></p>
-
-                        <!-- Qué Incluye -->
-                        <div class="product-modal-includes">
-                            <h3 class="product-modal-section-title">¿Qué incluye?</h3>
-                            <ul class="product-modal-includes-list" id="productModalIncludesList"></ul>
-                        </div>
-
-                        <!-- Opciones Configurables -->
-                        <div class="product-modal-options" id="productModalOptions">
-                            <!-- Las opciones se generarán dinámicamente -->
-                        </div>
-
-                        <!-- Campo de Personalización -->
-                        <div class="product-modal-personalization" id="productModalPersonalization"
-                            style="display: none;">
-                            <!-- Los campos de personalización se generarán dinámicamente -->
-                        </div>
-
-                        <!-- Botón de Contacto para Pedido -->
-                        <div class="product-modal-actions">
-                            <a href="#" class="product-modal-cta-btn" id="productModalCTA" target="_blank">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                                        fill="currentColor" />
-                                    <div class="product-modal-info">
-                                        <!-- Nombre del Producto -->
-                                        <h2 class="product-modal-title" id="productModalTitle"></h2>
-
-                                        <!-- Precio -->
-                                        <div class="product-modal-price-wrapper">
-                                            <span class="product-modal-price" id="productModalPrice"></span>
-                                            <span class="product-modal-price-note" id="productModalPriceNote"
-                                                style="display: none;"></span>
-                                        </div>
-
-                                        <!-- Descripción -->
-                                        <p class="product-modal-description" id="productModalDescription"></p>
-
-                                        <!-- Qué Incluye -->
-                                        <div class="product-modal-includes">
-                                            <h3 class="product-modal-section-title">¿Qué incluye?</h3>
-                                            <ul class="product-modal-includes-list" id="productModalIncludesList"></ul>
-                                        </div>
-
-                                        <!-- Opciones Configurables -->
-                                        <div class="product-modal-options" id="productModalOptions">
-                                            <!-- Las opciones se generarán dinámicamente -->
-                                        </div>
-
-                                        <!-- Campo de Personalización -->
-                                        <div class="product-modal-personalization" id="productModalPersonalization"
-                                            style="display: none;">
-                                            <!-- Los campos de personalización se generarán dinámicamente -->
-                                        </div>
-
-                                        <!-- Botón de Contacto para Pedido -->
-                                        <div class="product-modal-actions">
-                                            <a href="#" class="product-modal-cta-btn" id="productModalCTA"
-                                                target="_blank">
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                                                        fill="currentColor" />
-                                                </svg>
-                                                Hacer Pedido por WhatsApp
-                                            </a>
-                                        </div>
-                                    </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scripts del sistema de modal -->
+    <!-- Scripts del sistema de modal -->
             <script src="../js/alfajores-data.js"></script>
             <script src="../js/quick-view-modal.js"></script>
             <script src="../js/tortas-script.js"></script>
@@ -1676,7 +1575,6 @@
                         item.style.cursor = 'pointer';
                     });
 
-                    console.log('%c🍪 Quick View Modal integrado en Alfajores!', 'color: #d4a574; font-weight: bold;');
                 });
             </script>
 
@@ -1829,95 +1727,11 @@
                         });
                     }
 
-                    console.log('%c✅ Botones e Imágenes "Ver Precios" de Alfajores conectados al Quick View Modal', 'color: #4CAF50; font-weight: bold;');
                 });
             </script>
 
             <script src="../js/contact-fab.js"></script>
 
-            <!-- JavaScript del Header (Menú Hamburguesa y Dropdown de Contacto) -->
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    // ========================================
-                    // MENÚ HAMBURGUESA
-                    // ========================================
-                    const menuToggle = document.querySelector('.menu-toggle-minimal');
-                    const mainNav = document.getElementById('minimalNav');
-                    const navItems = document.querySelectorAll('.nav-item');
-
-                    if (menuToggle && mainNav) {
-                        // Toggle menu al hacer click en el botón
-                        menuToggle.addEventListener('click', () => {
-                            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                            menuToggle.setAttribute('aria-expanded', !isExpanded);
-                            menuToggle.classList.toggle('active');
-                            mainNav.classList.toggle('active');
-
-                            // Prevenir scroll cuando el menú está abierto
-                            if (!isExpanded) {
-                                document.body.style.overflow = 'hidden';
-                            } else {
-                                document.body.style.overflow = '';
-                            }
-                        });
-
-                        // Cerrar menú al hacer click en un enlace
-                        navItems.forEach(link => {
-                            link.addEventListener('click', () => {
-                                mainNav.classList.remove('active');
-                                menuToggle.classList.remove('active');
-                                menuToggle.setAttribute('aria-expanded', 'false');
-                                document.body.style.overflow = '';
-                            });
-                        });
-
-                        // Cerrar menú con tecla ESC
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-                                mainNav.classList.remove('active');
-                                menuToggle.classList.remove('active');
-                                menuToggle.setAttribute('aria-expanded', 'false');
-                                document.body.style.overflow = '';
-                            }
-                        });
-                    }
-
-                    // ========================================
-                    // BOTÓN DE CONTACTO DROPDOWN
-                    // ========================================
-                    const contactBtn = document.querySelector('.contact-dropdown-btn');
-                    const contactMenu = document.querySelector('.contact-dropdown-menu');
-                    const contactDropdown = document.querySelector('.contact-dropdown');
-
-                    if (contactBtn && contactMenu) {
-                        // Toggle dropdown al hacer click
-                        contactBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const isExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
-                            contactBtn.setAttribute('aria-expanded', !isExpanded);
-                            contactMenu.classList.toggle('active');
-                        });
-
-                        // Cerrar dropdown al hacer click fuera
-                        document.addEventListener('click', (e) => {
-                            if (!contactDropdown.contains(e.target)) {
-                                contactMenu.classList.remove('active');
-                                contactBtn.setAttribute('aria-expanded', 'false');
-                            }
-                        });
-
-                        // Cerrar dropdown con tecla ESC
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === 'Escape' && contactMenu.classList.contains('active')) {
-                                contactMenu.classList.remove('active');
-                                contactBtn.setAttribute('aria-expanded', 'false');
-                            }
-                        });
-                    }
-
-                    console.log('%c✅ Header minimalista inicializado correctamente', 'color: #4CAF50; font-weight: bold;');
-                });
-            </script>
             <!-- Scripts del carrito -->
             <script src="../js/cart-manager.js"></script>
             <script src="../js/cart-ui.js"></script>

@@ -33,10 +33,15 @@
     .hero-section,
     .hero-main-carousel,
     .hero-carousel {
-        min-height: 550px !important;
-        max-height: 600px !important;
-        height: 550px !important;
+        aspect-ratio: var(--hero-aspect-ratio, 16 / 9) !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        height: auto !important;
         overflow: hidden !important;
+    }
+
+    .hero-main-carousel--alfajores {
+        --hero-aspect-ratio: 1392 / 1664;
     }
 
     .hero-slide {
@@ -47,22 +52,20 @@
         overflow: hidden !important;
     }
 
-    /* Videos del hero - ZOOM para eliminar franjas negras (tortas e inicio) */
+    /* Videos del hero - tamaño estable entre breakpoints */
     .hero-background-video,
+    .hero-video,
     .hero-grid-video {
         object-fit: cover !important;
         width: 100% !important;
         height: 100% !important;
-        transform: scale(1.3) !important;
+        transform: none !important;
         transform-origin: center center !important;
     }
 
-    /* Excluir .hero-video para no afectar la página de detalles */
     .hero-video {
-        /* Mantener estilos originales sin zoom adicional */
-        object-fit: cover !important;
-        width: 100% !important;
-        height: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
     }
 
     /* ============================================
@@ -243,12 +246,45 @@
         line-height: 1.3 !important;
     }
 
+    .section-title-wrapper {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+
+    .section-header-decorated {
+        gap: 8px !important;
+    }
+
+    .section-decoration-left,
+    .section-decoration-right {
+        flex: 0 1 44px !important;
+        max-width: 44px !important;
+        min-width: 20px !important;
+    }
+
     .section-title-elegant {
-        font-size: 1.3rem !important;
+        max-width: 100% !important;
+        font-size: 1.1rem !important;
+        line-height: 1.15 !important;
+        letter-spacing: 0 !important;
+        overflow-wrap: break-word !important;
+        text-align: center !important;
+        white-space: normal !important;
     }
 
     .section-subtitle-elegant {
         font-size: 0.85rem !important;
+    }
+
+    .section-subtitle-elegant-center {
+        max-width: 100% !important;
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+        letter-spacing: 0 !important;
+        overflow-wrap: break-word !important;
+        padding: 0 0.5rem !important;
+        text-align: center !important;
+        white-space: normal !important;
     }
 
     /* ============================================
@@ -749,16 +785,18 @@
 
     .hero-section,
     .hero-main-carousel {
-        min-height: 450px !important;
-        max-height: 500px !important;
-        height: 450px !important;
+        aspect-ratio: var(--hero-aspect-ratio, 16 / 9) !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        height: auto !important;
         overflow: hidden !important;
     }
 
-    /* Videos del hero - ZOOM más agresivo en móviles pequeños (tortas e inicio) */
+    /* Mantener el mismo recorte: no aumentar zoom por breakpoint */
     .hero-background-video,
+    .hero-video,
     .hero-grid-video {
-        transform: scale(1.4) !important;
+        transform: none !important;
     }
 
     .section-title,
@@ -951,9 +989,10 @@
 
     .hero-section,
     .hero-main-carousel {
-        min-height: 300px !important;
-        max-height: 350px !important;
-        height: 300px !important;
+        aspect-ratio: var(--hero-aspect-ratio, 16 / 9) !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        height: auto !important;
     }
 
     .section-title,
@@ -993,5 +1032,12 @@
 
     100% {
         transform: translateX(-50%);
+    }
+}
+
+/* El hero no debe heredar el padding móvil aplicado a las secciones de contenido. */
+@media (max-width: 768px) {
+    section.hero-main-carousel {
+        padding: 0 !important;
     }
 }

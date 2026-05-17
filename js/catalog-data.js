@@ -248,7 +248,7 @@ const catalogData = {
         priceFormatted: '$2.000 - $3.000',
         category: 'extras',
         description: 'Hermosos lazos decorativos para darle un toque tierno a tu torta.',
-        mainImage: '../assets/logos/Detalles adicionales/lazo.png',
+        mainImage: '../assets/logos/Detalles adicionales/moño.png',
         personalization: null
     },
 
@@ -270,7 +270,7 @@ const catalogData = {
         priceFormatted: '$5.000 - $8.000',
         category: 'extras',
         description: 'Topper de Happy Birthday en diversos estilos y colores.',
-        mainImage: '../assets/logos/Detalles adicionales/hbd.png',
+        mainImage: '../assets/logos/Detalles adicionales/HB (1).png',
         personalization: null
     },
 

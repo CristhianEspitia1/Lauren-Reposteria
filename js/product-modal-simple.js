@@ -23,7 +23,6 @@ const ProductQuickView = {
         // Event delegation global para clicks
         this.initEventDelegation();
 
-        console.log('[ProductQuickView] Sistema restaurado');
     },
 
     /**

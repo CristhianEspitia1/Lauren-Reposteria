@@ -20,7 +20,6 @@ class QuickViewModal {
     init() {
         this.createModalHTML();
         this.attachEventListeners();
-        console.log('[QuickViewModal] Inicializado');
     }
 
     /**
@@ -37,12 +36,12 @@ class QuickViewModal {
         modal.className = 'quick-view-modal';
         modal.id = 'quickViewModal';
         modal.innerHTML = `
-            <button class="quick-view-close" id="quickViewClose" aria-label="Cerrar modal">×</button>
+            <button class="quick-view-close" id="quickViewClose" type="button" aria-label="Cerrar modal">×</button>
             <div class="quick-view-content">
                 <!-- Columna izquierda: Imagen -->
                 <div class="quick-view-image-section">
                     <div class="quick-view-image-container">
-                        <img src="" alt="" class="quick-view-main-image" id="quickViewMainImage">
+                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
                         <div class="quick-view-thumbnails" id="quickViewThumbnails"></div>
                     </div>
                 </div>
@@ -101,7 +100,6 @@ class QuickViewModal {
             return;
         }
 
-        console.log('[QuickViewModal] Abriendo modal para:', productData.name);
 
         this.currentProduct = productData;
         this.selectedOptions = {};
@@ -132,7 +130,6 @@ class QuickViewModal {
      * Cerrar modal
      */
     close() {
-        console.log('[QuickViewModal] Cerrando modal');
 
         this.overlay.classList.remove('active');
         this.modal.classList.remove('active');
@@ -569,7 +566,6 @@ class QuickViewModal {
      * Manejar cambios en las opciones (dependencias, precios, etc.)
      */
     handleOptionChange(product, optionId, value) {
-        console.log(`[QuickViewModal] Opción cambiada: ${optionId} = ${value}`);
 
         this.selectedOptions[optionId] = value;
 
@@ -734,7 +730,6 @@ class QuickViewModal {
             e.preventDefault();
             e.stopPropagation();
 
-            console.log('[QuickViewModal] Click en agregar al carrito');
 
             // Validar opciones requeridas
             if (!this.validateRequiredOptions(product)) {
@@ -765,7 +760,6 @@ class QuickViewModal {
             if (window.cartManager) {
                 const success = window.cartManager.addItem(cartItem);
                 if (success) {
-                    console.log('[QuickViewModal] Producto agregado exitosamente:', cartItem);
                     // Mostrar feedback visual adicional si es necesario
                 } else {
                     console.error('[QuickViewModal] Error al agregar item al carrito');
@@ -921,7 +915,6 @@ let quickViewModalInstance = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     quickViewModalInstance = new QuickViewModal();
-    console.log('[QuickViewModal] Modal listo para usar');
 });
 
 // Función global para abrir el modal desde cualquier lugar

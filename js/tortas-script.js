@@ -3,6 +3,46 @@
 // ========================================
 // El video se reproduce automáticamente con HTML5
 
+// Cargar videos secundarios solo cuando estén cerca del viewport.
+// Esto evita que Inicio descargue todos los videos de tarjetas y "Nuestra historia" al abrir.
+const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+
+const loadLazyVideo = (video) => {
+    if (video.dataset.loaded === 'true') return;
+
+    video.querySelectorAll('source[data-src]').forEach(source => {
+        source.src = source.dataset.src;
+        source.removeAttribute('data-src');
+    });
+
+    video.dataset.loaded = 'true';
+    video.load();
+
+    if (video.hasAttribute('autoplay')) {
+        video.play().catch(() => {
+            // El navegador puede bloquear autoplay en algunos contextos; el poster queda visible.
+        });
+    }
+};
+
+if ('IntersectionObserver' in window && lazyVideos.length > 0) {
+    const lazyVideoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadLazyVideo(entry.target);
+                lazyVideoObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '150px 0px',
+        threshold: 0.01
+    });
+
+    lazyVideos.forEach(video => lazyVideoObserver.observe(video));
+} else {
+    lazyVideos.forEach(loadLazyVideo);
+}
+
 // Animación de aparición al hacer scroll
 const observerOptions = {
     threshold: 0.05,
@@ -210,13 +250,10 @@ window.addEventListener('load', () => {
 document.querySelectorAll('.contact-btn').forEach(btn => {
     btn.addEventListener('click', function () {
         const type = this.classList.contains('whatsapp-btn') ? 'WhatsApp' : 'Instagram';
-        console.log(`Click en botón de contacto: ${type}`);
     });
 });
 
 // Mensaje de bienvenida
-console.log('%c✨ Lauren Tortas Personalizadas ✨', 'color: #C8A5D8; font-size: 20px; font-weight: bold;');
-console.log('%cCreando momentos dulces desde 2022', 'color: #B08BBB; font-size: 14px;');
 
 // ========================================
 // ANIMACIONES PARA NUEVAS SECCIONES
@@ -347,7 +384,6 @@ function createCarousel(config) {
         startAutoplay();
     }
 
-    console.log(`%c${consoleName} Activado! ✨`, `color: ${consoleColor}; font-size: 16px; font-weight: bold;`);
 
     const carouselInstance = { showSlide, nextSlide, startAutoplay, stopAutoplay, pause, resume };
     allCarousels.push(carouselInstance);
@@ -426,7 +462,6 @@ const rellenosCarousel = createCarousel({
             track.style.animation = originalAnimation || '';
         });
 
-        console.log('%c✨ Carrusel Infinito Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
     } else {
         // Si no está listo, intentar de nuevo cuando el DOM esté listo
         if (document.readyState === 'loading') {
@@ -436,7 +471,6 @@ const rellenosCarousel = createCarousel({
 })();
 */
 
-console.log('%c✨ Carrusel Infinito (sin clonación JS) Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 
 // ========================================
 // LIGHTBOX - SOLO Carrusel Infinito (NO vintage, NO sencillas)
@@ -531,7 +565,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('%c📸 Lightbox Carrusel Infinito Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 });
 
 // ========================================
@@ -633,7 +666,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log('%c🎨 Lightbox Vintage Exclusivo Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 });
 
 // ========================================
@@ -677,7 +709,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        console.log('%c💰 Modal de Precios Vintage Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -780,7 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log('%c🎂 Lightbox Sencillas Exclusivo Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 });
 
 // ========================================
@@ -821,7 +851,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        console.log('%c💰 Modal de Precios Sencillas Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -871,7 +900,6 @@ if (menuToggleMinimal && minimalNav) {
         }
     });
 
-    console.log('%c🍔 Menú Hamburguesa Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 }
 
 // ========================================
@@ -904,7 +932,6 @@ if (scrollToTopBtn) {
         });
     });
 
-    console.log('%c⬆️ Scroll to Top Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 }
 
 // ========================================
@@ -959,7 +986,6 @@ if (contactDropdownBtn && contactDropdownMenu) {
         }
     });
 
-    console.log('%c📞 Menú Desplegable de Contacto Activado! ✨', 'color: #C8A5D8; font-size: 16px; font-weight: bold;');
 }
 
 // ========================================
@@ -1012,7 +1038,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        console.log('%c🎂 Modal de Precios Tortas de Alfajor Activado! ✨', 'color: #FFB69E; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -1066,7 +1091,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        console.log('%c🍪 Modal de Precios Alfajores en Bolsita Activado! ✨', 'color: #F9B58C; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -1120,7 +1144,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        console.log('%c🍪 Modal de Precios Alfajores Unidad Activado! ✨', 'color: #F9B58C; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -1207,7 +1230,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log('%c✨ Efectos Hover de Alfajores Activados! ✨', 'color: #F9B58C; font-size: 16px; font-weight: bold;');
 });
 
 // ========================================
@@ -1226,7 +1248,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alfajoresTrack.appendChild(clone);
         });
 
-        console.log('%c🎨 Carrusel Infinito de Alfajores Personalizados Activado! ✨', 'color: #F9B58C; font-size: 16px; font-weight: bold;');
     }
 });
 
@@ -1244,15 +1265,12 @@ document.addEventListener('DOMContentLoaded', () => {
             this.style.opacity = '0.3';
             this.style.filter = 'grayscale(100%)';
 
-            console.log('⚠️ Video ocultado para evitar pantalla negra');
         });
 
         video.addEventListener('loadeddata', function () {
-            console.log('✅ Video cargado correctamente:', this.src || this.querySelector('source')?.src);
         });
     });
 
-    console.log(`📹 Monitoreando ${videos.length} videos para detectar errores`);
 });
 
 // ========================================
@@ -1278,19 +1296,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Intentar cargar logo de Lauren como fallback
             if (!this.src.includes('LOGOS LAUREN PNG-55.png')) {
                 this.src = '../assets/logos/LOGOS LAUREN PNG-55.png';
-                console.log('🔄 Imagen reemplazada con logo de fallback');
             } else {
                 // Si el logo también falla, ocultar
                 this.style.opacity = '0.3';
-                console.log('⚠️ Imagen ocultada completamente');
             }
         });
 
-        // DESHABILITADO: Los console.log en load causan ralentización
         /*
         img.addEventListener('load', function() {
             if (this.complete && this.naturalHeight !== 0) {
-                console.log('✅ Imagen cargada correctamente:', this.src);
             }
         });
         */
@@ -1301,5 +1315,4 @@ document.addEventListener('DOMContentLoaded', () => {
         img.getAttribute('src') !== '' &&
         !img.classList.contains('infinite-carousel-img')
     );
-    console.log(`🖼️ Monitoreando ${validImages.length} imágenes para detectar errores (excluyendo carrusel infinito)`);
 });

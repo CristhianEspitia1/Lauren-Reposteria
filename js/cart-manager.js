@@ -57,7 +57,6 @@ class CartManager {
             if (existingIndex !== -1) {
                 // Si existe, incrementar cantidad
                 this.cart[existingIndex].quantity += 1;
-                console.log('[Cart] Cantidad incrementada:', this.cart[existingIndex]);
             } else {
                 // Si no existe, agregar nuevo item
                 const cartItem = {
@@ -71,7 +70,6 @@ class CartManager {
                     addedAt: Date.now()
                 };
                 this.cart.push(cartItem);
-                console.log('[Cart] Producto agregado:', cartItem);
             }
 
             this.saveCart();
@@ -114,7 +112,6 @@ class CartManager {
             const removed = this.cart.splice(index, 1)[0];
             this.saveCart();
             this.notifyListeners('itemRemoved', removed);
-            console.log('[Cart] Producto eliminado:', removed);
         }
     }
 
@@ -132,7 +129,6 @@ class CartManager {
             } else {
                 this.cart[index].quantity = newQty;
                 this.saveCart();
-                console.log('[Cart] Cantidad actualizada:', this.cart[index]);
             }
         }
     }
@@ -144,7 +140,6 @@ class CartManager {
         this.cart = [];
         this.saveCart();
         this.notifyListeners('cartCleared');
-        console.log('[Cart] Carrito vaciado');
     }
 
     /**
@@ -229,7 +224,6 @@ class CartManager {
         if (message) {
             const url = `https://wa.me/${this.whatsappNumber}?text=${message}`;
             window.open(url, '_blank');
-            console.log('[Cart] Abriendo WhatsApp...');
         }
     }
 
@@ -269,4 +263,3 @@ class CartManager {
 // Crear instancia global del carrito
 window.cartManager = new CartManager();
 
-console.log('✅ Cart Manager inicializado');

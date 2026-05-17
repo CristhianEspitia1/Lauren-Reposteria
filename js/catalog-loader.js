@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof window.initTortasCarousels === 'function') {
         setTimeout(() => {
             window.initTortasCarousels();
-            console.log('%c🔄 Carruseles de Tortas re-inicializados', 'color: #d4a574');
         }, 100);
     }
 });
@@ -56,7 +55,6 @@ function renderTortasExtras() {
     });
 
     container.innerHTML = html;
-    console.log('%c✨ Extras renderizados dinámicamente', 'color: #d4a574; font-weight: bold;');
 }
 
 /**
@@ -109,7 +107,6 @@ function renderTortasVintage() {
     `;
 
     container.innerHTML = html + dotsHtml + btnHtml;
-    console.log('%c✨ Tortas Vintage renderizadas dinámicamente', 'color: #d4a574; font-weight: bold;');
 }
 
 /**
@@ -162,7 +159,6 @@ function renderTortasSencillas() {
     `;
 
     container.innerHTML = html + dotsHtml + btnHtml;
-    console.log('%c✨ Tortas Sencillas renderizadas dinámicamente', 'color: #d4a574; font-weight: bold;');
 }
 
 /**
@@ -198,7 +194,6 @@ function renderAlfajoresCajas() {
 
     html += `</div>`;
     container.innerHTML = html;
-    console.log('%c✨ Cajas de Alfajores renderizadas dinámicamente', 'color: #d4a574; font-weight: bold;');
 }
 
 /**
@@ -230,7 +225,6 @@ function renderAlfajoresTortas() {
     });
 
     container.innerHTML = html;
-    console.log('%c✨ Tortas de Alfajor renderizadas dinámicamente', 'color: #d4a574; font-weight: bold;');
 }
 
 /**
@@ -269,5 +263,4 @@ function renderAlfajoresIndividuales() {
     `;
 
     container.innerHTML = html;
-    console.log('%c✨ Alfajores Individuales renderizados dinámicamente', 'color: #d4a574; font-weight: bold;');
 }

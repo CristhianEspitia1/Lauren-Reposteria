@@ -112,11 +112,13 @@
     letter-spacing: 0.5px;
 }
 
-.nav-menu-btn:hover {
+.nav-menu-btn:hover,
+.nav-menu-btn:focus-visible {
     background: var(--accent-color);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(184, 164, 212, 0.3);
+    outline: none;
 }
 
 /* Menú desplegable */
@@ -138,7 +140,9 @@
     transition: all var(--transition);
 }
 
-.nav-menu-wrapper:hover .nav-menu-dropdown {
+.nav-menu-wrapper:hover .nav-menu-dropdown,
+.nav-menu-wrapper:focus-within .nav-menu-dropdown,
+.nav-menu-wrapper.is-open .nav-menu-dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -169,6 +173,7 @@
 
 /* ===== ÍCONO CARRITO (derecha) - OPCIÓN 3 SÓLIDA ===== */
 .nav-icon {
+    border: none;
     width: 44px;
     height: 44px;
     display: flex;
@@ -181,9 +186,11 @@
     position: relative;
 }
 
-.nav-icon:hover {
+.nav-icon:hover,
+.nav-icon:focus-visible {
     background: var(--accent-color);
     transform: scale(1.1);
+    outline: none;
 }
 
 .nav-icon svg {
@@ -193,7 +200,8 @@
     transition: all var(--transition);
 }
 
-.nav-icon:hover svg {
+.nav-icon:hover svg,
+.nav-icon:focus-visible svg {
     fill: white;
 }
 

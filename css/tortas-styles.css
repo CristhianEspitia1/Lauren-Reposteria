@@ -5,6 +5,18 @@
     box-sizing: border-box;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 :root {
     --primary-lilac: #C8A5D8;
     --secondary-peach: #E8D4C8;
@@ -304,7 +316,7 @@ body>* {
 /* Hero Carousel */
 .hero-carousel,
 .hero-main-carousel {
-    margin-top: 80px;
+    margin-top: 0;
     position: relative;
     height: 600px;
     overflow: hidden;
@@ -1879,12 +1891,32 @@ html {
 
 /* SECCIÓN 1: Hero Main Video */
 .hero-main-carousel {
-    margin-top: 80px;
+    margin-top: 0;
     position: relative;
     width: 100%;
-    height: 700px;
+    aspect-ratio: var(--hero-aspect-ratio, 16 / 9);
+    height: auto;
+    min-height: 0;
+    max-height: none;
     overflow: hidden;
-    will-change: transform;
+    background: #F4E8E1;
+}
+
+.hero-main-carousel--inicio {
+    --hero-aspect-ratio: 1126 / 480;
+}
+
+.hero-main-carousel--tortas {
+    --hero-aspect-ratio: 2 / 1;
+}
+
+.hero-main-carousel--alfajores {
+    --hero-aspect-ratio: 1856 / 832;
+}
+
+.hero-main-carousel--brownies,
+.hero-main-carousel--detalles {
+    --hero-aspect-ratio: 16 / 9;
 }
 
 .carousel-wrapper {
@@ -1895,16 +1927,17 @@ html {
 }
 
 /* Hero Background Video - Video único que cubre todo */
-.hero-background-video {
+.hero-background-video,
+.hero-video {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     z-index: 0;
-    will-change: transform;
     background: #E8D4C8;
+    transform: none;
 }
 
 .hero-video-grid {
@@ -1926,13 +1959,16 @@ html {
 .hero-grid-video {
     flex: 1;
     min-width: 0;
+    width: 25%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     display: block;
     margin: 0;
     padding: 0;
     border: none;
     vertical-align: top;
+    transform: none;
 }
 
 .hero-overlay {
@@ -1950,9 +1986,7 @@ html {
 
 .hero-content-box {
     position: absolute;
-    top: 50%;
-    left: 49.6%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     z-index: 20;
     text-align: center;
     display: flex;
@@ -1961,25 +1995,27 @@ html {
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 100%;
     padding: 25px;
     animation: fadeInHeroLogo 1.5s ease-out;
     pointer-events: none;
 }
 
 .hero-logo-translucent {
-    width: 600px;
-    max-width: 90%;
-    height: auto;
+    height: clamp(280px, 24vw, 380px);
+    width: auto;
+    max-width: min(62%, calc(100% - 64px));
+    max-height: 62%;
+    object-fit: contain;
     opacity: 0.95;
     filter: brightness(2.5) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
-    transition: all 0.3s ease;
+    transition: opacity 0.25s ease, filter 0.25s ease;
     display: block;
     margin: 0 auto;
 }
 
 .hero-logo-translucent:hover {
     opacity: 1;
-    transform: scale(1.05);
 }
 
 @keyframes fadeInUp {
@@ -2716,7 +2752,9 @@ html {
 /* Responsive para las nuevas secciones */
 @media (max-width: 1024px) {
     .hero-main-carousel {
-        height: 600px;
+        height: auto;
+        min-height: 0;
+        max-height: none;
     }
 
     .hero-video-grid {
@@ -2729,8 +2767,10 @@ html {
     }
 
     .hero-logo-translucent {
-        width: 450px;
-        max-width: 79%;
+        height: clamp(220px, 28vw, 300px);
+        width: auto;
+        max-width: min(60%, calc(100% - 48px));
+        max-height: 62%;
     }
 
     .sabores-grid {
@@ -2787,12 +2827,17 @@ html {
 
 @media (max-width: 768px) {
     .hero-main-carousel {
-        height: 625px;
-        /* Aumentado 25% desde 500px */
-        margin-top: 45px;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        margin-top: 0;
         width: 100vw;
         margin-left: calc(-50vw + 50%);
         margin-right: calc(-50vw + 50%);
+    }
+
+    .hero-main-carousel--alfajores {
+        --hero-aspect-ratio: 1392 / 1664;
     }
 
     .hero-video-grid {
@@ -2807,8 +2852,10 @@ html {
     }
 
     .hero-logo-translucent {
-        width: 360px;
-        max-width: 77%;
+        height: clamp(150px, 40vw, 210px);
+        width: auto;
+        max-width: min(54%, calc(100% - 32px));
+        max-height: 72%;
     }
 
     .hero-content-box {

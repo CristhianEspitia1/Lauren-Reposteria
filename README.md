@@ -1,251 +1,127 @@
-# 🎂 Lauren Repostería - Sitio Web Oficial
+# Lauren Repostería - Sitio web oficial
 
-![Lauren Repostería](assets/logos/LOGOS%20LAUREN%20PNG-55.png)
+Sitio estático de Lauren Repostería, marca de repostería artesanal en Medellín, Colombia. El sitio presenta tortas personalizadas, alfajores, brownies, galletas y detalles especiales con una estética dulce, elegante y profesional.
 
-**Bocado de Alegría desde 2022**
+Última auditoría técnica: 16 de mayo de 2026.
 
-Sitio web oficial de Lauren Repostería - Repostería artesanal en Medellín, Colombia.
+## Cómo ejecutarlo localmente
 
----
+Desde la raíz del proyecto:
 
-## 🚀 INICIO RÁPIDO
-
-### Abrir el sitio localmente:
-1. Navega a: `C:\Users\crizc\OneDrive\Escritorio\LaurenReposteria\html\`
-2. Abre `tortas.html` en tu navegador
-
----
-
-## 📁 Estructura del Proyecto
-
+```bash
+python3 -m http.server 5173 --bind 127.0.0.1
 ```
+
+Luego abre:
+
+```text
+http://127.0.0.1:5173/html/inicio.html
+```
+
+También se puede abrir `html/inicio.html` directamente en el navegador, pero el servidor local es mejor para detectar rutas rotas, errores de carga y comportamiento real de producción.
+
+## Tecnologías
+
+- HTML5 estático.
+- CSS3 con variables visuales, responsive design, animaciones y efectos glass/luxury.
+- JavaScript vanilla para carrito, modales, carruseles, menú y contacto.
+- Assets locales de imágenes, video, logos y tipografías.
+- GitHub Pages / dominio configurado con `CNAME`.
+
+No hay framework, bundler, backend, base de datos ni dependencias instaladas por `package.json`.
+
+## Estructura
+
+```text
 LaurenReposteria/
-├── html/                    # Páginas HTML
-│   ├── tortas.html         # ⭐ Página principal de tortas
-│   ├── alfajores.html
-│   ├── brownies-galletas.html
-│   └── detalles.html
-├── css/                     # Hojas de estilo
-│   ├── tortas-styles.css   # ⭐ Estilos principales
-│   ├── header.css
-│   ├── mobile-fixes.css
-│   └── ...
-├── js/                      # Scripts JavaScript
-│   ├── tortas-script.js    # ⭐ Script principal
-│   ├── tortas-data.js
-│   ├── scroll-to-top.js
-│   └── ...
-├── assets/                  # Recursos multimedia
-│   ├── imagenes-tortas/
-│   ├── logos/
-│   └── ...
-├── backups/                 # Respaldos automáticos
-├── GUIA-MANTENIMIENTO.md   # 📖 Guía de mantenimiento
-├── crear-respaldo.bat      # 💾 Crear respaldo antes de cambios
-└── restaurar-respaldo.bat  # ↩️ Restaurar si algo falla
+├── index.html                  # Entrada raíz con redirección a html/inicio.html
+├── CNAME                       # Dominio personalizado configurado
+├── html/
+│   ├── inicio.html             # Página principal
+│   ├── tortas.html             # Tortas personalizadas
+│   ├── alfajores.html          # Alfajores
+│   ├── brownies-galletas.html  # Brownies y galletas
+│   ├── detalles.html           # Detalles y cajas especiales
+│   ├── tabla-productos.html    # Editor visual/manual de productos
+│   └── navbar-demo-*.html      # Demos internas de navegación
+├── css/                        # Estilos globales, páginas, carrito, header/footer y modales
+├── js/                         # Datos, carrito, modales, carruseles e interacciones
+├── assets/                     # Imágenes, videos, logos y guías visuales
+├── Guias/                      # Documentación histórica del proyecto
+└── PROBLEMAS-PENDIENTES.md     # Estado técnico y riesgos por revisar
 ```
 
----
+## Archivos importantes
 
-## ⚠️ ANTES DE HACER CAMBIOS
+- `js/catalog-data.js`: fuente principal de productos, precios, opciones e imágenes para modales.
+- `js/quick-view-modal.js`: modal reutilizable de vista rápida.
+- `js/cart-manager.js` y `js/cart-ui.js`: lógica e interfaz del carrito.
+- `js/contact-fab.js`: botón flotante de contacto y menú de navegación.
+- `css/tortas-styles.css`: base visual compartida por páginas de producto.
+- `css/quick-view-modal.css`: estilos del modal reutilizable.
+- `css/glass-nav.css`: navegación superior.
 
-### Opción 1: Usar Git (Recomendado)
+## Branding base
+
+- Personalidad: artesanal, dulce, elegante, cercana y confiable.
+- Colores principales: lila/morado suave, rosa, durazno y tonos crema/blanco.
+- Uso visual: fotografías reales de productos, fondos suaves, tarjetas limpias, botones redondeados y microinteracciones discretas.
+- Tono de comunicación: cálido, claro y comercial sin sonar genérico.
+
+## Contacto visible del sitio
+
+- WhatsApp: +57 310 444 2796
+- Instagram: @laurenreposteria22
+- TikTok: @laurenreposteria
+- Email: reposterialauren@gmail.com
+- Ubicación: Medellín, Colombia
+
+No cambies teléfonos, redes, precios, productos, ubicación ni textos legales sin confirmación del negocio.
+
+## Cómo modificar contenido
+
+- Productos, precios y opciones: editar `js/catalog-data.js`.
+- Textos principales de cada página: editar el archivo correspondiente en `html/`.
+- Estilos generales: revisar primero `css/tortas-styles.css`, `css/glass-nav.css`, `css/luxury-footer.css` y `css/quick-view-modal.css`.
+- Imágenes: agregar assets en la carpeta de producto correspondiente y verificar que la ruta coincida exactamente, incluyendo mayúsculas, espacios y acentos.
+
+## Recomendaciones de mantenimiento
+
+- Probar siempre en móvil, tablet y desktop antes de publicar.
+- Revisar consola del navegador después de tocar JavaScript o rutas de assets.
+- Evitar archivos con espacios, emojis, tildes o nombres duplicados en nuevos assets; el proyecto actual los contiene, pero los nuevos deberían seguir una convención más limpia.
+- Optimizar videos pesados antes de subirlos a producción.
+- Mantener `catalog-data.js` como fuente única para productos cuando sea posible.
+- Conservar `PROBLEMAS-PENDIENTES.md` actualizado después de cada auditoría o cambio relevante.
+
+## Despliegue
+
+El proyecto está preparado para GitHub Pages y tiene dominio personalizado configurado en `CNAME`.
+
+Antes de publicar:
+
 ```bash
-cd C:\Users\crizc\OneDrive\Escritorio\LaurenReposteria
-git add .
-git commit -m "Descripción de lo que vas a cambiar"
+git status
+python3 -m http.server 5173 --bind 127.0.0.1
 ```
 
-### Opción 2: Usar script de respaldo
-1. Doble click en `crear-respaldo.bat`
-2. Espera a que termine
-3. Haz tus cambios
+Verifica manualmente las páginas principales:
 
----
+- `/html/inicio.html`
+- `/html/tortas.html`
+- `/html/alfajores.html`
+- `/html/brownies-galletas.html`
+- `/html/detalles.html`
 
-## 🆘 SI ALGO SE ROMPE
+## Estado de calidad actual
 
-### Método 1: Restaurar con script
-1. Doble click en `restaurar-respaldo.bat`
-2. Confirma la restauración
-3. Abre el navegador y presiona **Ctrl+Shift+R**
+En la auditoría del 16 de mayo de 2026 se verificó:
 
-### Método 2: Revertir con Git
-```bash
-# Ver historial de cambios
-git log --oneline
-
-# Volver al commit anterior
-git reset --hard HEAD~1
-
-# O volver a la versión estable
-git reset --hard 148eecc
-```
-
-### Método 3: Copiar del respaldo principal
-Los archivos originales funcionales están en:
-```
-C:\LaurenReposteria\
-```
-
----
-
-## 📖 DOCUMENTACIÓN IMPORTANTE
-
-- **[PROBLEMAS-PENDIENTES.md](PROBLEMAS-PENDIENTES.md)** - 🆕 Lista verificada de problemas a resolver (actualizado 29/11/2025)
-- **[GUIA-MANTENIMIENTO.md](GUIA-MANTENIMIENTO.md)** - Reglas para el carrusel infinito
-- **Commits importantes:**
-  - `148eecc` - Versión estable con carrusel funcionando
-  - `cc1984a` - Guía de mantenimiento agregada
-  - `0d68b04` - Scripts de respaldo agregados
-
----
-
-## 🎯 CARACTERÍSTICAS PRINCIPALES
-
-### Productos:
-- 🎂 Tortas personalizadas
-- 🍪 Alfajores artesanales
-- 🍫 Brownies
-- 🍪 Galletas decoradas
-- 🎁 Detalles especiales
-
-### Quick View Modal 🆕
-- ✅ Vista rápida de productos sin recargar la página
-- ✅ Selección dinámica de opciones y precios
-- ✅ Integración con carrito de compras
-- ✅ Disponible en Alfajores, Brownies y Galletas
-
-### Carruseles Automáticos 🆕
-- ✅ Rotación automática de imágenes en Brownies y Galletas
-- ✅ Pausa inteligente al pasar el mouse (hover)
-- ✅ Navegación manual con indicadores (dots)
-- ✅ Transiciones suaves
-
-### Carrusel Infinito (Tortas)
-- ✅ 80 elementos HTML estáticos (40 + 40 duplicados)
-- ✅ Animación CSS pura sin JavaScript
-- ✅ Sin parpadeo durante el scroll
-- ✅ Hover effects suaves
-- ✅ Compatible con todos los navegadores
-
-### Optimizaciones y Correcciones
-- ✅ Restauración crítica de scripts en `alfajores.html`
-- ✅ Integración robusta de `catalog-data.js` y `quick-view-modal.js`
-- ✅ Scroll listener deshabilitado donde no es necesario
-- ✅ CSS optimizado con transitions
-- ✅ Error handlers mejorados
-- ✅ **Fix crítico de case-sensitivity** para imágenes en servidores Linux (GitHub Pages)
-
----
-
-## 🌐 DESPLIEGUE Y PRODUCCIÓN
-
-### Sitio Web en Vivo
-**URL:** https://CristhianEspitia1.github.io/Lauren-Reposteria/
-
-### Actualizar el Sitio Web
-```bash
-# 1. Hacer cambios locales y probar
-# 2. Guardar con Git
-git add .
-git commit -m "Descripción del cambio"
-
-# 3. Subir a GitHub (el sitio se actualiza automáticamente en 2-3 minutos)
-git push origin main
-```
-
-### Verificar Despliegue
-- Ve a: https://github.com/CristhianEspitia1/Lauren-Reposteria/actions
-- Espera a ver el ✅ verde
-- Recarga tu sitio con `Ctrl + Shift + R`
-
----
-
-## ⚠️ IMPORTANTE: Case-Sensitivity en Nombres de Archivo
-
-**CRÍTICO:** GitHub Pages usa servidores Linux que **SÍ distinguen mayúsculas/minúsculas**.
-
-### ❌ Problema Común:
-```
-Windows:   "Imagen.jpg" = "imagen.jpg"  (son el mismo)
-Linux:     "Imagen.jpg" ≠ "imagen.jpg"  (son diferentes!)
-```
-
-### ✅ Solución:
-1. **Usa siempre minúsculas** en nombres de archivo
-2. **Reemplaza espacios con guiones**: `mi-imagen.jpg`
-3. **Sé consistente** entre HTML y archivo
-
-### Cómo Renombrar Correctamente:
-```bash
-# Si Windows no detecta el cambio de mayúsculas:
-git rm --cached "assets/imagen/Foto.jpg"
-git add "assets/imagen/foto.jpg"
-git commit -m "Fix: Rename file for case-sensitivity"
-git push origin main
-```
-
----
-
-## 🛠️ Tecnologías
-
-- HTML5
-- CSS3 (Animaciones, Flexbox, Grid)
-- JavaScript (Vanilla, sin frameworks)
-- Git & GitHub (Control de versiones y despliegue)
-- GitHub Pages (Hosting)
-
----
-
-## 📊 ESTADÍSTICAS DEL PROYECTO
-
-- **Páginas HTML**: 5 páginas completas
-- **Productos**: 50+ productos con imágenes y precios
-- **Scripts JS**: 10+ módulos organizados  
-- **Archivos CSS**: 8 hojas de estilo optimizadas
-- **Commits**: 100+ commits documentados
-- **Estado**: ✅ En producción y funcionando
-
----
-
-## 📞 CONTACTO
-
-**Lauren Repostería**  
-📍 Medellín, Colombia
-
-- 📱 **WhatsApp**: [+57 310 444 2796](https://wa.me/573104442796)
-- 📸 **Instagram**: [@laurenreposteria22](https://instagram.com/laurenreposteria22)
-- 🎵 **TikTok**: @laurenreposteria
-- 📧 **Email**: reposterialauren@gmail.com
-
-### 📝 Información de Servicio
-
-- ⏰ **Horario**: Lunes a Sábado, 9:00 AM - 6:00 PM
-- 📅 **Pedidos**: Mínimo 1 día de anticipación
-- 🎨 **Personalización**: 100% productos personalizables
-- 🚚 **Entregas**: Disponibles en Medellín
-
----
-
-## 📌 NOTAS IMPORTANTES
-
-### Commits Clave:
-- `6979cf3` - ✅ **Fix crítico de case-sensitivity** (28/11/2025)
-- `bcbbdb5` - Restauración completa de detalles.html con grid de productos
-- `148eecc` - Versión estable con carrusel funcionando
-- `cc1984a` - Guía de mantenimiento agregada
-
-### Para Desarrolladores:
-- Siempre probar localmente antes de hacer push
-- Usar `Ctrl + Shift + R` para hard refresh
-- Revisar la consola del navegador para errores
-- Verificar el estado de despliegue en GitHub Actions
-
----
-
-**© 2025 Lauren Repostería**. Todos los derechos reservados.
-
-**Hecho con 💜 en Medellín, Colombia**
-
-*Última actualización: 28 de noviembre de 2025*
+- Páginas principales cargan sin errores de consola.
+- No hay imágenes rotas visibles en las páginas principales.
+- No hay desbordamiento horizontal en móvil, tablet ni desktop.
+- Menú, carrito, contacto y vista rápida de producto funcionan.
+- SEO básico y Open Graph están presentes en páginas principales.
+- Enlaces externos relevantes usan `rel="noopener noreferrer"`.
+- No se detectaron claves API, tokens o credenciales expuestas en el frontend.
+- Los videos secundarios de Inicio usan carga diferida para reducir el peso inicial.

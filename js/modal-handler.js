@@ -32,7 +32,6 @@ const ModalHandler = {
         // Focus en el modal para accesibilidad
         modal.setAttribute('aria-hidden', 'false');
 
-        console.log('[ModalHandler] Modal abierto');
     },
 
     /**
@@ -56,7 +55,6 @@ const ModalHandler = {
         // Restaurar posición de scroll
         window.scrollTo(0, this.scrollPosition);
 
-        console.log('[ModalHandler] Modal cerrado, scroll restaurado');
     },
 
     /**
@@ -116,7 +114,6 @@ const ModalHandler = {
         // Tecla Escape
         document.addEventListener('keydown', (e) => this.closeOnEscape(e, modal));
 
-        console.log(`[ModalHandler] Modal ${config.modalId} inicializado`);
     }
 };
 

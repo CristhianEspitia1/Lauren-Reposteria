@@ -1,5 +1,6 @@
 # Archivos de sistema
 .DS_Store
+._*
 Thumbs.db
 desktop.ini
 

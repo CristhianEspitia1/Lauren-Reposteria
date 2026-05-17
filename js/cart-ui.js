@@ -52,7 +52,6 @@ class CartUI {
         // Renderizar estado inicial
         this.updateUI();
 
-        console.log('✅ CartUI inicializado');
     }
 
     setupEventListeners() {
