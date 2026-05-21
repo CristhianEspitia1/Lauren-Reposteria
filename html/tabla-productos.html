@@ -308,7 +308,7 @@
 
                     row.innerHTML = `
                         <td class="col-img">
-                            <img src="${product.mainImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'">
+                            <img loading="lazy" decoding="async" src="${product.mainImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'">
                         </td>
                         <td class="col-name" contenteditable="true" data-field="name" data-id="${product.id}">${product.name}</td>
                         <td><span class="badge ${badgeClass}">${product.category}</span></td>
@@ -423,6 +423,8 @@ const catalogData = {\n`;
             });
         });
     </script>
+    <script src="../js/performance-optimizer.js"></script>
+
 </body>
 
 </html>

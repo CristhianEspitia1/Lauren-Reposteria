@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lauren Repostería | Tortas, Alfajores, Brownies y Más</title>
     <link rel="canonical" href="https://laurenreposteria.com/html/inicio.html">
-    <link rel="icon" type="image/png" href="../assets/logos/LOGOS%20LAUREN%20PNG-13.png">
+    <link rel="icon" type="image/webp" href="../assets/optimized/logos/LOGOS LAUREN PNG-13.webp">
 
     <!-- SEO Meta Tags -->
     <meta name="description"
@@ -23,13 +23,13 @@
     <meta property="og:site_name" content="Lauren Repostería">
     <meta property="og:locale" content="es_CO">
     <meta property="og:url" content="https://laurenreposteria.com/html/inicio.html">
-    <meta property="og:image" content="https://laurenreposteria.com/assets/logos/LOGOS%20LAUREN%20PNG-55.png">
+    <meta property="og:image" content="https://laurenreposteria.com/assets/optimized/logos/LOGOS LAUREN PNG-55.webp">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Lauren Repostería | Tortas, Alfajores, Brownies y Más">
     <meta name="twitter:description" content="Repostería artesanal en Colombia. Tortas personalizadas, alfajores, brownies, galletas y detalles especiales. Endulza tus momentos con Lauren, bocado de alegría desde 2022.">
-    <meta name="twitter:image" content="https://laurenreposteria.com/assets/logos/LOGOS%20LAUREN%20PNG-55.png">    <!-- Google Fonts -->
+    <meta name="twitter:image" content="https://laurenreposteria.com/assets/optimized/logos/LOGOS LAUREN PNG-55.webp">    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -135,13 +135,15 @@
     <!-- SECCIÓN Hero: Bienvenida -->
     <section class="hero-main-carousel hero-main-carousel--inicio">
         <div class="carousel-wrapper">
-            <video class="hero-background-video" autoplay muted loop playsinline
-                poster="../assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.png">
-                <source src="../assets/imagenes-inicio/VideoHero.mp4" type="video/mp4">
+            <video class="hero-background-video" preload="metadata" autoplay muted loop playsinline
+                poster="../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.webp">
+                <source src="../assets/optimized/imagenes-inicio/VideoHero-mobile.mp4" type="video/mp4"
+                    media="(max-width: 768px)">
+                <source src="../assets/optimized/imagenes-inicio/VideoHero.mp4" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
             <div class="hero-content-box">
-                <img src="../assets/logos/LOGOS LAUREN PNG-59.png" alt="Lauren Logo" class="hero-logo-translucent">
+                <img src="../assets/optimized/logos/LOGOS LAUREN PNG-59.webp" alt="Lauren Logo" class="hero-logo-translucent">
             </div>
         </div>
     </section>
@@ -152,7 +154,7 @@
             <div class="intro-content-wrapper">
                 <div class="intro-icon-container">
                     <div class="intro-icon-circle">
-                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png"
+                        <img src="../assets/optimized/logos/LOGOS LAUREN PNG-13.webp"
                             alt="Logo Lauren Repostería - Bocado de Alegría" class="intro-main-icon-img" loading="lazy">
                     </div>
                 </div>
@@ -187,10 +189,10 @@
             <div class="products-row row-top">
                 <a href="tortas.html" class="product-card product-card--tortas"
                     style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video loading="lazy"
+                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="3500" loading="lazy"
                         aria-label="Video de tortas personalizadas"
-                        poster="../assets/imagenes-tortas/03-sabores/chocolate.png">
-                        <source data-src="../assets/imagenes-inicio/Tarjeta-tortas.mp4" type="video/mp4">
+                        poster="../assets/optimized/imagenes-tortas/03-sabores/chocolate.webp">
+                        <source data-src="../assets/optimized/imagenes-inicio/Tarjeta-tortas.mp4" type="video/mp4">
                     </video>
                     <div class="product-card-overlay">
                         <div class="card-cta">
@@ -201,10 +203,10 @@
 
                 <a href="alfajores.html" class="product-card"
                     style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video loading="lazy"
+                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="5000" loading="lazy"
                         aria-label="Video de alfajores artesanales"
-                        poster="../assets/imagenes-alfajores/Alfajores x12.png">
-                        <source data-src="../assets/imagenes-inicio/Tarjeta-alfajores.mp4" type="video/mp4">
+                        poster="../assets/optimized/imagenes-alfajores/Alfajores x12.webp">
+                        <source data-src="../assets/optimized/imagenes-inicio/Tarjeta-alfajores.mp4" type="video/mp4">
                     </video>
                     <div class="product-card-overlay">
                         <div class="card-cta">
@@ -218,10 +220,10 @@
             <div class="products-row row-bottom">
                 <a href="brownies-galletas.html" class="product-card"
                     style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video loading="lazy"
+                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="6500" loading="lazy"
                         aria-label="Video de brownies"
-                        poster="../assets/imagenes.brownies.galletas/Brownies/browniesIndividuales.png">
-                        <source data-src="../assets/imagenes-inicio/Tarjeta-Brownies.mp4" type="video/mp4">
+                        poster="../assets/optimized/imagenes.brownies.galletas/Brownies/browniesIndividuales.webp">
+                        <source data-src="../assets/optimized/imagenes-inicio/Tarjeta-Brownies.mp4" type="video/mp4">
                     </video>
                     <div class="product-card-overlay">
                         <div class="card-cta">
@@ -232,10 +234,10 @@
 
                 <a href="brownies-galletas.html" class="product-card"
                     style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video loading="lazy"
+                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="8000" loading="lazy"
                         aria-label="Video de galletas decoradas"
-                        poster="../assets/imagenes.brownies.galletas/Galletas/1.png">
-                        <source data-src="../assets/imagenes-inicio/Tarjeta-Galletas.mp4" type="video/mp4">
+                        poster="../assets/optimized/imagenes.brownies.galletas/Galletas/1.webp">
+                        <source data-src="../assets/optimized/imagenes-inicio/Tarjeta-Galletas.mp4" type="video/mp4">
                     </video>
                     <div class="product-card-overlay">
                         <div class="card-cta">
@@ -246,10 +248,10 @@
 
                 <a href="detalles.html" class="product-card"
                     style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video loading="lazy"
+                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="9500" loading="lazy"
                         aria-label="Video de detalles especiales"
-                        poster="../assets/imagenes-detalles/productos/golden/Detalle Golden.jpg">
-                        <source data-src="../assets/imagenes-inicio/Tarjeta-detalle.mp4" type="video/mp4">
+                        poster="../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden.webp">
+                        <source data-src="../assets/optimized/imagenes-inicio/Tarjeta-detalle.mp4" type="video/mp4">
                     </video>
                     <div class="product-card-overlay">
                         <div class="card-cta">
@@ -271,7 +273,7 @@
                         style="width: 100%; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" autoplay muted
                         loop playsinline preload="none" controls
                         aria-label="Video con la historia de Lauren Repostería">
-                        <source data-src="../assets/imagenes-inicio/Nuestra-historia.mp4" type="video/mp4">
+                        <source data-src="../assets/optimized/imagenes-inicio/Nuestra-historia.mp4" type="video/mp4">
                         Tu navegador no soporta la reproducción de videos.
                     </video>
                 </div>
@@ -323,8 +325,8 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/pedido.png" alt="Icono de pedido anticipado"
-                                class="icon-img" loading="lazy">
+                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/Detalles adicionales/pedido.webp" alt="Icono de pedido anticipado"
+                                class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -338,8 +340,8 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/diseños.png"
-                                alt="Icono de diseños personalizados" class="icon-img" loading="lazy">
+                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/Detalles adicionales/diseños.webp"
+                                alt="Icono de diseños personalizados" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -353,8 +355,8 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/unica.png"
-                                alt="Icono de producto artesanal único" class="icon-img" loading="lazy">
+                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/Detalles adicionales/unica.webp"
+                                alt="Icono de producto artesanal único" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -368,8 +370,8 @@
                 <div class="info-card-modern">
                     <div class="info-card-icon">
                         <div class="icon-circle">
-                            <img src="../assets/logos/Detalles adicionales/letras.png"
-                                alt="Icono de horario de atención" class="icon-img" loading="lazy">
+                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/Detalles adicionales/letras.webp"
+                                alt="Icono de horario de atención" class="icon-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card-content">
@@ -389,7 +391,7 @@
     <footer class="luxury-footer">
         <!-- Logo -->
         <div class="footer-logo">
-            <img src="../assets/logos/footer-logo.png" alt="Lauren Repostería" loading="lazy" decoding="async">
+            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/footer-logo.webp" alt="Lauren Repostería" loading="lazy" decoding="async">
         </div>
 
         <!-- Iconos de Redes Sociales con colores de marca -->
@@ -490,7 +492,7 @@
             <div class="product-modal-content">
                 <div class="product-modal-left">
                     <div class="product-modal-image-main">
-                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Producto seleccionado" id="productModalMainImage" class="modal-main-image">
+                        <img src="../assets/optimized/logos/LOGOS LAUREN PNG-13.webp" alt="Producto seleccionado" id="productModalMainImage" class="modal-main-image">
                     </div>
                 </div>
 
@@ -523,6 +525,7 @@
     <script src="../js/modal-handler.js"></script>
     <script src="../js/product-modal-simple.js"></script>
     <script src="../js/tortas-script.js"></script>
+    <script src="../js/performance-optimizer.js"></script>
 
     <script src="../js/contact-fab.js"></script>
 

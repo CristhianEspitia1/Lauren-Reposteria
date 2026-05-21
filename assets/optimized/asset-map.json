@@ -1,0 +1,2227 @@
+{
+  "generatedAt": "2026-05-20T23:20:29.376Z",
+  "files": {
+    "assets/icons/cart-icon.png": {
+      "kind": "image",
+      "original": "assets/icons/cart-icon.png",
+      "optimized": "assets/optimized/icons/cart-icon.webp",
+      "originalBytes": 544230,
+      "optimizedBytes": 1620,
+      "originalSize": "531.5KB",
+      "optimizedSize": "1.58KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 848
+      }
+    },
+    "assets/imagenes-alfajores/AlfajorBolsita.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/AlfajorBolsita.png",
+      "optimized": "assets/optimized/imagenes-alfajores/AlfajorBolsita.webp",
+      "originalBytes": 1581762,
+      "optimizedBytes": 28780,
+      "originalSize": "1.51MB",
+      "optimizedSize": "28.1KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-alfajores/AlfajorUnidad.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/AlfajorUnidad.png",
+      "optimized": "assets/optimized/imagenes-alfajores/AlfajorUnidad.webp",
+      "originalBytes": 959228,
+      "optimizedBytes": 4654,
+      "originalSize": "936.7KB",
+      "optimizedSize": "4.54KB",
+      "dimensions": {
+        "width": 651,
+        "height": 1184
+      }
+    },
+    "assets/imagenes-alfajores/Alfajores vaso mini.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/Alfajores vaso mini.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/Alfajores vaso mini.webp",
+      "originalBytes": 119359,
+      "optimizedBytes": 40364,
+      "originalSize": "116.6KB",
+      "optimizedSize": "39.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/Alfajores x12.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/Alfajores x12.png",
+      "optimized": "assets/optimized/imagenes-alfajores/Alfajores x12.webp",
+      "originalBytes": 1154206,
+      "optimizedBytes": 8972,
+      "originalSize": "1.10MB",
+      "optimizedSize": "8.76KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-alfajores/Alfajores x6.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/Alfajores x6.png",
+      "optimized": "assets/optimized/imagenes-alfajores/Alfajores x6.webp",
+      "originalBytes": 1030643,
+      "optimizedBytes": 13014,
+      "originalSize": "1006.5KB",
+      "optimizedSize": "12.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 905
+      }
+    },
+    "assets/imagenes-alfajores/TortaAlfajor1.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/TortaAlfajor1.png",
+      "optimized": "assets/optimized/imagenes-alfajores/TortaAlfajor1.webp",
+      "originalBytes": 1274168,
+      "optimizedBytes": 16806,
+      "originalSize": "1.22MB",
+      "optimizedSize": "16.4KB",
+      "dimensions": {
+        "width": 1088,
+        "height": 875
+      }
+    },
+    "assets/imagenes-alfajores/TortaAlfajor2.png": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/TortaAlfajor2.png",
+      "optimized": "assets/optimized/imagenes-alfajores/TortaAlfajor2.webp",
+      "originalBytes": 1012727,
+      "optimizedBytes": 22636,
+      "originalSize": "989.0KB",
+      "optimizedSize": "22.1KB",
+      "dimensions": {
+        "width": 673,
+        "height": 854
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.webp",
+      "originalBytes": 121817,
+      "optimizedBytes": 42858,
+      "originalSize": "119.0KB",
+      "optimizedSize": "41.9KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.webp",
+      "originalBytes": 112853,
+      "optimizedBytes": 39434,
+      "originalSize": "110.2KB",
+      "optimizedSize": "38.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.webp",
+      "originalBytes": 137409,
+      "optimizedBytes": 50302,
+      "originalSize": "134.2KB",
+      "optimizedSize": "49.1KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.webp",
+      "originalBytes": 144872,
+      "optimizedBytes": 51034,
+      "originalSize": "141.5KB",
+      "optimizedSize": "49.8KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.webp",
+      "originalBytes": 108631,
+      "optimizedBytes": 36240,
+      "originalSize": "106.1KB",
+      "optimizedSize": "35.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.webp",
+      "originalBytes": 125599,
+      "optimizedBytes": 43752,
+      "originalSize": "122.7KB",
+      "optimizedSize": "42.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.webp",
+      "originalBytes": 138402,
+      "optimizedBytes": 50804,
+      "originalSize": "135.2KB",
+      "optimizedSize": "49.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.webp",
+      "originalBytes": 106425,
+      "optimizedBytes": 34804,
+      "originalSize": "103.9KB",
+      "optimizedSize": "34.0KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.webp",
+      "originalBytes": 125352,
+      "optimizedBytes": 44488,
+      "originalSize": "122.4KB",
+      "optimizedSize": "43.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.webp",
+      "originalBytes": 144760,
+      "optimizedBytes": 51124,
+      "originalSize": "141.4KB",
+      "optimizedSize": "49.9KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.webp",
+      "originalBytes": 130093,
+      "optimizedBytes": 44082,
+      "originalSize": "127.0KB",
+      "optimizedSize": "43.0KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/aaa.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/aaa.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/aaa.webp",
+      "originalBytes": 133978,
+      "optimizedBytes": 48736,
+      "originalSize": "130.8KB",
+      "optimizedSize": "47.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/b.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/b.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/b.webp",
+      "originalBytes": 158936,
+      "optimizedBytes": 61808,
+      "originalSize": "155.2KB",
+      "optimizedSize": "60.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-alfajores/personalizados/bb.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-alfajores/personalizados/bb.jpg",
+      "optimized": "assets/optimized/imagenes-alfajores/personalizados/bb.webp",
+      "originalBytes": 133900,
+      "optimizedBytes": 50138,
+      "originalSize": "130.8KB",
+      "optimizedSize": "49.0KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/1.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/1.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/1.webp",
+      "originalBytes": 154576,
+      "optimizedBytes": 33484,
+      "originalSize": "151.0KB",
+      "optimizedSize": "32.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/10.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/10.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/10.webp",
+      "originalBytes": 161647,
+      "optimizedBytes": 38728,
+      "originalSize": "157.9KB",
+      "optimizedSize": "37.8KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/12.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/12.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/12.webp",
+      "originalBytes": 138640,
+      "optimizedBytes": 33528,
+      "originalSize": "135.4KB",
+      "optimizedSize": "32.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/13.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/13.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/13.webp",
+      "originalBytes": 195237,
+      "optimizedBytes": 50776,
+      "originalSize": "190.7KB",
+      "optimizedSize": "49.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/14.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/14.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/14.webp",
+      "originalBytes": 186015,
+      "optimizedBytes": 46588,
+      "originalSize": "181.7KB",
+      "optimizedSize": "45.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/15.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/15.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/15.webp",
+      "originalBytes": 186888,
+      "optimizedBytes": 47944,
+      "originalSize": "182.5KB",
+      "optimizedSize": "46.8KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/2.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/2.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/2.webp",
+      "originalBytes": 63690,
+      "optimizedBytes": 12732,
+      "originalSize": "62.2KB",
+      "optimizedSize": "12.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/3.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/3.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/3.webp",
+      "originalBytes": 141627,
+      "optimizedBytes": 31224,
+      "originalSize": "138.3KB",
+      "optimizedSize": "30.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/4.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/4.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/4.webp",
+      "originalBytes": 164436,
+      "optimizedBytes": 38298,
+      "originalSize": "160.6KB",
+      "optimizedSize": "37.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/5.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/5.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/5.webp",
+      "originalBytes": 180178,
+      "optimizedBytes": 46974,
+      "originalSize": "176.0KB",
+      "optimizedSize": "45.9KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/7.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/7.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/7.webp",
+      "originalBytes": 183855,
+      "optimizedBytes": 48416,
+      "originalSize": "179.5KB",
+      "optimizedSize": "47.3KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/8.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/8.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/8.webp",
+      "originalBytes": 186620,
+      "optimizedBytes": 48626,
+      "originalSize": "182.2KB",
+      "optimizedSize": "47.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/carrusel-infinito/9.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/carrusel-infinito/9.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/carrusel-infinito/9.webp",
+      "originalBytes": 120212,
+      "optimizedBytes": 26782,
+      "originalSize": "117.4KB",
+      "optimizedSize": "26.2KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/golden/Detalle Golden Mostacho.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Mostacho.webp",
+      "originalBytes": 180178,
+      "optimizedBytes": 74464,
+      "originalSize": "176.0KB",
+      "optimizedSize": "72.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/golden/Detalle Golden Rosa.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Rosa.webp",
+      "originalBytes": 186888,
+      "optimizedBytes": 77668,
+      "originalSize": "182.5KB",
+      "optimizedSize": "75.8KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/golden/Detalle Golden.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/golden/Detalle Golden.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/golden/Detalle Golden.webp",
+      "originalBytes": 183855,
+      "optimizedBytes": 75846,
+      "originalSize": "179.5KB",
+      "optimizedSize": "74.1KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/golden/Detalle con torta.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/golden/Detalle con torta.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/golden/Detalle con torta.webp",
+      "originalBytes": 195237,
+      "optimizedBytes": 81544,
+      "originalSize": "190.7KB",
+      "optimizedSize": "79.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/mix/Detalle Brownie.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/mix/Detalle Brownie.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/mix/Detalle Brownie.webp",
+      "originalBytes": 161647,
+      "optimizedBytes": 61114,
+      "originalSize": "157.9KB",
+      "optimizedSize": "59.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/mix/Detalle HBD.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/mix/Detalle HBD.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/mix/Detalle HBD.webp",
+      "originalBytes": 164436,
+      "optimizedBytes": 61048,
+      "originalSize": "160.6KB",
+      "optimizedSize": "59.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/mix/Detalle Mix 2.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/mix/Detalle Mix 2.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/mix/Detalle Mix 2.webp",
+      "originalBytes": 141627,
+      "optimizedBytes": 49878,
+      "originalSize": "138.3KB",
+      "optimizedSize": "48.7KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/mix/Detalle Mix.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/mix/Detalle Mix.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/mix/Detalle Mix.webp",
+      "originalBytes": 154576,
+      "optimizedBytes": 54434,
+      "originalSize": "151.0KB",
+      "optimizedSize": "53.2KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/mix/Margarita.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/mix/Margarita.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/mix/Margarita.webp",
+      "originalBytes": 186015,
+      "optimizedBytes": 73990,
+      "originalSize": "181.7KB",
+      "optimizedSize": "72.3KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/osos/Oso Grande con letras.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/osos/Oso Grande con letras.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/osos/Oso Grande con letras.webp",
+      "originalBytes": 130457,
+      "optimizedBytes": 45702,
+      "originalSize": "127.4KB",
+      "optimizedSize": "44.6KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/osos/Oso Grande.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/osos/Oso Grande.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/osos/Oso Grande.webp",
+      "originalBytes": 120212,
+      "optimizedBytes": 40296,
+      "originalSize": "117.4KB",
+      "optimizedSize": "39.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/osos/Oso Pequeño.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/osos/Oso Pequeño.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/osos/Oso Pequeño.webp",
+      "originalBytes": 63690,
+      "optimizedBytes": 18492,
+      "originalSize": "62.2KB",
+      "optimizedSize": "18.1KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-detalles/productos/osos/Oso con fresas.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes-detalles/productos/osos/Oso con fresas.jpg",
+      "optimized": "assets/optimized/imagenes-detalles/productos/osos/Oso con fresas.webp",
+      "originalBytes": 138640,
+      "optimizedBytes": 50098,
+      "originalSize": "135.4KB",
+      "optimizedSize": "48.9KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Red velvet.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Red velvet.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Red velvet.webp",
+      "originalBytes": 1012066,
+      "optimizedBytes": 14828,
+      "originalSize": "988.3KB",
+      "optimizedSize": "14.5KB",
+      "dimensions": {
+        "width": 1248,
+        "height": 832
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de arequipe.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de arequipe.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de arequipe.webp",
+      "originalBytes": 1300023,
+      "optimizedBytes": 51060,
+      "originalSize": "1.24MB",
+      "optimizedSize": "49.9KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de chocolate.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de chocolate.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de chocolate.webp",
+      "originalBytes": 1430799,
+      "optimizedBytes": 47110,
+      "originalSize": "1.36MB",
+      "optimizedSize": "46.0KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de crema de queso.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de crema de queso.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de crema de queso.webp",
+      "originalBytes": 1352801,
+      "optimizedBytes": 49998,
+      "originalSize": "1.29MB",
+      "optimizedSize": "48.8KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de nutella.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de nutella.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Sabores de los rellenos/relleno de nutella.webp",
+      "originalBytes": 1356574,
+      "optimizedBytes": 51790,
+      "originalSize": "1.29MB",
+      "optimizedSize": "50.6KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/rellenos de frutos rojos.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/Sabores de los rellenos/rellenos de frutos rojos.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/Sabores de los rellenos/rellenos de frutos rojos.webp",
+      "originalBytes": 1447096,
+      "optimizedBytes": 56874,
+      "originalSize": "1.38MB",
+      "optimizedSize": "55.5KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/chocolate.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/chocolate.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/chocolate.webp",
+      "originalBytes": 974085,
+      "optimizedBytes": 14306,
+      "originalSize": "951.3KB",
+      "optimizedSize": "14.0KB",
+      "dimensions": {
+        "width": 1248,
+        "height": 832
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/vainilla.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/vainilla.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/vainilla.webp",
+      "originalBytes": 979068,
+      "optimizedBytes": 11880,
+      "originalSize": "956.1KB",
+      "optimizedSize": "11.6KB",
+      "dimensions": {
+        "width": 1248,
+        "height": 832
+      }
+    },
+    "assets/imagenes-tortas/03-sabores/zanahoria con nueces.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/03-sabores/zanahoria con nueces.png",
+      "optimized": "assets/optimized/imagenes-tortas/03-sabores/zanahoria con nueces.webp",
+      "originalBytes": 1053139,
+      "optimizedBytes": 17598,
+      "originalSize": "1.00MB",
+      "optimizedSize": "17.2KB",
+      "dimensions": {
+        "width": 1248,
+        "height": 832
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1ajezk1ajezk1aje.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1ajezk1ajezk1aje.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1ajezk1ajezk1aje.webp",
+      "originalBytes": 1458974,
+      "optimizedBytes": 26122,
+      "originalSize": "1.39MB",
+      "optimizedSize": "25.5KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1sxlka1sxlka1sxl.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1sxlka1sxlka1sxl.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1sxlka1sxlka1sxl.webp",
+      "originalBytes": 1310236,
+      "optimizedBytes": 15958,
+      "originalSize": "1.25MB",
+      "optimizedSize": "15.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1wcap71wcap71wca.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1wcap71wcap71wca.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_1wcap71wcap71wca.webp",
+      "originalBytes": 1317875,
+      "optimizedBytes": 26702,
+      "originalSize": "1.26MB",
+      "optimizedSize": "26.1KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_3cka7v3cka7v3cka.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_3cka7v3cka7v3cka.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_3cka7v3cka7v3cka.webp",
+      "originalBytes": 1333993,
+      "optimizedBytes": 18262,
+      "originalSize": "1.27MB",
+      "optimizedSize": "17.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4muicc4muicc4mui.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4muicc4muicc4mui.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4muicc4muicc4mui.webp",
+      "originalBytes": 1227714,
+      "optimizedBytes": 16424,
+      "originalSize": "1.17MB",
+      "optimizedSize": "16.0KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4tb78o4tb78o4tb7.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4tb78o4tb78o4tb7.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_4tb78o4tb78o4tb7.webp",
+      "originalBytes": 1307947,
+      "optimizedBytes": 18650,
+      "originalSize": "1.25MB",
+      "optimizedSize": "18.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_56upo756upo756up.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_56upo756upo756up.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_56upo756upo756up.webp",
+      "originalBytes": 1383261,
+      "optimizedBytes": 17758,
+      "originalSize": "1.32MB",
+      "optimizedSize": "17.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_5swvyo5swvyo5swv.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_5swvyo5swvyo5swv.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_5swvyo5swvyo5swv.webp",
+      "originalBytes": 1285634,
+      "optimizedBytes": 12372,
+      "originalSize": "1.23MB",
+      "optimizedSize": "12.1KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1256
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_825mmt825mmt825m.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_825mmt825mmt825m.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_825mmt825mmt825m.webp",
+      "originalBytes": 1332750,
+      "optimizedBytes": 25636,
+      "originalSize": "1.27MB",
+      "optimizedSize": "25.0KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_9kd0vj9kd0vj9kd0.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_9kd0vj9kd0vj9kd0.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_9kd0vj9kd0vj9kd0.webp",
+      "originalBytes": 1545508,
+      "optimizedBytes": 34852,
+      "originalSize": "1.47MB",
+      "optimizedSize": "34.0KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1000
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_a1gscga1gscga1gs.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_a1gscga1gscga1gs.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_a1gscga1gscga1gs.webp",
+      "originalBytes": 1316658,
+      "optimizedBytes": 18452,
+      "originalSize": "1.26MB",
+      "optimizedSize": "18.0KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_aoou3xaoou3xaoou.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_aoou3xaoou3xaoou.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_aoou3xaoou3xaoou.webp",
+      "originalBytes": 1340388,
+      "optimizedBytes": 19212,
+      "originalSize": "1.28MB",
+      "optimizedSize": "18.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c13mpgc13mpgc13m.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c13mpgc13mpgc13m.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c13mpgc13mpgc13m.webp",
+      "originalBytes": 1066305,
+      "optimizedBytes": 15940,
+      "originalSize": "1.02MB",
+      "optimizedSize": "15.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1184
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c9gdx4c9gdx4c9gd.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c9gdx4c9gdx4c9gd.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_c9gdx4c9gdx4c9gd.webp",
+      "originalBytes": 1370449,
+      "optimizedBytes": 24198,
+      "originalSize": "1.31MB",
+      "optimizedSize": "23.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_dkkjybdkkjybdkkj.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_dkkjybdkkjybdkkj.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_dkkjybdkkjybdkkj.webp",
+      "originalBytes": 1365821,
+      "optimizedBytes": 17152,
+      "originalSize": "1.30MB",
+      "optimizedSize": "16.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_eikri2eikri2eikr.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_eikri2eikri2eikr.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_eikri2eikri2eikr.webp",
+      "originalBytes": 1364684,
+      "optimizedBytes": 23078,
+      "originalSize": "1.30MB",
+      "optimizedSize": "22.5KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.webp",
+      "originalBytes": 1375667,
+      "optimizedBytes": 23204,
+      "originalSize": "1.31MB",
+      "optimizedSize": "22.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.webp",
+      "originalBytes": 1275428,
+      "optimizedBytes": 16706,
+      "originalSize": "1.22MB",
+      "optimizedSize": "16.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_gdft0agdft0agdft.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_gdft0agdft0agdft.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_gdft0agdft0agdft.webp",
+      "originalBytes": 1286844,
+      "optimizedBytes": 14996,
+      "originalSize": "1.23MB",
+      "optimizedSize": "14.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_hn2hn0hn2hn0hn2h.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_hn2hn0hn2hn0hn2h.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_hn2hn0hn2hn0hn2h.webp",
+      "originalBytes": 1241910,
+      "optimizedBytes": 16132,
+      "originalSize": "1.18MB",
+      "optimizedSize": "15.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jjxzizjjxzizjjxz.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jjxzizjjxzizjjxz.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jjxzizjjxzizjjxz.webp",
+      "originalBytes": 1411580,
+      "optimizedBytes": 24792,
+      "originalSize": "1.35MB",
+      "optimizedSize": "24.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jo8490jo8490jo84.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jo8490jo8490jo84.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_jo8490jo8490jo84.webp",
+      "originalBytes": 1343585,
+      "optimizedBytes": 19604,
+      "originalSize": "1.28MB",
+      "optimizedSize": "19.1KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ky1jm0ky1jm0ky1j.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ky1jm0ky1jm0ky1j.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ky1jm0ky1jm0ky1j.webp",
+      "originalBytes": 1291276,
+      "optimizedBytes": 15584,
+      "originalSize": "1.23MB",
+      "optimizedSize": "15.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_mepzrdmepzrdmepz.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_mepzrdmepzrdmepz.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_mepzrdmepzrdmepz.webp",
+      "originalBytes": 1396805,
+      "optimizedBytes": 21192,
+      "originalSize": "1.33MB",
+      "optimizedSize": "20.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_nojag2nojag2noja.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_nojag2nojag2noja.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_nojag2nojag2noja.webp",
+      "originalBytes": 1330185,
+      "optimizedBytes": 15698,
+      "originalSize": "1.27MB",
+      "optimizedSize": "15.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_oniqbwoniqbwoniq.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_oniqbwoniqbwoniq.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_oniqbwoniqbwoniq.webp",
+      "originalBytes": 1338635,
+      "optimizedBytes": 18668,
+      "originalSize": "1.28MB",
+      "optimizedSize": "18.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_outffkoutffkoutf.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_outffkoutffkoutf.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_outffkoutffkoutf.webp",
+      "originalBytes": 1350008,
+      "optimizedBytes": 20582,
+      "originalSize": "1.29MB",
+      "optimizedSize": "20.1KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_p4cxfop4cxfop4cx.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_p4cxfop4cxfop4cx.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_p4cxfop4cxfop4cx.webp",
+      "originalBytes": 1413195,
+      "optimizedBytes": 22696,
+      "originalSize": "1.35MB",
+      "optimizedSize": "22.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.webp",
+      "originalBytes": 1329918,
+      "optimizedBytes": 21194,
+      "originalSize": "1.27MB",
+      "optimizedSize": "20.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_reksf1reksf1reks.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_reksf1reksf1reks.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_reksf1reksf1reks.webp",
+      "originalBytes": 977641,
+      "optimizedBytes": 13014,
+      "originalSize": "954.7KB",
+      "optimizedSize": "12.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1184
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ukit36ukit36ukit.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ukit36ukit36ukit.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ukit36ukit36ukit.webp",
+      "originalBytes": 1255717,
+      "optimizedBytes": 15568,
+      "originalSize": "1.20MB",
+      "optimizedSize": "15.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vapovavapovavapo.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vapovavapovavapo.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vapovavapovavapo.webp",
+      "originalBytes": 1282360,
+      "optimizedBytes": 19736,
+      "originalSize": "1.22MB",
+      "optimizedSize": "19.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vqymkkvqymkkvqym.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vqymkkvqymkkvqym.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_vqymkkvqymkkvqym.webp",
+      "originalBytes": 1264577,
+      "optimizedBytes": 14978,
+      "originalSize": "1.21MB",
+      "optimizedSize": "14.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_wupy5fwupy5fwupy.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_wupy5fwupy5fwupy.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_wupy5fwupy5fwupy.webp",
+      "originalBytes": 1305503,
+      "optimizedBytes": 15804,
+      "originalSize": "1.25MB",
+      "optimizedSize": "15.4KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1106
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_x5wo4bx5wo4bx5wo.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_x5wo4bx5wo4bx5wo.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_x5wo4bx5wo4bx5wo.webp",
+      "originalBytes": 1221074,
+      "optimizedBytes": 14826,
+      "originalSize": "1.16MB",
+      "optimizedSize": "14.5KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_xnv7qfxnv7qfxnv7.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_xnv7qfxnv7qfxnv7.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_xnv7qfxnv7qfxnv7.webp",
+      "originalBytes": 1398490,
+      "optimizedBytes": 28060,
+      "originalSize": "1.33MB",
+      "optimizedSize": "27.4KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ynlk7yynlk7yynlk.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ynlk7yynlk7yynlk.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_ynlk7yynlk7yynlk.webp",
+      "originalBytes": 1346968,
+      "optimizedBytes": 20174,
+      "originalSize": "1.28MB",
+      "optimizedSize": "19.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1104
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_yy5wqdyy5wqdyy5w.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_yy5wqdyy5wqdyy5w.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_yy5wqdyy5wqdyy5w.webp",
+      "originalBytes": 1315905,
+      "optimizedBytes": 22122,
+      "originalSize": "1.25MB",
+      "optimizedSize": "21.6KB",
+      "dimensions": {
+        "width": 880,
+        "height": 1040
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zeeuvzzeeuvzzeeu.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zeeuvzzeeuvzzeeu.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zeeuvzzeeuvzzeeu.webp",
+      "originalBytes": 1246030,
+      "optimizedBytes": 13330,
+      "originalSize": "1.19MB",
+      "optimizedSize": "13.0KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png",
+      "optimized": "assets/optimized/imagenes-tortas/05-carrusel-infinito/Gemini_Generated_Image_zgkyv9zgkyv9zgky.webp",
+      "originalBytes": 1450551,
+      "optimizedBytes": 25524,
+      "originalSize": "1.38MB",
+      "optimizedSize": "24.9KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.webp",
+      "originalBytes": 1333993,
+      "optimizedBytes": 18262,
+      "originalSize": "1.27MB",
+      "optimizedSize": "17.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.webp",
+      "originalBytes": 1307947,
+      "optimizedBytes": 18650,
+      "originalSize": "1.25MB",
+      "optimizedSize": "18.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_dkkjybdkkjybdkkj.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_dkkjybdkkjybdkkj.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_dkkjybdkkjybdkkj.webp",
+      "originalBytes": 1365821,
+      "optimizedBytes": 17152,
+      "originalSize": "1.30MB",
+      "optimizedSize": "16.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_eikri2eikri2eikr.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_eikri2eikri2eikr.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_eikri2eikri2eikr.webp",
+      "originalBytes": 1364684,
+      "optimizedBytes": 23078,
+      "originalSize": "1.30MB",
+      "optimizedSize": "22.5KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_f7fpjvf7fpjvf7fp.webp",
+      "originalBytes": 1375667,
+      "optimizedBytes": 23204,
+      "originalSize": "1.31MB",
+      "optimizedSize": "22.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_g0fjxlg0fjxlg0fj.webp",
+      "originalBytes": 1275428,
+      "optimizedBytes": 16706,
+      "originalSize": "1.22MB",
+      "optimizedSize": "16.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_gdft0agdft0agdft.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_gdft0agdft0agdft.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_gdft0agdft0agdft.webp",
+      "originalBytes": 1286844,
+      "optimizedBytes": 14996,
+      "originalSize": "1.23MB",
+      "optimizedSize": "14.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_mepzrdmepzrdmepz.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_mepzrdmepzrdmepz.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_mepzrdmepzrdmepz.webp",
+      "originalBytes": 1396805,
+      "optimizedBytes": 21192,
+      "originalSize": "1.33MB",
+      "optimizedSize": "20.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_p4cxfop4cxfop4cx.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_p4cxfop4cxfop4cx.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_p4cxfop4cxfop4cx.webp",
+      "originalBytes": 1413195,
+      "optimizedBytes": 22696,
+      "originalSize": "1.35MB",
+      "optimizedSize": "22.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_qmxxnnqmxxnnqmxx.webp",
+      "originalBytes": 1329918,
+      "optimizedBytes": 21194,
+      "originalSize": "1.27MB",
+      "optimizedSize": "20.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.webp",
+      "originalBytes": 977641,
+      "optimizedBytes": 13014,
+      "originalSize": "954.7KB",
+      "optimizedSize": "12.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1184
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_vc8skmvc8skmvc8s.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_vc8skmvc8skmvc8s.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_vc8skmvc8skmvc8s.webp",
+      "originalBytes": 1270539,
+      "optimizedBytes": 19158,
+      "originalSize": "1.21MB",
+      "optimizedSize": "18.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1106
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_wupy5fwupy5fwupy.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_wupy5fwupy5fwupy.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_wupy5fwupy5fwupy.webp",
+      "originalBytes": 1305503,
+      "optimizedBytes": 15804,
+      "originalSize": "1.25MB",
+      "optimizedSize": "15.4KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1106
+      }
+    },
+    "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_zgkyv9zgkyv9zgky.png",
+      "optimized": "assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_zgkyv9zgkyv9zgky.webp",
+      "originalBytes": 1450551,
+      "optimizedBytes": 25524,
+      "originalSize": "1.38MB",
+      "optimizedSize": "24.9KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.webp",
+      "originalBytes": 1325044,
+      "optimizedBytes": 16728,
+      "originalSize": "1.26MB",
+      "optimizedSize": "16.3KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.webp",
+      "originalBytes": 1184807,
+      "optimizedBytes": 10092,
+      "originalSize": "1.13MB",
+      "optimizedSize": "9.86KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1094
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_hbvjg9hbvjg9hbvj.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_hbvjg9hbvjg9hbvj.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_hbvjg9hbvjg9hbvj.webp",
+      "originalBytes": 1213567,
+      "optimizedBytes": 24144,
+      "originalSize": "1.16MB",
+      "optimizedSize": "23.6KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1184
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_jn1a7hjn1a7hjn1a.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_jn1a7hjn1a7hjn1a.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_jn1a7hjn1a7hjn1a.webp",
+      "originalBytes": 1376368,
+      "optimizedBytes": 19512,
+      "originalSize": "1.31MB",
+      "optimizedSize": "19.1KB",
+      "dimensions": {
+        "width": 918,
+        "height": 1024
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_n63ggwn63ggwn63g.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_n63ggwn63ggwn63g.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_n63ggwn63ggwn63g.webp",
+      "originalBytes": 1436575,
+      "optimizedBytes": 15096,
+      "originalSize": "1.37MB",
+      "optimizedSize": "14.7KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_oduc9yoduc9yoduc.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_oduc9yoduc9yoduc.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_oduc9yoduc9yoduc.webp",
+      "originalBytes": 1334405,
+      "optimizedBytes": 21698,
+      "originalSize": "1.27MB",
+      "optimizedSize": "21.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_qkg1s1qkg1s1qkg1.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_qkg1s1qkg1s1qkg1.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_qkg1s1qkg1s1qkg1.webp",
+      "originalBytes": 1465791,
+      "optimizedBytes": 24704,
+      "originalSize": "1.40MB",
+      "optimizedSize": "24.1KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_uf79j3uf79j3uf79.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_uf79j3uf79j3uf79.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_uf79j3uf79j3uf79.webp",
+      "originalBytes": 1290698,
+      "optimizedBytes": 12122,
+      "originalSize": "1.23MB",
+      "optimizedSize": "11.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1101
+      }
+    },
+    "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.png": {
+      "kind": "image",
+      "original": "assets/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.png",
+      "optimized": "assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.webp",
+      "originalBytes": 1280228,
+      "optimizedBytes": 16142,
+      "originalSize": "1.22MB",
+      "optimizedSize": "15.8KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes.brownies.galletas/Brownies/browniesIndividuales.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Brownies/browniesIndividuales.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Brownies/browniesIndividuales.webp",
+      "originalBytes": 1339103,
+      "optimizedBytes": 19852,
+      "originalSize": "1.28MB",
+      "optimizedSize": "19.4KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1096
+      }
+    },
+    "assets/imagenes.brownies.galletas/Brownies/browniesX3.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Brownies/browniesX3.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Brownies/browniesX3.webp",
+      "originalBytes": 120912,
+      "optimizedBytes": 40660,
+      "originalSize": "118.1KB",
+      "optimizedSize": "39.7KB",
+      "dimensions": {
+        "width": 747,
+        "height": 955
+      }
+    },
+    "assets/imagenes.brownies.galletas/Brownies/browniesX6.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Brownies/browniesX6.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Brownies/browniesX6.webp",
+      "originalBytes": 112544,
+      "optimizedBytes": 39372,
+      "originalSize": "109.9KB",
+      "optimizedSize": "38.4KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes.brownies.galletas/Brownies/cajaX16.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Brownies/cajaX16.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Brownies/cajaX16.webp",
+      "originalBytes": 151677,
+      "optimizedBytes": 60918,
+      "originalSize": "148.1KB",
+      "optimizedSize": "59.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/1.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/1.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/1.webp",
+      "originalBytes": 1558835,
+      "optimizedBytes": 30966,
+      "originalSize": "1.49MB",
+      "optimizedSize": "30.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1099
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/12.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/12.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/12.webp",
+      "originalBytes": 1271244,
+      "optimizedBytes": 14528,
+      "originalSize": "1.21MB",
+      "optimizedSize": "14.2KB",
+      "dimensions": {
+        "width": 864,
+        "height": 1086
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/2.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/2.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/2.webp",
+      "originalBytes": 1370799,
+      "optimizedBytes": 19790,
+      "originalSize": "1.31MB",
+      "optimizedSize": "19.3KB",
+      "dimensions": {
+        "width": 1088,
+        "height": 873
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/3.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/3.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/3.webp",
+      "originalBytes": 102500,
+      "optimizedBytes": 34078,
+      "originalSize": "100.1KB",
+      "optimizedSize": "33.3KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/5.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/5.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/5.webp",
+      "originalBytes": 1410349,
+      "optimizedBytes": 30502,
+      "originalSize": "1.35MB",
+      "optimizedSize": "29.8KB",
+      "dimensions": {
+        "width": 960,
+        "height": 996
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/6.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/6.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/6.webp",
+      "originalBytes": 1470621,
+      "optimizedBytes": 25092,
+      "originalSize": "1.40MB",
+      "optimizedSize": "24.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1007
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/7.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/7.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/7.webp",
+      "originalBytes": 167970,
+      "optimizedBytes": 37040,
+      "originalSize": "164.0KB",
+      "optimizedSize": "36.2KB",
+      "dimensions": {
+        "width": 827,
+        "height": 1085
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/8.png": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/8.png",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/8.webp",
+      "originalBytes": 1058025,
+      "optimizedBytes": 16694,
+      "originalSize": "1.01MB",
+      "optimizedSize": "16.3KB",
+      "dimensions": {
+        "width": 832,
+        "height": 1248
+      }
+    },
+    "assets/imagenes.brownies.galletas/Galletas/9.jpg": {
+      "kind": "image",
+      "original": "assets/imagenes.brownies.galletas/Galletas/9.jpg",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Galletas/9.webp",
+      "originalBytes": 125745,
+      "optimizedBytes": 43132,
+      "originalSize": "122.8KB",
+      "optimizedSize": "42.1KB",
+      "dimensions": {
+        "width": 960,
+        "height": 1280
+      }
+    },
+    "assets/logos/Detalles adicionales/HB (1).png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/HB (1).png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/HB (1).webp",
+      "originalBytes": 80861,
+      "optimizedBytes": 9294,
+      "originalSize": "79.0KB",
+      "optimizedSize": "9.08KB",
+      "dimensions": {
+        "width": 466,
+        "height": 293
+      }
+    },
+    "assets/logos/Detalles adicionales/corona.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/corona.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/corona.webp",
+      "originalBytes": 210410,
+      "optimizedBytes": 10752,
+      "originalSize": "205.5KB",
+      "optimizedSize": "10.5KB",
+      "dimensions": {
+        "width": 542,
+        "height": 353
+      }
+    },
+    "assets/logos/Detalles adicionales/diseños.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/diseños.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/diseños.webp",
+      "originalBytes": 97096,
+      "optimizedBytes": 2852,
+      "originalSize": "94.8KB",
+      "optimizedSize": "2.79KB",
+      "dimensions": {
+        "width": 345,
+        "height": 299
+      }
+    },
+    "assets/logos/Detalles adicionales/letras.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/letras.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/letras.webp",
+      "originalBytes": 106199,
+      "optimizedBytes": 10802,
+      "originalSize": "103.7KB",
+      "optimizedSize": "10.5KB",
+      "dimensions": {
+        "width": 430,
+        "height": 432
+      }
+    },
+    "assets/logos/Detalles adicionales/mariposa.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/mariposa.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/mariposa.webp",
+      "originalBytes": 321357,
+      "optimizedBytes": 14950,
+      "originalSize": "313.8KB",
+      "optimizedSize": "14.6KB",
+      "dimensions": {
+        "width": 627,
+        "height": 519
+      }
+    },
+    "assets/logos/Detalles adicionales/moño.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/moño.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/moño.webp",
+      "originalBytes": 200790,
+      "optimizedBytes": 7618,
+      "originalSize": "196.1KB",
+      "optimizedSize": "7.44KB",
+      "dimensions": {
+        "width": 486,
+        "height": 418
+      }
+    },
+    "assets/logos/Detalles adicionales/pedido.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/pedido.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/pedido.webp",
+      "originalBytes": 197447,
+      "optimizedBytes": 7882,
+      "originalSize": "192.8KB",
+      "optimizedSize": "7.70KB",
+      "dimensions": {
+        "width": 398,
+        "height": 435
+      }
+    },
+    "assets/logos/Detalles adicionales/perla.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/perla.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/perla.webp",
+      "originalBytes": 231955,
+      "optimizedBytes": 5940,
+      "originalSize": "226.5KB",
+      "optimizedSize": "5.80KB",
+      "dimensions": {
+        "width": 458,
+        "height": 479
+      }
+    },
+    "assets/logos/Detalles adicionales/unica.png": {
+      "kind": "image",
+      "original": "assets/logos/Detalles adicionales/unica.png",
+      "optimized": "assets/optimized/logos/Detalles adicionales/unica.webp",
+      "originalBytes": 106370,
+      "optimizedBytes": 7852,
+      "originalSize": "103.9KB",
+      "optimizedSize": "7.67KB",
+      "dimensions": {
+        "width": 419,
+        "height": 515
+      }
+    },
+    "assets/logos/LOGOS LAUREN PNG-13.png": {
+      "kind": "image",
+      "original": "assets/logos/LOGOS LAUREN PNG-13.png",
+      "optimized": "assets/optimized/logos/LOGOS LAUREN PNG-13.webp",
+      "originalBytes": 200900,
+      "optimizedBytes": 25146,
+      "originalSize": "196.2KB",
+      "optimizedSize": "24.6KB",
+      "dimensions": {
+        "width": 3301,
+        "height": 3301
+      }
+    },
+    "assets/logos/LOGOS LAUREN PNG-55.png": {
+      "kind": "image",
+      "original": "assets/logos/LOGOS LAUREN PNG-55.png",
+      "optimized": "assets/optimized/logos/LOGOS LAUREN PNG-55.webp",
+      "originalBytes": 423340,
+      "optimizedBytes": 33800,
+      "originalSize": "413.4KB",
+      "optimizedSize": "33.0KB",
+      "dimensions": {
+        "width": 2846,
+        "height": 1708
+      }
+    },
+    "assets/logos/LOGOS LAUREN PNG-59.png": {
+      "kind": "image",
+      "original": "assets/logos/LOGOS LAUREN PNG-59.png",
+      "optimized": "assets/optimized/logos/LOGOS LAUREN PNG-59.webp",
+      "originalBytes": 209278,
+      "optimizedBytes": 24156,
+      "originalSize": "204.4KB",
+      "optimizedSize": "23.6KB",
+      "dimensions": {
+        "width": 3301,
+        "height": 3301
+      }
+    },
+    "assets/logos/footer-logo.png": {
+      "kind": "image",
+      "original": "assets/logos/footer-logo.png",
+      "optimized": "assets/optimized/logos/footer-logo.webp",
+      "originalBytes": 146590,
+      "optimizedBytes": 37054,
+      "originalSize": "143.2KB",
+      "optimizedSize": "36.2KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 614
+      }
+    },
+    "assets/imagenes-alfajores/heroalfajores/Nuestro arbolito de navidad nos dio muchas alegrías la navidad pasada 🥹Y lo tendremos disponibl.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-alfajores/heroalfajores/Nuestro arbolito de navidad nos dio muchas alegrías la navidad pasada 🥹Y lo tendremos disponibl.mp4",
+      "optimized": "assets/optimized/imagenes-alfajores/heroalfajores/Nuestro arbolito de navidad nos dio muchas alegrías la navidad pasada 🥹Y lo tendremos disponibl.mp4",
+      "originalBytes": 6825676,
+      "optimizedBytes": 5200957,
+      "originalSize": "6.51MB",
+      "optimizedSize": "4.96MB",
+      "dimensions": {
+        "width": 720,
+        "height": 1280
+      },
+      "targetWidth": 720,
+      "crf": 27
+    },
+    "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 18.49.06_b744266c.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 18.49.06_b744266c.mp4",
+      "optimized": "assets/optimized/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 18.49.06_b744266c.mp4",
+      "originalBytes": 2878496,
+      "optimizedBytes": 1243310,
+      "originalSize": "2.75MB",
+      "optimizedSize": "1.19MB",
+      "dimensions": {
+        "width": 464,
+        "height": 832
+      },
+      "targetWidth": 464,
+      "crf": 27
+    },
+    "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.03.14_47e3c110.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.03.14_47e3c110.mp4",
+      "optimized": "assets/optimized/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.03.14_47e3c110.mp4",
+      "originalBytes": 2704773,
+      "optimizedBytes": 956193,
+      "originalSize": "2.58MB",
+      "optimizedSize": "933.8KB",
+      "dimensions": {
+        "width": 464,
+        "height": 832
+      },
+      "targetWidth": 464,
+      "crf": 27
+    },
+    "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.16.16_fb5b3673.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.16.16_fb5b3673.mp4",
+      "optimized": "assets/optimized/imagenes-alfajores/heroalfajores/WhatsApp Video 2025-10-22 at 19.16.16_fb5b3673.mp4",
+      "originalBytes": 3116263,
+      "optimizedBytes": 1178614,
+      "originalSize": "2.97MB",
+      "optimizedSize": "1.12MB",
+      "dimensions": {
+        "width": 464,
+        "height": 832
+      },
+      "targetWidth": 464,
+      "crf": 27
+    },
+    "assets/imagenes-detalles/Hero/1027.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-detalles/Hero/1027.mp4",
+      "optimized": "assets/optimized/imagenes-detalles/Hero/1027.mp4",
+      "originalBytes": 8910304,
+      "optimizedBytes": 1329788,
+      "originalSize": "8.50MB",
+      "optimizedSize": "1.27MB",
+      "dimensions": {
+        "width": 852,
+        "height": 480
+      },
+      "targetWidth": 852,
+      "crf": 27
+    },
+    "assets/imagenes-inicio/Nuestra-historia.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Nuestra-historia.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Nuestra-historia.mp4",
+      "originalBytes": 16819540,
+      "optimizedBytes": 5263681,
+      "originalSize": "16.0MB",
+      "optimizedSize": "5.02MB",
+      "dimensions": {
+        "width": 854,
+        "height": 480
+      },
+      "targetWidth": 854,
+      "crf": 28
+    },
+    "assets/imagenes-inicio/Tarjeta-Brownies.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Tarjeta-Brownies.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Tarjeta-Brownies.mp4",
+      "originalBytes": 3375805,
+      "optimizedBytes": 696403,
+      "originalSize": "3.22MB",
+      "optimizedSize": "680.1KB",
+      "dimensions": {
+        "width": 720,
+        "height": 1280
+      },
+      "targetWidth": 404,
+      "crf": 29
+    },
+    "assets/imagenes-inicio/Tarjeta-Galletas.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Tarjeta-Galletas.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Tarjeta-Galletas.mp4",
+      "originalBytes": 1733408,
+      "optimizedBytes": 418912,
+      "originalSize": "1.65MB",
+      "optimizedSize": "409.1KB",
+      "dimensions": {
+        "width": 480,
+        "height": 848
+      },
+      "targetWidth": 408,
+      "crf": 29
+    },
+    "assets/imagenes-inicio/Tarjeta-alfajores.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Tarjeta-alfajores.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Tarjeta-alfajores.mp4",
+      "originalBytes": 3653950,
+      "optimizedBytes": 677561,
+      "originalSize": "3.48MB",
+      "optimizedSize": "661.7KB",
+      "dimensions": {
+        "width": 480,
+        "height": 860
+      },
+      "targetWidth": 402,
+      "crf": 29
+    },
+    "assets/imagenes-inicio/Tarjeta-detalle.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Tarjeta-detalle.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Tarjeta-detalle.mp4",
+      "originalBytes": 5706816,
+      "optimizedBytes": 1621223,
+      "originalSize": "5.44MB",
+      "optimizedSize": "1.55MB",
+      "dimensions": {
+        "width": 480,
+        "height": 854
+      },
+      "targetWidth": 404,
+      "crf": 29
+    },
+    "assets/imagenes-inicio/Tarjeta-tortas.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/Tarjeta-tortas.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/Tarjeta-tortas.mp4",
+      "originalBytes": 3121748,
+      "optimizedBytes": 1505479,
+      "originalSize": "2.98MB",
+      "optimizedSize": "1.44MB",
+      "dimensions": {
+        "width": 544,
+        "height": 968
+      },
+      "targetWidth": 404,
+      "crf": 29
+    },
+    "assets/imagenes-inicio/VideoHero.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-inicio/VideoHero.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/VideoHero.mp4",
+      "originalBytes": 7224747,
+      "optimizedBytes": 4924850,
+      "originalSize": "6.89MB",
+      "optimizedSize": "4.70MB",
+      "dimensions": {
+        "width": 1126,
+        "height": 480
+      },
+      "targetWidth": 1126,
+      "crf": 27
+    },
+    "assets/imagenes-tortas/0516 (1).mov": {
+      "kind": "video",
+      "original": "assets/imagenes-tortas/0516 (1).mov",
+      "optimized": "assets/optimized/imagenes-tortas/0516 (1).mp4",
+      "originalBytes": 20873399,
+      "optimizedBytes": 623237,
+      "originalSize": "19.9MB",
+      "optimizedSize": "608.6KB",
+      "dimensions": {
+        "width": 2160,
+        "height": 1080
+      },
+      "targetWidth": 720,
+      "crf": 29
+    },
+    "assets/imagenes-tortas/herotortas/VideoHero.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-tortas/herotortas/VideoHero.mp4",
+      "optimized": "assets/optimized/imagenes-tortas/herotortas/VideoHero.mp4",
+      "originalBytes": 7768392,
+      "optimizedBytes": 917485,
+      "originalSize": "7.41MB",
+      "optimizedSize": "896.0KB",
+      "dimensions": {
+        "width": 852,
+        "height": 480
+      },
+      "targetWidth": 852,
+      "crf": 27
+    },
+    "assets/imagenes-tortas/herotortas/heroTortas-mobile.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-tortas/herotortas/heroTortas-mobile.mp4",
+      "optimized": "assets/optimized/imagenes-tortas/herotortas/heroTortas-mobile.mp4",
+      "originalBytes": 7873715,
+      "optimizedBytes": 755202,
+      "originalSize": "7.51MB",
+      "optimizedSize": "737.5KB",
+      "dimensions": {
+        "width": 960,
+        "height": 480
+      },
+      "targetWidth": 720,
+      "crf": 27
+    },
+    "assets/imagenes-tortas/herotortas/heroTortas-web.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes-tortas/herotortas/heroTortas-web.mp4",
+      "optimized": "assets/optimized/imagenes-tortas/herotortas/heroTortas-web.mp4",
+      "originalBytes": 12044026,
+      "optimizedBytes": 1758134,
+      "originalSize": "11.5MB",
+      "optimizedSize": "1.68MB",
+      "dimensions": {
+        "width": 1280,
+        "height": 640
+      },
+      "targetWidth": 1280,
+      "crf": 27
+    },
+    "assets/imagenes.brownies.galletas/Hero/1023.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes.brownies.galletas/Hero/1023.mp4",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Hero/1023.mp4",
+      "originalBytes": 4737730,
+      "optimizedBytes": 605170,
+      "originalSize": "4.52MB",
+      "optimizedSize": "591.0KB",
+      "dimensions": {
+        "width": 852,
+        "height": 480
+      },
+      "targetWidth": 852,
+      "crf": 27
+    },
+    "assets/imagenes.brownies.galletas/Hero/heroCookies-mobile.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes.brownies.galletas/Hero/heroCookies-mobile.mp4",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Hero/heroCookies-mobile.mp4",
+      "originalBytes": 5632985,
+      "optimizedBytes": 578417,
+      "originalSize": "5.37MB",
+      "optimizedSize": "564.9KB",
+      "dimensions": {
+        "width": 960,
+        "height": 540
+      },
+      "targetWidth": 720,
+      "crf": 27
+    },
+    "assets/imagenes.brownies.galletas/Hero/heroCookies-web.mp4": {
+      "kind": "video",
+      "original": "assets/imagenes.brownies.galletas/Hero/heroCookies-web.mp4",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Hero/heroCookies-web.mp4",
+      "originalBytes": 8730366,
+      "optimizedBytes": 1330843,
+      "originalSize": "8.33MB",
+      "optimizedSize": "1.27MB",
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "targetWidth": 1280,
+      "crf": 27
+    },
+    "assets/imagenes.brownies.galletas/Hero/heroCookies.mov": {
+      "kind": "video",
+      "original": "assets/imagenes.brownies.galletas/Hero/heroCookies.mov",
+      "optimized": "assets/optimized/imagenes.brownies.galletas/Hero/heroCookies.mp4",
+      "originalBytes": 14251770,
+      "optimizedBytes": 1322014,
+      "originalSize": "13.6MB",
+      "optimizedSize": "1.26MB",
+      "dimensions": {
+        "width": 1920,
+        "height": 1080
+      },
+      "targetWidth": 1280,
+      "crf": 27
+    }
+  },
+  "totals": {
+    "originalBytes": 268392974,
+    "optimizedBytes": 38385845,
+    "originalSize": "256.0MB",
+    "optimizedSize": "36.6MB"
+  },
+  "derivatives": {
+    "assets/optimized/imagenes-inicio/VideoHero-mobile.mp4": {
+      "kind": "video",
+      "derivative": "mobile",
+      "original": "assets/imagenes-inicio/VideoHero.mp4",
+      "optimized": "assets/optimized/imagenes-inicio/VideoHero-mobile.mp4",
+      "originalBytes": 7224747,
+      "optimizedBytes": 1281262,
+      "originalSize": "6.89MB",
+      "optimizedSize": "1.22MB",
+      "dimensions": {
+        "width": 1126,
+        "height": 480
+      },
+      "targetWidth": 720,
+      "crf": 32
+    }
+  }
+}

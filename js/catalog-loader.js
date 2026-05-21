@@ -236,8 +236,8 @@ function renderAlfajoresIndividuales() {
 
     // Usar imágenes hardcodeadas por ahora ya que no están claras en el data
     // O usar las de catalogData si existen
-    const bolsitaImg = "../assets/imagenes-alfajores/AlfajorBolsita.png";
-    const unidadImg = "../assets/imagenes-alfajores/AlfajorUnidad.png";
+    const bolsitaImg = "../assets/optimized/imagenes-alfajores/AlfajorBolsita.webp";
+    const unidadImg = "../assets/optimized/imagenes-alfajores/AlfajorUnidad.webp";
 
     const html = `
         <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem;">

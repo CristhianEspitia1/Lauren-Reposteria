@@ -157,7 +157,7 @@ class CartUI {
         return `
             <div class="cart-item" data-index="${index}">
                 <div class="cart-item-image">
-                    <img src="${item.image || '../assets/logos/LOGOS LAUREN PNG-13.png'}" alt="${item.name}">
+                    <img src="${item.image || '../assets/optimized/logos/LOGOS LAUREN PNG-13.webp'}" alt="${item.name}">
                 </div>
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>

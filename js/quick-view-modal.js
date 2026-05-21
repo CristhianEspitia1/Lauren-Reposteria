@@ -41,7 +41,7 @@ class QuickViewModal {
                 <!-- Columna izquierda: Imagen -->
                 <div class="quick-view-image-section">
                     <div class="quick-view-image-container">
-                        <img src="../assets/logos/LOGOS LAUREN PNG-13.png" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
+                        <img src="../assets/optimized/logos/LOGOS LAUREN PNG-13.webp" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
                         <div class="quick-view-thumbnails" id="quickViewThumbnails"></div>
                     </div>
                 </div>

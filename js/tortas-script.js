@@ -29,12 +29,17 @@ if ('IntersectionObserver' in window && lazyVideos.length > 0) {
     const lazyVideoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                loadLazyVideo(entry.target);
+                const delay = Number(entry.target.dataset.videoDelay || 0);
+                if (delay > 0) {
+                    window.setTimeout(() => loadLazyVideo(entry.target), delay);
+                } else {
+                    loadLazyVideo(entry.target);
+                }
                 lazyVideoObserver.unobserve(entry.target);
             }
         });
     }, {
-        rootMargin: '150px 0px',
+        rootMargin: '40px 0px',
         threshold: 0.01
     });
 
@@ -471,6 +476,25 @@ const rellenosCarousel = createCarousel({
 })();
 */
 
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.infinite-carousel-track');
+    if (!track || track.dataset.loopReady === 'true') return;
+
+    const items = Array.from(track.querySelectorAll('.infinite-carousel-item:not([data-cloned])'));
+    if (items.length === 0) return;
+
+    const fragment = document.createDocumentFragment();
+    items.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute('data-cloned', 'true');
+        fragment.appendChild(clone);
+    });
+
+    track.appendChild(fragment);
+    track.dataset.loopReady = 'true';
+    window.LaurenPerformanceOptimizer?.refresh(track);
+});
+
 
 // ========================================
 // LIGHTBOX - SOLO Carrusel Infinito (NO vintage, NO sencillas)
@@ -495,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const img = item.querySelector('.infinite-carousel-img');
         if (img) {
-            allImagesSrc.push(img.src);
+            allImagesSrc.push(img.dataset.src || img.currentSrc || img.src);
 
             // DESHABILITADO: No queremos que el carrusel abra lightbox
             // item.addEventListener('click', () => {
@@ -600,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     vintageItems.forEach((item, index) => {
         const img = item.querySelector('.vintage-gallery-img');
         if (img) {
-            allVintageImagesSrc.push(img.src);
+            allVintageImagesSrc.push(img.dataset.src || img.currentSrc || img.src);
 
             // ACTIVADO: Al hacer click en la imagen, abrir el modal de precios (Quick View)
             item.addEventListener('click', (e) => {
@@ -745,7 +769,7 @@ document.addEventListener('DOMContentLoaded', () => {
     simpleItems.forEach((item, index) => {
         const img = item.querySelector('.simple-gallery-img');
         if (img) {
-            allSimpleImagesSrc.push(img.src);
+            allSimpleImagesSrc.push(img.dataset.src || img.currentSrc || img.src);
 
             // ACTIVADO: Al hacer click en la imagen, abrir el modal de precios (Quick View)
             item.addEventListener('click', (e) => {
@@ -1294,8 +1318,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('❌ Error cargando imagen:', this.src);
 
             // Intentar cargar logo de Lauren como fallback
-            if (!this.src.includes('LOGOS LAUREN PNG-55.png')) {
-                this.src = '../assets/logos/LOGOS LAUREN PNG-55.png';
+            if (!this.src.includes('LOGOS LAUREN PNG-55.webp')) {
+                this.src = '../assets/optimized/logos/LOGOS LAUREN PNG-55.webp';
             } else {
                 // Si el logo también falla, ocultar
                 this.style.opacity = '0.3';
