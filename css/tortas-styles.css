@@ -33,7 +33,7 @@ html {
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--font-sans);
     color: var(--dark-text);
     line-height: 1.6;
     background: linear-gradient(135deg, #FFFCFA 0%, #FFF9F5 25%, #FFFAF7 50%, #FFF9F5 75%, #FFFCFA 100%);

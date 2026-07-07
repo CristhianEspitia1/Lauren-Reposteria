@@ -5,6 +5,21 @@
  * Maneja la renderización y eventos de la interfaz del carrito
  */
 
+/**
+ * Escapa texto para insertarlo de forma segura en HTML.
+ * Previene XSS persistente: el carrito se guarda en localStorage y la
+ * personalización es texto libre escrito por el usuario, que se vuelve a
+ * renderizar en cada carga de página.
+ */
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 class CartUI {
     constructor(cartManager) {
         this.cart = cartManager;
@@ -151,16 +166,18 @@ class CartUI {
     renderCartItem(item, index) {
         const optionsHTML = this.renderOptions(item.options);
         const personalizationHTML = item.personalization
-            ? `<div class="cart-item-personalization">💌 "${item.personalization}"</div>`
+            ? `<div class="cart-item-personalization">💌 "${escapeHtml(item.personalization)}"</div>`
             : '';
+        const imageSrc = escapeHtml(item.image || '../assets/optimized/logos/logos-lauren-png-13.webp');
+        const name = escapeHtml(item.name);
 
         return `
             <div class="cart-item" data-index="${index}">
                 <div class="cart-item-image">
-                    <img src="${item.image || '../assets/optimized/logos/LOGOS LAUREN PNG-13.webp'}" alt="${item.name}">
+                    <img src="${imageSrc}" alt="${name}" loading="lazy" decoding="async">
                 </div>
                 <div class="cart-item-details">
-                    <h4 class="cart-item-name">${item.name}</h4>
+                    <h4 class="cart-item-name">${name}</h4>
                     ${optionsHTML}
                     ${personalizationHTML}
                     <div class="cart-item-price">${this.cart.formatPrice(item.price)} c/u</div>
@@ -187,7 +204,7 @@ class CartUI {
         }
 
         const optionsText = Object.entries(options)
-            .map(([key, value]) => `<span class="cart-item-option">${key}: ${value}</span>`)
+            .map(([key, value]) => `<span class="cart-item-option">${escapeHtml(key)}: ${escapeHtml(value)}</span>`)
             .join('');
 
         return `<div class="cart-item-options">${optionsText}</div>`;

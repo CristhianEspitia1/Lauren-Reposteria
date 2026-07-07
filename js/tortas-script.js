@@ -1318,8 +1318,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('❌ Error cargando imagen:', this.src);
 
             // Intentar cargar logo de Lauren como fallback
-            if (!this.src.includes('LOGOS LAUREN PNG-55.webp')) {
-                this.src = '../assets/optimized/logos/LOGOS LAUREN PNG-55.webp';
+            if (!this.src.includes('logos-lauren-png-55.webp')) {
+                this.src = '../assets/optimized/logos/logos-lauren-png-55.webp';
             } else {
                 // Si el logo también falla, ocultar
                 this.style.opacity = '0.3';

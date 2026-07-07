@@ -41,7 +41,7 @@ class QuickViewModal {
                 <!-- Columna izquierda: Imagen -->
                 <div class="quick-view-image-section">
                     <div class="quick-view-image-container">
-                        <img src="../assets/optimized/logos/LOGOS LAUREN PNG-13.webp" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
+                        <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
                         <div class="quick-view-thumbnails" id="quickViewThumbnails"></div>
                     </div>
                 </div>
@@ -236,7 +236,7 @@ class QuickViewModal {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z"/>
                     </svg>
-                    Agregar al Carrito
+                    Agregar al carrito
                 </button>
             </div>
         `;

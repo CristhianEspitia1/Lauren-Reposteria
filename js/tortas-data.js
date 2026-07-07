@@ -9,11 +9,11 @@ const detallesProductsData = {
         priceFormatted: 'Desde $65.000',
         category: 'vintage',
         description: 'Torta vintage con bordes arriba, abajo y también en los laterales. Decoración artesanal, flores en fondant y acabado rústico elegante.',
-        mainImage: '../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.webp',
+        mainImage: '../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-reksf1reksf1reks.webp',
         images: [
-            '../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.webp',
-            '../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.webp',
-            '../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.webp'
+            '../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-reksf1reksf1reks.webp',
+            '../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-4tb78o4tb78o4tb7.webp',
+            '../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-3cka7v3cka7v3cka.webp'
         ],
         includes: [
             'Torta personalizada según porciones',
@@ -82,11 +82,11 @@ const detallesProductsData = {
         priceFormatted: 'Desde $58.000',
         category: 'sencilla',
         description: 'Torta sencilla y elegante sin bordes o crema adicional al de la cubierta. Perfecta para quienes buscan un diseño minimalista.',
-        mainImage: '../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.webp',
+        mainImage: '../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-45m3co45m3co45m3.webp',
         images: [
-            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.webp',
-            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.webp',
-            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.webp'
+            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-45m3co45m3co45m3.webp',
+            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-vy4pszvy4pszvy4p.webp',
+            '../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-6ttesv6ttesv6tte.webp'
         ],
         includes: [
             'Torta personalizada según porciones',

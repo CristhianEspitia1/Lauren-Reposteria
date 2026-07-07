@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdir, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { access, mkdir, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -70,6 +70,34 @@ function toPosix(relativePath) {
   return relativePath.split(path.sep).join('/');
 }
 
+// Convención de nombres de salida: kebab-case ASCII (sin espacios, tildes,
+// emojis ni mayúsculas) para URLs seguras en GitHub Pages.
+function slugSegment(segment, isFile) {
+  let base = segment;
+  let ext = '';
+  if (isFile) {
+    const i = segment.lastIndexOf('.');
+    if (i > 0) {
+      base = segment.slice(0, i);
+      ext = segment.slice(i).toLowerCase();
+    }
+  }
+  const slug = base
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase();
+  return (slug || 'archivo') + ext;
+}
+
+function slugPath(relativePath) {
+  const parts = relativePath.split('/');
+  return parts.map((part, index) => slugSegment(part, index === parts.length - 1)).join('/');
+}
+
 function formatBytes(bytes) {
   const units = ['B', 'KB', 'MB', 'GB'];
   let value = bytes;
@@ -83,6 +111,15 @@ function formatBytes(bytes) {
 
 async function fileSize(file) {
   return (await stat(file)).size;
+}
+
+async function fileExists(file) {
+  try {
+    await access(file);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function imageSize(file) {
@@ -125,15 +162,17 @@ function imageQuality(relativePath) {
 }
 
 function videoMaxDimension(relativePath) {
-  if (relativePath.includes('mobile')) return 720;
-  if (relativePath.includes('hero') || relativePath.includes('Hero') || relativePath.includes('VideoHero')) return 1280;
-  if (relativePath.includes('Nuestra-historia')) return 960;
+  const lower = relativePath.toLowerCase();
+  if (lower.includes('mobile')) return 720;
+  if (lower.includes('hero')) return 1280;
+  if (lower.includes('nuestra-historia')) return 960;
   return 720;
 }
 
 function videoCrf(relativePath) {
-  if (relativePath.includes('hero') || relativePath.includes('Hero') || relativePath.includes('VideoHero')) return 27;
-  if (relativePath.includes('Nuestra-historia')) return 28;
+  const lower = relativePath.toLowerCase();
+  if (lower.includes('hero')) return 27;
+  if (lower.includes('nuestra-historia')) return 28;
   return 29;
 }
 
@@ -151,7 +190,7 @@ function scaledWidth({ width, height }, maxDimension) {
 
 async function optimizeImage(file) {
   const relative = toPosix(path.relative(root, file));
-  const outputRelative = relative
+  const outputRelative = slugPath(relative)
     .replace(/^assets\//, 'assets/optimized/')
     .replace(/\.(png|jpe?g)$/i, '.webp');
   const output = path.join(root, outputRelative);
@@ -192,7 +231,7 @@ async function optimizeImage(file) {
 
 async function optimizeVideo(file) {
   const relative = toPosix(path.relative(root, file));
-  const outputRelative = relative
+  const outputRelative = slugPath(relative)
     .replace(/^assets\//, 'assets/optimized/')
     .replace(/\.(mp4|mov)$/i, '.mp4');
   const output = path.join(root, outputRelative);
@@ -237,10 +276,16 @@ async function optimizeVideo(file) {
 }
 
 async function optimizeInicioHeroMobile() {
-  const originalRelative = 'assets/imagenes-inicio/VideoHero.mp4';
+  const originalRelative = 'assets/imagenes-inicio/video-hero.mp4';
   const input = path.join(root, originalRelative);
-  const outputRelative = 'assets/optimized/imagenes-inicio/VideoHero-mobile.mp4';
+  const outputRelative = 'assets/optimized/imagenes-inicio/video-hero-mobile.mp4';
   const output = path.join(root, outputRelative);
+
+  if (!await fileExists(input)) {
+    console.warn(`[skip] ${originalRelative} no existe localmente; se conserva el asset optimizado versionado.`);
+    return null;
+  }
+
   await mkdir(path.dirname(output), { recursive: true });
 
   const originalBytes = await fileSize(input);
@@ -301,7 +346,7 @@ for (const file of videos) {
 
 const derivatives = [
   await optimizeInicioHeroMobile(),
-];
+].filter(Boolean);
 derivatives.forEach(result => {
   console.log(`[derivative] ${result.originalSize} -> ${result.optimizedSize} ${result.optimized}`);
 });

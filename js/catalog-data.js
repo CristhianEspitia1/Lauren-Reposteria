@@ -11,11 +11,11 @@ const catalogData = {
         priceFormatted: 'Desde $65.000',
         category: 'tortas',
         description: 'Torta vintage con bordes arriba, abajo y también en los laterales. Decoración artesanal, flores en fondant y acabado rústico elegante.',
-        mainImage: '../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.webp',
+        mainImage: '../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-reksf1reksf1reks.webp',
         images: [
-            "../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_reksf1reksf1reks.webp",
-            "../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_4tb78o4tb78o4tb7.webp",
-            "../assets/optimized/imagenes-tortas/06-galeria-vintage/Gemini_Generated_Image_3cka7v3cka7v3cka.webp"
+            "../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-reksf1reksf1reks.webp",
+            "../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-4tb78o4tb78o4tb7.webp",
+            "../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-3cka7v3cka7v3cka.webp"
         ],
         includes: [
             "Torta personalizada según porciones",
@@ -130,11 +130,11 @@ const catalogData = {
         priceFormatted: 'Desde $58.000',
         category: 'tortas',
         description: 'Torta sencilla y elegante sin bordes o crema adicional al de la cubierta. Perfecta para quienes buscan un diseño minimalista.',
-        mainImage: '../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.webp',
+        mainImage: '../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-45m3co45m3co45m3.webp',
         images: [
-            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_45m3co45m3co45m3.webp",
-            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_vy4pszvy4pszvy4p.webp",
-            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/Gemini_Generated_Image_6ttesv6ttesv6tte.webp"
+            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-45m3co45m3co45m3.webp",
+            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-vy4pszvy4pszvy4p.webp",
+            "../assets/optimized/imagenes-tortas/07-tortas-sencillas/gemini-generated-image-6ttesv6ttesv6tte.webp"
         ],
         includes: [
             "Torta personalizada según porciones",
@@ -248,7 +248,7 @@ const catalogData = {
         priceFormatted: '$2.000 - $3.000',
         category: 'extras',
         description: 'Hermosos lazos decorativos para darle un toque tierno a tu torta.',
-        mainImage: '../assets/optimized/logos/Detalles adicionales/moño.webp',
+        mainImage: '../assets/optimized/logos/detalles-adicionales/mono.webp',
         personalization: null
     },
 
@@ -259,7 +259,7 @@ const catalogData = {
         priceFormatted: '$2.000 - $3.000',
         category: 'extras',
         description: 'Mariposas comestibles o decorativas que dan vida y movimiento.',
-        mainImage: '../assets/optimized/logos/Detalles adicionales/mariposa.webp',
+        mainImage: '../assets/optimized/logos/detalles-adicionales/mariposa.webp',
         personalization: null
     },
 
@@ -270,7 +270,7 @@ const catalogData = {
         priceFormatted: '$5.000 - $8.000',
         category: 'extras',
         description: 'Topper de Happy Birthday en diversos estilos y colores.',
-        mainImage: '../assets/optimized/logos/Detalles adicionales/HB (1).webp',
+        mainImage: '../assets/optimized/logos/detalles-adicionales/hb-1.webp',
         personalization: null
     },
 
@@ -281,7 +281,7 @@ const catalogData = {
         priceFormatted: '$5.000 - $10.000',
         category: 'extras',
         description: 'Perlas en mayor cantidad para un acabado lujoso.',
-        mainImage: '../assets/optimized/logos/Detalles adicionales/perla.webp',
+        mainImage: '../assets/optimized/logos/detalles-adicionales/perla.webp',
         personalization: null
     },
 
@@ -292,7 +292,7 @@ const catalogData = {
         priceFormatted: 'Precio en asesoría',
         category: 'extras',
         description: 'Diseños personalizados y únicos de coronas.',
-        mainImage: '../assets/optimized/logos/Detalles adicionales/corona.webp',
+        mainImage: '../assets/optimized/logos/detalles-adicionales/corona.webp',
         personalization: null
     },
 
@@ -303,22 +303,22 @@ const catalogData = {
         priceFormatted: '$60.000',
         category: 'alfajores',
         description: 'Alfajores de maicena personalizados con diseños únicos para tus celebraciones. Cada alfajor es decorado artesanalmente con fondant y detalles especiales según tu ocasión.',
-        mainImage: '../assets/optimized/imagenes-alfajores/personalizados/aaa.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-12.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/personalizados/aaa.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/b.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/bb.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.11.33_03be5587.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.15.12_ce194214.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-22 at 19.30.22_44a7ffb4.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.02.55_d40a95c7.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.03.30_f1881042.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.09_49a8317f.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.04.58_9e0bd10b.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.09_520ee439.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.22_518737f4.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.05.57_19f53c16.webp",
-            "../assets/optimized/imagenes-alfajores/personalizados/WhatsApp Image 2025-10-23 at 14.06.08_75e702b1.webp"
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-12.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-13.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-14.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-01.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-02.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-03.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-04.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-05.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-06.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-07.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-08.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-09.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-10.webp",
+            "../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-11.webp"
         ],
         includes: [
             "Alfajores de maicena rellenos de arequipe",
@@ -372,9 +372,9 @@ const catalogData = {
         priceFormatted: '$22.000',
         category: 'alfajores',
         description: 'Deliciosos alfajores de maicena rellenos de arequipe. Perfectos para compartir o regalar. Presentación en caja elegante.',
-        mainImage: '../assets/optimized/imagenes-alfajores/Alfajores x6.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/alfajores-x6.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/Alfajores x6.webp"
+            "../assets/optimized/imagenes-alfajores/alfajores-x6.webp"
         ],
         includes: [
             "6 alfajores de maicena",
@@ -393,9 +393,9 @@ const catalogData = {
         priceFormatted: '$37.000',
         category: 'alfajores',
         description: 'Docena de alfajores de maicena rellenos de arequipe. Ideal para compartir en reuniones o como regalo especial.',
-        mainImage: '../assets/optimized/imagenes-alfajores/Alfajores x12.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/alfajores-x12.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/Alfajores x12.webp"
+            "../assets/optimized/imagenes-alfajores/alfajores-x12.webp"
         ],
         includes: [
             "12 alfajores de maicena",
@@ -414,9 +414,9 @@ const catalogData = {
         priceFormatted: '$27.000',
         category: 'alfajores',
         description: 'Vaso decorativo lleno de mini alfajores. Perfecto para regalar o disfrutar en porciones pequeñas.',
-        mainImage: '../assets/optimized/imagenes-alfajores/Alfajores vaso mini.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/alfajores-vaso-mini.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/Alfajores vaso mini.webp"
+            "../assets/optimized/imagenes-alfajores/alfajores-vaso-mini.webp"
         ],
         includes: [
             "Vaso decorativo",
@@ -435,10 +435,10 @@ const catalogData = {
         priceFormatted: 'Desde $25.000',
         category: 'alfajores',
         description: 'Torta de alfajor rellena de arequipe con 3 capas de relleno. Una experiencia única y deliciosa.',
-        mainImage: '../assets/optimized/imagenes-alfajores/TortaAlfajor1.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/torta-alfajor1.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/TortaAlfajor1.webp",
-            "../assets/optimized/imagenes-alfajores/TortaAlfajor2.webp"
+            "../assets/optimized/imagenes-alfajores/torta-alfajor1.webp",
+            "../assets/optimized/imagenes-alfajores/torta-alfajor2.webp"
         ],
         includes: [
             "Torta de alfajor según tamaño",
@@ -494,10 +494,10 @@ const catalogData = {
         priceFormatted: 'Desde $2.000',
         category: 'alfajores',
         description: 'Alfajores de maicena individuales empacados en bolsas. Se venden a partir de 6 unidades por referencia o tamaño.',
-        mainImage: '../assets/optimized/imagenes-alfajores/AlfajorBolsita.webp',
+        mainImage: '../assets/optimized/imagenes-alfajores/alfajor-bolsita.webp',
         images: [
-            "../assets/optimized/imagenes-alfajores/AlfajorBolsita.webp",
-            "../assets/optimized/imagenes-alfajores/AlfajorUnidad.webp"
+            "../assets/optimized/imagenes-alfajores/alfajor-bolsita.webp",
+            "../assets/optimized/imagenes-alfajores/alfajor-unidad.webp"
         ],
         includes: [
             "Alfajores de maicena rellenos de arequipe",
@@ -551,12 +551,12 @@ const catalogData = {
         priceFormatted: 'Desde $6.500',
         category: 'brownies',
         description: 'Brownie melcochudo a base de Nutella y chocolate al 70%. Toppings a tu elección: Nutella, Arequipe, M&M, Hershey\'s blanca y Galleta Oreo.',
-        mainImage: '../assets/optimized/imagenes.brownies.galletas/Brownies/cajaX16.webp',
+        mainImage: '../assets/optimized/imagenes-brownies-galletas/brownies/caja-x16.webp',
         images: [
-            "../assets/optimized/imagenes.brownies.galletas/Brownies/cajaX16.webp",
-            "../assets/optimized/imagenes.brownies.galletas/Brownies/browniesX3.webp",
-            "../assets/optimized/imagenes.brownies.galletas/Brownies/browniesX6.webp",
-            "../assets/optimized/imagenes.brownies.galletas/Brownies/browniesIndividuales.webp"
+            "../assets/optimized/imagenes-brownies-galletas/brownies/caja-x16.webp",
+            "../assets/optimized/imagenes-brownies-galletas/brownies/brownies-x3.webp",
+            "../assets/optimized/imagenes-brownies-galletas/brownies/brownies-x6.webp",
+            "../assets/optimized/imagenes-brownies-galletas/brownies/brownies-individuales.webp"
         ],
         includes: [
             "Brownies hechos con Nutella y chocolate 70%",
@@ -677,11 +677,11 @@ const catalogData = {
         priceFormatted: 'Desde $8.000',
         category: 'galletas',
         description: 'Galletas artesanales horneadas diariamente con ingredientes premium. Cada una tiene su relleno especial según el sabor.',
-        mainImage: '../assets/optimized/imagenes.brownies.galletas/Galletas/1.webp',
+        mainImage: '../assets/optimized/imagenes-brownies-galletas/galletas/1.webp',
         images: [
-            "../assets/optimized/imagenes.brownies.galletas/Galletas/1.webp",
-            "../assets/optimized/imagenes.brownies.galletas/Galletas/2.webp",
-            "../assets/optimized/imagenes.brownies.galletas/Galletas/3.webp"
+            "../assets/optimized/imagenes-brownies-galletas/galletas/1.webp",
+            "../assets/optimized/imagenes-brownies-galletas/galletas/2.webp",
+            "../assets/optimized/imagenes-brownies-galletas/galletas/3.webp"
         ],
         includes: [
             "Galletas artesanales",
@@ -781,9 +781,9 @@ const catalogData = {
         priceFormatted: '$27.000',
         category: 'detalles',
         description: 'Adorable oso de chocolate acompañado de mini alfajores y galletas. Perfecto para sorprender con un detalle dulce y especial.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/Oso Pequeño.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/oso-pequeno.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/osos/Oso Pequeño.webp"
+            "../assets/optimized/imagenes-detalles/productos/osos/oso-pequeno.webp"
         ],
         includes: [
             "Oso de chocolate (blanco o semiamargo)",
@@ -859,10 +859,10 @@ const catalogData = {
         priceFormatted: '$49.000',
         category: 'detalles',
         description: 'Oso de chocolate de tamaño grande acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/Oso Grande.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/oso-grande.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/osos/Oso Grande.webp",
-            "../assets/optimized/imagenes-detalles/productos/osos/Oso Grande con letras.webp"
+            "../assets/optimized/imagenes-detalles/productos/osos/oso-grande.webp",
+            "../assets/optimized/imagenes-detalles/productos/osos/oso-grande-con-letras.webp"
         ],
         includes: [
             "Oso de chocolate (blanco o semiamargo)",
@@ -958,9 +958,9 @@ const catalogData = {
         priceFormatted: '$59.000',
         category: 'detalles',
         description: 'Oso de chocolate con fresas cubiertas, brownie y galleta. La combinación perfecta entre chocolate y frescura.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/Oso con fresas.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/osos/oso-con-fresas.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/osos/Oso con fresas.webp"
+            "../assets/optimized/imagenes-detalles/productos/osos/oso-con-fresas.webp"
         ],
         includes: [
             "Oso de chocolate",
@@ -1073,9 +1073,9 @@ const catalogData = {
         priceFormatted: '$60.000',
         category: 'detalles',
         description: 'Brownie de 4-6 porciones con mensaje personalizado, acompañado de galleta y mini alfajores.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/Detalle Brownie.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/detalle-brownie.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/mix/Detalle Brownie.webp"
+            "../assets/optimized/imagenes-detalles/productos/mix/detalle-brownie.webp"
         ],
         includes: [
             "Brownie de 4-6 porciones",
@@ -1162,9 +1162,9 @@ const catalogData = {
         priceFormatted: '$92.000',
         category: 'detalles',
         description: 'Mini torta de cumpleaños con letras personalizadas, alfajores, galletas y trufas.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/Detalle HBD.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/detalle-hbd.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/mix/Detalle HBD.webp"
+            "../assets/optimized/imagenes-detalles/productos/mix/detalle-hbd.webp"
         ],
         includes: [
             "Mini torta de vainilla",
@@ -1242,9 +1242,9 @@ const catalogData = {
         priceFormatted: '$65.000',
         category: 'detalles',
         description: 'Variedad de delicias: alfajores, frambuesas cubiertas, mini galletas y brownie.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/Margarita.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/margarita.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/mix/Margarita.webp"
+            "../assets/optimized/imagenes-detalles/productos/mix/margarita.webp"
         ],
         includes: [
             "Caja x6 alfajores",
@@ -1263,9 +1263,9 @@ const catalogData = {
         priceFormatted: '$50.000',
         category: 'detalles',
         description: 'Letras personalizadas en chocolate, mini alfajores, chocolatina y galletas.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/Detalle Mix.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/detalle-mix.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/mix/Detalle Mix.webp"
+            "../assets/optimized/imagenes-detalles/productos/mix/detalle-mix.webp"
         ],
         includes: [
             "2 iniciales de letras",
@@ -1331,9 +1331,9 @@ const catalogData = {
         priceFormatted: '$56.000',
         category: 'detalles',
         description: 'Letras en chocolate, alfajores, chocolatina y brownies con arequipe.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/Detalle Mix 2.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/mix/detalle-mix-2.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/mix/Detalle Mix 2.webp"
+            "../assets/optimized/imagenes-detalles/productos/mix/detalle-mix-2.webp"
         ],
         includes: [
             "2 iniciales de letras",
@@ -1399,9 +1399,9 @@ const catalogData = {
         priceFormatted: '$88.000',
         category: 'detalles',
         description: 'Mini torta vasca, trufas, galleta especial y alfajores.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/detalle-golden.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden.webp"
+            "../assets/optimized/imagenes-detalles/productos/golden/detalle-golden.webp"
         ],
         includes: [
             "Mini torta vasca",
@@ -1501,9 +1501,9 @@ const catalogData = {
         priceFormatted: '$86.000',
         category: 'detalles',
         description: 'Mini torta vasca, trufas, brownie y mini galletas.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Rosa.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/detalle-golden-rosa.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Rosa.webp"
+            "../assets/optimized/imagenes-detalles/productos/golden/detalle-golden-rosa.webp"
         ],
         includes: [
             "Mini torta vasca",
@@ -1540,9 +1540,9 @@ const catalogData = {
         priceFormatted: '$83.000',
         category: 'detalles',
         description: 'Mini torta vasca, trufas de oreo, brownie grande y alfajor especial.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Mostacho.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/detalle-golden-mostacho.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/golden/Detalle Golden Mostacho.webp"
+            "../assets/optimized/imagenes-detalles/productos/golden/detalle-golden-mostacho.webp"
         ],
         includes: [
             "Mini torta vasca",
@@ -1579,9 +1579,9 @@ const catalogData = {
         priceFormatted: '$105.000',
         category: 'detalles',
         description: 'Torta de 5 porciones personalizada con frase o número, acompañada de alfajores medianos.',
-        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/Detalle con torta.webp',
+        mainImage: '../assets/optimized/imagenes-detalles/productos/golden/detalle-con-torta.webp',
         images: [
-            "../assets/optimized/imagenes-detalles/productos/golden/Detalle con torta.webp"
+            "../assets/optimized/imagenes-detalles/productos/golden/detalle-con-torta.webp"
         ],
         includes: [
             "Torta de 5 porciones",

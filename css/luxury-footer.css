@@ -2,18 +2,13 @@
  * LUXURY FOOTER - Minimalista High-End
  * Para Lauren Repostería
  * Color: Tono Tierra / Nude (#E5C8BA)
- * Logo: Imagen footer-logo.png
+ * Logo: Imagen optimizada footer-logo.webp
  * Espaciado: Reducido 30% para diseño más compacto
  *  
  * Uso: Incluir este CSS en tu página y copiar el HTML del footer
  */
 
-/* Google Fonts - Agregar en el <head> */
-/*
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-*/
+/* Tipografía: Playfair Display + Inter, cargadas desde el <head> de cada página. */
 
 /* FOOTER HIGH-END */
 .luxury-footer {
@@ -92,7 +87,7 @@
 
 /* Copyright */
 .footer-copyright {
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
     color: #2c2c2c;

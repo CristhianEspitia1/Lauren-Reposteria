@@ -19,7 +19,13 @@ class CartManager {
     loadCart() {
         try {
             const saved = localStorage.getItem(this.cartKey);
-            return saved ? JSON.parse(saved) : [];
+            const parsed = saved ? JSON.parse(saved) : [];
+            // Validar la forma: localStorage es manipulable y podría estar corrupto.
+            if (!Array.isArray(parsed)) return [];
+            return parsed.filter(item =>
+                item && typeof item === 'object' && item.id && item.name &&
+                typeof item.price === 'number' && typeof item.quantity === 'number'
+            );
         } catch (error) {
             console.error('[Cart] Error al cargar carrito:', error);
             return [];
@@ -169,12 +175,13 @@ class CartManager {
      * Formatea un precio a formato colombiano
      */
     formatPrice(price) {
-        return new Intl.NumberFormat('es-CO', {
-            style: 'currency',
-            currency: 'COP',
+        // Formato unificado con el resto del sitio: "$176.000" (punto de miles,
+        // sin decimales, sin espacio tras el símbolo).
+        const number = new Intl.NumberFormat('es-CO', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
-        }).format(price);
+        }).format(Math.round(Number(price) || 0));
+        return `$${number}`;
     }
 
     /**

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada | Lauren Repostería</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" type="image/webp" href="/assets/optimized/logos/logos-lauren-png-13.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-lilac: #c8a5d8;
+            --dark-lilac: #b08bbb;
+            --light-lilac: #f5ebf2;
+            --dark-text: #4a3c52;
+            --light-text: #8b7b9a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            background: linear-gradient(160deg, var(--light-lilac) 0%, #fff 60%);
+            text-align: center;
+        }
+
+        .error-card {
+            max-width: 34rem;
+        }
+
+        .error-logo {
+            width: 96px;
+            height: 96px;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-code {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 12vw, 5.5rem);
+            font-weight: 600;
+            line-height: 1;
+            color: var(--primary-lilac);
+        }
+
+        .error-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 600;
+            margin: 0.75rem 0 1rem;
+        }
+
+        .error-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+        }
+
+        .error-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .error-btn {
+            display: inline-block;
+            padding: 0.85rem 1.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .error-btn--primary {
+            background: var(--primary-lilac);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(176, 139, 187, 0.35);
+        }
+
+        .error-btn--ghost {
+            background: #fff;
+            color: var(--dark-lilac);
+            border: 1px solid var(--primary-lilac);
+        }
+
+        .error-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(176, 139, 187, 0.4);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .error-btn {
+                transition: none;
+            }
+
+            .error-btn:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="error-card">
+        <img class="error-logo" src="/assets/optimized/logos/logos-lauren-png-13.webp"
+            alt="Logo de Lauren Repostería" width="96" height="96">
+        <p class="error-code">404</p>
+        <h1 class="error-title">Esta página se nos escapó del horno</h1>
+        <p class="error-text">No encontramos lo que buscabas, pero tenemos muchos dulces esperándote. Vuelve al inicio y
+            descubre nuestras creaciones.</p>
+        <div class="error-actions">
+            <a class="error-btn error-btn--primary" href="/html/inicio.html">Ir al inicio</a>
+            <a class="error-btn error-btn--ghost" href="https://wa.me/573104442796">Escríbenos por WhatsApp</a>
+        </div>
+    </main>
+</body>
+
+</html>

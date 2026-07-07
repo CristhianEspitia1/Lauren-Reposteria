@@ -20,7 +20,28 @@ node_modules/
 # Logs
 *.log
 
+# Archivos de archivo/branding que no deben desplegarse en GitHub Pages
+*.zip
+brandin de lauren/
+
+# Material fuente local para generar assets optimizados
+assets/icons/
+assets/logos/
+assets/imagenes-inicio/
+assets/imagenes-tortas/
+assets/imagenes-alfajores/
+assets/imagenes-detalles/
+assets/imagenes-brownies-galletas/
+assets/.guias/
+*.mov
+
+# Demos locales
+html/navbar-demo-*.html
+
 # Carpetas temporales
 temp/
 tmp/
 artifacts/
+
+# Media fuente cruda (masters .mov) fuera del pipeline
+media-fuente/

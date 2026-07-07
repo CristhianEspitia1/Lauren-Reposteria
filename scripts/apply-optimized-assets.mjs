@@ -1,5 +1,4 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const ROOT = process.cwd();
@@ -22,7 +21,6 @@ const files = [
     'js/tortas-data.js',
     'js/alfajores-data.js',
     'js/catalog-data.js',
-    'js/catalog-loader.js',
     'js/cart-ui.js',
     'js/quick-view-modal.js',
     'js/tortas-script.js'
@@ -61,10 +59,7 @@ const buildVariants = (original, optimized) => {
 };
 
 const replacementPairs = [];
-const optimizedByOriginal = new Map();
 for (const entry of Object.values(assetMap)) {
-    optimizedByOriginal.set(entry.original.normalize('NFC'), entry.optimized);
-    optimizedByOriginal.set(entry.original.normalize('NFD'), entry.optimized);
     const variants = buildVariants(entry.original, entry.optimized);
     variants.forEach((target, source) => {
         replacementPairs.push([source, target]);
@@ -79,21 +74,6 @@ const replaceAssetRefs = (content) => {
         next = next.replace(new RegExp(escapeRegExp(source), 'g'), target);
     }
     return next;
-};
-
-const stripAssetPrefix = (value) => {
-    const decoded = value.replace(/^\.\//, '').replace(/^\.\.\//, '');
-    try {
-        return decodeURIComponent(decoded).normalize('NFC');
-    } catch {
-        return decoded.normalize('NFC');
-    }
-};
-
-const optimizedRefFor = (value, prefix = '../') => {
-    const normalized = stripAssetPrefix(value);
-    const optimized = optimizedByOriginal.get(normalized);
-    return optimized ? `${prefix}${optimized}` : null;
 };
 
 const repairBrokenPlaceholders = (content) => {
@@ -224,29 +204,27 @@ const dedupeTortasCarousel = (content) => {
 };
 
 const restoreTortasCarouselItems = (content) => {
-    let committed = '';
-    try {
-        committed = execFileSync('git', ['show', 'HEAD:html/tortas.html'], {
-            cwd: ROOT,
-            encoding: 'utf8'
-        });
-    } catch {
-        return content;
-    }
-
-    const refs = [];
+    const knownRefs = Object.values(assetMap)
+        .filter((entry) => entry.original.normalize('NFC').startsWith('assets/imagenes-tortas/05-carrusel-infinito/'))
+        .sort((a, b) => a.original.localeCompare(b.original, 'es', { numeric: true }))
+        .map((entry) => `../${entry.optimized}`);
+    const knownSet = new Set(knownRefs);
     const seen = new Set();
-    const trackStart = committed.indexOf('<div class="infinite-carousel-track">');
-    const sectionEnd = committed.indexOf('<!-- Sección de adicionales -->', trackStart);
-    const scope = trackStart !== -1 && sectionEnd !== -1 ? committed.slice(trackStart, sectionEnd) : committed;
-    const refRegex = /src=(["'])(\.\.\/assets\/imagenes-tortas\/05-carrusel-infinito\/[^"']+)\1/g;
+    const refs = [];
+    const existingRefRegex = /\s(?:data-src|src)=(["'])(\.\.\/assets\/optimized\/imagenes-tortas\/05-carrusel-infinito\/[^"']+)\1/g;
     let match;
 
-    while ((match = refRegex.exec(scope))) {
-        const optimized = optimizedRefFor(match[2]);
-        if (!optimized || seen.has(optimized)) continue;
-        seen.add(optimized);
-        refs.push(optimized);
+    while ((match = existingRefRegex.exec(content))) {
+        const ref = match[2];
+        if (!knownSet.has(ref) || seen.has(ref)) continue;
+        seen.add(ref);
+        refs.push(ref);
+    }
+
+    for (const ref of knownRefs) {
+        if (seen.has(ref)) continue;
+        seen.add(ref);
+        refs.push(ref);
     }
 
     if (refs.length < 2) return content;

@@ -1,11 +1,26 @@
 # Problemas pendientes - Lauren Repostería
 
-Última actualización: 16 de mayo de 2026.
-Última verificación en navegador: 16 de mayo de 2026.
+Última actualización: julio de 2026 (auditoría integral).
+Última verificación en navegador: julio de 2026.
+
+> Informe completo de la auditoría: [`docs/INFORME-AUDITORIA-JULIO-2026.md`](docs/INFORME-AUDITORIA-JULIO-2026.md).
+> Trabajo priorizado para futuras fases: [`docs/11-roadmap-y-pendientes.md`](docs/11-roadmap-y-pendientes.md).
 
 ## Estado general
 
 El sitio queda funcional y estable en las páginas principales. La verificación local confirmó carga correcta en móvil, tablet y desktop, sin errores de consola, sin imágenes rotas visibles, sin desbordamiento horizontal y con los controles principales operativos.
+
+## Resuelto en la auditoría de julio de 2026
+
+- Corregido XSS persistente en el carrito (escape de datos dinámicos en `cart-ui.js`).
+- Eliminada la carpeta `fonts/` (muerta) y cinco assets optimizados sin referencia.
+- Migrados 293 assets a nombres `kebab-case` ASCII; convención integrada en el pipeline.
+- Eliminado el sistema de modal huérfano de la portada (un solo sistema de modal).
+- Creados `robots.txt`, `sitemap.xml`, `404.html` y datos estructurados `schema.org`.
+- Tipografía unificada a Playfair Display + Inter; una sola petición de fuentes por página.
+- Design tokens centralizados en `css/tokens.css`.
+- Finales de línea normalizados a LF (`.gitattributes`); formato de precio unificado.
+- Documentación profesional generada en `docs/`.
 
 ## Resuelto en la auditoría actual
 
@@ -24,6 +39,9 @@ El sitio queda funcional y estable en las páginas principales. La verificación
 - Hero de Brownies/Galletas actualizado para usar el nuevo video `heroCookies-web.mp4`, con variante móvil `heroCookies-mobile.mp4`, exportados desde `heroCookies.mov` y sin zoom artificial.
 - Sistema de heroes actualizado para usar proporciones estables por módulo (`inicio`, `tortas`, `alfajores`, `brownies-galletas` y `detalles`) en lugar de alturas fijas y recortes con `scale()`.
 - Carga inicial pesada en Inicio por videos secundarios, corregida con carga diferida para tarjetas y video de "Nuestra historia".
+- Assets de producción consolidados en `assets/optimized`; las referencias runtime ya no apuntan a imágenes o videos fuente.
+- Zips de branding, demos de navegación, guías obsoletas, CSS/JS huérfanos, capturas de auditoría y metadatos `._*` removidos del proyecto versionado.
+- Fuentes pesadas de media retiradas de Git con `git rm --cached` para conservarlas localmente sin desplegarlas en GitHub Pages.
 
 ## Pendiente por confirmar con el negocio
 
@@ -34,18 +52,22 @@ El sitio y el README usan:
 - WhatsApp: `573104442796`
 - Instagram: `laurenreposteria22`
 
-Algunos archivos internos de guías mencionan:
+Históricamente algunos archivos internos de guías mencionaban:
 
 - WhatsApp: `573023687321`
 - Instagram: `lauren.reposteria`
 
-No se modificaron esos datos porque pueden ser información real antigua o alternativa. Se necesita confirmación de cuál es el dato oficial antes de unificar toda la documentación.
+La documentación obsoleta fue retirada, pero se mantiene este punto porque conviene confirmar el dato oficial antes de tocar textos comerciales.
 
 ## Riesgos técnicos pendientes
 
-### Assets pesados
+### Fuentes locales de media
 
-Hay varios videos de más de 2 MB. El más pesado detectado es `assets/imagenes-inicio/Nuestra-historia.mp4` con aproximadamente 17 MB. El nuevo hero de Tortas quedó en `assets/imagenes-tortas/herotortas/heroTortas-web.mp4` con aproximadamente 11 MB para escritorio y `heroTortas-mobile.mp4` con aproximadamente 7.5 MB para móvil/tablet. El nuevo hero de Brownies/Galletas quedó en `assets/imagenes.brownies.galletas/Hero/heroCookies-web.mp4` con aproximadamente 8.3 MB para escritorio y `heroCookies-mobile.mp4` con aproximadamente 5.4 MB para móvil/tablet. Ya no se descargan videos secundarios al abrir Inicio, pero conviene seguir comprimiendo videos antes de una campaña con mucho tráfico.
+Las fotos y videos originales quedaron fuera de Git/deploy, pero siguen existiendo localmente como material fuente para regenerar `assets/optimized`. Si el proyecto se mueve a otra máquina, hay que copiar esos originales desde el almacenamiento fuente o trabajar directamente con nuevos assets optimizados.
+
+### Assets optimizados grandes
+
+El runtime ya evita los originales, pero algunos videos optimizados siguen pesando más que una imagen. Antes de campañas con mucho tráfico conviene volver a medir payload real y ajustar CRF/resolución si la calidad visual lo permite.
 
 ### Bandas internas en videos fuente
 
@@ -79,7 +101,8 @@ Las páginas todavía conservan bloques extensos de CSS inline heredado. No bloq
 ## Recomendaciones futuras
 
 - Confirmar y unificar los datos oficiales de WhatsApp e Instagram.
-- Comprimir videos grandes y evaluar formatos modernos.
+- Mantener copia externa clara de los originales fuente de fotos y videos.
+- Comprimir videos grandes y evaluar formatos modernos cuando haya cambios de campaña o contenido.
 - Crear una convención nueva de nombres de assets: minúsculas, sin espacios, sin tildes y con guiones.
 - Reducir CSS inline heredado en ciclos pequeños, verificando visualmente cada página.
 - Mantener pruebas en navegador antes de publicar cambios en productos, precios o rutas.

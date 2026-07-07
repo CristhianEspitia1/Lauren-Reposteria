@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /html/tabla-productos.html
+
+Sitemap: https://laurenreposteria.com/sitemap.xml
