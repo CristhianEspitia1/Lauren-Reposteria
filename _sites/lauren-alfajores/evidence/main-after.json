@@ -1,0 +1,15 @@
+{
+  "localFilesCompared": 475,
+  "changedFiles": [],
+  "sameHead": true,
+  "sameTrackedDiff": true,
+  "primaryPublic": {
+    "url": "https://laurenreposteria.com/",
+    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+  },
+  "primaryLocal": {
+    "url": "http://127.0.0.1:5173/html/inicio.html",
+    "status": 200,
+    "bytes": 21081
+  }
+}

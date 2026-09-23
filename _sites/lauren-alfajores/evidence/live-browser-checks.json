@@ -1,0 +1,33 @@
+[
+  {
+    "step": "Ejemplo obligatorio en URL pública",
+    "result": "28.000 por caja; dos cajas + Arequipe = 62.500 COP / nueve alfajores"
+  },
+  {
+    "step": "Recarga en HTTPS público",
+    "result": "Recupera nueve alfajores y 62.500 COP"
+  },
+  {
+    "step": "Metadatos, fuentes, anclas y movimiento reducido",
+    "result": {
+      "badInternalLinks": [],
+      "canonical": "https://cristhianespitia1.github.io/Lauren-Alfajores-Demo/",
+      "fonts": {
+        "body": true,
+        "outfit": true,
+        "state": "loaded",
+        "wordmark": true
+      },
+      "reducedMotionRule": true,
+      "robots": "noindex, nofollow, noarchive"
+    }
+  },
+  {
+    "step": "Vista pública móvil",
+    "result": "Menú, cajas, armador de cuatro y selección verificados a 390 × 844; captura de portada, sabores, cajas, armador y selección"
+  },
+  {
+    "step": "Descarga pública",
+    "result": "Archivo mi-seleccion-lauren (1).txt recibido y comparado con el resumen"
+  }
+]

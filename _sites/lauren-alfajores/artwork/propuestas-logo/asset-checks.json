@@ -1,0 +1,66 @@
+[
+  {
+    "id": "01-cremoso",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "02-dos-tapas",
+    "width": 1625,
+    "height": 600,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "03-mordisco",
+    "width": 1625,
+    "height": 600,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "04-redondo",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "05-alfi",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "06-club",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "07-monograma",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "id": "08-firma",
+    "width": 1625,
+    "height": 650,
+    "alpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  }
+]

@@ -1,0 +1,249 @@
+{
+  "assets": [
+    {
+      "id": "clasico",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 120116,
+      "transparent_pixels": 1133600,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": false,
+      "webp_sha256": "41f72fd8fbe5f144fba7995235ad8607ce955e39b8dce861f26d4ca7e002766b"
+    },
+    {
+      "id": "minis",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 107052,
+      "transparent_pixels": 1155833,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": false,
+      "webp_sha256": "9e352ac019bbf99c89622f16a64260c203cb150452cc519dd8b46071abcc2b94"
+    },
+    {
+      "id": "torta",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 226890,
+      "transparent_pixels": 632132,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": true,
+      "webp_sha256": "83bb3e124f5a0485e89a574530e7808d8377895cf9e4b48568ba27f92addacbf"
+    },
+    {
+      "id": "bolsitas",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 360778,
+      "transparent_pixels": 522388,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": true,
+      "webp_sha256": "d94ec90d780326f62cdac7b9b42067058c0a09204b2e9c417ad1780fe003c892"
+    },
+    {
+      "id": "caja",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 128840,
+      "transparent_pixels": 562086,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": true,
+      "webp_sha256": "2234522a19f5286eabe6ae85db28caa31c025ab20cff4bba3c4282413cc30639"
+    },
+    {
+      "id": "cajas",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 168528,
+      "transparent_pixels": 632159,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": true,
+      "webp_sha256": "d831c4a2611ef4baf9b4f39969fc932f72ff01a6780aaacbc00ab2efbfd69fa8"
+    },
+    {
+      "id": "torta-regalo",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "webp_bytes": 221618,
+      "transparent_pixels": 830058,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_preserved": true,
+      "second_retouch": true,
+      "webp_sha256": "f5854da3724eaf07c68972d8fd804de4355ee51bb0b635ff11ec5359140e3882"
+    }
+  ],
+  "status": "local only",
+  "method": "built-in image_gen; WebP conversion with cwebp q90 and lossless alpha",
+  "limitations": [
+    "Second retouch of clasico and minis blocked by usage_limit_reached; first transparent retouch retained.",
+    "Native output remains 1536x1024; no artificial upscale.",
+    "Browser keyboard zoom shortcut had no effect in this preview; 200% zoom was not verified.",
+    "No physical iOS/Android device or cross-browser suite used. TXT download covered by logic test, not downloaded through browser in this pass."
+  ],
+  "tests": {
+    "command": "node --test tests/demo.test.mjs",
+    "passed": 10,
+    "failed": 0
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5180/",
+    "environment": "Codex in-app browser; viewport resizing, not physical devices",
+    "measurements": [
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 345,
+        "viewport": [
+          360,
+          800
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 375,
+        "viewport": [
+          390,
+          844
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 415,
+        "viewport": [
+          430,
+          932
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 753,
+        "viewport": [
+          768,
+          1024
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 1009,
+        "viewport": [
+          1024,
+          768
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 1425,
+        "viewport": [
+          1440,
+          1000
+        ]
+      },
+      {
+        "contentOverflow": [],
+        "faqOpen": true,
+        "pageWidth": 1905,
+        "viewport": [
+          1920,
+          1080
+        ]
+      }
+    ],
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "productImageUncropped": true,
+      "alternatePhotoButtonsReachable": true,
+      "addButtonReachable": true,
+      "closeButtonStaysVisible": true,
+      "horizontalOverflow": false
+    },
+    "checked": [
+      "Mobile menu opens, closes and navigates to FAQ",
+      "FAQ expansion",
+      "All five product sheets open",
+      "Original: 6 large alfajores total 24000 COP",
+      "Bags: 6 bags with 6 minis total 30000 COP",
+      "Cake: 10–12 portions updates to 60000 COP",
+      "Box photo toggle and variant selection remain after viewport resize",
+      "One minis tub plus one box of 12 totals 64000 COP",
+      "Quantity change to two minis tubs totals 54000 COP",
+      "Minimum quantity disabled on cart minus button",
+      "Selection survives browser reload",
+      "Summary contains current variants and total",
+      "Copy confirmation shown after clicking copy",
+      "Test selection cleared back to empty state",
+      "Escape closes product sheet and restores focus to its opener",
+      "All seven product WebP assets loaded, including the single box in its sheet",
+      "Outfit, DM Sans and Fraunces loaded",
+      "No warning/error messages in captured browser console"
+    ],
+    "screenshots": [
+      "preview-mobile-360-hero.png",
+      "preview-mobile-360-minis.png",
+      "preview-mobile.png",
+      "preview-mobile-430-caja.png",
+      "preview-mobile-horizontal.png",
+      "preview-tablet-768.png",
+      "preview-desktop.png"
+    ]
+  },
+  "verification": {
+    "command": "node scripts/verify.mjs",
+    "result": "passed",
+    "publicFiles": 23,
+    "referenceCssAndOriginalImagesIntact": true
+  },
+  "package": {
+    "command": "node scripts/package.mjs",
+    "result": "passed",
+    "deployed": false
+  }
+}

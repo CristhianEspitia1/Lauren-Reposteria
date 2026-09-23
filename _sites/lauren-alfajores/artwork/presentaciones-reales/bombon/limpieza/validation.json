@@ -1,0 +1,108 @@
+{
+  "tool": "image_gen built-in",
+  "mode": "edit",
+  "assets": [
+    {
+      "file": "minis",
+      "selected_master": "minis-estudio.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 40.21,
+      "bytes": 1422052,
+      "served_bytes_match": true
+    },
+    {
+      "file": "bolsitas",
+      "selected_master": "bolsitas-estudio-celofan.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 32.45,
+      "bytes": 1751044,
+      "served_bytes_match": true
+    },
+    {
+      "file": "torta",
+      "selected_master": "torta-estudio.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 41.46,
+      "bytes": 1440148,
+      "served_bytes_match": true
+    },
+    {
+      "file": "torta-regalo",
+      "selected_master": "torta-regalo-estudio.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 51.22,
+      "bytes": 1266958,
+      "served_bytes_match": true
+    },
+    {
+      "file": "caja",
+      "selected_master": "caja-estudio.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 37.21,
+      "bytes": 1121968,
+      "served_bytes_match": true
+    },
+    {
+      "file": "cajas",
+      "selected_master": "cajas-estudio.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "format": "WebP lossless exact",
+      "pixel_identical_to_master": true,
+      "transparent_percent": 39.97,
+      "bytes": 1178514,
+      "served_bytes_match": true
+    }
+  ],
+  "preserved_approved_references": [
+    "clasico.webp",
+    "minis.webp"
+  ],
+  "checks": {
+    "scope": "local preview, no deployment",
+    "verify_script": "passed: syntax and 31-file public allowlist",
+    "visual": {
+      "desktop": [
+        "bolsitas on lavender catalog background",
+        "three boxes in catalog",
+        "cake detail without packaging",
+        "cake detail with packaging"
+      ],
+      "mobile_390": [
+        "single box detail",
+        "three-box alternate photo",
+        "complete product edges",
+        "no horizontal overflow"
+      ],
+      "alternate_photos": "cake and box toggles verified",
+      "viewport_restored": true
+    }
+  }
+}

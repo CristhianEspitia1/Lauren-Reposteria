@@ -1,0 +1,101 @@
+{
+  "assets": [
+    {
+      "file": "bolsitas.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_percent": 32.93,
+      "webp_bytes": 351732
+    },
+    {
+      "file": "caja.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_percent": 35.79,
+      "webp_bytes": 112458
+    },
+    {
+      "file": "cajas.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_percent": 40.68,
+      "webp_bytes": 137050
+    },
+    {
+      "file": "minis.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_percent": 73.55,
+      "webp_bytes": 93812
+    },
+    {
+      "file": "torta-regalo.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_percent": 52.75,
+      "webp_bytes": 207630
+    }
+  ],
+  "web": {
+    "preview": "http://127.0.0.1:5180/",
+    "approved_logo": "12 · Bombón",
+    "responsive_layout_widths": [
+      360,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "horizontal_overflow": false,
+    "headings_clipped": false,
+    "visual_review": [
+      "Portada de escritorio",
+      "Cajas de escritorio",
+      "Portada móvil a 390 px",
+      "Bolsitas en móvil",
+      "Menú móvil",
+      "Carrito vacío móvil",
+      "Ficha de caja móvil"
+    ],
+    "logic_tests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "public_files_verified": 31,
+    "http_resources_matching_local_files": 30,
+    "svg_and_woff2_mime": "correct",
+    "packaging": "local artifact created",
+    "physical_devices_tested": false,
+    "published": false
+  }
+}

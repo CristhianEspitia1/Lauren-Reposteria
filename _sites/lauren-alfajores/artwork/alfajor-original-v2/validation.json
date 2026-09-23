@@ -1,0 +1,70 @@
+{
+  "status": "local preview; not published",
+  "assets": [
+    {
+      "id": "arequipe",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_preserved": true,
+      "transparent_pixels": 885007,
+      "master": "artwork/alfajor-original-v2/arequipe-original-v2.png",
+      "master_sha256": "8f1965fefcf8b2f7676ba9152b598f43c4eb6540053807add6b598b51cbefec8",
+      "web": "public/assets/arequipe-original-v2.webp",
+      "web_bytes": 166500,
+      "web_sha256": "ead3aef284eb8ff1b98131cd868a131f68512a86b942eb7fb2b3fc777b39c454"
+    },
+    {
+      "id": "pistacho",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_preserved": true,
+      "transparent_pixels": 985847,
+      "master": "artwork/alfajor-original-v2/pistacho-original-v2.png",
+      "master_sha256": "5583053499c87dc068b7900ff9d631fba6864aef3d22a7ab0a45d20bc43af919",
+      "web": "public/assets/pistacho-original-v2.webp",
+      "web_bytes": 119840,
+      "web_sha256": "afb10bc8dad54a7cc370b3b098ed4187d47575facdb909272feb771a2545d125"
+    },
+    {
+      "id": "cookies",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_preserved": true,
+      "transparent_pixels": 903066,
+      "master": "artwork/alfajor-original-v2/cookies-original-v2.png",
+      "master_sha256": "6770dfc6d811e1d314c13c433e494cc15b7fb01007dbef56fae2a5a9d21dae39",
+      "web": "public/assets/cookies-original-v2.webp",
+      "web_bytes": 172888,
+      "web_sha256": "a4f353a41753aaa6b2a3c2169b10828453c44ca7c43bb39535711fe4dec63505"
+    },
+    {
+      "id": "frambuesa",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_preserved": true,
+      "transparent_pixels": 1002117,
+      "master": "artwork/alfajor-original-v2/frambuesa-original-v2.png",
+      "master_sha256": "777aa87be0513cf80bfcbec7eea04c748ac193f2495281752c850301f74971c5",
+      "web": "public/assets/frambuesa-original-v2.webp",
+      "web_bytes": 151066,
+      "web_sha256": "927ab72ac307f5f60358f0487e35f18e4d9a1bd2e10b01a49f7ff038ebc861be"
+    }
+  ],
+  "checks": {
+    "reference_and_css_unchanged": true,
+    "public_file_allowlist": 14,
+    "javascript_syntax": "passed",
+    "browser": "Chrome",
+    "desktop": "Hero and four flavor images in builder visually checked",
+    "mobile": "Hero checked at 390 x 844; no page overflow",
+    "publication": "not performed for this image update"
+  }
+}
