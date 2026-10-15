@@ -1,70 +1,24 @@
 # Arquitectura
 
-## Visión general
+Sitio estático, sin build ni backend. Las cinco páginas públicas comparten estilos, reglas del catálogo, iconografía y diálogos. El hosting sirve archivos; el navegador construye el pedido y prepara un enlace de WhatsApp.
 
-Lauren Repostería es un **sitio estático** compuesto por páginas HTML
-independientes que comparten un conjunto común de CSS y JavaScript. No hay
-servidor de aplicación: toda la lógica vive en el navegador y el único "backend"
-es WhatsApp, adonde se envía el pedido final.
+## Recorrido
 
-```
-┌──────────────────────────────────────────────────────────┐
-│                      Navegador                             │
-│                                                            │
-│   Página HTML  ──carga──►  CSS (tokens + componentes)      │
-│       │                                                    │
-│       ├── catalog-data.js / tortas-data.js / alfajores…    │  datos
-│       ├── quick-view-modal.js  (vista rápida de producto)  │  UI producto
-│       ├── cart-manager.js  ──►  localStorage               │  estado
-│       ├── cart-ui.js  (panel del carrito)                  │  UI carrito
-│       ├── contact-fab.js  (contacto + menú)                │  navegación
-│       └── performance-optimizer.js  (lazy media)           │  rendimiento
-│                                                            │
-│   Pedido  ──generateWhatsAppMessage()──►  wa.me/57310…     │  salida
-└──────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-                     GitHub Pages (estático)
-                     dominio: laurenreposteria.com
-```
+Inicio → colección → producto → presentación, sabores y personalización → pedido → consulta por WhatsApp. El visitante puede editar opciones, cambiar cantidades, eliminar y deshacer antes de abrir WhatsApp. La consulta no confirma una compra, fecha ni pago.
 
-## Capas
+Los productos por cotización abren una consulta con sus opciones y mensaje. Las galerías permiten ampliar una referencia y consultar un diseño inspirado en esa fotografía.
 
-1. **Datos** (`js/*-data.js`): catálogo de productos, precios, opciones e
-   imágenes. `catalog-data.js` es la fuente principal; `tortas-data.js` y
-   `alfajores-data.js` sirven a sus páginas específicas.
-2. **Presentación** (`html/` + `css/`): cada página define su contenido y carga
-   los estilos compartidos. Los design tokens (`css/tokens.css`) centralizan la
-   identidad visual.
-3. **Interacción** (`js/`): modales de producto, carrito con persistencia,
-   contacto, carruseles y carga diferida de media.
-4. **Salida**: el carrito arma un mensaje de WhatsApp con el pedido; no hay
-   pasarela de pago ni base de datos.
+## Responsabilidades
 
-## Flujo del usuario
+- `catalog-data.js`: identidad de cada producto, fotografías, precios y opciones. No mantener catálogos paralelos por página.
+- `catalog-model.js`: cálculo puro, valores iniciales, opciones visibles, límites y validación. UI y carrito consumen las mismas reglas.
+- `cart-manager.js`: normaliza el pedido contra el catálogo vigente, persiste, combina productos iguales y genera el resumen.
+- `quick-view-modal.js` y `cart-ui.js`: presentan los formularios y el pedido; no duplican reglas comerciales.
+- `brand-icons.js` y `ui.js`: SVG originales, escape de texto, rutas de imagen, diálogos y avisos.
+- `site.js` y `gallery-data.js`: navegación, filtros, búsqueda, fotografía ampliable y reproducción bajo control del visitante.
 
-```
-Inicio ──► Categoría (tortas / alfajores / brownies-galletas / detalles)
-   │            │
-   │            ├─► Vista rápida (modal) ──► Agregar al carrito
-   │            │
-   └────────────┴─► Carrito (persistente entre páginas) ──► Pedir por WhatsApp
-```
+## Persistencia y límites
 
-El carrito se guarda en `localStorage` (`lauren_shopping_cart`), por lo que
-persiste al navegar entre páginas y al recargar. Al confirmar, se genera un
-mensaje estructurado y se abre WhatsApp con el número del negocio.
+El pedido se guarda bajo `lauren_shopping_cart` en localStorage y se sincroniza entre pestañas del mismo origen. Se valida al leer y se recalculan los importes desde el catálogo. Si no se puede escribir, continúa en memoria y muestra el aviso correspondiente. No guardar datos de pago ni credenciales.
 
-## Decisiones clave
-
-Ver [Decisiones técnicas](03-decisiones-tecnicas.md). En resumen: estático sin
-build (ADR-001), media optimizada como único origen en producción (ADR-002),
-nombres de assets kebab-case (ADR-003), tipografía Playfair + Inter (ADR-004),
-tokens centralizados (ADR-005) y carrito en localStorage (ADR-006).
-
-## Límites y no-objetivos
-
-- No hay autenticación, cuentas ni panel de administración (salvo el editor
-  interno `tabla-productos.html`, no indexado).
-- No hay pago en línea: la conversión se cierra por WhatsApp.
-- No hay contenido dinámico de servidor ni internacionalización.
+Ver [componentes](04-componentes.md), [seguridad](09-seguridad.md) y [decisiones](03-decisiones-tecnicas.md).

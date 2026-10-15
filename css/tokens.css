@@ -1,96 +1,51 @@
-/* ==========================================================================
-   Design tokens — Lauren Repostería
-   Única fuente de verdad para color, tipografía, espaciado, sombra, radio,
-   transición y capas (z-index). Cargar PRIMERO en cada página.
-
-   Los valores reproducen exactamente la identidad visual vigente para que
-   centralizarlos no altere la apariencia. Al añadir componentes o páginas,
-   usar estas variables en lugar de hardcodear valores.
-   ========================================================================== */
-
+/* Lauren · paleta oficial del brandbook, página 16. Tonos de interfaz documentados en docs/06-guia-de-estilos.md.
+   Lila     PANTONE 7437 C · CMYK 20/34/0/0  · RGB 208/180/215 · #D0B4D7
+   Durazno  PANTONE 7611 C · CMYK 11/25/25/1 · RGB 229/200/186 · #E5C8BA
+   Albaricoque PANTONE 1555 C · CMYK 0/36/45/0 · RGB 248/184/144 · #F8B890
+   Crema    PANTONE 7604 C · CMYK 3/4/9/0    · RGB 249/245/236 · #F9F5EC */
 :root {
-    /* ---- Color · marca -------------------------------------------------- */
-    --color-lilac: #c8a5d8;          /* lila principal de marca */
-    --color-lilac-deep: #b8a4d4;     /* lila de navegación y carrito */
-    --color-lilac-dark: #b08bbb;     /* acento oscuro / hover */
-    --color-lilac-strong: #9d84c4;   /* fin de degradados */
-    --color-lilac-light: #f5ebf2;    /* fondo suave lila */
-    --color-peach: #e8d4c8;          /* durazno secundario */
-
-    /* ---- Color · texto -------------------------------------------------- */
-    --color-text: #4a3c52;           /* texto principal (violeta profundo) */
-    --color-text-soft: #8b7b9a;      /* texto secundario / apoyo */
-    --color-ink: #1a1a1a;            /* texto de alto contraste (nav/carrito) */
-    --color-ink-soft: #666666;       /* texto atenuado sobre fondo claro */
-
-    /* ---- Color · superficie -------------------------------------------- */
-    --color-white: #ffffff;
-    --color-surface-glass: rgba(255, 255, 255, 0.75);
-    --color-surface-cart: rgba(255, 255, 255, 0.95);
-    --color-border-glass: rgba(255, 255, 255, 0.9);
-    --color-border-lilac: rgba(184, 164, 212, 0.2);
-
-    /* ---- Degradados ----------------------------------------------------- */
-    --gradient-lilac: linear-gradient(135deg, #b8a4d4 0%, #9d84c4 100%);
-
-    /* ---- Tipografía ----------------------------------------------------- */
+    --color-lilac: #d0b4d7;
+    --color-lilac-light: #efe6f3;
+    --color-peach: #e5c8ba;
+    --color-apricot: #f8b890;
+    --color-cream: #f9f5ec;
+    --color-white: #fffdf9;
+    --color-text: #3f3047;
+    --color-text-soft: #766a79;
+    --color-border: #ddd3dc;
+    --color-error: #9b3048;
+    --color-success: #3f634c;
     --font-display: 'Playfair Display', Georgia, serif;
-    --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-
-    --weight-regular: 400;
-    --weight-medium: 500;
-    --weight-semibold: 600;
-    --weight-bold: 700;
-
-    /* ---- Espaciado (escala base 4px) ----------------------------------- */
-    --space-2xs: 0.25rem;   /* 4px  */
-    --space-xs: 0.5rem;     /* 8px  */
-    --space-sm: 0.75rem;    /* 12px */
-    --space-md: 1rem;       /* 16px */
-    --space-lg: 1.5rem;     /* 24px */
-    --space-xl: 2rem;       /* 32px */
-    --space-2xl: 3rem;      /* 48px */
-    --space-3xl: 4rem;      /* 64px */
-
-    /* ---- Radios --------------------------------------------------------- */
-    --radius-sm: 8px;
-    --radius-md: 16px;
+    --font-sans: 'Inter', Arial, sans-serif;
+    --icon-stroke-display: 1.2;
+    --space-2xs: .25rem;
+    --space-xs: .5rem;
+    --space-sm: .75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    --space-section: clamp(4rem, 8vw, 7.5rem);
+    --page-width: 1200px;
+    --page-gutter: clamp(20px, 4.5vw, 64px);
+    --radius-sm: 4px;
+    --radius-md: 12px;
     --radius-lg: 24px;
     --radius-pill: 999px;
-    --radius-nav: 60px;
-
-    /* ---- Sombras -------------------------------------------------------- */
-    --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 0 40px rgba(0, 0, 0, 0.15);
-    --shadow-lilac: 0 8px 20px rgba(176, 139, 187, 0.35);
-
-    /* ---- Efecto glass --------------------------------------------------- */
-    --blur-glass: 12px;
-    --blur-cart: 20px;
-
-    /* ---- Transiciones --------------------------------------------------- */
-    --transition-base: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: 0.2s ease;
-
-    /* ---- Capas (z-index) ------------------------------------------------ */
-    --z-base: 1;
-    --z-nav: 1000;
-    --z-fab: 1100;
-    --z-cart: 1200;
-    --z-modal: 1300;
-    --z-toast: 1400;
+    --radius-signature: 4px 20px 4px 20px;
+    --ease-ribbon: cubic-bezier(.19, 1, .32, 1);
+    --shadow-float: 0 16px 56px #3f304715;
+    --transition-fast: 180ms ease;
+    --transition-base: 420ms cubic-bezier(.2,.65,.3,1);
+    --z-nav: 20;
+    --z-toast: 50;
 }
-
-/* Respeto de accesibilidad: reduce el movimiento cuando el usuario lo pide.
-   Regla global de apoyo; los componentes pueden afinar según su animación. */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.001ms !important;
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
+        transition-duration: .01ms !important;
         scroll-behavior: auto !important;
     }
 }

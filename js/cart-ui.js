@@ -1,325 +1,71 @@
-/**
- * CART UI - Interfaz de Usuario del Carrito
- * Lauren Repostería 2025
- * 
- * Maneja la renderización y eventos de la interfaz del carrito
- */
-
-/**
- * Escapa texto para insertarlo de forma segura en HTML.
- * Previene XSS persistente: el carrito se guarda en localStorage y la
- * personalización es texto libre escrito por el usuario, que se vuelve a
- * renderizar en cada carga de página.
- */
-function escapeHtml(value) {
-    return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-class CartUI {
-    constructor(cartManager) {
-        this.cart = cartManager;
-        this.init();
-    }
-
-    init() {
-        // Esperar a que el DOM esté listo
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.setup());
-        } else {
-            this.setup();
+/** Interfaz del pedido: edición, cantidades, recuperación y salida a WhatsApp. */
+(() => {
+    'use strict';
+    const { escape: esc, icon, imageAttributes } = LaurenUI;
+    class CartUI {
+        constructor() {
+            this.dialog = document.getElementById('cartDialog');
+            LaurenUI.dialogEvents(this.dialog);
+            this.dialog.innerHTML = `<div class="cart-layout"><header class="cart-header"><div><h2 id="cartTitle">Tu pedido</h2><p id="cartSummary"></p></div><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar pedido">${icon('close')}</button></header><div class="cart-content dialog-scroll" id="cartContent"></div><div id="cartNotice" class="cart-notice" role="status" hidden></div><footer class="cart-footer" id="cartFooter"></footer></div>`;
+            document.querySelectorAll('[data-open-cart]').forEach(button => button.addEventListener('click', () => this.open()));
+            cartManager.addEventListener(() => this.render());
+            this.dialog.addEventListener('click', event => this.action(event));
+            this.render();
         }
-    }
-
-    setup() {
-        // Referencias a elementos del DOM
-        this.cartPanel = document.getElementById('cartPanel');
-        this.cartOverlay = document.getElementById('cartOverlay');
-        this.cartIcon = document.querySelector('.nav-icon');
-        this.cartBadge = document.querySelector('.cart-badge');
-        this.cartContent = document.querySelector('.cart-items');
-        this.cartCount = document.querySelector('.cart-count');
-        this.cartTotalValue = document.querySelector('.cart-total-value');
-        this.checkoutBtn = document.querySelector('.cart-checkout-btn');
-        this.closeBtn = document.querySelector('.cart-close-btn');
-
-        if (!this.cartPanel) {
-            console.warn('[CartUI] Panel del carrito no encontrado');
-            return;
-        }
-
-        // Configurar event listeners
-        this.setupEventListeners();
-
-        // Escuchar cambios del carrito
-        this.cart.addEventListener((eventType) => {
-            this.updateUI();
-            if (eventType === 'itemAdded') {
-                this.animateBadge();
-                this.showAddedNotification();
+        open() { this.render(); LaurenUI.open(this.dialog); }
+        render() {
+            const items = cartManager.getItems();
+            document.querySelectorAll('[data-cart-count]').forEach(counter => { counter.textContent = cartManager.getTotalItems(); });
+            document.querySelectorAll('[data-open-cart]').forEach(button => button.setAttribute('aria-label', `Abrir pedido, ${cartManager.getTotalItems()} ${cartManager.getTotalItems() === 1 ? 'producto' : 'productos'}`));
+            this.dialog.querySelector('#cartSummary').textContent = `${items.length} ${items.length === 1 ? 'presentación elegida' : 'presentaciones elegidas'}`;
+            const content = this.dialog.querySelector('#cartContent');
+            if (!items.length) {
+                content.innerHTML = `<div class="cart-empty">${icon('bag')}<h3>Algo rico te espera.</h3><p>Elige tus favoritos y reúne aquí los detalles de tu próximo momento especial.</p><button class="btn" type="button" data-explore>Explorar el catálogo ${icon('arrow')}</button></div>`;
+            } else {
+                content.innerHTML = items.map((item, index) => `<article class="cart-item"><img ${imageAttributes(item.image, '88px')} alt="${esc(item.name)}" width="88" height="110"><div><div class="cart-item-heading"><h3>${esc(item.name)}</h3><button class="icon-button" type="button" data-remove="${index}" aria-label="Eliminar ${esc(item.name)}">${icon('trash')}</button></div><p class="cart-item-price">${Catalog.money(item.price * item.quantity)}</p><div class="cart-item-options">${Object.entries(item.options).map(([key,value]) => `<p>${esc(key)}: ${esc(value)}</p>`).join('')}${item.personalization ? `<p class="cart-personalization">${esc(item.personalization)}</p>` : ''}<p>${Catalog.money(item.price)} por presentación</p></div><div class="cart-item-actions"><div class="quantity-control"><button class="icon-button" type="button" data-cart-quantity="${index}" data-delta="-1" aria-label="Reducir cantidad de ${esc(item.name)}" ${item.quantity <= Catalog.minimum(Catalog.get(item.id)) ? 'disabled' : ''}>${icon('minus')}</button><output aria-label="Cantidad de ${esc(item.name)}">${item.quantity}</output><button class="icon-button" type="button" data-cart-quantity="${index}" data-delta="1" aria-label="Aumentar cantidad de ${esc(item.name)}" ${item.quantity >= Catalog.maximum ? 'disabled' : ''}>${icon('plus')}</button></div><button class="cart-edit" type="button" data-edit="${index}">Editar opciones</button></div></div></article>`).join('');
             }
-        });
-
-        // Renderizar estado inicial
-        this.updateUI();
-
-    }
-
-    setupEventListeners() {
-        // Abrir carrito
-        if (this.cartIcon) {
-            this.cartIcon.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openCart();
-            });
+            if (!cartManager.persistent && items.length) content.insertAdjacentHTML('beforeend', '<p class="storage-warning">Tu navegador no permite guardar el pedido. Puedes enviarlo ahora; al cerrar esta página podría perderse.</p>');
+            const footer = this.dialog.querySelector('#cartFooter');
+            footer.hidden = !items.length;
+            footer.innerHTML = items.length ? `<div class="cart-total"><span>Subtotal de productos</span><strong>${Catalog.money(cartManager.getTotalPrice())}</strong></div><p>Precios en pesos colombianos. La entrega, disponibilidad y los ajustes de personalización se confirman en la asesoría.</p><a class="btn" href="${esc(cartManager.whatsappURL())}" target="_blank" rel="noopener noreferrer">Pedir por WhatsApp ${icon('diagonal')}</a><button class="cart-continue" type="button" data-close-dialog>Seguir eligiendo</button>` : '';
         }
-
-        // Cerrar carrito
-        if (this.closeBtn) {
-            this.closeBtn.addEventListener('click', () => this.closeCart());
-        }
-
-        if (this.cartOverlay) {
-            this.cartOverlay.addEventListener('click', () => this.closeCart());
-        }
-
-        // Checkout
-        if (this.checkoutBtn) {
-            this.checkoutBtn.addEventListener('click', () => this.handleCheckout());
-        }
-
-        // Tecla ESC para cerrar
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.cartPanel?.classList.contains('active')) {
-                this.closeCart();
+        action(event) {
+            const button = event.target.closest('button');
+            if (!button) return;
+            if (button.hasAttribute('data-explore')) {
+                LaurenUI.close(this.dialog);
+                const catalog = document.getElementById('catalogo') || document.getElementById('colecciones');
+                if (catalog) catalog.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+                else window.location.href = 'inicio.html#colecciones';
+            } else if (button.hasAttribute('data-remove')) {
+                const removed = cartManager.removeItem(Number(button.dataset.remove));
+                this.dialog.querySelector('[data-remove]')?.focus();
+                if (removed) {
+                    this.removedItem = removed;
+                    const notice = this.dialog.querySelector('#cartNotice');
+                    notice.innerHTML = '<span>Producto eliminado.</span><button type="button" data-undo>Deshacer</button>';
+                    notice.hidden = false;
+                    notice.querySelector('button').focus();
+                }
+            } else if (button.hasAttribute('data-undo') && this.removedItem) {
+                if (cartManager.addItem(this.removedItem)) {
+                    this.removedItem = null;
+                    this.dialog.querySelector('#cartNotice').hidden = true;
+                    this.dialog.querySelector('[data-remove]')?.focus();
+                }
+            } else if (button.hasAttribute('data-cart-quantity')) {
+                const index = Number(button.dataset.cartQuantity);
+                const delta = Number(button.dataset.delta);
+                const item = cartManager.getItems()[index];
+                if (item) cartManager.updateQuantity(index, item.quantity + delta);
+                const next = this.dialog.querySelector(`[data-cart-quantity="${index}"][data-delta="${delta}"]:not(:disabled)`) || this.dialog.querySelector(`[data-cart-quantity="${index}"]:not(:disabled)`);
+                next?.focus({ preventScroll: true });
+            } else if (button.hasAttribute('data-edit')) {
+                const index = Number(button.dataset.edit);
+                const item = cartManager.getItems()[index];
+                if (item) window.quickView.open(item.id, { ...item, editIndex: index });
             }
-        });
-    }
-
-    openCart() {
-        if (this.cartPanel && this.cartOverlay) {
-            this.cartPanel.classList.add('active');
-            this.cartOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
         }
     }
-
-    closeCart() {
-        if (this.cartPanel && this.cartOverlay) {
-            this.cartPanel.classList.remove('active');
-            this.cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    updateUI() {
-        this.updateBadge();
-        this.updateCartCount();
-        this.renderItems();
-        this.updateTotal();
-    }
-
-    updateBadge() {
-        const count = this.cart.getTotalItems();
-        if (this.cartBadge) {
-            this.cartBadge.textContent = count;
-            // Ocultar badge si el carrito está vacío
-            this.cartBadge.style.display = count > 0 ? 'flex' : 'none';
-        }
-    }
-
-    updateCartCount() {
-        const count = this.cart.getTotalItems();
-        if (this.cartCount) {
-            this.cartCount.textContent = count === 1 ? '1 producto' : `${count} productos`;
-        }
-    }
-
-    renderItems() {
-        if (!this.cartContent) return;
-
-        const items = this.cart.getItems();
-
-        if (items.length === 0) {
-            this.renderEmptyState();
-            if (this.checkoutBtn) {
-                this.checkoutBtn.disabled = true;
-            }
-            return;
-        }
-
-        if (this.checkoutBtn) {
-            this.checkoutBtn.disabled = false;
-        }
-
-        this.cartContent.innerHTML = items.map((item, index) => this.renderCartItem(item, index)).join('');
-
-        // Agregar event listeners a los botones
-        this.attachItemEventListeners();
-    }
-
-    renderCartItem(item, index) {
-        const optionsHTML = this.renderOptions(item.options);
-        const personalizationHTML = item.personalization
-            ? `<div class="cart-item-personalization">💌 "${escapeHtml(item.personalization)}"</div>`
-            : '';
-        const imageSrc = escapeHtml(item.image || '../assets/optimized/logos/logos-lauren-png-13.webp');
-        const name = escapeHtml(item.name);
-
-        return `
-            <div class="cart-item" data-index="${index}">
-                <div class="cart-item-image">
-                    <img src="${imageSrc}" alt="${name}" loading="lazy" decoding="async">
-                </div>
-                <div class="cart-item-details">
-                    <h4 class="cart-item-name">${name}</h4>
-                    ${optionsHTML}
-                    ${personalizationHTML}
-                    <div class="cart-item-price">${this.cart.formatPrice(item.price)} c/u</div>
-                    <div class="cart-item-actions">
-                        <div class="cart-item-quantity">
-                            <button class="cart-qty-btn" data-action="decrease" data-index="${index}">−</button>
-                            <span class="cart-qty-value">${item.quantity}</span>
-                            <button class="cart-qty-btn" data-action="increase" data-index="${index}">+</button>
-                        </div>
-                        <button class="cart-item-remove" data-index="${index}" title="Eliminar">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    renderOptions(options) {
-        if (!options || Object.keys(options).length === 0) {
-            return '';
-        }
-
-        const optionsText = Object.entries(options)
-            .map(([key, value]) => `<span class="cart-item-option">${escapeHtml(key)}: ${escapeHtml(value)}</span>`)
-            .join('');
-
-        return `<div class="cart-item-options">${optionsText}</div>`;
-    }
-
-    renderEmptyState() {
-        this.cartContent.innerHTML = `
-            <div class="cart-empty">
-                <div class="cart-empty-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z"/>
-                    </svg>
-                </div>
-                <p class="cart-empty-text">Tu carrito está vacío</p>
-            </div>
-        `;
-    }
-
-    attachItemEventListeners() {
-        // Botones de cantidad
-        document.querySelectorAll('.cart-qty-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = parseInt(btn.dataset.index);
-                const action = btn.dataset.action;
-                const item = this.cart.getItems()[index];
-
-                if (action === 'increase') {
-                    this.cart.updateQuantity(index, item.quantity + 1);
-                } else if (action === 'decrease') {
-                    this.cart.updateQuantity(index, item.quantity - 1);
-                }
-            });
-        });
-
-        // Botones de eliminar
-        document.querySelectorAll('.cart-item-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const index = parseInt(btn.dataset.index);
-                this.cart.removeItem(index);
-            });
-        });
-    }
-
-    updateTotal() {
-        if (this.cartTotalValue) {
-            this.cartTotalValue.textContent = this.cart.formatPrice(this.cart.getTotalPrice());
-        }
-    }
-
-    animateBadge() {
-        if (this.cartBadge) {
-            this.cartBadge.classList.add('animate');
-            setTimeout(() => {
-                this.cartBadge.classList.remove('animate');
-            }, 600);
-        }
-    }
-
-    showAddedNotification() {
-        // Crear notification toast
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            z-index: 10000;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            animation: slideInRight 0.4s ease, slideOutRight 0.4s ease 2.6s;
-        `;
-        toast.textContent = '✓ Producto agregado al carrito';
-
-        // Agregar estilos de animación
-        if (!document.getElementById('toast-styles')) {
-            const style = document.createElement('style');
-            style.id = 'toast-styles';
-            style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(400px); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(400px); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
-
-    handleCheckout() {
-        if (this.cart.getTotalItems() === 0) {
-            return;
-        }
-
-        this.cart.sendToWhatsApp();
-        this.closeCart();
-    }
-}
-
-// Inicializar cuando el cart manager esté disponible
-if (window.cartManager) {
-    window.cartUI = new CartUI(window.cartManager);
-} else {
-    console.warn('[CartUI] CartManager no está disponible');
-}
+    window.cartUI = new CartUI();
+})();

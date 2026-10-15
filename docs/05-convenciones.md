@@ -17,15 +17,14 @@ Motivo: GitHub Pages y muchos servidores distinguen mayúsculas/minúsculas y
 manejan mal los caracteres especiales en URLs. Un nombre "sucio" funciona en
 local (macOS, insensible a mayúsculas) pero rompe en producción.
 
-El pipeline `scripts/optimize-assets.mjs` aplica automáticamente este `slug` al
-generar la salida en `assets/optimized`, así que basta con optimizar cualquier
-fuente nueva para obtener nombres correctos.
+Al añadir una fotografía nueva, nombrarla así antes de copiarla al proyecto.
 
 ## Carpetas de media
 
-- `assets/imagenes-<modulo>/` para las fuentes (local, ignorado por git).
-- `assets/optimized/<misma-ruta>/` para la salida desplegable.
-- `media-fuente/` para masters de video `.mov` sin procesar (local, ignorado).
+- `assets/propuestas-fotograficas/` para las fotografías publicadas (WebP) y
+  `responsive/` para sus copias generadas.
+- `assets/optimized/` para el video de la historia, su poster y los adornos.
+- Los originales y el material de referencia se guardan fuera del repositorio.
 
 ## HTML
 
@@ -36,13 +35,13 @@ fuente nueva para obtener nombres correctos.
 - Toda imagen lleva `alt` descriptivo (vacío `alt=""` solo si es decorativa).
 - Enlaces externos con `target="_blank"` llevan `rel="noopener noreferrer"`.
 - Media above-the-fold (hero): sin `loading="lazy"`. Resto de imágenes: `loading="lazy"`
-  con `data-src` gestionado por `performance-optimizer.js`.
+  y `decoding="async"`, sin un cargador de imágenes adicional.
 
 ## CSS
 
 - Colores, espaciados, sombras, radios, tipografías y `z-index` salen de
   variables definidas en `css/tokens.css`. No hardcodear valores repetidos.
-- Breakpoints estándar: `480px`, `768px`, `1024px`.
+- Reorganizar según el espacio disponible; el menú móvil aparece hasta 800 px. Mantener las media queries junto al componente.
 - Evitar `!important`. Si aparece, es señal de un conflicto de especificidad que
   conviene resolver en origen.
 - Clases descriptivas por componente (`cart-item`, `hero-video`, `product-card`).
@@ -50,7 +49,7 @@ fuente nueva para obtener nombres correctos.
 ## JavaScript
 
 - `const`/`let`, nunca `var`.
-- Datos de producto centralizados en `js/catalog-data.js` cuando sea posible.
+- Datos de producto centralizados únicamente en `js/catalog-data.js`; las reglas viven en `js/catalog-model.js`.
 - Toda inserción de datos dinámicos en el DOM debe escaparse (ver
   `docs/09-seguridad.md`).
 - `JSON.parse` sobre `localStorage` siempre dentro de `try/catch`.
@@ -64,7 +63,7 @@ fuente nueva para obtener nombres correctos.
   Title Case anglosajón.
 - Formato de precio unificado: `$22.000` (punto de miles, sin decimales,
   sin espacio tras el símbolo).
-- CTA de compra unificado: **"Pedir por WhatsApp"**.
+- CTA para consultar el pedido: **"Pedir por WhatsApp"**.
 
 ## Git
 

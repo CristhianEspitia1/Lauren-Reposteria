@@ -1,934 +1,184 @@
-/**
- * QUICK VIEW MODAL - Componente Reutilizable
- * Para mostrar detalles de productos en modal
- * Compatible con: Tortas, Alfajores, Brownies, Galletas, Detalles
- */
-
-class QuickViewModal {
-    constructor() {
-        this.modal = null;
-        this.overlay = null;
-        this.currentProduct = null;
-        this.selectedOptions = {};
-        this.currentPrice = 0;
-        this.init();
-    }
-
-    /**
-     * Inicializar el modal y crear el HTML
-     */
-    init() {
-        this.createModalHTML();
-        this.attachEventListeners();
-    }
-
-    /**
-     * Crear la estructura HTML del modal
-     */
-    createModalHTML() {
-        // Crear overlay
-        const overlay = document.createElement('div');
-        overlay.className = 'quick-view-overlay';
-        overlay.id = 'quickViewOverlay';
-
-        // Crear modal
-        const modal = document.createElement('div');
-        modal.className = 'quick-view-modal';
-        modal.id = 'quickViewModal';
-        modal.innerHTML = `
-            <button class="quick-view-close" id="quickViewClose" type="button" aria-label="Cerrar modal">×</button>
-            <div class="quick-view-content">
-                <!-- Columna izquierda: Imagen -->
-                <div class="quick-view-image-section">
-                    <div class="quick-view-image-container">
-                        <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Vista previa del producto" class="quick-view-main-image" id="quickViewMainImage">
-                        <div class="quick-view-thumbnails" id="quickViewThumbnails"></div>
+/** Ficha de producto accesible, con opciones y precios del catálogo compartido. */
+(() => {
+    'use strict';
+    const { escape: esc, icon, imageAttributes, setImageSource, wa } = LaurenUI;
+    class QuickViewModal {
+        constructor() {
+            this.dialog = document.getElementById('productDialog');
+            LaurenUI.dialogEvents(this.dialog);
+            this.dialog.addEventListener('close', () => {
+                if (this.editIndex !== null) {
+                    this.editIndex = null;
+                    window.cartUI?.open();
+                }
+            });
+            this.editIndex = null;
+        }
+        open(id, config = {}) {
+            const product = Catalog.get(id);
+            if (!product) return;
+            this.product = product;
+            this.editIndex = config.editIndex ?? null;
+            this.selection = { ...Catalog.defaults(product), ...config.selection };
+            this.personal = { ...config.personal };
+            this.quantity = config.quantity || Catalog.minimum(product);
+            this.render();
+            LaurenUI.open(this.dialog);
+        }
+        render() {
+            const p = this.product;
+            const images = [...new Set([p.mainImage, ...(p.images || [])])];
+            const quote = Catalog.quoteOnly(p);
+            this.dialog.innerHTML = `
+                <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar producto">${icon('close')}</button>
+                <div class="product-dialog-layout">
+                    <div class="product-visual">
+                        <img id="productMainImage" ${imageAttributes(images[0], '(max-width: 760px) 90vw, 490px')} alt="${esc(p.name)}" width="720" height="900">
+                        ${images.length > 1 ? `<div class="product-thumbnails" aria-label="Vistas del producto">${images.map((src, i) => `<button type="button" data-image="${i}" aria-label="Ver imagen ${i + 1} de ${esc(p.name)}" aria-pressed="${i === 0}"><img ${imageAttributes(src, '52px')} alt="" width="52" height="64" loading="lazy"></button>`).join('')}</div>` : ''}
                     </div>
-                </div>
-
-                <!-- Columna derecha: Información -->
-                <div class="quick-view-info-section">
-                    <div class="quick-view-info" id="quickViewInfo">
-                        <!-- Contenido dinámico se carga aquí -->
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Añadir al DOM
-        document.body.appendChild(overlay);
-        document.body.appendChild(modal);
-
-        // Guardar referencias
-        this.overlay = overlay;
-        this.modal = modal;
-    }
-
-    /**
-     * Adjuntar event listeners
-     */
-    attachEventListeners() {
-        // Cerrar con botón X
-        const closeBtn = document.getElementById('quickViewClose');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
-        }
-
-        // Cerrar al hacer click en el overlay
-        this.overlay.addEventListener('click', () => this.close());
-
-        // Cerrar con tecla Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-                this.close();
-            }
-        });
-
-        // Prevenir scroll del body cuando el modal está abierto
-        this.modal.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    }
-
-    /**
-     * Abrir modal con un producto específico
-     * @param {Object} productData - Datos del producto
-     */
-    open(productData) {
-        if (!productData) {
-            console.error('[QuickViewModal] No se proporcionaron datos del producto');
-            return;
-        }
-
-
-        this.currentProduct = productData;
-        this.selectedOptions = {};
-        this.currentPrice = productData.price || 0;
-
-        // Inicializar opciones requeridas con su primer valor
-        if (productData.options && productData.options.length > 0) {
-            productData.options.forEach(option => {
-                // Para opciones tipo radio requeridas, seleccionar automáticamente la primera opción
-                if (option.required && option.type === 'radio' && option.choices && option.choices.length > 0) {
-                    this.selectedOptions[option.id] = option.choices[0].value;
-                }
-            });
-        }
-
-        // Renderizar contenido
-        this.renderProduct(productData);
-
-        // Mostrar modal
-        setTimeout(() => {
-            this.overlay.classList.add('active');
-            this.modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }, 10);
-    }
-
-    /**
-     * Cerrar modal
-     */
-    close() {
-
-        this.overlay.classList.remove('active');
-        this.modal.classList.remove('active');
-        document.body.style.overflow = '';
-
-        // Limpiar después de la animación
-        setTimeout(() => {
-            this.currentProduct = null;
-            this.selectedOptions = {};
-        }, 300);
-    }
-
-    /**
-     * Renderizar el producto en el modal
-     * @param {Object} product - Datos del producto
-     */
-    renderProduct(product) {
-        // Renderizar imagen principal
-        this.renderMainImage(product);
-
-        // Renderizar miniaturas (si hay múltiples imágenes)
-        this.renderThumbnails(product);
-
-        // Renderizar información del producto
-        this.renderProductInfo(product);
-    }
-
-    /**
-     * Renderizar imagen principal
-     */
-    renderMainImage(product) {
-        const mainImage = document.getElementById('quickViewMainImage');
-        if (mainImage) {
-            mainImage.src = product.mainImage || product.images?.[0] || '';
-            mainImage.alt = product.name || 'Producto';
-        }
-    }
-
-    /**
-     * Renderizar miniaturas
-     */
-    renderThumbnails(product) {
-        const thumbnailsContainer = document.getElementById('quickViewThumbnails');
-        if (!thumbnailsContainer) return;
-
-        // Limpiar contenedor
-        thumbnailsContainer.innerHTML = '';
-
-        // Solo mostrar miniaturas si hay más de una imagen
-        const images = product.images || [product.mainImage];
-        if (images.length <= 1) return;
-
-        images.forEach((imageSrc, index) => {
-            const thumbnail = document.createElement('img');
-            thumbnail.src = imageSrc;
-            thumbnail.alt = `${product.name} - Vista ${index + 1}`;
-            thumbnail.className = 'quick-view-thumbnail';
-            if (index === 0) thumbnail.classList.add('active');
-
-            // Click en miniatura cambia imagen principal
-            thumbnail.addEventListener('click', () => {
-                const mainImage = document.getElementById('quickViewMainImage');
-                if (mainImage) {
-                    mainImage.src = imageSrc;
-                }
-
-                // Actualizar estado activo
-                document.querySelectorAll('.quick-view-thumbnail').forEach(t =>
-                    t.classList.remove('active')
-                );
-                thumbnail.classList.add('active');
-            });
-
-            thumbnailsContainer.appendChild(thumbnail);
-        });
-    }
-
-    renderProductInfo(product) {
-        const infoContainer = document.getElementById('quickViewInfo');
-        if (!infoContainer) return;
-
-        let html = `
-            <!-- Nombre -->
-            <h2 class="quick-view-title">${product.name}</h2>
-
-            <!-- Precio -->
-            <p class="quick-view-price" id="quickViewPrice">${product.priceFormatted || this.formatPrice(product.price)}</p>
-
-            <!-- Descripción -->
-            ${product.description ? `<p class="quick-view-description">${product.description}</p>` : ''}
-
-            <!-- Qué incluye -->
-            ${this.renderIncludes(product)}
-
-            <!-- Opciones configurables -->
-            ${this.renderOptions(product)}
-
-            <!-- Campo de personalización -->
-            ${this.renderPersonalization(product)}
-
-            <!-- Botón Agregar al Carrito -->
-            <div class="quick-view-cart-actions">
-                <button class="quick-view-add-to-cart-btn" id="addToCartBtn" type="button">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z"/>
-                    </svg>
-                    Agregar al carrito
-                </button>
-            </div>
-        `;
-
-        infoContainer.innerHTML = html;
-
-        // Adjuntar eventos a las opciones
-        this.attachOptionListeners(product);
-
-        // Aplicar estilos visuales a las opciones pre-seleccionadas
-        Object.keys(this.selectedOptions).forEach(optionId => {
-            const selectedValue = this.selectedOptions[optionId];
-            const selectedChoice = document.querySelector(`[data-option-id="${optionId}"][data-value="${selectedValue}"]`);
-            if (selectedChoice) {
-                selectedChoice.classList.add('selected');
-            }
-        });
-
-        // Calcular precio inicial basado en opciones pre-seleccionadas
-        if (product.options && product.options.length > 0) {
-            product.options.forEach(option => {
-                if (this.selectedOptions[option.id]) {
-                    this.updatePrice(product, option, this.selectedOptions[option.id]);
-                }
-            });
-        }
-
-        // Adjuntar evento al botón de carrito
-        this.attachCartButtonListener(product);
-    }
-
-    /**
-     * Renderizar sección "Qué incluye"
-     */
-    renderIncludes(product) {
-        if (!product.includes || product.includes.length === 0) return '';
-
-        return `
-            <div class="quick-view-includes">
-                <h3 class="quick-view-includes-title">Qué Incluye</h3>
-                <ul class="quick-view-includes-list">
-                    ${product.includes.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-    }
-
-    /**
-     * Renderizar opciones configurables
-     */
-    renderOptions(product) {
-        if (!product.options || product.options.length === 0) return '';
-
-        return product.options.map(option => {
-            // Verificar si la opción depende de otra
-            if (option.dependsOn) {
-                return `<div class="quick-view-option" id="option-${option.id}" style="display: none;">
-                    ${this.renderSingleOption(option)}
+                    <form class="product-form" novalidate>
+                        <div class="dialog-scroll">
+                            <div class="product-dialog-heading"><p class="eyebrow">Hecho para ti</p><h2 id="productTitle">${esc(p.name)}</h2></div>
+                            <p class="product-dialog-description">${esc(p.description)}</p>
+                            ${p.includes?.length ? `<details class="product-includes"><summary>Qué incluye ${icon('chevron')}</summary><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></details>` : ''}
+                            <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>
+                            <div class="personal-fields">${this.personalHTML()}</div>
+                            ${p.category === 'tortas' ? '<p class="field-note">El precio corresponde al estilo y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.</p>' : ''}
+                            ${p.id === 'alfajor-individual' ? '<p class="field-note">Mínimo 6 unidades de la misma presentación. El precio mostrado es por unidad o bolsita, según tu elección.</p>' : ''}
+                            ${p.id === 'brownies' ? '<p class="field-note">Los individuales se piden en grupos de mínimo 6. El vaso de minis no incluye toppings.</p>' : ''}
+                            ${p.id === 'galletas' ? '<p class="field-note">Mínimo 3 galletas individuales. La caja surtida incluye 6 unidades de todos los sabores.</p>' : ''}
+                        </div>
+                        <div class="product-order">
+                            ${!quote ? `<div class="quantity-price"><div><label class="quantity-label" for="productQuantity">${p.id === 'alfajor-individual' ? 'Unidades o bolsitas' : 'Cantidad de esta presentación'}</label><div class="quantity-control"><button type="button" class="icon-button" data-quantity="-1" aria-label="Reducir cantidad">${icon('minus')}</button><input id="productQuantity" type="number" inputmode="numeric" min="${Catalog.minimum(p)}" max="${Catalog.maximum}" step="1" value="${this.quantity}" aria-describedby="quantityError"><button type="button" class="icon-button" data-quantity="1" aria-label="Aumentar cantidad">${icon('plus')}</button></div></div><div class="order-total" aria-live="polite" aria-atomic="true"><span>Total · COP</span><strong id="productTotal"></strong></div></div>` : '<p class="field-note">Confirma el diseño y su valor con nuestro equipo.</p>'}
+                            <p id="quantityError" class="field-error" hidden></p>
+                            <p id="productError" class="field-error" role="alert" hidden></p>
+                            <button class="btn" type="submit">${quote ? 'Consultar por WhatsApp' : this.editIndex !== null ? 'Guardar cambios' : 'Agregar a mi pedido'} ${icon(quote ? 'diagonal' : 'plus')}</button>
+                            <p class="field-note">Confirmamos disponibilidad y entrega por WhatsApp.</p>
+                        </div>
+                    </form>
                 </div>`;
-            }
-
-            return `<div class="quick-view-option" id="option-${option.id}">
-                ${this.renderSingleOption(option)}
-            </div>`;
-        }).join('');
-    }
-
-    /**
-     * Renderizar una opción individual
-     */
-    renderSingleOption(option) {
-        const requiredLabel = option.required ? '<span class="required">*Required</span>' : '';
-
-        switch (option.type) {
-            case 'radio':
-                return this.renderRadioOption(option, requiredLabel);
-            case 'select':
-                return this.renderSelectOption(option, requiredLabel);
-            case 'toggle':
-                return this.renderToggleOption(option, requiredLabel);
-            default:
-                return '';
-        }
-    }
-
-    /**
-     * Renderizar opción tipo radio
-     */
-    renderRadioOption(option, requiredLabel) {
-        return `
-            <label class="quick-view-option-label">
-                ${option.label} ${requiredLabel}
-            </label>
-            <div class="quick-view-choices">
-                ${option.choices.map((choice, index) => `
-                    <div class="quick-view-choice" data-option-id="${option.id}" data-value="${choice.value}">
-                        <input
-                            type="radio"
-                            name="${option.id}"
-                            value="${choice.value}"
-                            id="${option.id}-${index}"
-                            ${option.required && index === 0 ? 'checked' : ''}
-                        >
-                        <label for="${option.id}-${index}">${choice.label}</label>
-                    </div>
-                `).join('')}
-            </div>
-            ${option.note ? `<p class="quick-view-price-note">${option.note}</p>` : ''}
-        `;
-    }
-
-    /**
-     * Renderizar opción tipo select (para múltiples selecciones)
-     */
-    renderSelectOption(option, requiredLabel) {
-        const note = option.maxSelection ? `Puedes elegir hasta ${option.maxSelection} ${option.maxSelection === 1 ? 'opción' : 'opciones'}` : '';
-
-        // Si es múltiple, usar chips en lugar de select tradicional
-        if (option.multiple) {
-            return `
-                <label class="quick-view-option-label">
-                    ${option.label} ${requiredLabel}
-                </label>
-                ${note ? `<p class="quick-view-option-note">${note}</p>` : ''}
-                <div class="quick-view-select-chips" data-option-id="${option.id}" data-max-selection="${option.maxSelection || 1}">
-                    ${option.choices.map(choice => {
-                // Agregar clase de color si el chip representa un color
-                const colorClass = this.getColorClass(choice.value);
-                return `
-                            <button
-                                type="button"
-                                class="quick-view-select-chip ${colorClass}"
-                                data-value="${choice.value}"
-                            >
-                                ${choice.label}
-                            </button>
-                        `;
-            }).join('')}
-                </div>
-            `;
-        }
-
-        // Para select simple (no múltiple), usar el select tradicional
-        return `
-            <label class="quick-view-option-label">
-                ${option.label} ${requiredLabel}
-            </label>
-            <select
-                class="quick-view-select"
-                name="${option.id}"
-                data-max-selection="1"
-            >
-                ${option.choices.map(choice => `
-                    <option value="${choice.value}">${choice.label}</option>
-                `).join('')}
-            </select>
-            ${note ? `<p class="quick-view-option-note">${note}</p>` : ''}
-        `;
-    }
-
-    /**
-     * Renderizar opción tipo toggle (sí/no)
-     */
-    renderToggleOption(option, requiredLabel) {
-        return `
-            <div class="quick-view-toggle" data-option-id="${option.id}">
-                <input
-                    type="checkbox"
-                    name="${option.id}"
-                    id="${option.id}-toggle"
-                >
-                <label for="${option.id}-toggle" class="quick-view-toggle-label">
-                    ${option.label}
-                </label>
-            </div>
-            ${option.note ? `<p class="quick-view-price-note">${option.note}</p>` : ''}
-        `;
-    }
-
-    /**
-     * Renderizar campo de personalización
-     */
-    renderPersonalization(product) {
-        if (!product.personalization || !product.personalization.enabled) return '';
-
-        const p = product.personalization;
-
-        // Si tiene múltiples campos de personalización
-        if (p.fields && Array.isArray(p.fields)) {
-            return `
-                <div class="quick-view-personalization">
-                    ${p.fields.map(field => `
-                        <label class="quick-view-personalization-label">
-                            ${field.label} ${field.required ? '<span class="required">*Required</span>' : ''}
-                        </label>
-                        <input
-                            type="text"
-                            class="quick-view-personalization-input"
-                            placeholder="${field.placeholder || ''}"
-                            maxlength="${field.maxLength || 100}"
-                            ${field.required ? 'required' : ''}
-                            id="personalization-${field.id}"
-                        >
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Campo único de personalización
-        const dependsOn = p.dependsOn;
-        const displayStyle = dependsOn ? 'style="display: none;"' : '';
-
-        return `
-            <div class="quick-view-personalization" id="personalization-section" ${displayStyle}>
-                <label class="quick-view-personalization-label">
-                    ${p.label} ${p.required ? '<span class="required">*Required</span>' : ''}
-                </label>
-                <input
-                    type="text"
-                    class="quick-view-personalization-input"
-                    placeholder="${p.placeholder || ''}"
-                    maxlength="${p.maxLength || 100}"
-                    ${p.required ? 'required' : ''}
-                    id="personalization-input"
-                >
-                ${p.note ? `<p class="quick-view-personalization-note">${p.note}</p>` : ''}
-            </div>
-        `;
-    }
-
-    /**
-     * Adjuntar event listeners a las opciones
-     */
-    attachOptionListeners(product) {
-        // Radio buttons - estilos y dependencias
-        document.querySelectorAll('.quick-view-choice').forEach(choice => {
-            choice.addEventListener('click', () => {
-                const radio = choice.querySelector('input[type="radio"]');
-                if (radio) {
-                    radio.checked = true;
-
-                    // Actualizar estilos visuales
-                    const optionId = choice.dataset.optionId;
-                    document.querySelectorAll(`[data-option-id="${optionId}"]`).forEach(c =>
-                        c.classList.remove('selected')
-                    );
-                    choice.classList.add('selected');
-
-                    // Manejar dependencias y precios
-                    this.handleOptionChange(product, optionId, choice.dataset.value);
-                }
-            });
-        });
-
-        // Toggles - personalización condicional
-        document.querySelectorAll('.quick-view-toggle input[type="checkbox"]').forEach(toggle => {
-            toggle.addEventListener('change', (e) => {
-                const toggleContainer = e.target.closest('.quick-view-toggle');
-                if (e.target.checked) {
-                    toggleContainer.classList.add('active');
-                } else {
-                    toggleContainer.classList.remove('active');
-                }
-
-                // Mostrar/ocultar campo de personalización
-                const personalizationSection = document.getElementById('personalization-section');
-                if (personalizationSection) {
-                    personalizationSection.style.display = e.target.checked ? 'block' : 'none';
-                }
-
-                // Actualizar precio si el toggle tiene modificador de precio
-                const optionId = e.target.name;
-                this.handleOptionChange(product, optionId, e.target.checked);
-            });
-        });
-
-        // Selects tradicionales
-        document.querySelectorAll('.quick-view-select').forEach(select => {
-            select.addEventListener('change', (e) => {
-                const optionId = e.target.name;
-                const value = select.multiple ?
-                    Array.from(select.selectedOptions).map(opt => opt.value) :
-                    e.target.value;
-
-                this.handleOptionChange(product, optionId, value);
-            });
-        });
-
-        // Chips seleccionables (para select múltiple)
-        document.querySelectorAll('.quick-view-select-chips').forEach(chipsContainer => {
-            const optionId = chipsContainer.dataset.optionId;
-            const maxSelection = parseInt(chipsContainer.dataset.maxSelection) || 1;
-
-            chipsContainer.querySelectorAll('.quick-view-select-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    const isSelected = chip.classList.contains('selected');
-
-                    if (isSelected) {
-                        // Deseleccionar
-                        chip.classList.remove('selected');
-                    } else {
-                        // Verificar límite de selección
-                        const selectedChips = chipsContainer.querySelectorAll('.quick-view-select-chip.selected');
-
-                        if (selectedChips.length < maxSelection) {
-                            chip.classList.add('selected');
-                        } else {
-                            // Si se alcanzó el límite, deseleccionar el primero y seleccionar el nuevo
-                            selectedChips[0].classList.remove('selected');
-                            chip.classList.add('selected');
-                        }
-                    }
-
-                    // Obtener valores seleccionados
-                    const selectedValues = Array.from(
-                        chipsContainer.querySelectorAll('.quick-view-select-chip.selected')
-                    ).map(c => c.dataset.value);
-
-                    // Notificar cambio
-                    this.handleOptionChange(product, optionId, selectedValues);
+            this.dialog.querySelectorAll('[data-image]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const image = this.dialog.querySelector('#productMainImage');
+                    setImageSource(image, images[Number(button.dataset.image)]);
+                    image.alt = `${p.name}, imagen ${Number(button.dataset.image) + 1}`;
+                    this.dialog.querySelectorAll('[data-image]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
                 });
             });
-        });
-    }
-
-    /**
-     * Manejar cambios en las opciones (dependencias, precios, etc.)
-     */
-    handleOptionChange(product, optionId, value) {
-
-        this.selectedOptions[optionId] = value;
-
-        // Buscar la opción en los datos del producto
-        const option = product.options?.find(opt => opt.id === optionId);
-        if (!option) return;
-
-        // Manejar dependencias (mostrar/ocultar opciones dependientes)
-        this.handleDependencies(product, optionId, value);
-
-        // Actualizar precio si la opción tiene modificador de precio
-        this.updatePrice(product, option, value);
-    }
-
-    /**
-     * Manejar dependencias entre opciones
-     */
-    handleDependencies(product, changedOptionId, value) {
-        product.options?.forEach(option => {
-            if (option.dependsOn === changedOptionId) {
-                const optionElement = document.getElementById(`option-${option.id}`);
-                if (optionElement) {
-                    // Mostrar solo si el valor coincide con showWhen
-                    let shouldShow = false;
-
-                    if (Array.isArray(option.showWhen)) {
-                        // Si showWhen es un array, verificar si value está en el array
-                        shouldShow = option.showWhen.includes(value);
-                    } else {
-                        // Si es un string, comparar directamente
-                        shouldShow = option.showWhen === value;
-                    }
-
-                    if (shouldShow) {
-                        optionElement.style.display = 'block';
-                    } else {
-                        optionElement.style.display = 'none';
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Actualizar precio dinámicamente
-     */
-    updatePrice(product, option, value) {
-        let newPrice = product.price || 0;
-
-        // Recalcular el precio basado en TODAS las opciones seleccionadas
-        let basePrice = 0;
-        let quantity = 1;
-        let presentacionValue = null;
-
-        // Primero, obtener el valor de presentación si existe
-        product.options?.forEach(opt => {
-            if (opt.id === 'presentacion') {
-                presentacionValue = this.selectedOptions[opt.id];
-            }
-        });
-
-        product.options?.forEach(opt => {
-            const selectedValue = this.selectedOptions[opt.id];
-
-            // Verificar si esta opción está visible (respeta dependencias)
-            let isOptionVisible = true;
-            if (opt.dependsOn) {
-                const parentValue = this.selectedOptions[opt.dependsOn];
-                if (Array.isArray(opt.showWhen)) {
-                    isOptionVisible = opt.showWhen.includes(parentValue);
-                } else {
-                    isOptionVisible = opt.showWhen === parentValue;
-                }
-            }
-
-            // Solo procesar opciones visibles
-            if (opt.priceModifier === true && selectedValue && isOptionVisible) {
-                const choice = opt.choices?.find(c => c.value === selectedValue);
-
-                if (choice && choice.price !== undefined) {
-                    // Si la opción es "presentacion"
-                    if (opt.id === 'presentacion') {
-                        basePrice = choice.price;
-                    }
-                    // Si la opción es "porciones" (para tortas)
-                    else if (opt.id === 'porciones') {
-                        basePrice = choice.price;
-                    }
-                    // Si la opción es "tamano" (para torta de alfajor)
-                    else if (opt.id === 'tamano') {
-                        basePrice = choice.price;
-                    }
-                    // Si la opción es "diseno" (para alfajores personalizados)
-                    else if (opt.id === 'diseno') {
-                        basePrice = choice.price;
-                    }
-                    // Si la opción es "sabor" (para galletas/brownies individuales)
-                    else if (opt.id === 'sabor') {
-                        basePrice = choice.price;
-                    }
-                    // Si la opción es "cantidad"
-                    else if (opt.id === 'cantidad') {
-                        // Si la cantidad tiene precio directo (brownies individuales), usarlo
-                        if (choice.price) {
-                            basePrice = choice.price;
-                        } else {
-                            // Si no tiene precio, es multiplicador (galletas)
-                            const quantityNumber = parseInt(selectedValue);
-                            if (!isNaN(quantityNumber)) {
-                                quantity = quantityNumber;
-                            }
-                        }
-                    }
-                }
-            } else if (typeof opt.priceModifier === 'number') {
-                // Precio adicional fijo (para toggles)
-                if (selectedValue === true) {
-                    newPrice += opt.priceModifier;
-                }
-            }
-        });
-
-        // Calcular precio final
-        if (basePrice > 0) {
-            // Si presentación es 'individual' y hay cantidad, multiplicar
-            if (presentacionValue === 'individual' && quantity > 1) {
-                newPrice = basePrice * quantity;
+            this.dialog.querySelectorAll('[data-option-input]').forEach(input => input.addEventListener('change', () => this.optionChange(input)));
+            this.bindPersonal();
+            this.dialog.querySelectorAll('[data-quantity]').forEach(button => button.addEventListener('click', () => {
+                this.quantity = Math.min(Catalog.maximum, Math.max(Catalog.minimum(p), this.quantity + Number(button.dataset.quantity)));
+                this.dialog.querySelector('#productQuantity').value = this.quantity;
+                this.updateTotal();
+            }));
+            this.dialog.querySelector('#productQuantity')?.addEventListener('input', event => {
+                this.quantity = Number(event.target.value);
+                this.updateTotal();
+            });
+            this.dialog.querySelector('form').addEventListener('submit', event => { event.preventDefault(); this.submit(); });
+            this.updateDependencies();
+            this.updateTotal();
+        }
+        optionHTML(option) {
+            const selected = this.selection[option.id];
+            const errorId = `option-error-${option.id}`;
+            const note = option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : option.note || '';
+            let controls;
+            if (option.type === 'toggle') {
+                controls = `<label class="toggle-option"><input data-option-input="${esc(option.id)}" type="checkbox" ${selected ? 'checked' : ''} aria-describedby="${errorId}"><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Agregar${typeof option.priceModifier === 'number' ? ` · +${Catalog.money(option.priceModifier)}` : ''}</span></label>`;
             } else {
-                newPrice = basePrice;
+                controls = `<div class="choice-list">${(option.choices || []).map((choice, index) => {
+                    const checked = option.multiple ? selected?.includes(choice.value) : selected === choice.value;
+                    const priceDependsOnFlavor = this.product.id === 'galletas' && option.id === 'presentacion' && choice.value === 'individual';
+                    const optionPrice = choice.price !== undefined && !choice.label.includes('$') && !priceDependsOnFlavor ? ` · ${Catalog.money(choice.price)}` : '';
+                    return `<label class="choice"><input type="${option.multiple ? 'checkbox' : 'radio'}" name="option-${esc(option.id)}" value="${esc(choice.value)}" data-option-input="${esc(option.id)}" ${checked ? 'checked' : ''} aria-describedby="${errorId}"><span>${esc(choice.label)}${optionPrice}</span></label>`;
+                }).join('')}</div>`;
             }
+            return `<fieldset class="option-group" data-option-group="${esc(option.id)}"><legend>${esc(option.label)}${!option.required ? '<span class="field-optional">Opcional</span>' : ''}</legend>${controls}${note ? `<p class="field-note">${esc(note)}</p>` : ''}<p id="${errorId}" class="field-error" hidden></p></fieldset>`;
         }
-
-        // Actualizar precio en la UI
-        this.currentPrice = newPrice;
-        const priceElement = document.getElementById('quickViewPrice');
-        if (priceElement) {
-            priceElement.textContent = this.formatPrice(newPrice);
+        personalHTML() {
+            return Catalog.fields(this.product, this.selection).map(field => `<div class="personal-field" data-personal-field="${esc(field.id)}"><label for="personal-${esc(field.id)}">${esc(field.label)}${!field.required ? '<span class="field-optional">Opcional</span>' : ''}</label><input id="personal-${esc(field.id)}" data-personal="${esc(field.id)}" type="text" value="${esc(this.personal[field.id] || '')}" maxlength="${field.maxLength || 100}" placeholder="${esc(field.placeholder || '')}" ${field.required ? 'aria-required="true"' : ''} aria-describedby="personal-error-${esc(field.id)}"><p class="character-count" data-counter="${esc(field.id)}">${String(this.personal[field.id] || '').length} / ${field.maxLength || 100}</p>${field.note ? `<p class="field-note">${esc(field.note)}</p>` : ''}<p id="personal-error-${esc(field.id)}" class="field-error" hidden></p></div>`).join('');
         }
-    }
-
-    /**
-     * Adjuntar event listener al botón de agregar al carrito
-     */
-    /**
-     * Adjuntar event listener al botón de agregar al carrito
-     */
-    attachCartButtonListener(product) {
-        // Intentar buscar por ID y por clase para mayor seguridad
-        const addToCartBtn = document.getElementById('addToCartBtn') ||
-            document.querySelector('.quick-view-add-to-cart-btn');
-
-        if (!addToCartBtn) {
-            console.error('[QuickViewModal] Botón "Agregar al Carrito" no encontrado en el DOM');
-            return;
+        bindPersonal() {
+            this.dialog.querySelectorAll('[data-personal]').forEach(input => input.addEventListener('input', () => {
+                this.personal[input.dataset.personal] = input.value;
+                this.dialog.querySelector(`[data-counter="${input.dataset.personal}"]`).textContent = `${input.value.length} / ${input.maxLength}`;
+                input.removeAttribute('aria-invalid');
+                this.dialog.querySelector(`#personal-error-${input.dataset.personal}`).hidden = true;
+            }));
         }
-
-        // Eliminar listeners previos para evitar duplicados
-        const newBtn = addToCartBtn.cloneNode(true);
-        addToCartBtn.parentNode.replaceChild(newBtn, addToCartBtn);
-
-        newBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-
-            // Validar opciones requeridas
-            if (!this.validateRequiredOptions(product)) {
-                this.showValidationError();
+        optionChange(input) {
+            const option = this.product.options.find(o => o.id === input.dataset.optionInput);
+            if (option.type === 'toggle') this.selection[option.id] = input.checked;
+            else if (option.multiple) {
+                const selected = Array.from(this.dialog.querySelectorAll(`[data-option-input="${option.id}"]:checked`)).map(el => el.value);
+                if (selected.length > option.maxSelection) {
+                    input.checked = false;
+                    const error = this.dialog.querySelector(`#option-error-${option.id}`);
+                    error.textContent = `Puedes elegir hasta ${option.maxSelection} colores. Desmarca uno para cambiarlo.`;
+                    error.hidden = false;
+                    return;
+                }
+                this.selection[option.id] = selected;
+            } else this.selection[option.id] = input.value;
+            this.dialog.querySelector(`#option-error-${option.id}`).hidden = true;
+            this.updateDependencies();
+            if (this.product.personalization?.dependsOn === option.id) {
+                this.dialog.querySelector('.personal-fields').innerHTML = this.personalHTML();
+                this.bindPersonal();
+            }
+            this.updateTotal();
+        }
+        updateDependencies() {
+            this.dialog.querySelectorAll('[data-option-group]').forEach(group => {
+                const option = this.product.options.find(o => o.id === group.dataset.optionGroup);
+                const visible = Catalog.visible(option, this.selection, this.product);
+                group.hidden = !visible;
+                group.disabled = !visible;
+            });
+        }
+        updateTotal() {
+            const output = this.dialog.querySelector('#productTotal');
+            if (!output) return;
+            const valid = Number.isInteger(this.quantity) && this.quantity >= Catalog.minimum(this.product) && this.quantity <= Catalog.maximum;
+            output.textContent = valid ? Catalog.money(Catalog.price(this.product, this.selection) * this.quantity) : '—';
+            const error = this.dialog.querySelector('#quantityError');
+            error.hidden = valid;
+            error.textContent = `Elige una cantidad entre ${Catalog.minimum(this.product)} y ${Catalog.maximum}.`;
+            this.dialog.querySelector('[data-quantity="-1"]').disabled = this.quantity <= Catalog.minimum(this.product);
+            this.dialog.querySelector('[data-quantity="1"]').disabled = this.quantity >= Catalog.maximum;
+        }
+        submit() {
+            const errors = Catalog.validate(this.product, this.selection, this.personal);
+            this.dialog.querySelectorAll('.field-error').forEach(error => { error.hidden = true; });
+            this.dialog.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+            for (const error of errors) {
+                const element = this.dialog.querySelector(`#personal-error-${error.id}`) || this.dialog.querySelector(`#option-error-${error.id}`);
+                if (element) { element.hidden = false; element.textContent = error.message; }
+                const input = this.dialog.querySelector(`[data-personal="${error.id}"]`) || this.dialog.querySelector(`[data-option-input="${error.id}"]`);
+                input?.setAttribute('aria-invalid', 'true');
+            }
+            if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
+            if (Catalog.quoteOnly(this.product)) {
+                const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
+                const message = `Hola, Lauren. Quisiera cotizar ${this.product.name}.\n${details}\n${Catalog.personalText(this.product, this.selection, this.personal)}`;
+                window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;
             }
-
-            // Obtener personalización si existe
-            const personalization = this.getPersonalizationValue();
-
-            // Validar personalización requerida
-            if (product.personalization?.required && !personalization) {
-                this.showValidationError('Por favor complete el campo de personalización');
+            this.updateTotal();
+            if (!Number.isInteger(this.quantity) || this.quantity < Catalog.minimum(this.product) || this.quantity > Catalog.maximum) { this.dialog.querySelector('#productQuantity').focus(); return; }
+            const saved = cartManager.addItem({ id: this.product.id, quantity: this.quantity, selection: this.selection, personal: this.personal }, this.editIndex);
+            if (!saved) {
+                const error = this.dialog.querySelector('#productError');
+                error.textContent = 'No pudimos agregar esa cantidad. Revisa tu pedido: el máximo es 99 de la misma presentación.';
+                error.hidden = false;
                 return;
             }
-
-            // Preparar datos del producto para el carrito
-            const cartItem = {
-                id: product.id,
-                name: product.name,
-                price: this.currentPrice,
-                image: product.mainImage || product.images?.[0] || '',
-                options: this.getFormattedOptions(product),
-                personalization: personalization
-            };
-
-            // Agregar al carrito
-            if (window.cartManager) {
-                const success = window.cartManager.addItem(cartItem);
-                if (success) {
-                    // Mostrar feedback visual adicional si es necesario
-                } else {
-                    console.error('[QuickViewModal] Error al agregar item al carrito');
-                }
-            } else {
-                console.error('[QuickViewModal] cartManager no está disponible (window.cartManager is undefined)');
-                alert('Lo sentimos, el carrito no está disponible en este momento. Por favor recarga la página.');
-            }
-        });
-    }
-
-    /**
-     * Validar que todas las opciones requeridas estén seleccionadas
-     */
-    validateRequiredOptions(product) {
-        if (!product.options) return true;
-
-        for (const option of product.options) {
-            // Verificar si la opción es visible según sus dependencias
-            if (option.dependsOn) {
-                const parentValue = this.selectedOptions[option.dependsOn];
-                let isVisible = false;
-
-                if (Array.isArray(option.showWhen)) {
-                    isVisible = option.showWhen.includes(parentValue);
-                } else {
-                    isVisible = option.showWhen === parentValue;
-                }
-
-                // Si la opción no es visible, no es requerida
-                if (!isVisible) continue;
-            }
-
-            if (option.required) {
-                const value = this.selectedOptions[option.id];
-
-                // Para radio buttons, siempre debe haber un valor
-                if (option.type === 'radio' && !value) {
-                    return false;
-                }
-
-                // Para select múltiple, debe haber al menos una selección
-                if (option.type === 'select' && option.multiple) {
-                    if (!value || (Array.isArray(value) && value.length === 0)) {
-                        return false;
-                    }
-                }
-            }
+            const editing = this.editIndex !== null;
+            LaurenUI.close(this.dialog);
+            if (!editing) LaurenUI.toast('Agregado a tu pedido.', { label: 'Ver pedido', run: () => window.cartUI.open() });
         }
-
-        return true;
     }
-
-    /**
-     * Obtener valor del campo de personalización
-     */
-    getPersonalizationValue() {
-        const input = document.getElementById('personalization-input');
-        return input ? input.value.trim() : '';
-    }
-
-    /**
-     * Obtener opciones formateadas para mostrar en el carrito
-     */
-    getFormattedOptions(product) {
-        const formatted = {};
-
-        if (!product.options) return formatted;
-
-        product.options.forEach(option => {
-            const value = this.selectedOptions[option.id];
-            if (!value) return;
-
-            // Encontrar el label legible para el valor
-            if (option.type === 'radio' || option.type === 'select') {
-                const choice = option.choices?.find(c => c.value === value);
-                if (choice) {
-                    formatted[option.label] = choice.label;
-                }
-            } else if (option.type === 'select' && Array.isArray(value)) {
-                // Para selección múltiple
-                const labels = value.map(v => {
-                    const choice = option.choices?.find(c => c.value === v);
-                    return choice ? choice.label : v;
-                });
-                formatted[option.label] = labels.join(', ');
-            } else if (option.type === 'toggle') {
-                formatted[option.label] = value ? 'Sí' : 'No';
-            }
-        });
-
-        return formatted;
-    }
-
-    /**
-     * Mostrar mensaje de error de validación
-     */
-    showValidationError(message = 'Por favor selecciona todas las opciones requeridas') {
-        // Crear toast de error
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-            z-index: 10001;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            animation: slideInRight 0.4s ease, slideOutRight 0.4s ease 2.6s;
-        `;
-        toast.textContent = `⚠️ ${message}`;
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
-
-    /**
-     * Formatear precio
-     */
-    formatPrice(price) {
-        if (!price) return '';
-        return `$${price.toLocaleString('es-CO')}`;
-    }
-
-    /**
-     * Obtener clase de color para chips de colores
-     */
-    getColorClass(value) {
-        const colorMap = {
-            'blanco': 'chip-color-blanco',
-            'cafe': 'chip-color-cafe',
-            'azul': 'chip-color-azul',
-            'verde': 'chip-color-verde',
-            'lila': 'chip-color-lila',
-            'rosado': 'chip-color-rosado',
-            'rojo': 'chip-color-rojo'
-        };
-
-        return colorMap[value] || '';
-    }
-}
-
-// Inicializar el modal cuando el DOM esté listo
-let quickViewModalInstance = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-    quickViewModalInstance = new QuickViewModal();
-});
-
-// Función global para abrir el modal desde cualquier lugar
-function openQuickView(productId, productsData) {
-    if (!quickViewModalInstance) {
-        console.error('[QuickViewModal] El modal no está inicializado');
-        return;
-    }
-
-    const product = productsData[productId];
-    if (!product) {
-        console.error(`[QuickViewModal] Producto no encontrado: ${productId}`);
-        return;
-    }
-
-    quickViewModalInstance.open(product);
-}
+    window.quickView = new QuickViewModal();
+})();

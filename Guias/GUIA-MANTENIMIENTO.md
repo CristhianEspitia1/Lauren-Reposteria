@@ -1,64 +1,44 @@
-# Guía de mantenimiento - Lauren Repostería
+# Guía de mantenimiento — Lauren Repostería
 
-## Principios actuales
-
-- Producción usa solo rutas bajo `assets/optimized`.
-- Las carpetas fuente de imágenes y videos son locales e ignoradas por Git.
-- No subir zips, demos, capturas de auditoría, `.mov` ni metadatos `._*`.
-- Nombres de archivo en `kebab-case` ASCII (sin espacios, tildes, emojis ni
-  mayúsculas). El pipeline de optimización lo aplica automáticamente.
-- Antes de publicar, verificar las páginas principales con servidor local.
-- Documentación técnica completa en `docs/`.
-
-## Servidor local
+## Trabajar localmente
 
 ```bash
 node scripts/dev-server.mjs 5173
-# Abrir http://127.0.0.1:5173/html/inicio.html
 ```
 
-## Flujo para cambiar media
+Abrir `http://127.0.0.1:5173/html/inicio.html`. No requiere instalar dependencias. El servidor solo acepta conexiones locales.
 
-1. Agregar la foto o video fuente en la carpeta local de producto
-   (`assets/imagenes-<modulo>/`).
-2. Ejecutar `node scripts/optimize-assets.mjs` (genera WebP/MP4 en
-   `assets/optimized` con nombres kebab-case).
-3. Ejecutar `node scripts/apply-optimized-assets.mjs`.
-4. Revisar que HTML/JS/CSS apunten a `assets/optimized`.
-5. Probar en móvil y escritorio.
+## Productos y precios
 
-## Carrusel infinito de tortas
+La fuente única es `js/catalog-data.js`. Mantener el identificador del producto y sus opciones para conservar compatibilidad con pedidos guardados. Ajustar importes y su texto visible juntos, con confirmación del negocio.
 
-El HTML debe conservar una sola copia de los items. El loop se duplica al montar
-con JavaScript para reducir HTML inicial y mantener el scroll continuo.
-
-No vuelvas a duplicar manualmente los items en `html/tortas.html`; si se agregan
-fotos, agrega las fuentes, optimiza y deja que el script reconstruya las rutas.
-
-## Estilos
-
-- Color, tipografía, espaciado, sombra y `z-index` salen de `css/tokens.css`.
-- Tipografía del sitio: Playfair Display (títulos) + Inter (texto).
-- Evitar `!important`; ver `docs/06-guia-de-estilos.md`.
-
-## Verificaciones rápidas
+Las reglas calculadas se centralizan en `js/catalog-model.js` y se comprueban con:
 
 ```bash
-# Rutas que no deben apuntar a fuentes sin optimizar:
-rg -n --pcre2 "(?<!optimized/)assets/(?!optimized)|\.png|\.jpg|\.jpeg|\.mov" html js css index.html scripts README.md
-# Basura de sistema:
-find . -path ./.git -prune -o \( -name '.DS_Store' -o -name '._*' -o -name 'Thumbs.db' \) -type f -print
-# Sintaxis de JS:
-find js scripts -type f \( -name '*.js' -o -name '*.mjs' \) ! -name '._*' -print0 | xargs -0 -n1 node --check
-# Servidor local:
-node scripts/dev-server.mjs 5173
+node --test tests/catalog.test.mjs
 ```
 
-## Páginas que deben abrir sin errores
+El caso de alfajores personalizados permanece por cotización hasta confirmar la unidad de venta; ver [pendientes](../PROBLEMAS-PENDIENTES.md).
 
-- `/html/inicio.html`
-- `/html/tortas.html`
-- `/html/alfajores.html`
-- `/html/brownies-galletas.html`
-- `/html/detalles.html`
-- `/html/tabla-productos.html` (editor interno, no indexado)
+## Fotografías y video
+
+1. Guardar los originales fuera del repositorio; aquí solo vive lo que usa la web.
+2. Añadir la fotografía WebP en `assets/propuestas-fotograficas/`, con nombre ASCII en kebab-case, y registrarla en `manifest.json`.
+3. Ejecutar `node scripts/optimize-photography.mjs` para generar sus copias responsive (requiere `cwebp` y `webpinfo`).
+4. En galerías, actualizar `js/gallery-data.js`; cada imagen debe corresponder a su descripción.
+
+El poster de la entrevista está en `assets/optimized/imagenes-inicio/historia-poster.webp`. Al cambiar el video, exportar también un fotograma representativo, conservar su proporción y actualizar el poster. El reproductor carga el MP4 al pulsar reproducir; no activar autoplay.
+
+## Estilos e iconos
+
+Consultar [guía de estilos](../docs/06-guia-de-estilos.md). Tokens en `css/tokens.css`; estilos por responsabilidad en `site.css`, `catalog.css` y `dialogs.css`. Usar `LaurenIcons(nombre)` desde el registro original. No reintroducir icon fonts ni parches globales de móvil.
+
+## Entregar y publicar
+
+Comprobar sintaxis y el flujo afectado, sin repetir una auditoría completa por cada ajuste. Para cambios comerciales, ejecutar las pruebas del catálogo. Para cambios visuales, abrir una vista previa del resultado y revisar el componente en un ancho amplio y uno estrecho.
+
+```bash
+git diff --check
+```
+
+Publicar solo con autorización explícita y revisar después las rutas públicas de inicio, tortas, alfajores, brownies-galletas y detalles. Las pruebas no envían mensajes a clientes ni cambian datos del negocio.

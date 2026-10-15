@@ -9,39 +9,13 @@ desktop.ini
 *.bak
 *.swp
 *~
+*.log
+tmp/
 
-# Backups automáticos
-*_backup_*
-*.backup
-
-# Node modules (si usas npm en el futuro)
+# Dependencias
 node_modules/
 
-# Logs
-*.log
-
-# Archivos de archivo/branding que no deben desplegarse en GitHub Pages
-*.zip
-brandin de lauren/
-
-# Material fuente local para generar assets optimizados
-assets/icons/
-assets/logos/
-assets/imagenes-inicio/
-assets/imagenes-tortas/
-assets/imagenes-alfajores/
-assets/imagenes-detalles/
-assets/imagenes-brownies-galletas/
-assets/.guias/
+# Originales y material de diseño: se guardan fuera del repositorio
+*.ai
 *.mov
-
-# Demos locales
-html/navbar-demo-*.html
-
-# Carpetas temporales
-temp/
-tmp/
-artifacts/
-
-# Media fuente cruda (masters .mov) fuera del pipeline
-media-fuente/
+*.zip

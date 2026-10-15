@@ -1,1735 +1,272 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lauren - Alfajores | Tradicionales y Personalizados</title>
-    <link rel="canonical" href="https://laurenreposteria.com/html/alfajores.html">
-    <link rel="icon" type="image/webp" href="../assets/optimized/logos/logos-lauren-png-13.webp">
-    <!-- Fuentes: Playfair Display (titulos) + Inter (texto) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description"
-        content="Alfajores de maicena rellenos de arequipe. Cajas, tortas de alfajor y diseños personalizados. Lauren Repostería - Medellín, Colombia.">
-    <meta name="keywords"
-        content="alfajores, alfajores de maicena, tortas de alfajor, alfajores personalizados, Lauren, Medellín, Colombia">
-    <meta name="author" content="Lauren Repostería">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Lauren - Alfajores Artesanales">
-    <meta property="og:description"
-        content="Alfajores de maicena rellenos de arequipe. Tradicionales y personalizados.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Lauren Repostería">
-    <meta property="og:locale" content="es_CO">
-    <meta property="og:url" content="https://laurenreposteria.com/html/alfajores.html">
-    <meta property="og:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Lauren - Alfajores | Tradicionales y Personalizados">
-    <meta name="twitter:description" content="Alfajores de maicena rellenos de arequipe. Cajas, tortas de alfajor y diseños personalizados. Lauren Repostería - Medellín, Colombia.">
-    <meta name="twitter:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/glass-nav.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/tortas-styles.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/quick-view-modal.css">
-    <link rel="stylesheet" href="../css/cart-button-styles.css">
-    <link rel="stylesheet" href="../css/cart.css">
-    <link rel="stylesheet" href="../css/mobile-fixes.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/footer-mobile.css">
-    <link rel="stylesheet" href="../css/hide-modal.css">
-    <style>
-        /* ===== HEADER DE LUJO - FLOATING PILL NAVIGATION ===== */
-        .luxury-nav-container {
-            position: fixed;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: 90%;
-            max-width: 1100px;
-            animation: navSlideDown 0.8s ease-out;
-        }
-
-        .luxury-nav-pill {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 100px;
-            padding: 1.2rem 2.5rem;
-            box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.06),
-                0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .luxury-nav-pill:hover {
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow:
-                0 12px 40px rgba(0, 0, 0, 0.08),
-                0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .luxury-nav-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-
-        /* Nav Links */
-        .luxury-nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .luxury-nav-links.left {
-            justify-content: flex-end;
-            flex: 1;
-        }
-
-        .luxury-nav-links.right {
-            justify-content: flex-start;
-            flex: 1;
-        }
-
-        .luxury-nav-link {
-            text-decoration: none;
-            color: #1a1a1a;
-            font-size: 0.95rem;
-            font-weight: 400;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.5px;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0.5rem 0;
-        }
-
-        .luxury-nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 100%;
-            height: 2px;
-            background: #b8a4d4;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .luxury-nav-link:hover {
-            color: #b8a4d4;
-        }
-
-        .luxury-nav-link:hover::after {
-            transform: translateX(-50%) scaleX(1);
-        }
-
-        /* Logo Central */
-        .luxury-nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-style: italic;
-            font-weight: 600;
-            color: #1a1a1a;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .luxury-nav-logo:hover {
-            color: #b8a4d4;
-            transform: scale(1.05);
-        }
-
-        /* Animación de entrada */
-        @keyframes navSlideDown {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .luxury-nav-content {
-                gap: 1rem;
-            }
-
-            .luxury-nav-links {
-                gap: 1.5rem;
-            }
-
-            .luxury-nav-link {
-                font-size: 0.85rem;
-            }
-
-            .luxury-nav-logo {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .luxury-nav-container {
-                width: 95%;
-                top: 1rem;
-            }
-
-            .luxury-nav-pill {
-                padding: 1rem 1.5rem;
-            }
-
-            .luxury-nav-links {
-                display: none;
-            }
-
-            .luxury-nav-content {
-                justify-content: center;
-            }
-
-            .luxury-nav-logo {
-                font-size: 1.3rem;
-            }
-        }
-
-        /* ESTILOS ESPECÍFICOS PARA HERO DE ALFAJORES - NO AFECTA TORTAS */
-        .hero-video-grid {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            gap: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            z-index: 0 !important;
-            line-height: 0 !important;
-            font-size: 0 !important;
-            overflow: hidden !important;
-        }
-
-        .hero-grid-video {
-            flex: 1 1 25% !important;
-            width: 25% !important;
-            min-width: 25% !important;
-            max-width: 25% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            display: block !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-left: 0 !important;
-            border-right: 0 !important;
-            outline: 0 !important;
-            box-shadow: none !important;
-            vertical-align: top !important;
-            box-sizing: border-box !important;
-            float: none !important;
-        }
-
-        /* Eliminar cualquier borde o espacio entre videos */
-        .hero-grid-video:nth-child(1),
-        .hero-grid-video:nth-child(2),
-        .hero-grid-video:nth-child(3),
-        .hero-grid-video:nth-child(4) {
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 0 !important;
-            transform: translateX(0) !important;
-        }
-
-        /* Compensar cualquier espacio usando posicionamiento negativo */
-        .hero-grid-video:nth-child(2) {
-            margin-left: -1px !important;
-        }
-
-        .hero-grid-video:nth-child(3) {
-            margin-left: -1px !important;
-        }
-
-        .hero-grid-video:nth-child(4) {
-            margin-left: -1px !important;
-        }
-
-        /* ========================================
-           PRODUCT QUICK VIEW MODAL
-           ======================================== */
-
-        .product-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 10000;
-            overflow-y: auto;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .product-modal-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-        }
-
-        .product-modal-container {
-            background: white;
-            border-radius: 16px;
-            max-width: 1100px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-modal-overlay.active .product-modal-container {
-            transform: scale(1);
-        }
-
-        .product-modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-modal-close:hover {
-            background: #f5f5f5;
-            transform: rotate(90deg);
-        }
-
-        .product-modal-close svg {
-            width: 20px;
-            height: 20px;
-            color: #333;
-        }
-
-        .product-modal-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 40px;
-        }
-
-        .product-modal-left {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: sticky;
-            top: 0;
-            align-self: start;
-        }
-
-        .product-modal-image-main {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #f8f8f8;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-modal-thumbnails {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-        }
-
-        .product-modal-thumbnail {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .product-modal-thumbnail:hover {
-            border-color: #F9B58C;
-        }
-
-        .product-modal-thumbnail.active {
-            border-color: #F4A67C;
-        }
-
-        .product-modal-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-modal-right {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-modal-info {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .product-modal-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2c2c2c;
-            margin: 0;
-            letter-spacing: 0.3px;
-        }
-
-        .product-modal-price-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-price {
-            display: inline-block;
-            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 15px rgba(249, 181, 140, 0.3);
-            align-self: flex-start;
-        }
-
-        .product-modal-price-note {
-            font-size: 0.75rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        .product-modal-description {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #555;
-            margin: 0;
-        }
-
-        .product-modal-section-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #2c2c2c;
-            margin: 0 0 8px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .product-modal-includes-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-includes-list li {
-            font-size: 0.8rem;
-            color: #555;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .product-modal-includes-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #F9B58C;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
-        .product-modal-options {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .product-modal-option-group {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .product-modal-option-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #2c2c2c;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .product-modal-option-label .required-badge {
-            background: #F9B58C;
-            color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .product-modal-option-choices {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-option-choice {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .product-modal-option-choice:hover {
-            border-color: #F9B58C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-choice input[type="radio"] {
-            cursor: pointer;
-            width: 16px;
-            height: 16px;
-            accent-color: #F4A67C;
-        }
-
-        .product-modal-option-choice label {
-            cursor: pointer;
-            flex: 1;
-            font-size: 0.8rem;
-            color: #333;
-        }
-
-        .product-modal-option-choice.selected {
-            border-color: #F4A67C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-select {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .product-modal-option-chip {
-            padding: 6px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.75rem;
-            background: white;
-        }
-
-        .product-modal-option-chip:hover {
-            border-color: #F9B58C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-chip.selected {
-            border-color: #F4A67C;
-            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
-            color: white;
-        }
-
-        .product-modal-toggle-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-        }
-
-        .product-modal-toggle-label {
-            font-size: 0.8rem;
-            color: #333;
-        }
-
-        .product-modal-toggle {
-            position: relative;
-            width: 50px;
-            height: 26px;
-            background: #e0e0e0;
-            border-radius: 13px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .product-modal-toggle.active {
-            background: #F4A67C;
-        }
-
-        .product-modal-toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-
-        .product-modal-toggle.active::after {
-            transform: translateX(24px);
-        }
-
-        .product-modal-personalization {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 14px;
-            background: #FFF9F5;
-            border-radius: 10px;
-            border: 1px solid #F9B58C;
-        }
-
-        .product-modal-personalization-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-personalization-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #2c2c2c;
-        }
-
-        .product-modal-personalization-input {
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .product-modal-personalization-input:focus {
-            outline: none;
-            border-color: #F4A67C;
-        }
-
-        .product-modal-personalization-note {
-            font-size: 0.7rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        .product-modal-actions {
-            margin-top: auto;
-            padding-top: 16px;
-        }
-
-        .product-modal-cta-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .product-modal-cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        .product-modal-cta-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        @media (max-width: 1024px) {
-            .product-modal-content {
-                gap: 30px;
-                padding: 30px;
-            }
-
-            .product-modal-title {
-                font-size: 1.3rem;
-            }
-
-            .product-modal-price {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .product-modal-overlay {
-                padding: 0;
-            }
-
-            /* REDUCIR 30% TODO EL MODAL */
-            .product-modal-container {
-                max-height: 100vh;
-                border-radius: 0;
-                transform: scale(0.7);
-            }
-
-            .product-modal-overlay.active .product-modal-container {
-                transform: scale(0.7);
-            }
-
-            .product-modal-content {
-                grid-template-columns: 1fr;
-                gap: 16.8px;
-                padding: 14px;
-                padding-top: 42px;
-            }
-
-            .product-modal-left {
-                position: static;
-                gap: 10.5px;
-            }
-
-            .product-modal-close {
-                top: 10.5px;
-                right: 10.5px;
-                width: 25.2px;
-                height: 25.2px;
-            }
-
-            .product-modal-close svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            .product-modal-title {
-                font-size: 0.84rem;
-            }
-
-            .product-modal-price {
-                font-size: 0.7rem;
-                padding: 5.6px 11.2px;
-            }
-
-            .product-modal-price-note {
-                font-size: 0.525rem;
-            }
-
-            .product-modal-description {
-                font-size: 0.56rem;
-            }
-
-            .product-modal-image-main {
-                aspect-ratio: 1;
-                border-radius: 8.4px;
-            }
-
-            .product-modal-thumbnails {
-                gap: 7px;
-            }
-
-            .product-modal-thumbnail {
-                width: 42px;
-                height: 42px;
-                border-width: 1.4px;
-                border-radius: 5.6px;
-            }
-
-            .product-modal-cta-btn {
-                font-size: 0.595rem;
-                padding: 8.4px 12.6px;
-                gap: 7px;
-            }
-
-            .product-modal-cta-btn svg {
-                width: 12.6px;
-                height: 12.6px;
-            }
-
-            .product-modal-info {
-                gap: 9.8px;
-            }
-
-            .product-modal-section-title {
-                font-size: 0.56rem;
-                margin-bottom: 4.2px;
-            }
-
-            .product-modal-includes-list {
-                gap: 4.2px;
-                padding-left: 14px;
-            }
-
-            .product-modal-includes-list li {
-                font-size: 0.525rem;
-            }
-
-            .product-modal-includes-list li::before {
-                font-size: 0.665rem;
-            }
-
-            .product-modal-options {
-                gap: 9.8px;
-            }
-
-            .product-modal-option-group {
-                gap: 4.9px;
-            }
-
-            .product-modal-option-label {
-                font-size: 0.525rem;
-                gap: 4.2px;
-            }
-
-            .product-modal-option-label .required-badge {
-                font-size: 0.455rem;
-                padding: 1.4px 4.2px;
-            }
-
-            .product-modal-option-choices {
-                gap: 4.2px;
-            }
-
-            .product-modal-option-choice {
-                gap: 5.6px;
-                padding: 5.6px 7px;
-                border-width: 1.4px;
-            }
-
-            .product-modal-option-choice input[type="radio"] {
-                width: 11.2px;
-                height: 11.2px;
-            }
-
-            .product-modal-option-choice label {
-                font-size: 0.525rem;
-            }
-
-            .product-modal-option-select {
-                gap: 4.2px;
-            }
-
-            .product-modal-option-chip {
-                font-size: 0.49rem;
-                padding: 3.5px 7px;
-                border-width: 1.4px;
-                border-radius: 12.6px;
-            }
-
-            .product-modal-toggle-wrapper {
-                padding: 5.6px 7px;
-                border-width: 1.4px;
-            }
-
-            .product-modal-toggle-label {
-                font-size: 0.56rem;
-            }
-
-            .product-modal-toggle {
-                width: 35px;
-                height: 18.2px;
-                border-radius: 9.1px;
-            }
-
-            .product-modal-toggle::after {
-                top: 2.1px;
-                left: 2.1px;
-                width: 14px;
-                height: 14px;
-            }
-
-            .product-modal-toggle.active::after {
-                transform: translateX(16.8px);
-            }
-
-            .product-modal-personalization {
-                gap: 8.4px;
-                padding: 9.8px;
-            }
-
-            .product-modal-personalization-field {
-                gap: 4.2px;
-            }
-
-            .product-modal-personalization-label {
-                font-size: 0.56rem;
-            }
-
-            .product-modal-personalization-input {
-                padding: 5.6px 7px;
-                font-size: 0.56rem;
-                border-width: 1.4px;
-            }
-
-            .product-modal-personalization-note {
-                font-size: 0.49rem;
-            }
-
-            .product-modal-actions {
-                padding-top: 11.2px;
-            }
-
-            .product-modal-price-wrapper {
-                gap: 4.2px;
-            }
-        }
-    </style>
-
-    <link rel="stylesheet" href="../css/luxury-footer.css">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f9f5ec">
+<title>Alfajores artesanales en Medellín | Lauren Repostería</title>
+<meta name="description" content="Alfajores de maicena con arequipe, cajas de regalo, minis, tortas de alfajor y diseños personalizados. Descubre la colección de Lauren Repostería.">
+<link rel="canonical" href="https://laurenreposteria.com/html/alfajores.html">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/catalog.css">
+<link rel="stylesheet" href="../css/dialogs.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lauren Repostería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Alfajores artesanales en Medellín | Lauren Repostería">
+<meta property="og:description" content="Alfajores de maicena con arequipe, cajas de regalo, minis, tortas de alfajor y diseños personalizados. Descubre la colección de Lauren Repostería.">
+<meta property="og:url" content="https://laurenreposteria.com/html/alfajores.html">
+<meta property="og:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/torta-alfajor.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Alfajores artesanales en Medellín | Lauren Repostería">
+<meta name="twitter:description" content="Alfajores de maicena con arequipe, cajas de regalo, minis, tortas de alfajor y diseños personalizados. Descubre la colección de Lauren Repostería.">
+<meta name="twitter:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/torta-alfajor.webp">
+<script src="../js/catalog-data.js" defer>
+</script>
+<script src="../js/catalog-model.js" defer>
+</script>
+<script src="../js/brand-icons.js" defer>
+</script>
+<script src="../js/image-variants.js" defer></script>
+<script src="../js/ui.js" defer>
+</script>
+<script src="../js/cart-manager.js" defer>
+</script>
+<script src="../js/quick-view-modal.js" defer>
+</script>
+<script src="../js/cart-ui.js" defer>
+</script>
+<script src="../js/gallery-data.js" defer>
+</script>
+<script src="../js/site.js" defer>
+</script>
 </head>
-
-<body>
-    <h1 class="visually-hidden">Alfajores artesanales Lauren Repostería</h1>
-    <!-- Glass Navigation Header -->
-    <nav class="glass-nav">
-        <div class="glass-nav-container">
-            <div class="glass-nav-content">
-                <!-- Menú Desplegable (izquierda) -->
-                <div class="nav-menu-wrapper">
-                    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mainNavMenu">Menú</button>
-                    <div class="nav-menu-dropdown" id="mainNavMenu">
-                        <a href="inicio.html">Inicio</a>
-                        <a href="tortas.html">Tortas</a>
-                        <a href="alfajores.html" class="active">Alfajores</a>
-                        <a href="brownies-galletas.html">Brownies y Galletas</a>
-                        <a href="detalles.html">Detalles</a>
-                    </div>
-                </div>
-
-                <!-- Logo Centrado -->
-                <div class="nav-logo-wrapper">
-                    <a href="inicio.html" class="nav-logo">Lauren</a>
-                </div>
-
-                <!-- Ícono Carrito (derecha) -->
-                <button class="nav-icon" type="button" aria-label="Abrir carrito de compras">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                    <span class="cart-badge">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-    <!-- Overlay oscuro del carrito -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-
-    <!-- Panel lateral del carrito -->
-    <div class="cart-panel" id="cartPanel">
-        <div class="cart-header">
-            <div class="cart-title-wrapper">
-                <div class="cart-icon-bg">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="cart-title">Mi Carrito</h2>
-                    <p class="cart-count">0 productos</p>
-                </div>
-            </div>
-            <button class="cart-close-btn" type="button" aria-label="Cerrar carrito">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-            </button>
-        </div>
-        <div class="cart-content">
-            <div class="cart-items"></div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span class="cart-total-label">Total:</span>
-                <span class="cart-total-value">$0</span>
-            </div>
-            <button class="cart-checkout-btn" type="button">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="currentColor" />
-                </svg>
-                Enviar pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-
-    <!-- SECCIÓN Hero -->
-    <section class="hero-main-carousel hero-main-carousel--alfajores">
-        <div class="carousel-wrapper">
-            <div class="hero-video-grid"><video class="hero-grid-video" preload="metadata" autoplay muted loop playsinline
-                    poster="../assets/optimized/imagenes-alfajores/alfajores-x12.webp">
-                    <source
-                        src="../assets/optimized/imagenes-alfajores/heroalfajores/hero-alfajores-video-1.mp4"
-                        type="video/mp4">
-                </video><video class="hero-grid-video" preload="none" data-lazy-video data-video-delay="4500" autoplay muted loop playsinline
-                    poster="../assets/optimized/imagenes-alfajores/alfajores-x6.webp">
-                    <source
-                        data-src="../assets/optimized/imagenes-alfajores/heroalfajores/hero-alfajores-video-2.mp4"
-                        type="video/mp4">
-                </video><video class="hero-grid-video" preload="none" data-lazy-video data-video-delay="7000" autoplay muted loop playsinline
-                    poster="../assets/optimized/imagenes-alfajores/alfajores-vaso-mini.webp">
-                    <source
-                        data-src="../assets/optimized/imagenes-alfajores/heroalfajores/hero-alfajores-video-3.mp4"
-                        type="video/mp4">
-                </video><video class="hero-grid-video" preload="none" data-lazy-video data-video-delay="9500" autoplay muted loop playsinline
-                    poster="../assets/optimized/imagenes-alfajores/torta-alfajor1.webp">
-                    <source
-                        data-src="../assets/optimized/imagenes-alfajores/heroalfajores/hero-arbolito-navidad.mp4"
-                        type="video/mp4">
-                </video></div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content-box">
-                <img src="../assets/optimized/logos/logos-lauren-png-59.webp" alt="Lauren Logo" class="hero-logo-translucent">
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Alfajores Personalizados - Header -->
-    <section class="intro-section-modern">
-        <div class="container">
-            <div class="intro-content-wrapper">
-                <!-- Ícono flotante que cae -->
-                <div class="intro-icon-container">
-                    <div class="intro-icon-circle">
-                        <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Lauren Logo"
-                            class="intro-main-icon-img" loading="lazy" decoding="async">
-                    </div>
-                </div>
-                <!-- Header -->
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">ALFAJORES PERSONALIZADOS</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant-center" style="margin-bottom: 1rem;">Dale un toque especial a tus
-                    celebraciones</p>
-                <p class="intro-text-modern" style="max-width: 800px; margin: 0 auto;">Nuestros alfajores de maicena
-                    están hechos con ingredientes de primera calidad y rellenos con el mejor arequipe. Cada alfajor es
-                    preparado artesanalmente para garantizar ese sabor tradicional que tanto te gusta. Perfectos para
-                    compartir o regalar en cualquier ocasión especial.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Carrusel Infinito - Full Width -->
-    <section class="infinite-carousel-section-modern" style="padding: 0; margin: 0 0 3rem 0;">
-        <div class="infinite-carousel-wrapper">
-            <div class="infinite-carousel-track" id="alfajoresPersonalizadosCarousel"
-                style="animation: scroll-left 60s linear infinite !important;">
-                <!-- Imágenes del carrusel - Orden alfabético -->
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-12.webp" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-13.webp" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-14.webp" alt="Alfajor Personalizado"
-                        class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-01.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-02.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-03.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-04.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-05.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-06.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-07.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-08.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-09.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-10.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-                <div class="infinite-carousel-item">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/personalizados/alfajor-personalizado-11.webp"
-                        alt="Alfajor Personalizado" class="infinite-carousel-img" loading="lazy" decoding="async">
-                </div>
-            </div>
-        </div>
-
-        <!-- Botón Ver Precios -->
-        <div style="text-align: center; margin-top: 2.5rem; padding-bottom: 1.5rem;">
-            <button class="pricing-btn-integrated" type="button" id="personalizadosPricingBtn">
-                Ver Precios
-            </button>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Cajas de Alfajores -->
-    <section class="fillings-section">
-        <div class="container">
-            <div class="section-header-decorated">
-                <div class="section-decoration-left"></div>
-                <div class="section-title-wrapper">
-                    <h2 class="section-title-elegant">CAJAS DE ALFAJORES</h2>
-                </div>
-                <div class="section-decoration-right"></div>
-            </div>
-            <p class="section-subtitle-elegant-center">Alfajores de maicena rellenos de arequipe</p>
-
-            <!-- Galería estilo mosaico vintage -->
-            <div class="cajas-carousel-wrapper">
-                <div class="cajas-carousel-group active">
-                    <div class="cajas-gallery-item">
-                        <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/alfajores-x6.webp" alt="Caja x6 Alfajores"
-                            class="cajas-gallery-img" loading="lazy" decoding="async">
-                        <!-- Botón Ver Precios integrado -->
-                        <button class="pricing-btn-integrated cajas-pricing-btn-overlay" type="button" id="cajasPricingBtn">
-                            Ver Precios
-                        </button>
-                    </div>
-                    <div class="cajas-gallery-item">
-                        <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/alfajores-vaso-mini.webp" alt="Vaso de Mini Alfajores"
-                            class="cajas-gallery-img" loading="lazy" decoding="async">
-                    </div>
-                    <div class="cajas-gallery-item">
-                        <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/alfajores-x12.webp" alt="Caja x12 Alfajores"
-                            class="cajas-gallery-img" loading="lazy" decoding="async">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Tortas de Alfajor -->
-    <section class="fillings-section">
-        <div class="container">
-            <div class="section-header-decorated">
-                <div class="section-decoration-left"></div>
-                <div class="section-title-wrapper">
-                    <h2 class="section-title-elegant">TORTAS DE ALFAJOR</h2>
-                </div>
-                <div class="section-decoration-right"></div>
-            </div>
-            <p class="section-subtitle-elegant-center">Todas nuestras tortas de alfajor vienen rellenas de arequipe y
-                traen 3 capas de relleno</p>
-
-            <!-- Galería de imágenes de tortas de alfajor -->
-            <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
-                <div class="torta-alfajor-item"
-                    style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/torta-alfajor1.webp" alt="Torta de Alfajor"
-                        class="torta-alfajor-img"
-                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 20%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);" loading="lazy" decoding="async">
-                </div>
-                <div class="torta-alfajor-item"
-                    style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                    <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/torta-alfajor2.webp" alt="Torta de Alfajor"
-                        class="torta-alfajor-img"
-                        style="width: 100%; height: 416px; object-fit: cover; object-position: center 60%; display: block; margin: 0; padding: 0; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08);" loading="lazy" decoding="async">
-                </div>
-            </div>
-
-            <!-- Botón Ver Precios y Porciones -->
-            <div
-                style="display: flex; justify-content: center; align-items: center; margin-top: 3rem; margin-bottom: 2rem; width: 100%;">
-                <button class="pricing-btn-integrated" type="button" id="tortasPricingBtn">
-                    <span class="btn-text-mobile">Ver Precios</span>
-                    <span class="btn-text-desktop">Ver Precios y Porciones</span>
-                </button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Alfajores Individuales -->
-    <section class="extras-section">
-        <div class="container">
-            <div class="extras-header">
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">ALFAJORES INDIVIDUALES</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Esta presentación se vende a partir de 6
-                    unidades por referencia o tamaño, empacados en bolsas</p>
-            </div>
-
-            <!-- Galería de imágenes de alfajores individuales con botón -->
-            <div style="max-width: 984px; margin: 3rem auto 0; padding: 0 20px;">
-                <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem;">
-                    <!-- Imagen de alfajores en bolsitas (Minis x3 y x6) - MÁS GRANDE -->
-                    <div class="alfajor-individual-item"
-                        style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
-                        <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/alfajor-bolsita.webp" alt="Alfajores en Bolsita"
-                            class="alfajor-bolsita-img"
-                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" loading="lazy" decoding="async">
-                        <!-- Overlay sutil -->
-                        <div
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
-                        </div>
-                    </div>
-
-                    <!-- Imagen de alfajor unitario (Pequeño, Mediano, Grande) -->
-                    <div class="alfajor-individual-item"
-                        style="position: relative; border-radius: 25px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);">
-                        <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-alfajores/alfajor-unidad.webp" alt="Alfajor Unitario"
-                            class="alfajor-unitario-img"
-                            style="width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" loading="lazy" decoding="async">
-                        <!-- Overlay sutil -->
-                        <div
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%); pointer-events: none;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botón Ver Precios centrado debajo de las imágenes -->
-                <div
-                    style="display: flex; justify-content: center; align-items: center; margin-top: 2rem; width: 100%;">
-                    <button class="pricing-btn-integrated" type="button" id="individualesPricingBtn">
-                        Ver Precios
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Información importante -->
-    <section class="important-info-section">
-        <div class="container">
-            <div class="info-header">
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">INFORMACIÓN IMPORTANTE</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Porque queremos que todo salga perfecto
-                </p>
-            </div>
-
-            <div class="info-cards-grid">
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/pedido.webp" alt="Pedido" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Pedido y Frescura</h3>
-                        <p class="info-card-text">Para garantizar la calidad y frescura, es importante que tu pedido se
-                            realice con tiempo. Consulta en la asesoría la disponibilidad para el día que lo requieras.
-                        </p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/disenos.webp" alt="Diseños" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Diseños Personalizados</h3>
-                        <p class="info-card-text">Si requieres otro tipo de diseño en los alfajores personalizados, su
-                            valor se definirá durante la asesoría. Nos adaptamos a tus ideas.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/unica.webp" alt="Única" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Producto Artesanal</h3>
-                        <p class="info-card-text">Cada alfajor es único y hecho a mano con ingredientes de primera
-                            calidad. Pueden existir pequeñas variaciones respecto a las referencias.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/letras.webp" alt="Venta mínima"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Venta Mínima</h3>
-                        <p class="info-card-text">Los alfajores individuales se venden a partir de 6 unidades por
-                            referencia o tamaño, empacados en bolsas.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Completo -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <footer class="luxury-footer">
-        <!-- Logo -->
-        <div class="footer-logo">
-            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/footer-logo.webp" alt="Lauren Repostería" loading="lazy" decoding="async">
-        </div>
-
-        <!-- Iconos de Redes Sociales con colores de marca -->
-        <div class="footer-social">
-            <!-- Instagram con gradiente característico -->
-            <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-                aria-label="Instagram">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="instagram-gradient-footer" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
-                        fill="url(#instagram-gradient-footer)" />
-                </svg>
-            </a>
-
-            <!-- WhatsApp verde característico -->
-            <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="#25D366" />
-                </svg>
-            </a>
-
-            <!-- TikTok negro característico -->
-            <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-                aria-label="TikTok">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"
-                        fill="#000000" />
-                </svg>
-            </a>
-        </div>
-
-        <!-- Línea Separadora -->
-        <div class="footer-divider"></div>
-
-        <!-- Copyright -->
-        <p class="footer-copyright">
-            © 2025 Lauren Repostería<br>
-            Creando momentos dulces y memorables desde 2022.<br>
-            Repostería artesanal con amor en cada detalle.<br>
-            Medellín, Colombia
-        </p>
-    </footer>
-
-    <!-- Botón Scroll to Top -->
-    <!-- Botón Flotante de Contacto -->
-    <button class="contact-fab" id="contactFab" type="button" aria-label="Menú de contacto" aria-controls="contactMenu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-    </button>
-
-    <!-- Menú de Redes Sociales -->
-    <div class="contact-menu" id="contactMenu">
-        <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" class="social-fab whatsapp"
-            aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-            </svg>
-        </a>
-
-        <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-            class="social-fab instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
-        </a>
-
-        <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-            class="social-fab tiktok" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
-            </svg>
-        </a>
-    </div>
-
-
-    <!-- Lightbox Modal -->
-    <div class="lightbox-modal" id="lightboxModal">
-        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Cerrar imagen ampliada">&times;</button>
-        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Imagen anterior">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </button>
-        <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Imagen ampliada" id="lightboxImg" class="lightbox-img">
-        <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Imagen siguiente">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </button>
-    </div>
-
-    <!-- Scripts del sistema de modal -->
-            <script src="../js/alfajores-data.js"></script>
-            <script src="../js/quick-view-modal.js"></script>
-            <script src="../js/tortas-script.js"></script>
-    <script src="../js/performance-optimizer.js"></script>
-
-            <!-- Script de integración del Quick View Modal con productos de alfajores -->
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    // Función para abrir modal basado en el nombre del producto
-                    function openModalFromCard(card) {
-                        const nameElement = card.querySelector('h3');
-                        if (nameElement) {
-                            const productName = nameElement.textContent.trim();
-
-                            if (productCardMapping && productCardMapping[productName]) {
-                                const productId = productCardMapping[productName];
-                                if (typeof openQuickView === 'function') {
-                                    openQuickView(productId, detallesProductsData);
-                                }
-                            }
-                        }
-                    }
-
-                    // Integrar Carrusel Infinito de Alfajores Personalizados
-                    const carouselItems = document.querySelectorAll('.infinite-carousel-item');
-                    carouselItems.forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function') {
-                                openQuickView('alfajor-personalizado', detallesProductsData);
-                            }
-                        });
-                        item.style.cursor = 'pointer';
-                    });
-
-                    // Integrar Caja x6, Caja x12, Vaso de Minis
-                    // CORRECCIÓN: Usar el selector correcto .cajas-gallery-item y mapear por índice
-                    const cajaGalleryItems = document.querySelectorAll('.cajas-gallery-item');
-                    cajaGalleryItems.forEach((item, index) => {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            // Mapear cada imagen a su producto correspondiente: 0=Caja x6, 1=Vaso, 2=Caja x12
-                            const productMap = ['caja-x6', 'vaso-minis', 'caja-x12'];
-                            const productId = productMap[index];
-
-                            if (productId && typeof openQuickView === 'function') {
-                                openQuickView(productId, detallesProductsData);
-                            }
-                        });
-                        item.style.cursor = 'pointer';
-                    });
-
-                    // Integrar Tortas de Alfajor
-                    const tortaItems = document.querySelectorAll('.torta-alfajor-item');
-                    tortaItems.forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function') {
-                                openQuickView('torta-alfajor', detallesProductsData);
-                            }
-                        });
-                        item.style.cursor = 'pointer';
-                    });
-
-                    // Integrar Alfajores Individuales
-                    const individualItems = document.querySelectorAll('.alfajor-individual-item');
-                    individualItems.forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function') {
-                                openQuickView('alfajor-individual', detallesProductsData);
-                            }
-                        });
-                        item.style.cursor = 'pointer';
-                    });
-
-                });
-            </script>
-
-            <script>
-                // ========================================
-                // CONECTAR BOTONES "VER PRECIOS" AL QUICK VIEW MODAL
-                // ========================================
-                document.addEventListener('DOMContentLoaded', function () {
-                    // Conectar botón de Alfajores Personalizados
-                    const personalizadosPricingBtn = document.getElementById('personalizadosPricingBtn');
-                    if (personalizadosPricingBtn) {
-                        personalizadosPricingBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('alfajor-personalizado', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Cajas de Alfajores
-                    const cajasPricingBtn = document.getElementById('cajasPricingBtn');
-                    if (cajasPricingBtn) {
-                        cajasPricingBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                // Abrir modal con la primera caja por defecto (Caja x6)
-                                openQuickView('caja-x6', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Tortas de Alfajor
-                    const tortasPricingBtn = document.getElementById('tortasPricingBtn');
-                    if (tortasPricingBtn) {
-                        tortasPricingBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('torta-alfajor', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Alfajores Individuales (primer botón)
-                    const individualesPricingBtn = document.getElementById('individualesPricingBtn');
-                    if (individualesPricingBtn) {
-                        individualesPricingBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('alfajor-individual', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Alfajores Individuales (segundo botón)
-                    const individualesPricingBtn2 = document.getElementById('individualesPricingBtn2');
-                    if (individualesPricingBtn2) {
-                        individualesPricingBtn2.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('alfajor-individual', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Caja x6
-                    const cajaX6Btn = document.getElementById('cajaX6Btn');
-                    if (cajaX6Btn) {
-                        cajaX6Btn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('caja-x6', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Vaso de Minis
-                    const vasoMinisBtn = document.getElementById('vasoMinisBtn');
-                    if (vasoMinisBtn) {
-                        vasoMinisBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('vaso-minis', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar botón de Caja x12
-                    const cajaX12Btn = document.getElementById('cajaX12Btn');
-                    if (cajaX12Btn) {
-                        cajaX12Btn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('caja-x12', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar imagen de Caja x6
-                    const cajaX6Img = document.getElementById('cajaX6Img');
-                    if (cajaX6Img) {
-                        cajaX6Img.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('caja-x6', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar imagen de Vaso de Minis
-                    const vasoMinisImg = document.getElementById('vasoMinisImg');
-                    if (vasoMinisImg) {
-                        vasoMinisImg.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('vaso-minis', detallesProductsData);
-                            }
-                        });
-                    }
-
-                    // Conectar imagen de Caja x12
-                    const cajaX12Img = document.getElementById('cajaX12Img');
-                    if (cajaX12Img) {
-                        cajaX12Img.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            if (typeof openQuickView === 'function' && typeof detallesProductsData !== 'undefined') {
-                                openQuickView('caja-x12', detallesProductsData);
-                            }
-                        });
-                    }
-
-                });
-            </script>
-
-            <script src="../js/contact-fab.js"></script>
-
-            <!-- Scripts del carrito -->
-            <script src="../js/cart-manager.js"></script>
-            <script src="../js/cart-ui.js"></script>
-
-</body>
-
-</html>
+<body id="arriba">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="announcement">
+<div class="container"><span>Hecho a mano en Medellín · Desde 2022</span>
+<a href="inicio.html#como-pedir">Un momento especial empieza con tiempo <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+<header class="site-header">
+<div class="container nav-inner">
+<a class="brand" href="inicio.html" aria-label="Lauren Repostería, inicio">
+<img src="../assets/brand/lauren-logo-lilac.svg" alt="Lauren · Bocado de alegría" width="300" height="180" class="" fetchpriority="high" decoding="async">
+</a>
+<nav class="nav-links" aria-label="Navegación principal">
+<a href="inicio.html">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html" aria-current="page">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+</nav>
+<div class="nav-actions">
+<button type="button" class="cart-trigger" data-open-cart aria-label="Abrir pedido" aria-haspopup="dialog"><span data-icon="bag" aria-hidden="true"></span><span class="cart-label">Tu pedido</span><span class="cart-count" data-cart-count>0</span>
+</button>
+<button type="button" class="icon-button menu-trigger" id="menuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav"><span data-icon="menu" aria-hidden="true"></span>
+</button>
+</div>
+</div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden>
+<a href="inicio.html">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html" aria-current="page">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+<a href="inicio.html#como-pedir">Cómo pedir <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</nav>
+</header>
+<main id="contenido">
+<section class="category-hero">
+<div class="container">
+<nav class="breadcrumbs" aria-label="Ruta de navegación">
+<a href="inicio.html">Inicio</a><span aria-hidden="true">/</span><span aria-current="page">Alfajores</span>
+</nav>
+<div class="category-hero-grid">
+<div class="category-copy">
+<p class="eyebrow">Maicena, arequipe y mucho cariño</p>
+<h1>Pequeños bocados.<br><em>Grandes sonrisas.</em>
+</h1>
+<p>Suaves, artesanales y generosos en arequipe. Para compartir, regalar o quedarte con uno más.</p>
+<a class="btn " href="#catalogo">Explorar la colección <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+<div class="category-note"><span data-icon="heart" aria-hidden="true"></span>Hecho a mano, a tu manera.</div>
+</div>
+<div class="category-art">
+<img loading="eager" sizes="(max-width: 600px) 54vw, (max-width: 1280px) 26vw, 320px" srcset="../assets/propuestas-fotograficas/responsive/torta-alfajor-320.webp 320w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-640.webp 640w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-960.webp 960w, ../assets/propuestas-fotograficas/torta-alfajor.webp 1122w" src="../assets/propuestas-fotograficas/torta-alfajor.webp" alt="Alfajores, creación artesanal de Lauren" width="720" height="900" class="" fetchpriority="high" decoding="async">
+<img fetchpriority="auto" sizes="(max-width: 600px) 54vw, (max-width: 1280px) 26vw, 320px" srcset="../assets/propuestas-fotograficas/responsive/caja-x6-320.webp 320w, ../assets/propuestas-fotograficas/responsive/caja-x6-640.webp 640w, ../assets/propuestas-fotograficas/responsive/caja-x6-960.webp 960w, ../assets/propuestas-fotograficas/caja-x6.webp 1122w" src="../assets/propuestas-fotograficas/caja-x6.webp" alt="Otra creación de la colección Alfajores" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+</div>
+</div>
+</section>
+<section class="section catalog-section" id="catalogo" data-catalog-section>
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">Nuestra colección</p>
+<h2>Siempre hay espacio<br>para <em>un alfajor.</em>
+</h2>
+</div>
+</div>
+<div class="catalog-toolbar">
+<div class="filters" role="group" aria-label="Filtrar productos">
+<button class="filter" type="button" data-filter="all" aria-pressed="true">Todos</button>
+<button class="filter" type="button" data-filter="cajas" aria-pressed="false">Cajas y minis</button>
+<button class="filter" type="button" data-filter="especiales" aria-pressed="false">Especiales</button>
+</div>
+<label class="search-field"><span data-icon="search" aria-hidden="true"></span><span class="visually-hidden">Buscar en esta colección</span>
+<input type="search" placeholder="Busca tu favorito" data-product-search>
+</label>
+</div>
+<p class="result-count" role="status" data-result-count>
+</p>
+<div class="product-grid " data-products="caja-x6,caja-x12,vaso-minis,torta-alfajor,alfajor-individual,alfajor-personalizado">
+</div>
+<div class="empty-results" data-empty-results hidden>
+<h3>Aún no encontramos ese antojo.</h3>
+<p>Prueba con otro nombre o descubre toda la colección.</p>
+<button class="btn btn-secondary" type="button" data-reset-filters>Ver toda la colección</button>
+</div>
+<div class="catalog-help">
+<p>Precios en pesos colombianos. Elige una creación para ver sus opciones y el valor de tu presentación.</p>
+<a class="text-link" href="inicio.html#como-pedir">Cómo hacer tu pedido <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+</section>
+<section class="category-banner">
+<div class="container">
+<div>
+<h2>Un detalle con tu propia historia.</h2>
+<p>Personalizamos alfajores para cumpleaños, bodas y ocasiones especiales.</p>
+</div>
+<a class="btn " href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Quisiera%20una%20creaci%C3%B3n%20personalizada.%20%C2%BFMe%20ayudas%3F" target="_blank" rel="noopener noreferrer">Cuéntanos tu idea <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+</section>
+<section class="section" id="inspiracion">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">El álbum de Lauren</p>
+<h2>Ideas que se vuelven <em>dulces.</em>
+</h2>
+</div>
+<p>Diseños para acompañar tu celebración. Cada pieza se decora a mano.</p>
+</div>
+<div class="gallery-grid" data-gallery="alfajores">
+</div>
+<div class="gallery-more">
+<button class="btn btn-secondary" type="button" data-gallery-more>Ver más creaciones <span data-icon="plus" aria-hidden="true"></span>
+</button>
+</div>
+</div>
+</section>
+<section class="section faq-section" id="preguntas">
+<div class="container faq-grid">
+<div class="faq-copy">
+<p class="eyebrow">Antes de tu primer bocado</p>
+<h2>Todo claro.<br><em>Todo más dulce.</em>
+</h2>
+<p>Los pequeños detalles también importan al hacer tu pedido.</p>
+<a class="text-link" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20pregunta%20sobre%20mi%20pedido." target="_blank" rel="noopener noreferrer">Te ayudamos por WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div>
+<details class="faq-item">
+<summary>¿Con cuánto tiempo debo hacer mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Hazlo con al menos 1 día de anticipación. La disponibilidad depende de la fecha y del diseño; la confirmamos contigo durante la asesoría.</p>
+</details>
+<details class="faq-item">
+<summary>¿Puedo personalizar mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Sí. Puedes elegir las opciones disponibles en cada producto y escribir tu mensaje. Si tienes otra idea, compártela por WhatsApp: definimos juntos el diseño y su valor.</p>
+</details>
+<details class="faq-item">
+<summary>¿Cuál es el mínimo para alfajores individuales?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Se venden desde 6 unidades de la misma referencia o tamaño, empacadas en bolsas. Las cajas tienen las cantidades indicadas en cada presentación.</p>
+</details>
+<details class="faq-item">
+<summary>¿Cómo confirmo la entrega y el pago?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Arma tu pedido y abre el resumen en WhatsApp. Allí coordinamos la fecha, la entrega y la forma de pago. Agregar productos al pedido no confirma una reserva.</p>
+</details>
+<details class="faq-item">
+<summary>¿Mi producto será igual a la fotografía?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Cada creación se hace a mano. Las imágenes son referencias y pueden existir pequeñas variaciones en los acabados y colores.</p>
+</details>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="footer-top">
+<h2>Hagamos de ese momento<br><em>un dulce recuerdo.</em>
+</h2>
+<a class="btn btn-light" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20idea%20para%20un%20momento%20especial.%20%C2%BFMe%20ayudas%3F" target="_blank" rel="noopener noreferrer">Hablemos de tu idea <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-main">
+<div class="footer-brand">
+<img src="../assets/brand/lauren-logo-light.svg" alt="Lauren Repostería" width="300" height="180" class="" loading="eager" decoding="async">
+<p>Un bocado de alegría.<br>Hecho a mano, pensado para ti.</p>
+</div>
+<nav class="footer-group" aria-label="Catálogo en el pie de página">
+<h3>Descubre</h3>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles especiales</a>
+</nav>
+<div class="footer-group">
+<h3>Sigamos cerca</h3>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer">Instagram <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer">TikTok <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer">WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-group">
+<h3>Estamos para ti</h3>
+<p>Medellín, Colombia</p>
+<p>Lunes a sábado<br>9:00 a. m. — 6:00 p. m.</p>
+<a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
+<a href="inicio.html#como-pedir">Cómo hacer tu pedido</a>
+</div>
+</div>
+<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería. Todos los derechos reservados.</span><span>Bocado de alegría, desde 2022.</span>
+<a href="#arriba">Volver arriba <span class="back-to-top" data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+</footer>
+<a class="contact-fab" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20%C2%BFMe%20ayudas%20con%20mi%20pedido%3F" target="_blank" rel="noopener noreferrer" aria-label="Hablar con Lauren por WhatsApp"><span data-icon="chat" aria-hidden="true"></span>
+</a>
+<dialog id="productDialog" class="product-dialog" aria-labelledby="productTitle">
+</dialog>
+<dialog id="cartDialog" class="cart-dialog" aria-labelledby="cartTitle">
+</dialog>
+<dialog id="lightboxDialog" class="lightbox-dialog" aria-labelledby="lightboxTitle">
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+</div>
+<noscript>
+<div class="container section">
+<p>Para personalizar productos y armar tu pedido, activa JavaScript. También puedes consultar nuestro catálogo por <a class="text-link" href="https://wa.me/573104442796">WhatsApp: +57 310 444 2796</a>.</p>
+</div>
+</noscript>
+</body></html>

@@ -1,84 +1,32 @@
 # Estructura del proyecto
 
-Sitio estático sin build: se sirve tal cual desde GitHub Pages. No hay bundler,
-transpilador ni dependencias de `node_modules` en runtime. Node solo se usa para
-las herramientas locales de `scripts/`.
-
-## Árbol de carpetas
+El sitio se sirve directamente, sin bundler ni dependencias en runtime.
 
 ```text
-LaurenReposteria/
-├── index.html              # Entrada raíz: redirige a html/inicio.html
-├── 404.html                # Página de error personalizada (GitHub Pages la sirve automáticamente)
-├── robots.txt              # Directivas de rastreo + referencia al sitemap
-├── sitemap.xml             # Mapa de las 5 páginas públicas
-├── CNAME                   # Dominio personalizado (laurenreposteria.com)
-│
-├── html/                   # Páginas del sitio
-│   ├── inicio.html            # Portada
-│   ├── tortas.html            # Configurador de tortas personalizadas
-│   ├── alfajores.html         # Catálogo de alfajores
-│   ├── brownies-galletas.html # Catálogo de brownies y galletas
-│   ├── detalles.html          # Cajas y detalles especiales
-│   └── tabla-productos.html   # Editor interno del catálogo (no indexado)
-│
-├── css/                    # Estilos (ver docs/06-guia-de-estilos.md)
-│   ├── tokens.css             # Design tokens: única fuente de color, espaciado, sombras, etc.
-│   ├── glass-nav.css          # Barra de navegación superior (glassmorphism)
-│   ├── header.css             # Cabecera / hero por módulo
-│   ├── tortas-styles.css      # Base visual compartida por las páginas de producto
-│   ├── inicio-styles.css      # Específico de la portada
-│   ├── quick-view-modal.css   # Modal de vista rápida de producto
-│   ├── cart.css               # Panel del carrito
-│   ├── cart-button-styles.css # Botón flotante del carrito
-│   ├── luxury-footer.css      # Pie de página (escritorio)
-│   ├── footer-mobile.css      # Ajustes del pie en móvil
-│   ├── mobile-fixes.css       # Correcciones responsive transversales
-│   └── hide-modal.css         # Utilidades de visibilidad de modales
-│
-├── js/                     # Lógica de cliente (ver docs/04-componentes.md)
-│   ├── catalog-data.js        # Fuente única de productos, precios e imágenes
-│   ├── tortas-data.js         # Datos del configurador de tortas
-│   ├── alfajores-data.js      # Datos de alfajores
-│   ├── quick-view-modal.js    # Modal de vista rápida (sistema vigente)
-│   ├── modal-handler.js       # Orquestación de apertura/cierre de modales
-│   ├── product-modal-simple.js# Modal simple (legado, en revisión)
-│   ├── cart-manager.js        # Estado del carrito + persistencia en localStorage
-│   ├── cart-ui.js             # Interfaz del carrito
-│   ├── contact-fab.js         # Botón flotante de contacto y menú
-│   ├── tortas-script.js       # Interacciones de la página de tortas
-│   └── performance-optimizer.js # Carga diferida de imágenes/videos
-│
-├── assets/
-│   └── optimized/          # ÚNICO origen de media en producción (WebP + MP4)
-│       └── asset-map.json     # Manifiesto generado por el pipeline de optimización
-│
-├── scripts/                # Herramientas locales (Node, no se despliegan en runtime)
-│   ├── optimize-assets.mjs    # Genera assets/optimized desde las fuentes locales
-│   ├── apply-optimized-assets.mjs # Reescribe referencias hacia assets/optimized
-│   └── dev-server.mjs         # Servidor estático local con soporte de Range para video
-│
-├── docs/                   # Esta documentación
-├── Guias/                  # Guía de mantenimiento operativa
-├── README.md
-└── PROBLEMAS-PENDIENTES.md # Estado técnico y riesgos abiertos
+index.html / 404.html             Entrada y error con identidad Lauren
+robots.txt / sitemap.xml / CNAME  Descubrimiento y hosting
+html/                            Inicio y cuatro colecciones
+css/tokens.css                   Colores, fuentes, espacios y movimiento
+css/site.css                     Base, navegación, portada y pie
+css/catalog.css                  Colecciones, filtros y galerías
+css/dialogs.css                  Producto, pedido y ampliación de fotografías
+css/error.css                    Entradas de error
+js/catalog-data.js               Catálogo único
+js/catalog-model.js              Precios, opciones y validación
+js/brand-icons.js / ui.js         Sistema compartido
+js/cart-manager.js / cart-ui.js   Estado y presentación del pedido
+js/quick-view-modal.js            Configurador de producto
+js/gallery-data.js / site.js      Fotografías e interacción del sitio
+js/image-variants.js             Anchos de las fotos para srcset (generado)
+assets/brand/                    Logotipos, sello e isotipo SVG
+assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
+assets/optimized/                Video de la historia, su poster y adornos de detalles
+assets/favicon.svg               Marca vectorial de la pestaña
+scripts/                         Servidor local y copias responsive
+tests/catalog.test.mjs            Pruebas de lógica (Node)
+docs/ / Guias/                   Documentación y mantenimiento
 ```
 
-## Qué se despliega y qué no
+Las páginas de `html/` usan rutas relativas `../assets/`. La página 404 usa rutas desde la raíz para funcionar con direcciones inexistentes de cualquier profundidad. El repositorio contiene solo los archivos que usa la web; `._*`, `.DS_Store` y `tmp/` están ignorados por Git.
 
-Solo lo versionado en git llega a GitHub Pages. Están deliberadamente fuera del
-deploy (ver `.gitignore`):
-
-- **Fuentes de media sin optimizar** (`assets/imagenes-*`, `media-fuente/`): material
-  pesado que se conserva local para regenerar `assets/optimized`.
-- **Masters de video** (`*.mov` en `media-fuente/`).
-- Archivos de sistema (`.DS_Store`, `._*`), zips de branding y demos locales.
-
-En producción **todas** las referencias de imagen y video apuntan a
-`assets/optimized/…`. Nunca se referencia una fuente pesada en runtime.
-
-## Convención de rutas
-
-- Las páginas viven en `html/`, por lo que referencian assets con `../assets/optimized/…`.
-- `index.html`, `404.html`, `robots.txt` y `sitemap.xml` viven en la raíz y usan
-  rutas absolutas desde la raíz del dominio (`/assets/optimized/…`).
+Añadir una regla en el componente responsable; no crear otra capa de parches.

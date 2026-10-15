@@ -1,64 +1,18 @@
 # Seguridad
 
-Al ser un sitio estático sin backend ni datos de usuario en servidor, la
-superficie de ataque es pequeña. Aun así se aplican prácticas defensivas.
+Catálogo público, sin autenticación, base de datos ni pasarela de pago. El pedido permanece en el navegador. WhatsApp recibe el resumen cuando el visitante abre el enlace y decide enviarlo.
 
-## Modelo de amenazas
+## Controles implementados
 
-| Vector | Riesgo | Estado |
-| --- | --- | --- |
-| XSS persistente vía `localStorage` del carrito | Medio | **Mitigado** |
-| Inyección en HTML dinámico de modales | Bajo (datos de catálogo confiables) | Vigilado |
-| Enlaces externos (`target="_blank"`) | Bajo | `rel="noopener noreferrer"` |
-| Credenciales/API keys en el frontend | — | No existen |
-| Inyección en el mensaje de WhatsApp | Bajo | `encodeURIComponent` |
+- `LaurenUI.escape` protege todo texto dinámico en producto, pedido, galería. Los mensajes escritos se muestran como texto, no como HTML.
+- Las imágenes dinámicas se limitan a rutas locales de `assets/optimized` mediante `imagePath`.
+- Al leer localStorage se valida estructura, opciones, campos y cantidades. Identidad y precios se derivan del catálogo vigente; un precio almacenado no es una fuente de verdad.
+- El mensaje de WhatsApp se codifica con `encodeURIComponent`. Los enlaces externos usan `noopener noreferrer`.
+- Política CSP en las páginas: scripts locales, estilos locales/Google Fonts, fuentes del proveedor, imágenes locales/data y video local. Sin objetos embebidos ni formularios enviados a un servidor.
+- Servidor local ligado a loopback, métodos GET/HEAD, MIME explícitos, `nosniff`, rechazo de rutas ocultas/fuera del proyecto y rangos inválidos. No usarlo como servidor público.
 
-## XSS en el carrito (mitigado)
+## Verificación y límites
 
-El carrito se guarda en `localStorage` y se vuelve a renderizar en cada carga. La
-**personalización** es texto libre que escribe el usuario. Sin escape, un valor
-como `"><img src=x onerror=…>` se ejecutaría al renderizar el carrito (self-XSS
-persistente) y, como mínimo, rompería la interfaz.
+Las pruebas cubren texto con HTML, rutas de imagen peligrosas, precios/nombres guardados manipulados, cantidades inválidas, JSON corrupto, almacenamiento bloqueado y estructura del resumen. Se comprobó en la UI que una personalización como `<b>Feliz día</b>` permanece literal.
 
-**Mitigación** (`js/cart-ui.js`): función `escapeHtml()` que se aplica a todos
-los valores dinámicos antes de insertarlos con `innerHTML` — nombre, imagen,
-opciones y personalización. Verificado inyectando payloads: se renderizan como
-texto inerte, sin ejecución.
-
-```js
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-```
-
-Además, `CartManager.loadCart()` valida la forma de los datos leídos de
-`localStorage` (arreglo de ítems bien formados), tolerando corrupción o
-manipulación.
-
-## HTML dinámico de modales
-
-Los modales de producto (`quick-view-modal.js`, `product-modal-simple.js`)
-renderizan datos del **catálogo**, controlados por el desarrollador y no por el
-usuario, por lo que el riesgo de XSS es bajo. Se recomienda, como refuerzo,
-aplicar el mismo `escapeHtml` si en el futuro el catálogo llegara a incorporar
-contenido de terceros.
-
-## Enlaces externos
-
-Todos los `target="_blank"` (WhatsApp, Instagram, TikTok) usan
-`rel="noopener noreferrer"` para evitar `window.opener` hijacking y fuga de
-referrer.
-
-## Datos sensibles
-
-No hay claves de API, tokens ni secretos en el frontend. El único dato de negocio
-expuesto es el número de WhatsApp público y las redes sociales, que son
-intencionalmente públicos.
-
-## Recomendaciones futuras
-
-- Añadir una **Content-Security-Policy** (vía `<meta http-equiv>` o cabeceras del
-  hosting) para restringir orígenes de scripts/estilos.
-- Considerar Subresource Integrity si se añadieran scripts de terceros.
+Estos controles protegen la experiencia del catálogo. El frontend nunca autoriza un cobro: el negocio confirma disponibilidad y valor final. No añadir secretos ni datos financieros al catálogo o al almacenamiento del pedido.

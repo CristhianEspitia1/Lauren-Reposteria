@@ -1,515 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lauren Repostería | Tortas, Alfajores, Brownies y Más</title>
-    <link rel="canonical" href="https://laurenreposteria.com/html/inicio.html">
-    <link rel="icon" type="image/webp" href="../assets/optimized/logos/logos-lauren-png-13.webp">
-    <!-- Fuentes: Playfair Display (titulos) + Inter (texto) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description"
-        content="Repostería artesanal en Colombia. Tortas personalizadas, alfajores, brownies, galletas y detalles especiales. Endulza tus momentos con Lauren, bocado de alegría desde 2022.">
-    <meta name="keywords"
-        content="repostería, tortas personalizadas, alfajores, brownies, galletas, postres, Colombia, Lauren, bocado de alegría">
-    <meta name="author" content="Lauren Repostería">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Lauren Repostería">
-    <meta property="og:description"
-        content="Repostería artesanal. Tortas personalizadas, alfajores, brownies y más. Endulza tus momentos especiales.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Lauren Repostería">
-    <meta property="og:locale" content="es_CO">
-    <meta property="og:url" content="https://laurenreposteria.com/html/inicio.html">
-    <meta property="og:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Lauren Repostería | Tortas, Alfajores, Brownies y Más">
-    <meta name="twitter:description" content="Repostería artesanal en Colombia. Tortas personalizadas, alfajores, brownies, galletas y detalles especiales. Endulza tus momentos con Lauren, bocado de alegría desde 2022.">
-    <meta name="twitter:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/glass-nav.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/tortas-styles.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/inicio-styles.css">
-    <link rel="stylesheet" href="../css/cart.css">
-    <link rel="stylesheet" href="../css/mobile-fixes.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/footer-mobile.css">
-    <link rel="stylesheet" href="../css/hide-modal.css">
-    <link rel="stylesheet" href="../css/luxury-footer.css">
-
-    <!-- Datos estructurados para buscadores (schema.org) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Bakery",
-        "name": "Lauren Repostería",
-        "description": "Repostería artesanal en Medellín, Colombia. Tortas personalizadas, alfajores, brownies, galletas y detalles especiales.",
-        "image": "https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp",
-        "logo": "https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-13.webp",
-        "url": "https://laurenreposteria.com/",
-        "telephone": "+573104442796",
-        "email": "reposterialauren@gmail.com",
-        "priceRange": "$$",
-        "servesCuisine": "Repostería",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Medellín",
-            "addressCountry": "CO"
-        },
-        "sameAs": [
-            "https://instagram.com/laurenreposteria22",
-            "https://www.tiktok.com/@laurenreposteria"
-        ]
-    }
-    </script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f9f5ec">
+<title>Un bocado de alegría | Lauren Repostería</title>
+<meta name="description" content="Repostería artesanal en Medellín. Tortas personalizadas, alfajores, brownies, galletas y detalles. Elige tus favoritos y haz tu pedido por WhatsApp.">
+<link rel="canonical" href="https://laurenreposteria.com/html/inicio.html">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/catalog.css">
+<link rel="stylesheet" href="../css/dialogs.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lauren Repostería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Un bocado de alegría | Lauren Repostería">
+<meta property="og:description" content="Repostería artesanal en Medellín. Tortas personalizadas, alfajores, brownies, galletas y detalles. Elige tus favoritos y haz tu pedido por WhatsApp.">
+<meta property="og:url" content="https://laurenreposteria.com/html/inicio.html">
+<meta property="og:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Un bocado de alegría | Lauren Repostería">
+<meta name="twitter:description" content="Repostería artesanal en Medellín. Tortas personalizadas, alfajores, brownies, galletas y detalles. Elige tus favoritos y haz tu pedido por WhatsApp.">
+<meta name="twitter:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp">
+<script src="../js/catalog-data.js" defer>
+</script>
+<script src="../js/catalog-model.js" defer>
+</script>
+<script src="../js/brand-icons.js" defer>
+</script>
+<script src="../js/image-variants.js" defer></script>
+<script src="../js/ui.js" defer>
+</script>
+<script src="../js/cart-manager.js" defer>
+</script>
+<script src="../js/quick-view-modal.js" defer>
+</script>
+<script src="../js/cart-ui.js" defer>
+</script>
+<script src="../js/gallery-data.js" defer>
+</script>
+<script src="../js/site.js" defer>
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Bakery", "name": "Lauren Repostería", "description": "Repostería artesanal en Medellín. Tortas, alfajores, brownies, galletas y detalles personalizados.", "url": "https://laurenreposteria.com/", "image": "https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp", "telephone": "+573104442796", "email": "reposterialauren@gmail.com", "address": {"@type": "PostalAddress", "addressLocality": "Medellín", "addressCountry": "CO"}, "sameAs": ["https://instagram.com/laurenreposteria22", "https://www.tiktok.com/@laurenreposteria"]}</script>
 </head>
-
-<body>
-    <h1 class="visually-hidden">Lauren Repostería artesanal en Medellín</h1>
-    <!-- Glass Navigation Header -->
-    <nav class="glass-nav">
-        <div class="glass-nav-container">
-            <div class="glass-nav-content">
-                <!-- Menú Desplegable (izquierda) -->
-                <div class="nav-menu-wrapper">
-                    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mainNavMenu">Menú</button>
-                    <div class="nav-menu-dropdown" id="mainNavMenu">
-                        <a href="inicio.html">Inicio</a>
-                        <a href="tortas.html">Tortas</a>
-                        <a href="alfajores.html">Alfajores</a>
-                        <a href="brownies-galletas.html">Brownies y Galletas</a>
-                        <a href="detalles.html">Detalles</a>
-                    </div>
-                </div>
-
-                <!-- Logo Centrado -->
-                <div class="nav-logo-wrapper">
-                    <a href="inicio.html" class="nav-logo">Lauren</a>
-                </div>
-
-                <!-- Ícono Carrito (derecha) -->
-                <button class="nav-icon" type="button" aria-label="Abrir carrito de compras">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                    <span class="cart-badge">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-    <!-- Overlay oscuro del carrito -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-
-    <!-- Panel lateral del carrito -->
-    <div class="cart-panel" id="cartPanel">
-        <div class="cart-header">
-            <div class="cart-title-wrapper">
-                <div class="cart-icon-bg">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="cart-title">Mi Carrito</h2>
-                    <p class="cart-count">0 productos</p>
-                </div>
-            </div>
-            <button class="cart-close-btn" type="button" aria-label="Cerrar carrito">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-            </button>
-        </div>
-        <div class="cart-content">
-            <div class="cart-items"></div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span class="cart-total-label">Total:</span>
-                <span class="cart-total-value">$0</span>
-            </div>
-            <button class="cart-checkout-btn" type="button">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="currentColor" />
-                </svg>
-                Enviar pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-
-    <!-- SECCIÓN Hero: Bienvenida -->
-    <section class="hero-main-carousel hero-main-carousel--inicio">
-        <div class="carousel-wrapper">
-            <video class="hero-background-video" preload="metadata" autoplay muted loop playsinline
-                poster="../assets/optimized/imagenes-tortas/06-galeria-vintage/gemini-generated-image-3cka7v3cka7v3cka.webp">
-                <source src="../assets/optimized/imagenes-inicio/video-hero-mobile.mp4" type="video/mp4"
-                    media="(max-width: 768px)">
-                <source src="../assets/optimized/imagenes-inicio/video-hero.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-content-box">
-                <img src="../assets/optimized/logos/logos-lauren-png-59.webp" alt="Lauren Logo" class="hero-logo-translucent">
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Introducción -->
-    <section class="intro-section-modern">
-        <div class="container">
-            <div class="intro-content-wrapper">
-                <div class="intro-icon-container">
-                    <div class="intro-icon-circle">
-                        <img src="../assets/optimized/logos/logos-lauren-png-13.webp"
-                            alt="Logo Lauren Repostería - Bocado de Alegría" class="intro-main-icon-img" loading="lazy">
-                    </div>
-                </div>
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">BIENVENIDO A LAUREN</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant-center">Bocado de Alegría</p>
-                <p class="intro-text-modern">Descubre nuestra selección de productos artesanales hechos con amor. Desde
-                    tortas personalizadas hasta detalles especiales, cada creación está diseñada para hacer tus momentos
-                    únicos e inolvidables.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Categorías de Productos -->
-    <section class="cakes-gallery-section">
-        <div class="container">
-            <div class="section-header-decorated">
-                <div class="section-decoration-left"></div>
-                <div class="section-title-wrapper">
-                    <h2 class="section-title-main-center">NUESTROS PRODUCTOS</h2>
-                </div>
-                <div class="section-decoration-right"></div>
-            </div>
-            <p class="section-subtitle-elegant-center">Explora cada categoría y encuentra tu favorito</p>
-
-            <!-- Primera fila: 2 tarjetas -->
-            <div class="products-row row-top">
-                <a href="tortas.html" class="product-card product-card--tortas"
-                    style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="3500" loading="lazy"
-                        aria-label="Video de tortas personalizadas"
-                        poster="../assets/optimized/imagenes-tortas/03-sabores/chocolate.webp">
-                        <source data-src="../assets/optimized/imagenes-inicio/tarjeta-tortas.mp4" type="video/mp4">
-                    </video>
-                    <div class="product-card-overlay">
-                        <div class="card-cta">
-                            <span class="btn-peach" aria-label="Ver catálogo de tortas">Tortas</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="alfajores.html" class="product-card"
-                    style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="5000" loading="lazy"
-                        aria-label="Video de alfajores artesanales"
-                        poster="../assets/optimized/imagenes-alfajores/alfajores-x12.webp">
-                        <source data-src="../assets/optimized/imagenes-inicio/tarjeta-alfajores.mp4" type="video/mp4">
-                    </video>
-                    <div class="product-card-overlay">
-                        <div class="card-cta">
-                            <span class="btn-peach" aria-label="Ver catálogo de alfajores">Alfajores</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Segunda fila: 3 tarjetas -->
-            <div class="products-row row-bottom">
-                <a href="brownies-galletas.html" class="product-card"
-                    style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="6500" loading="lazy"
-                        aria-label="Video de brownies"
-                        poster="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-individuales.webp">
-                        <source data-src="../assets/optimized/imagenes-inicio/tarjeta-brownies.mp4" type="video/mp4">
-                    </video>
-                    <div class="product-card-overlay">
-                        <div class="card-cta">
-                            <span class="btn-peach" aria-label="Ver catálogo de brownies">Brownies</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="brownies-galletas.html" class="product-card"
-                    style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="8000" loading="lazy"
-                        aria-label="Video de galletas decoradas"
-                        poster="../assets/optimized/imagenes-brownies-galletas/galletas/1.webp">
-                        <source data-src="../assets/optimized/imagenes-inicio/tarjeta-galletas.mp4" type="video/mp4">
-                    </video>
-                    <div class="product-card-overlay">
-                        <div class="card-cta">
-                            <span class="btn-peach" aria-label="Ver catálogo de galletas">Galletas</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="detalles.html" class="product-card"
-                    style="cursor: pointer; text-decoration: none; color: inherit;">
-                    <video class="product-card-video" autoplay muted loop playsinline preload="none" data-lazy-video data-video-delay="9500" loading="lazy"
-                        aria-label="Video de detalles especiales"
-                        poster="../assets/optimized/imagenes-detalles/productos/golden/detalle-golden.webp">
-                        <source data-src="../assets/optimized/imagenes-inicio/tarjeta-detalle.mp4" type="video/mp4">
-                    </video>
-                    <div class="product-card-overlay">
-                        <div class="card-cta">
-                            <span class="btn-peach" aria-label="Ver catálogo de detalles">Detalles</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Nuestra Historia CON VIDEO -->
-    <section class="intro-section-modern our-story-section" style="background: #f9f6f2;">
-        <div class="container">
-            <div class="our-story-grid"
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
-                <div class="our-story-video-container">
-                    <video class="our-story-video" data-lazy-video
-                        style="width: 100%; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" autoplay muted
-                        loop playsinline preload="none" controls
-                        aria-label="Video con la historia de Lauren Repostería">
-                        <source data-src="../assets/optimized/imagenes-inicio/nuestra-historia.mp4" type="video/mp4">
-                        Tu navegador no soporta la reproducción de videos.
-                    </video>
-                </div>
-                <div>
-                    <div class="section-header-decorated">
-                        <div class="section-decoration-left"></div>
-                        <div class="section-title-wrapper">
-                            <h2 class="section-title-elegant">NUESTRA HISTORIA</h2>
-                        </div>
-                        <div class="section-decoration-right"></div>
-                    </div>
-                    <p class="intro-text-modern" style="margin-top: 2rem;">
-                        En Lauren Repostería, estamos dedicados a convertir tus sueños más dulces en realidad.
-                        Con pasión, creatividad y atención al detalle, elaboramos cada creación con amor.
-                        Cada producto es una obra de arte única, diseñada especialmente para tu celebración.
-                        Tu felicidad es nuestro ingrediente más importante.
-                    </p>
-                    <div style="text-align: center; margin-top: 2.5rem;">
-                        <p
-                            style="font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: #a08060; letter-spacing: 0.5px; margin-bottom: 0.3rem;">
-                            Con amor y dulzura,
-                        </p>
-                        <p
-                            style="font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: #5a3e2b; letter-spacing: 1px;">
-                            Equipo Lauren
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Información importante -->
-    <section class="important-info-section">
-        <div class="container">
-            <div class="info-header">
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">INFORMACIÓN IMPORTANTE</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Porque queremos que todo salga perfecto
-                </p>
-            </div>
-
-            <div class="info-cards-grid">
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/pedido.webp" alt="Icono de pedido anticipado"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Pedidos con Anticipación</h3>
-                        <p class="info-card-text">Para garantizar la calidad y frescura, realiza tu pedido con tiempo.
-                            Mínimo 1 día de anticipación. Consulta disponibilidad en la asesoría.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/disenos.webp"
-                                alt="Icono de diseños personalizados" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Personalización</h3>
-                        <p class="info-card-text">Personalizamos todos nuestros productos según tus necesidades. El
-                            valor se define durante la asesoría según el diseño.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/unica.webp"
-                                alt="Icono de producto artesanal único" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Producto Artesanal</h3>
-                        <p class="info-card-text">Cada producto es único y hecho a mano. Pueden existir pequeñas
-                            variaciones respecto a las referencias mostradas.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/letras.webp"
-                                alt="Icono de horario de atención" class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Horario de Atención</h3>
-                        <p class="info-card-text">Lunes a Sábado de 9:00 AM a 6:00 PM. Contáctanos por WhatsApp para
-                            asesoría personalizada.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Completo -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <footer class="luxury-footer">
-        <!-- Logo -->
-        <div class="footer-logo">
-            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/footer-logo.webp" alt="Lauren Repostería" loading="lazy" decoding="async">
-        </div>
-
-        <!-- Iconos de Redes Sociales con colores de marca -->
-        <div class="footer-social">
-            <!-- Instagram con gradiente característico -->
-            <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-                aria-label="Instagram">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="instagram-gradient-footer" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
-                        fill="url(#instagram-gradient-footer)" />
-                </svg>
-            </a>
-
-            <!-- WhatsApp verde característico -->
-            <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="#25D366" />
-                </svg>
-            </a>
-
-            <!-- TikTok negro característico -->
-            <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-                aria-label="TikTok">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"
-                        fill="#000000" />
-                </svg>
-            </a>
-        </div>
-
-        <!-- Línea Separadora -->
-        <div class="footer-divider"></div>
-
-        <!-- Copyright -->
-        <p class="footer-copyright">
-            © 2025 Lauren Repostería<br>
-            Creando momentos dulces y memorables desde 2022.<br>
-            Repostería artesanal con amor en cada detalle.<br>
-            Medellín, Colombia
-        </p>
-    </footer>
-
-    <!-- Botón Flotante de Contacto -->
-    <button class="contact-fab" id="contactFab" type="button" aria-label="Menú de contacto" aria-controls="contactMenu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-    </button>
-
-    <!-- Menú de Redes Sociales -->
-    <div class="contact-menu" id="contactMenu">
-        <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" class="social-fab whatsapp"
-            aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-            </svg>
-        </a>
-
-        <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-            class="social-fab instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
-        </a>
-
-        <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-            class="social-fab tiktok" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
-            </svg>
-        </a>
-    </div>
-
-    <!-- Scripts -->
-    <script src="../js/tortas-script.js"></script>
-    <script src="../js/performance-optimizer.js"></script>
-
-    <script src="../js/contact-fab.js"></script>
-
-    <!-- Scripts del carrito -->
-    <script src="../js/cart-manager.js"></script>
-    <script src="../js/cart-ui.js"></script>
-
-</body>
-
-</html>
+<body id="arriba">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="announcement">
+<div class="container"><span>Hecho a mano en Medellín · Desde 2022</span>
+<a href="inicio.html#como-pedir">Un momento especial empieza con tiempo <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+<header class="site-header">
+<div class="container nav-inner">
+<a class="brand" href="inicio.html" aria-label="Lauren Repostería, inicio">
+<img src="../assets/brand/lauren-logo-lilac.svg" alt="Lauren · Bocado de alegría" width="300" height="180" class="" fetchpriority="high" decoding="async">
+</a>
+<nav class="nav-links" aria-label="Navegación principal">
+<a href="inicio.html" aria-current="page">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+</nav>
+<div class="nav-actions">
+<button type="button" class="cart-trigger" data-open-cart aria-label="Abrir pedido" aria-haspopup="dialog"><span data-icon="bag" aria-hidden="true"></span><span class="cart-label">Tu pedido</span><span class="cart-count" data-cart-count>0</span>
+</button>
+<button type="button" class="icon-button menu-trigger" id="menuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav"><span data-icon="menu" aria-hidden="true"></span>
+</button>
+</div>
+</div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden>
+<a href="inicio.html" aria-current="page">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+<a href="inicio.html#como-pedir">Cómo pedir <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</nav>
+</header>
+<main id="contenido">
+<section class="home-hero">
+<div class="container hero-grid">
+<div class="hero-copy">
+<p class="eyebrow">Repostería artesanal · Medellín</p>
+<h1>La vida merece<br>un <em>bocado<br>de alegría.</em>
+</h1>
+<p>Tortas, alfajores y pequeños detalles hechos a mano para celebrar lo que más quieres.</p>
+<div class="hero-actions">
+<a class="btn " href="#colecciones">Encuentra tu antojo <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+<a class="text-link" href="tortas.html">Hagamos algo especial <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+<div class="hero-footnote"><span data-icon="heart" aria-hidden="true"></span>De nuestras manos a tus mejores momentos.</div>
+</div>
+<div class="hero-art">
+<figure class="hero-main">
+<img loading="eager" sizes="(max-width: 800px) 85vw, (max-width: 1280px) 44vw, 550px" srcset="../assets/propuestas-fotograficas/responsive/torta-vintage-320.webp 320w, ../assets/propuestas-fotograficas/responsive/torta-vintage-640.webp 640w, ../assets/propuestas-fotograficas/responsive/torta-vintage-960.webp 960w, ../assets/propuestas-fotograficas/torta-vintage.webp 1122w" src="../assets/propuestas-fotograficas/torta-vintage.webp" alt="Torta vintage crema, decorada con frutos rojos y un moño de satén" width="720" height="900" class="" fetchpriority="high" decoding="async">
+</figure>
+<div class="hero-seal">
+<img src="../assets/brand/lauren-sello-light.svg" alt="Bocado de alegría" width="110" height="110" class="" loading="eager" decoding="async">
+</div>
+<figure class="hero-inset">
+<img fetchpriority="auto" sizes="(max-width: 800px) 30vw, 185px" srcset="../assets/propuestas-fotograficas/responsive/galletas-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galletas-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galletas-960.webp 960w, ../assets/propuestas-fotograficas/galletas.webp 1122w" src="../assets/propuestas-fotograficas/galletas.webp" alt="Galletas artesanales con pistachos y chocolate blanco" width="720" height="900" class="" loading="eager" decoding="async"><figcaption>un pequeño antojo</figcaption>
+</figure>
+<p class="hero-caption">Hecho con amor <span>01 / Lauren</span>
+</p>
+</div>
+</div>
+</section>
+<div class="value-line">
+<div class="container"><span>Hecho a mano</span><i aria-hidden="true"></i><span>Preparado para ti</span><i aria-hidden="true"></i><span>Detalles que cuentan</span><i aria-hidden="true"></i><span>Desde Medellín, con amor</span>
+</div>
+</div>
+<section class="section" id="colecciones">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">Un antojo para cada momento</p>
+<h2>¿Qué te hace <em>sonreír?</em>
+</h2>
+</div>
+<p>Para celebrar en grande, compartir en pequeño o alegrarte el día.</p>
+</div>
+<div class="collection-grid">
+<a class="collection" href="tortas.html">
+<div class="collection-image">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 800px) 30vw, (max-width: 1280px) 18vw, 228px" srcset="../assets/propuestas-fotograficas/responsive/torta-vintage-320.webp 320w, ../assets/propuestas-fotograficas/responsive/torta-vintage-640.webp 640w, ../assets/propuestas-fotograficas/responsive/torta-vintage-960.webp 960w, ../assets/propuestas-fotograficas/torta-vintage.webp 1122w" src="../assets/propuestas-fotograficas/torta-vintage.webp" alt="Tortas de Lauren Repostería" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+<div class="collection-label">
+<h3><span data-icon="cake" aria-hidden="true"></span>Tortas</h3><span data-icon="diagonal" aria-hidden="true"></span>
+</div>
+<p>Tu celebración, a tu manera.</p>
+</a>
+<a class="collection" href="alfajores.html">
+<div class="collection-image">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 800px) 30vw, (max-width: 1280px) 18vw, 228px" srcset="../assets/propuestas-fotograficas/responsive/torta-alfajor-320.webp 320w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-640.webp 640w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-960.webp 960w, ../assets/propuestas-fotograficas/torta-alfajor.webp 1122w" src="../assets/propuestas-fotograficas/torta-alfajor.webp" alt="Alfajores de Lauren Repostería" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+<div class="collection-label">
+<h3><span data-icon="alfajor" aria-hidden="true"></span>Alfajores</h3><span data-icon="diagonal" aria-hidden="true"></span>
+</div>
+<p>Pequeños bocados de felicidad.</p>
+</a>
+<a class="collection" href="brownies-galletas.html#catalogo">
+<div class="collection-image">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 800px) 30vw, (max-width: 1280px) 18vw, 228px" srcset="../assets/propuestas-fotograficas/responsive/galeria-brownies-01-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galeria-brownies-01-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galeria-brownies-01-960.webp 960w, ../assets/propuestas-fotograficas/galeria-brownies-01.webp 1122w" src="../assets/propuestas-fotograficas/galeria-brownies-01.webp" alt="Brownies de Lauren Repostería" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+<div class="collection-label">
+<h3><span data-icon="brownie" aria-hidden="true"></span>Brownies</h3><span data-icon="diagonal" aria-hidden="true"></span>
+</div>
+<p>Chocolate que se hace querer.</p>
+</a>
+<a class="collection" href="brownies-galletas.html#galletas">
+<div class="collection-image">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 800px) 30vw, (max-width: 1280px) 18vw, 228px" srcset="../assets/propuestas-fotograficas/responsive/galletas-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galletas-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galletas-960.webp 960w, ../assets/propuestas-fotograficas/galletas.webp 1122w" src="../assets/propuestas-fotograficas/galletas.webp" alt="Galletas de Lauren Repostería" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+<div class="collection-label">
+<h3><span data-icon="cookie" aria-hidden="true"></span>Galletas</h3><span data-icon="diagonal" aria-hidden="true"></span>
+</div>
+<p>Un antojo recién descubierto.</p>
+</a>
+<a class="collection" href="detalles.html">
+<div class="collection-image">
+<img fetchpriority="low" sizes="(max-width: 600px) 90vw, (max-width: 800px) 30vw, (max-width: 1280px) 18vw, 228px" srcset="../assets/propuestas-fotograficas/responsive/detalle-golden-1-320.webp 320w, ../assets/propuestas-fotograficas/responsive/detalle-golden-1-640.webp 640w, ../assets/propuestas-fotograficas/responsive/detalle-golden-1-960.webp 960w, ../assets/propuestas-fotograficas/detalle-golden-1.webp 1122w" src="../assets/propuestas-fotograficas/detalle-golden-1.webp" alt="Detalles de Lauren Repostería" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+<div class="collection-label">
+<h3><span data-icon="gift" aria-hidden="true"></span>Detalles</h3><span data-icon="diagonal" aria-hidden="true"></span>
+</div>
+<p>Una forma dulce de decirlo.</p>
+</a>
+</div>
+</div>
+</section>
+<section class="section featured-section">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">Una selección para enamorarte</p>
+<h2>Pequeños grandes <em>favoritos.</em>
+</h2>
+</div>
+<a class="text-link" href="detalles.html">Encuentra más detalles <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+<div class="product-grid four-columns" data-products="torta-vintage,caja-x6,galletas,oso-pequeno">
+</div>
+</div>
+</section>
+<section class="section celebration-section">
+<div class="container celebration-grid">
+<div class="celebration-collage">
+<figure>
+<img fetchpriority="low" sizes="(max-width: 800px) 55vw, (max-width: 1280px) 35vw, 430px" srcset="../assets/propuestas-fotograficas/responsive/galeria-tortas-05-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galeria-tortas-05-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galeria-tortas-05-960.webp 960w, ../assets/propuestas-fotograficas/galeria-tortas-05.webp 1122w" src="../assets/propuestas-fotograficas/galeria-tortas-05.webp" alt="Torta vintage en forma de corazón con detalles lilas" width="720" height="900" class="" loading="eager" decoding="async"><figcaption>Tan única como tu celebración.</figcaption>
+</figure>
+<figure>
+<img fetchpriority="low" sizes="(max-width: 800px) 55vw, (max-width: 1280px) 35vw, 430px" srcset="../assets/propuestas-fotograficas/responsive/detalle-mix-1-320.webp 320w, ../assets/propuestas-fotograficas/responsive/detalle-mix-1-640.webp 640w, ../assets/propuestas-fotograficas/responsive/detalle-mix-1-960.webp 960w, ../assets/propuestas-fotograficas/detalle-mix-1.webp 1122w" src="../assets/propuestas-fotograficas/detalle-mix-1.webp" alt="Caja de regalo con iniciales, alfajores y galletas" width="720" height="900" class="" loading="eager" decoding="async"><figcaption>Tan especial como tú.</figcaption>
+</figure>
+</div>
+<div class="editorial-copy">
+<p class="eyebrow">Imagina. Celebra. Comparte.</p>
+<h2>Tú pones el motivo.<br>Nosotros,<br><em>el toque dulce.</em>
+</h2>
+<p>Un cumpleaños, un «te quiero» o simplemente porque sí. Elegimos cada sabor, color y detalle contigo para crear algo que se sienta tuyo.</p>
+<a class="btn " href="tortas.html">Diseñemos tu torta <span data-icon="arrow" aria-hidden="true"></span>
+</a><span class="signature">Con cariño, Lauren</span>
+</div>
+</div>
+</section>
+<section class="section process-section" id="como-pedir">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">De tu idea a la primera sonrisa</p>
+<h2>Pedir es así de <em>sencillo.</em>
+</h2>
+</div>
+<p>Todo comienza con un antojo. Nosotros te acompañamos con lo demás.</p>
+</div>
+<div class="steps">
+<article class="step"><span class="step-number">01</span><span class="step-illustration" data-icon="cake" aria-hidden="true"></span>
+<h3>Encuentra tu favorito</h3>
+<p>Recorre las colecciones y descubre ese detalle que va con tu momento.</p>
+</article>
+<article class="step"><span class="step-number">02</span><span class="step-illustration" data-icon="ribbon" aria-hidden="true"></span>
+<h3>Hazlo muy tuyo</h3>
+<p>Elige sabores, presentación y mensaje. Reúne todo en tu pedido y revisa el subtotal.</p>
+</article>
+<article class="step"><span class="step-number">03</span><span class="step-illustration" data-icon="gift" aria-hidden="true"></span>
+<h3>Lo hacemos realidad</h3>
+<p>Abre tu pedido en WhatsApp. Confirmamos disponibilidad, fecha y entrega contigo.</p>
+</article>
+</div>
+</div>
+</section>
+<section class="section story-section" id="nosotros">
+<div class="container story-grid">
+<div class="editorial-copy">
+<p class="eyebrow">El corazón de Lauren</p>
+<h2>Las cosas bonitas<br><em>se hacen con amor.</em>
+</h2>
+<p>Desde 2022, convertimos en repostería nuestra forma favorita de cuidar los detalles. Detrás de cada creación hay manos, tiempo y la ilusión de acompañarte en algo especial.</p>
+<p class="signature">Tu alegría es parte de nuestra receta.</p>
+<a class="text-link" href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer">Conoce más de nuestro día a día <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="story-media">
+<video id="storyVideo" data-src="../assets/optimized/imagenes-inicio/nuestra-historia.mp4" poster="../assets/optimized/imagenes-inicio/historia-poster.webp" preload="none" playsinline aria-hidden="true" aria-label="La historia de Lauren Repostería" width="854" height="480">
+</video>
+<div class="story-controls">
+<button class="video-control" type="button" data-video-control="storyVideo"><span data-icon="play" aria-hidden="true"></span>Escuchar nuestra historia</button><output id="videoTime" role="timer" aria-live="off" aria-label="Tiempo de reproducción">0:00</output>
+<button class="icon-button" id="videoSound" type="button" aria-label="Silenciar video"><span data-icon="sound" aria-hidden="true"></span>
+</button>
+<button class="icon-button" id="videoFullscreen" type="button" aria-label="Ampliar video"><span data-icon="expand" aria-hidden="true"></span>
+</button>
+</div>
+<label class="video-progress"><span class="visually-hidden">Avance del video</span>
+<input id="videoProgress" type="range" value="0" min="0" max="100" step="0.1" aria-valuetext="0:00">
+</label>
+</div>
+</div>
+</section>
+<section class="section faq-section" id="preguntas">
+<div class="container faq-grid">
+<div class="faq-copy">
+<p class="eyebrow">Antes de tu primer bocado</p>
+<h2>Todo claro.<br><em>Todo más dulce.</em>
+</h2>
+<p>Los pequeños detalles también importan al hacer tu pedido.</p>
+<a class="text-link" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20pregunta%20sobre%20mi%20pedido." target="_blank" rel="noopener noreferrer">Te ayudamos por WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div>
+<details class="faq-item">
+<summary>¿Con cuánto tiempo debo hacer mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Hazlo con al menos 1 día de anticipación. La disponibilidad depende de la fecha y del diseño; la confirmamos contigo durante la asesoría.</p>
+</details>
+<details class="faq-item">
+<summary>¿Puedo personalizar mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Sí. Puedes elegir las opciones disponibles en cada producto y escribir tu mensaje. Si tienes otra idea, compártela por WhatsApp: definimos juntos el diseño y su valor.</p>
+</details>
+<details class="faq-item">
+<summary>¿Cómo confirmo la entrega y el pago?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Arma tu pedido y abre el resumen en WhatsApp. Allí coordinamos la fecha, la entrega y la forma de pago. Agregar productos al pedido no confirma una reserva.</p>
+</details>
+<details class="faq-item">
+<summary>¿Mi producto será igual a la fotografía?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Cada creación se hace a mano. Las imágenes son referencias y pueden existir pequeñas variaciones en los acabados y colores.</p>
+</details>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="social-heading">
+<p class="eyebrow">Momentos que nos inspiran</p>
+<h2>Un poquito más de <em>Lauren.</em>
+</h2>
+<a class="text-link" href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer">@laurenreposteria22 <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="social-grid">
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer" aria-label="Conocer más creaciones de Lauren en Instagram">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 288px" srcset="../assets/propuestas-fotograficas/responsive/detalle-hbd-320.webp 320w, ../assets/propuestas-fotograficas/responsive/detalle-hbd-640.webp 640w, ../assets/propuestas-fotograficas/responsive/detalle-hbd-960.webp 960w, ../assets/propuestas-fotograficas/detalle-hbd.webp 1122w" src="../assets/propuestas-fotograficas/detalle-hbd.webp" alt="Detalle HBD" width="720" height="900" class="" loading="eager" decoding="async">
+</a>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer" aria-label="Conocer más creaciones de Lauren en Instagram">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 288px" srcset="../assets/propuestas-fotograficas/responsive/torta-alfajor-320.webp 320w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-640.webp 640w, ../assets/propuestas-fotograficas/responsive/torta-alfajor-960.webp 960w, ../assets/propuestas-fotograficas/torta-alfajor.webp 1122w" src="../assets/propuestas-fotograficas/torta-alfajor.webp" alt="Torta de Alfajor" width="720" height="900" class="" loading="eager" decoding="async">
+</a>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer" aria-label="Conocer más creaciones de Lauren en Instagram">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 288px" srcset="../assets/propuestas-fotograficas/responsive/alfajor-personalizado-320.webp 320w, ../assets/propuestas-fotograficas/responsive/alfajor-personalizado-640.webp 640w, ../assets/propuestas-fotograficas/responsive/alfajor-personalizado-960.webp 960w, ../assets/propuestas-fotograficas/alfajor-personalizado.webp 1122w" src="../assets/propuestas-fotograficas/alfajor-personalizado.webp" alt="Alfajores Personalizados" width="720" height="900" class="" loading="eager" decoding="async">
+</a>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer" aria-label="Conocer más creaciones de Lauren en Instagram">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 288px" srcset="../assets/propuestas-fotograficas/responsive/detalle-margarita-320.webp 320w, ../assets/propuestas-fotograficas/responsive/detalle-margarita-640.webp 640w, ../assets/propuestas-fotograficas/responsive/detalle-margarita-960.webp 960w, ../assets/propuestas-fotograficas/detalle-margarita.webp 1122w" src="../assets/propuestas-fotograficas/detalle-margarita.webp" alt="Detalle Margarita" width="720" height="900" class="" loading="eager" decoding="async">
+</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="footer-top">
+<h2>Hagamos de ese momento<br><em>un dulce recuerdo.</em>
+</h2>
+<a class="btn btn-light" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20idea%20para%20un%20momento%20especial.%20%C2%BFMe%20ayudas%3F" target="_blank" rel="noopener noreferrer">Hablemos de tu idea <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-main">
+<div class="footer-brand">
+<img src="../assets/brand/lauren-logo-light.svg" alt="Lauren Repostería" width="300" height="180" class="" loading="eager" decoding="async">
+<p>Un bocado de alegría.<br>Hecho a mano, pensado para ti.</p>
+</div>
+<nav class="footer-group" aria-label="Catálogo en el pie de página">
+<h3>Descubre</h3>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles especiales</a>
+</nav>
+<div class="footer-group">
+<h3>Sigamos cerca</h3>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer">Instagram <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer">TikTok <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer">WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-group">
+<h3>Estamos para ti</h3>
+<p>Medellín, Colombia</p>
+<p>Lunes a sábado<br>9:00 a. m. — 6:00 p. m.</p>
+<a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
+<a href="inicio.html#como-pedir">Cómo hacer tu pedido</a>
+</div>
+</div>
+<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería. Todos los derechos reservados.</span><span>Bocado de alegría, desde 2022.</span>
+<a href="#arriba">Volver arriba <span class="back-to-top" data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+</footer>
+<a class="contact-fab" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20%C2%BFMe%20ayudas%20con%20mi%20pedido%3F" target="_blank" rel="noopener noreferrer" aria-label="Hablar con Lauren por WhatsApp"><span data-icon="chat" aria-hidden="true"></span>
+</a>
+<dialog id="productDialog" class="product-dialog" aria-labelledby="productTitle">
+</dialog>
+<dialog id="cartDialog" class="cart-dialog" aria-labelledby="cartTitle">
+</dialog>
+<dialog id="lightboxDialog" class="lightbox-dialog" aria-labelledby="lightboxTitle">
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+</div>
+<noscript>
+<div class="container section">
+<p>Para personalizar productos y armar tu pedido, activa JavaScript. También puedes consultar nuestro catálogo por <a class="text-link" href="https://wa.me/573104442796">WhatsApp: +57 310 444 2796</a>.</p>
+</div>
+</noscript>
+</body></html>

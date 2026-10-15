@@ -1,69 +1,29 @@
 # Componentes
 
-## Módulos JavaScript
+Los scripts clásicos se cargan con `defer`, en el orden declarado en cada página. No requieren gestor de paquetes.
 
-Todos son scripts clásicos (no ES modules) que se cargan con `<script src>` y se
-comunican por objetos globales en `window`. El orden de carga importa: los datos
-y `cart-manager` deben cargarse antes que la UI que los consume.
-
-| Módulo | Rol | Global expuesto | Cargado por |
-| --- | --- | --- | --- |
-| `catalog-data.js` | Catálogo de productos (fuente principal) | `window.CATALOG…` | brownies-galletas, detalles, tabla-productos |
-| `tortas-data.js` | Datos del configurador de tortas | — | tortas |
-| `alfajores-data.js` | Datos de alfajores | — | alfajores |
-| `quick-view-modal.js` | Modal de vista rápida (único sistema de modal) | `window.openQuickView` | tortas, alfajores, brownies-galletas, detalles |
-| `cart-manager.js` | Estado del carrito + persistencia + WhatsApp | `window.cartManager` | todas menos tabla |
-| `cart-ui.js` | Panel e interfaz del carrito | `window.cartUI` | todas menos tabla |
-| `contact-fab.js` | Botón flotante de contacto y menú | — | todas menos tabla |
-| `tortas-script.js` | Interacciones de tortas + fallback de imágenes | — | inicio, tortas, alfajores, detalles |
-| `performance-optimizer.js` | Carga diferida de imágenes/videos | — | todas |
-
-> **Nota de arquitectura.** El sitio usa un único sistema de modal de producto
-> (`quick-view-modal.js`). La portada tenía un segundo sistema
-> (`product-modal-simple.js` + `modal-handler.js`) que quedó huérfano —sin
-> disparadores que lo abrieran— y se eliminó en la auditoría de julio de 2026.
-
-## Carrito
-
-- **`CartManager`** (`cart-manager.js`): mantiene un arreglo de ítems en memoria
-  y lo sincroniza con `localStorage` bajo la clave `lauren_shopping_cart`. Valida
-  la forma de los datos al cargar (tolerante a corrupción). Expone
-  `addItem`, `removeItem`, `updateQuantity`, `clearCart`, `getTotalPrice`,
-  `formatPrice` y `sendToWhatsApp`. Patrón observador vía `addEventListener`.
-- **`CartUI`** (`cart-ui.js`): renderiza el panel, escucha cambios del manager y
-  actualiza badge, lista, total y estado vacío. **Escapa todo dato dinámico**
-  antes de insertarlo en el DOM (ver [seguridad](09-seguridad.md)).
-
-Esquema de un ítem del carrito:
-
-```js
-{
-  id, name, price,            // identidad y precio (number)
-  quantity,                   // cantidad (number)
-  image,                      // ruta de imagen o ''
-  options,                    // { "Tamaño": "Mediana", ... }
-  personalization,            // texto libre del usuario
-  addedAt                     // timestamp
-}
-```
-
-## Modal de vista rápida
-
-`quick-view-modal.js` construye el modal a partir de los datos del producto:
-imagen principal con miniaturas, nombre, precio, descripción, "qué incluye",
-opciones configurables, campo de personalización y botón de agregar al carrito.
-Cierra con botón, clic fuera y tecla Escape.
-
-## Componentes de UI (CSS)
-
-| Componente | CSS | Notas |
+| Módulo | Interfaz | Responsabilidad |
 | --- | --- | --- |
-| Navegación superior | `glass-nav.css`, `header.css` | Efecto glass, sticky |
-| Hero por módulo | `header.css`, inline por página | Video de fondo + logo translúcido |
-| Tarjeta de producto | `tortas-styles.css` | Patrón compartido entre catálogos |
-| Modal de vista rápida | `quick-view-modal.css` | Reutilizable |
-| Carrito | `cart.css`, `cart-button-styles.css` | Panel lateral + botón |
-| Pie de página | `luxury-footer.css`, `footer-mobile.css` | Nude/tierra, redes sociales |
-| Ajustes móviles | `mobile-fixes.css` | Correcciones responsive transversales |
+| `catalog-data.js` | `catalogData` | Datos comerciales únicos |
+| `catalog-model.js` | `Catalog` | `get`, `defaults`, `price`, `minimum`, `validate`, `fields`, `summary` |
+| `brand-icons.js` | `LaurenIcons(nombre)`, `LaurenIcons.names` | SVG por nombre semántico e inventario inmutable; nombres desconocidos devuelven cadena vacía |
+| `ui.js` | `LaurenUI` | `escape`, `imagePath`, `wa`, `open`, `close`, `dialogEvents`, `toast` |
+| `cart-manager.js` | `cartManager` | Estado, persistencia, edición y resumen de WhatsApp |
+| `quick-view-modal.js` | `quickView` | Configurar o editar un producto |
+| `cart-ui.js` | `cartUI` | Diálogo lateral, lista, cantidades, eliminar/deshacer y subtotal |
+| `gallery-data.js` | `galleryData` | Referencias reales por colección |
+| `site.js` | Atributos `data-*` | Navegación, productos, filtros, galería, video y movimiento |
 
-Ver la [guía de estilos](06-guia-de-estilos.md) para tokens y patrones visuales.
+## Producto y pedido
+
+`Catalog` determina qué opciones están visibles, el precio y la personalización exigida. Las cajas surtidas no heredan el precio de una galleta individual. Los mínimos y límites se aplican tanto al agregar como al editar y leer el pedido guardado. Las variantes con importes propios y los extras activados recalculan inmediatamente el subtotal.
+
+El carrito conserva `id`, `quantity`, `selection` y `personal`; deriva del catálogo el nombre, imagen, precio y resumen legible. Dos productos solo se combinan si coinciden sus opciones y personalización. `getItems()` devuelve una copia para impedir modificaciones accidentales del estado.
+
+Los diálogos nativos contienen el foco, hacen inerte el fondo y cierran con Escape. La edición desde el pedido conserva opciones y vuelve al resumen. El aviso para deshacer una eliminación está dentro del propio diálogo.
+
+## Galería y video
+
+La galería comienza con ocho imágenes; «Ver más» añade otro grupo. La ampliación ofrece anterior/siguiente, teclado y enlace de consulta con la referencia.
+
+La historia tiene imagen completa en proporción horizontal, poster local y carga del MP4 únicamente al pulsar reproducir. Controles propios de pausa, sonido, avance y ampliación. La ampliación traslada el mismo reproductor a un diálogo: conserva posición y controles sin depender de la API de pantalla completa del navegador.

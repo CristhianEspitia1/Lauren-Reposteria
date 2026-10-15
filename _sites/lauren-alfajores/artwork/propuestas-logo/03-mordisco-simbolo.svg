@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 140" color="#2c2132" fill="currentColor" role="img" aria-label="Mordisco"><title>Mordisco</title><defs><mask id="bite-icon"><rect width="145" height="140" fill="white"/><circle cx="111" cy="17" r="20" fill="black"/><circle cx="130" cy="45" r="20" fill="black"/>
-      <path d="M48 35H66V85H97V103H48Z" fill="black"/></mask></defs>
-      <circle cx="70" cy="70" r="62" mask="url(#bite-icon)"/>
-      <circle cx="124" cy="9" r="4"/><circle cx="139" cy="26" r="3"/></svg>

@@ -1,142 +1,61 @@
-# Lauren Repostería - Sitio web oficial
+# Lauren Repostería
 
-Sitio estático de Lauren Repostería, marca de repostería artesanal en Medellín, Colombia. El sitio presenta tortas personalizadas, alfajores, brownies, galletas y detalles especiales con una estética dulce, elegante y profesional.
+Catálogo de repostería artesanal de Medellín. El visitante descubre una colección, elige presentación, sabores y personalización, reúne su pedido y consulta disponibilidad por WhatsApp. La fecha, la entrega y el pago se confirman con el negocio.
 
-Última auditoría técnica: julio de 2026 (auditoría integral). Documentación completa en [`docs/`](docs/00-indice.md).
+## Vista previa local
 
-## Cómo ejecutarlo localmente
-
-Desde la raíz del proyecto, con Node instalado:
+Con Node instalado, desde la raíz:
 
 ```bash
 node scripts/dev-server.mjs 5173
 ```
 
-Luego abre:
+Abrir [Inicio](http://127.0.0.1:5173/html/inicio.html). El servidor escucha únicamente en `127.0.0.1`, admite HEAD y rangos de video y muestra la página 404. No requiere instalación de dependencias ni compilación.
 
-```text
-http://127.0.0.1:5173/html/inicio.html
-```
+## Estructura y mantenimiento
 
-El servidor incluye tipos MIME correctos, soporte de *Range* para video y sirve
-`404.html`, imitando el comportamiento de GitHub Pages. También se puede abrir
-`html/inicio.html` directamente en el navegador, pero el servidor local es mejor
-para detectar rutas rotas, errores de carga y comportamiento real de producción.
+HTML, CSS y JavaScript sin framework. Hosting configurado para GitHub Pages y dominio en `CNAME`.
 
-## Tecnologías
+| Archivo | Responsabilidad |
+| --- | --- |
+| `html/inicio.html` | Portada, colecciones, cómo pedir, historia y preguntas |
+| `html/tortas.html`, `alfajores.html`, `brownies-galletas.html`, `detalles.html` | Colecciones y configuración de productos |
+| `js/catalog-data.js` | Única fuente de productos, importes, opciones y personalización |
+| `js/catalog-model.js` | Reglas de precio, dependencias y validación |
+| `js/quick-view-modal.js` | Elegir y editar un producto |
+| `js/cart-manager.js`, `js/cart-ui.js` | Pedido persistente y resumen de WhatsApp |
+| `js/brand-icons.js`, `js/ui.js` | Iconografía original Trazo Lauren y utilidades compartidas |
+| `js/site.js`, `js/gallery-data.js` | Navegación, colecciones, galerías y reproductor |
+| `js/image-variants.js`, `scripts/optimize-photography.mjs` | Copias responsive de las fotos aprobadas; mantenimiento en [rendimiento](docs/08-performance.md) |
+| `css/tokens.css`, `site.css`, `catalog.css`, `dialogs.css` | Identidad y componentes responsive |
+| `assets/optimized/` | Video de la historia, su poster y adornos de detalles |
+| `assets/brand/` | Logotipos, sello e isotipo SVG de la marca |
+| `assets/propuestas-fotograficas/` | Fotografías WebP del sitio, sus copias responsive y el inventario `manifest.json` |
+| `tests/catalog.test.mjs` | Pruebas de precios, validaciones, persistencia y pedido |
 
-- HTML5 estático.
-- CSS3 con variables visuales, responsive design, animaciones y efectos glass/luxury.
-- JavaScript vanilla para carrito, modales, carruseles, menú y contacto.
-- Assets optimizados locales en `assets/optimized`.
-- GitHub Pages / dominio configurado con `CNAME`.
+El repositorio contiene solo los archivos que usa la web. La documentación vigente comienza en [docs/00-indice.md](docs/00-indice.md); las instrucciones operativas están en [la guía de mantenimiento](Guias/GUIA-MANTENIMIENTO.md).
 
-No hay framework, bundler, backend, base de datos ni dependencias instaladas por `package.json`.
+## Identidad visual
 
-## Estructura
+La identidad parte del brandbook de Lauren: crema `#F9F5EC`, lila `#D0B4D7`, durazno `#E5C8BA` y albaricoque `#F8B890`. El sitio usa los logos vectoriales originales y una familia compartida de iconos semánticos para la web. Fotografía protagonista, composición editorial, foco visible y movimiento breve que respeta la preferencia de movimiento reducido. El video conserva su proporción original y solo se carga al reproducirlo.
 
-```text
-LaurenReposteria/
-├── index.html                  # Entrada raíz con redirección a html/inicio.html
-├── 404.html                    # Página de error personalizada (GitHub Pages)
-├── robots.txt / sitemap.xml    # SEO técnico
-├── CNAME                       # Dominio personalizado configurado
-├── .gitattributes              # Normalización de finales de línea (LF)
-├── html/
-│   ├── inicio.html             # Página principal
-│   ├── tortas.html             # Tortas personalizadas
-│   ├── alfajores.html          # Alfajores
-│   ├── brownies-galletas.html  # Brownies y galletas
-│   ├── detalles.html           # Detalles y cajas especiales
-│   └── tabla-productos.html    # Editor interno de productos (no indexado)
-├── css/
-│   ├── tokens.css              # Design tokens (única fuente de color/tipografía/espaciado)
-│   └── …                       # Navegación, header/footer, carrito, modales, responsive
-├── js/                         # Datos, carrito, modales, carruseles e interacciones
-├── assets/optimized/           # Imágenes, videos, logos e iconos usados en producción
-├── scripts/                    # Optimización de assets y servidor de desarrollo
-├── docs/                       # Documentación técnica (arquitectura, estilos, etc.)
-├── Guias/                      # Mantenimiento técnico vigente
-└── PROBLEMAS-PENDIENTES.md     # Estado técnico y riesgos por revisar
-```
+El manual define P22 Mackinac, Proxima Nova y Gentlemens Script. Sus archivos de fuente no están en el proyecto; la adaptación web mantiene por ahora Playfair Display e Inter. Procedencia, variantes y reglas en la [guía de estilos](docs/06-guia-de-estilos.md).
 
-## Archivos importantes
-
-- `js/catalog-data.js`: fuente principal de productos, precios, opciones e imágenes para modales.
-- `js/quick-view-modal.js`: modal reutilizable de vista rápida.
-- `js/cart-manager.js` y `js/cart-ui.js`: lógica e interfaz del carrito.
-- `js/contact-fab.js`: botón flotante de contacto y menú de navegación.
-- `css/tokens.css`: design tokens (color, tipografía, espaciado, sombra, z-index).
-- `css/tortas-styles.css`: base visual compartida por páginas de producto.
-- `css/quick-view-modal.css`: estilos del modal reutilizable.
-- `css/glass-nav.css`: navegación superior.
-- `scripts/optimize-assets.mjs`: regenera `assets/optimized` desde fuentes locales (aplica nombres kebab-case).
-- `scripts/apply-optimized-assets.mjs`: reescribe referencias hacia assets optimizados.
-- `scripts/dev-server.mjs`: servidor estático local (Range de video + 404).
-
-## Branding base
-
-- Personalidad: artesanal, dulce, elegante, cercana y confiable.
-- Colores principales: lila/morado suave, rosa, durazno y tonos crema/blanco.
-- Uso visual: fotografías reales de productos, fondos suaves, tarjetas limpias, botones redondeados y microinteracciones discretas.
-- Tono de comunicación: cálido, claro y comercial sin sonar genérico.
-
-## Contacto visible del sitio
-
-- WhatsApp: +57 310 444 2796
-- Instagram: @laurenreposteria22
-- TikTok: @laurenreposteria
-- Email: reposterialauren@gmail.com
-- Ubicación: Medellín, Colombia
-
-No cambies teléfonos, redes, precios, productos, ubicación ni textos legales sin confirmación del negocio.
-
-## Cómo modificar contenido
-
-- Productos, precios y opciones: editar `js/catalog-data.js`.
-- Textos principales de cada página: editar el archivo correspondiente en `html/`.
-- Estilos generales: revisar primero `css/tortas-styles.css`, `css/glass-nav.css`, `css/luxury-footer.css` y `css/quick-view-modal.css`.
-- Imágenes y videos nuevos: agregarlos como fuente local en la carpeta de producto correspondiente, ejecutar la optimización y referenciar siempre la salida de `assets/optimized`.
-- Las carpetas fuente de media, zips de branding, demos y `.mov` están ignorados para que no se desplieguen en GitHub Pages.
-
-## Recomendaciones de mantenimiento
-
-- Probar siempre en móvil, tablet y desktop antes de publicar.
-- Revisar consola del navegador después de tocar JavaScript o rutas de assets.
-- Evitar archivos con espacios, emojis, tildes o nombres duplicados en nuevos assets; el proyecto actual los contiene, pero los nuevos deberían seguir una convención más limpia.
-- Versionar solo assets optimizados; los originales pesados deben quedar como fuente local o en almacenamiento externo.
-- Mantener `catalog-data.js` como fuente única para productos cuando sea posible.
-- Conservar `PROBLEMAS-PENDIENTES.md` actualizado después de cada auditoría o cambio relevante.
-
-## Despliegue
-
-El proyecto está preparado para GitHub Pages y tiene dominio personalizado configurado en `CNAME`.
-
-Antes de publicar:
+## Comprobaciones
 
 ```bash
-git status
-python3 -m http.server 5173 --bind 127.0.0.1
+node --test tests/catalog.test.mjs
+git diff --check
 ```
 
-Verifica manualmente las páginas principales:
+Revisión local de septiembre de 2026: 13 pruebas de lógica, geometría renderizada de las cinco páginas públicas en siete tamaños de ventana, recorridos de producto/pedido y controles de galería y video. El alcance y los límites se detallan en [accesibilidad](docs/07-accesibilidad.md) y [changelog](docs/10-changelog.md). Esto no equivale a una certificación ni a pruebas en dispositivos físicos.
 
-- `/html/inicio.html`
-- `/html/tortas.html`
-- `/html/alfajores.html`
-- `/html/brownies-galletas.html`
-- `/html/detalles.html`
+## Datos comerciales
 
-## Estado de calidad actual
+WhatsApp `573104442796`, Instagram `laurenreposteria22`, TikTok `laurenreposteria`, correo `reposterialauren@gmail.com`. Medellín, desde 2022. Atención de lunes a sábado, 9:00 a. m. a 6:00 p. m. Pedidos con al menos un día de anticipación, sujetos a disponibilidad.
 
-En la auditoría del 20 de mayo de 2026 se verificó:
+No cambiar importes, contactos ni condiciones sin confirmación del negocio. Los alfajores personalizados quedan por cotización mediante `quoteOnly: true`: el dato heredado de $60.000 no aclara si corresponde a una unidad o a una caja de seis. Ver [pendientes comerciales](PROBLEMAS-PENDIENTES.md).
 
-- Páginas principales cargan sin errores de consola.
-- No hay imágenes rotas visibles en las páginas principales.
-- No hay desbordamiento horizontal en móvil, tablet ni desktop.
-- Menú, carrito, contacto y vista rápida de producto funcionan.
-- SEO básico y Open Graph están presentes en páginas principales.
-- Enlaces externos relevantes usan `rel="noopener noreferrer"`.
-- No se detectaron claves API, tokens o credenciales expuestas en el frontend.
-- Las páginas principales usan `assets/optimized` y no referencian media fuente pesada en runtime.
-- Los videos secundarios usan carga diferida para reducir el peso inicial.
+## Publicación
+
+Los cambios locales y la vista previa no publican el sitio. Revisar el diff, comprobar el flujo afectado y seguir el procedimiento GitHub Pages solo cuando se autorice publicar. No hay backend, autenticación ni pasarela de pago.

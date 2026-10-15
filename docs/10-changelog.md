@@ -4,6 +4,73 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Limpieza: un solo diseño]
+
+- Se elige el diseño original (Esencia). Retirados las propuestas 2–4, el comparador `modelos.html`, las páginas de revisión `fotografias.html` e `iconos.html` y sus hojas y scripts.
+- Retirados el sitio demo `_sites/lauren-alfajores`, `tmp/`, `src/` vacío, el pipeline antiguo (`optimize-assets.mjs`, `apply-optimized-assets.mjs`, `asset-map.json`), el informe de auditoría de julio, el roadmap y el editor local del catálogo (`tabla-productos.html`).
+- Retirados del proyecto los originales de fotos y video, el brandbook `.ai`, los PNG generados y todas las imágenes sin referencia en la web. `manifest.json` queda como inventario de las 107 fotos publicadas.
+- Documentación actualizada a la estructura vigente.
+
+## [2026-09-30 — Sobremesa]
+
+- Añadida la cuarta propuesta, Sobremesa, en inicio y las cuatro colecciones: tipografía amplia, fotografía vertical y composición editorial en crema/lila. Comparte la marca, el catálogo y el pedido con las propuestas anteriores.
+- Comparador y selector ampliados a cuatro diseños; el cambio de modelo conserva la página y la selección del pedido.
+- Dos rondas de revisión visual y ajustes. Comprobada la geometría sin desbordamiento horizontal en las cinco páginas a 360, 1024 y 1440 px; portada a 768 px y portada, menú, configurador y pedido a 390 px. Verificado que cambiar 4 → 3 → 4 conserva la selección.
+- Las 13 pruebas de catálogo/pedido pasan. Actualizadas las dos expectativas antiguas de imagen de respaldo para reflejar el isotipo SVG vigente, sin modificar la implementación. Sintaxis del cargador y las composiciones, y `git diff --check`, correctos.
+- Disponible en vista previa local. Sin publicación ni pruebas en dispositivos físicos.
+
+## [2026-09-23 — Fotografías y scroll]
+
+- Eliminadas las máscaras y demoras de aparición al bajar en los tres modelos. El contenido permanece visible sin depender de un observador de scroll.
+- Generadas copias de 320, 640 y 960 px para las 107 fotografías del inventario y la portada Serena; integradas mediante fuentes responsive en portadas, colecciones, galerías, configurador y miniaturas del pedido.
+- Fotos públicas con carga anticipada y prioridad para la portada; las galerías conservan los grupos de ocho y agregan nuevas imágenes sin reconstruir las anteriores.
+- Verificadas sintaxis, fuentes locales, los tres inicios sin fotos ocultas o pendientes, ampliación de la galería de tortas y cambio de foto del producto. Sin publicación ni medición de Core Web Vitals.
+
+## [2026-09-22 — Rediseño integral local]
+
+### Familia de iconos refinada
+
+- Redibujados los pictogramas semánticos para los tres modelos, con retícula de 24 unidades, trazo uniforme, geometría clara y siluetas propias de productos y complementos. El isotipo oficial conserva sus trazados.
+- Añadida una lupa específica para ampliar imágenes, diferenciada del signo de añadir. Tamaños de trazo para ilustraciones grandes compartidos mediante token; controles de cantidad y eliminación de 44 px.
+- Eliminadas las ilustraciones duplicadas de los pasos en el HTML de inicio. Muestrario local en `html/iconos.html`, que consume la misma familia que el sitio y permite verla a 48 y 20 px.
+- Comprobados los 33 nombres del registro, sus SVG, referencias y sintaxis. Revisión focalizada en escritorio del muestrario, complementos, ampliación de fotos, pedido vacío y controles de cantidad del configurador; no se repitió la matriz responsive completa.
+
+### Alineación con el brandbook
+
+- Revisadas las 23 páginas del manual aportado por el usuario. Actualizados los cuatro colores de marca a sus valores oficiales en los tokens compartidos por los tres modelos.
+- Extraídos los trazados originales del logotipo, nombre, sello e isotipo a SVG monocromos. Aplicados en cabeceras, pies, comparadores, favicon y composiciones que muestran el símbolo; eliminados los filtros y giros que afectaban esas reproducciones.
+- Documentadas las tipografías oficiales y la diferencia con Playfair Display e Inter, que se mantienen como adaptación web hasta disponer de los archivos de fuente correspondientes.
+- Comprobación focalizada: sintaxis de los tres módulos afectados, nueve SVG válidos, 24 referencias HTML y admisión de las 107 fotografías y ocho recursos de marca en la utilidad de rutas. Revisados el logo y sello de Esencia, el isotipo de Serena y el pie claro de Encuentro en el navegador.
+- Conservados el archivo Illustrator local, las fotografías, las composiciones aprobadas y el funcionamiento del catálogo. Sin publicación en producción.
+
+### Colección fotográfica compartida
+
+- Aplicadas 107 fotografías renovadas a los tres modelos locales: 22 principales, 76 tomas adicionales, cuatro sabores y cinco rellenos. Las copias de una misma toma comparten edición; los originales se conservan.
+- Galería de comparación en `html/fotografias.html`, con filtros, numeración estable y acceso a los PNG. Inventario y prompts en `assets/propuestas-fotograficas/manifest.json`.
+- Ampliadas las galerías de las cuatro colecciones. Las fichas muestran la foto completa y las miniaturas debajo; sabores y rellenos tienen sus proporciones propias.
+- Corregidos el fondo de la galleta con guante y la perspectiva de la torta rosa de 19 años a partir de las observaciones del usuario. El sello de esta última se reemplazó usando el logotipo oficial de Lauren como referencia.
+- Comprobadas existencia y referencias de los 107 archivos, sintaxis del JavaScript afectado, portadas de los tres modelos, apertura de imágenes y miniaturas. Comprobación focalizada a 390 px del configurador y los rellenos. Sin nueva auditoría integral ni publicación.
+
+### Propuestas Serena y Encuentro
+
+- Conservado el modelo 1, Esencia; añadidos modelo 2, Serena, y modelo 3, Encuentro, con portadas, colecciones, componentes de compra y pies adaptados a cada dirección visual.
+- Composiciones rehechas tomando Esencia como referencia: tipografía Playfair, fondos claros, lila como acento, curvas y navegación superior. Fotografía de campaña para la portada Serena y composición del regalo Golden en Encuentro; los importes del catálogo se conservan.
+- Comparador en `html/modelos.html` y selector por URL que conserva la página y el pedido; sin modificar la paleta, los importes o contactos.
+- Sustituidas las ilustraciones raster de los cinco complementos por SVG semánticos originales, también usados en el editor.
+- Verificadas las diez páginas alternativas a 360, 768, 1024 y 1440 px, muestras visuales a 390 px y recorridos de menú, configurador, carrito y cambio de modelo. Cambios disponibles en vista previa local.
+
+### Base del modelo 1
+
+- Portada y cuatro colecciones rediseñadas con fotografía real, paleta crema/lila, titulares editoriales, navegación visible y adaptación a ventanas estrechas.
+- Familia original de iconos Trazo Lauren, botones y controles compartidos, foco visible y movimiento reducido.
+- Catálogo único, filtros/búsqueda, galerías ampliables y configuración de producto. Recalculados los precios por presentación, sabor, cantidad y extras; validación de mínimos, colores, iniciales y mensajes.
+- Pedido persistente con edición de opciones, cantidades, eliminación/deshacer y resumen de WhatsApp. Texto dinámico escapado y precios derivados de la fuente vigente.
+- Entrevista en su proporción horizontal completa, poster y controles propios de reproducción, sonido, avance y ampliación.
+- Editor de catálogo con borrador seguro y descarga de todos los campos; entradas raíz/404 y metadatos de categoría coherentes.
+- Eliminados 16 archivos CSS/JS obsoletos y los estilos inline extensos. Añadida CSP y reforzado el servidor local para rangos y rutas.
+- 13 pruebas de lógica del catálogo/pedido. Comprobaciones renderizadas en siete tamaños para las cinco páginas públicas y recorridos de producto, pedido, búsqueda, galería y video. Exportación descargada del editor comparada con los 27 productos y todas sus propiedades. Verificados HEAD, rangos de video y rechazo de rutas inválidas del servidor local. Alcance detallado en accesibilidad; sin envío de mensajes ni publicación en producción.
+- Alfajores personalizados por cotización hasta confirmar la unidad de venta del precio heredado.
+
 ## [Auditoría de julio 2026]
 
 Auditoría técnica y refactorización integral. Base de código profesionalizada sin

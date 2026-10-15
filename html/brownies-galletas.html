@@ -1,1713 +1,298 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lauren - Brownies y Galletas | Artesanales y Premium</title>
-    <link rel="canonical" href="https://laurenreposteria.com/html/brownies-galletas.html">
-    <link rel="icon" type="image/webp" href="../assets/optimized/logos/logos-lauren-png-13.webp">
-    <!-- Fuentes: Playfair Display (titulos) + Inter (texto) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description"
-        content="Brownies melcochudos y galletas artesanales. Hechos con ingredientes premium. Lauren Repostería - Medellín, Colombia.">
-    <meta name="keywords"
-        content="brownies, galletas, brownies nutella, galletas artesanales, Lauren, Medellín, Colombia">
-    <meta name="author" content="Lauren Repostería">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Lauren - Brownies y Galletas Artesanales">
-    <meta property="og:description"
-        content="Brownies melcochudos y galletas premium. Sabores únicos y toppings irresistibles.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Lauren Repostería">
-    <meta property="og:locale" content="es_CO">
-    <meta property="og:url" content="https://laurenreposteria.com/html/brownies-galletas.html">
-    <meta property="og:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Lauren - Brownies y Galletas | Artesanales y Premium">
-    <meta name="twitter:description" content="Brownies melcochudos y galletas artesanales. Hechos con ingredientes premium. Lauren Repostería - Medellín, Colombia.">
-    <meta name="twitter:image" content="https://laurenreposteria.com/assets/optimized/logos/logos-lauren-png-55.webp">
-
-    <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/glass-nav.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/tortas-styles.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/quick-view-modal.css">
-    <link rel="stylesheet" href="../css/cart-button-styles.css">
-    <link rel="stylesheet" href="../css/cart.css">
-    <link rel="stylesheet" href="../css/mobile-fixes.css?v=20260516-hero-logo-stable">
-    <link rel="stylesheet" href="../css/footer-mobile.css">
-    <link rel="stylesheet" href="../css/hide-modal.css">
-    <style>
-        /* Fondo igual al de la página de tortas */
-        body {
-            background: linear-gradient(135deg, #FFFCFA 0%, #FFFAF7 25%, #FFF9F5 50%, #FFFAF7 75%, #FFFCFA 100%) !important;
-            background-attachment: fixed !important;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(249, 181, 140, 0.06) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(209, 181, 215, 0.04) 0%, transparent 60%),
-                radial-gradient(circle at 50% 10%, rgba(249, 181, 140, 0.05) 0%, transparent 55%),
-                radial-gradient(circle at 30% 90%, rgba(232, 212, 200, 0.05) 0%, transparent 55%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Compactar toda la página - reducir márgenes */
-        .intro-section-modern {
-            padding: 30px 20px 15px !important;
-        }
-
-        .intro-content-wrapper {
-            margin-bottom: 0 !important;
-        }
-
-        .section-header-decorated {
-            margin-bottom: 0.5rem !important;
-        }
-
-        .section-subtitle-elegant-center {
-            margin-top: 0.3rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-
-        .intro-text-modern {
-            margin-top: 0.5rem !important;
-            margin-bottom: 0 !important;
-        }
-
-        /* Estilos para sección dividida */
-        .products-split-section {
-            padding: 30px 20px !important;
-            background: transparent;
-        }
-
-        .split-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem !important;
-            width: 100vw;
-            margin: 0;
-            padding: 0 0.5rem !important;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-        }
-
-        /* Compactar galerías de brownies y galletas */
-        .brownies-carousel-wrapper,
-        .galletas-carousel-wrapper {
-            margin-top: 1rem !important;
-        }
-
-        /* Compactar sección de información importante */
-        .important-info-section {
-            padding: 30px 20px !important;
-        }
-
-        .info-header {
-            margin-bottom: 1rem !important;
-        }
-
-        /* Compactar footer */
-        .modern-footer {
-            margin-top: 30px !important;
-        }
-
-        .footer-main {
-            padding: 30px 0 !important;
-        }
-
-        /* Centrar y embellecer las tarjetas de información importante */
-        .info-cards-grid {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: stretch !important;
-            gap: 1.5rem !important;
-            max-width: 1400px !important;
-            margin: 3rem auto !important;
-            flex-wrap: nowrap !important;
-        }
-
-        .info-card-modern {
-            flex: 1 1 0 !important;
-            min-width: 0 !important;
-            max-width: none !important;
-            text-align: center !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-        }
-
-        .info-card-icon {
-            margin: 0 auto 1rem !important;
-        }
-
-        .info-card-content {
-            text-align: center !important;
-        }
-
-        .info-card-title {
-            text-align: center !important;
-        }
-
-        .info-card-text {
-            text-align: center !important;
-        }
-
-        @media (max-width: 768px) {
-
-            /* Tarjetas de información en grid 2x2 */
-            .info-cards-grid {
-                display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
-                grid-template-rows: auto auto !important;
-                gap: 0.8rem !important;
-                padding: 0 0.5rem !important;
-                margin: 1.5rem auto !important;
-            }
-
-            .info-card-modern {
-                flex: none !important;
-                max-width: 100% !important;
-                min-width: 0 !important;
-                padding: 0.8rem 0.5rem !important;
-            }
-
-            .info-card-icon {
-                margin: 0 auto 0.5rem !important;
-            }
-
-            .icon-circle {
-                width: 45px !important;
-                height: 45px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                margin: 0 auto !important;
-            }
-
-            .icon-img {
-                width: 32px !important;
-                height: 32px !important;
-                object-fit: contain !important;
-            }
-
-            .info-card-title {
-                font-size: 0.75rem !important;
-                margin-bottom: 0.4rem !important;
-                line-height: 1.2 !important;
-            }
-
-            .info-card-text {
-                font-size: 0.6rem !important;
-                line-height: 1.3 !important;
-                padding: 0 0.3rem !important;
-            }
-
-            .info-card-content {
-                padding: 0 !important;
-            }
-        }
-
-        .product-column {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px rgba(200, 165, 216, 0.1);
-            padding: 20px 15px !important;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            overflow: visible;
-        }
-
-        /* Reducir espacios internos del mosaico */
-        .product-column h2 {
-            margin-bottom: 0.3rem !important;
-        }
-
-        .product-column p {
-            margin: 0.5rem 0 !important;
-        }
-
-        .product-column:hover {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid rgba(200, 165, 216, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(200, 165, 216, 0.15);
-        }
-
-        @media (max-width: 1024px) {
-            .split-container {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-        }
-
-        /* ========================================
-           PRODUCT QUICK VIEW MODAL
-           ======================================== */
-
-        .product-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 10000;
-            overflow-y: auto;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .product-modal-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-        }
-
-        .product-modal-container {
-            background: white;
-            border-radius: 16px;
-            max-width: 1100px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-modal-overlay.active .product-modal-container {
-            transform: scale(1);
-        }
-
-        .product-modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-modal-close:hover {
-            background: #f5f5f5;
-            transform: rotate(90deg);
-        }
-
-        .product-modal-close svg {
-            width: 20px;
-            height: 20px;
-            color: #333;
-        }
-
-        .product-modal-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 40px;
-        }
-
-        .product-modal-left {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: sticky;
-            top: 0;
-            align-self: start;
-        }
-
-        .product-modal-image-main {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #f8f8f8;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-modal-thumbnails {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-        }
-
-        .product-modal-thumbnail {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .product-modal-thumbnail:hover {
-            border-color: #F9B58C;
-        }
-
-        .product-modal-thumbnail.active {
-            border-color: #F4A67C;
-        }
-
-        .product-modal-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-modal-right {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-modal-info {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .product-modal-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2c2c2c;
-            margin: 0;
-            letter-spacing: 0.3px;
-        }
-
-        .product-modal-price-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-price {
-            display: inline-block;
-            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 15px rgba(249, 181, 140, 0.3);
-            align-self: flex-start;
-        }
-
-        .product-modal-price-note {
-            font-size: 0.75rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        .product-modal-description {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #555;
-            margin: 0;
-        }
-
-        .product-modal-section-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #2c2c2c;
-            margin: 0 0 8px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .product-modal-includes-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-includes-list li {
-            font-size: 0.8rem;
-            color: #555;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .product-modal-includes-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #F9B58C;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
-        .product-modal-options {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .product-modal-option-group {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .product-modal-option-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #2c2c2c;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .product-modal-option-label .required-badge {
-            background: #F9B58C;
-            color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .product-modal-option-choices {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-option-choice {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .product-modal-option-choice:hover {
-            border-color: #F9B58C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-choice input[type="radio"] {
-            cursor: pointer;
-            width: 16px;
-            height: 16px;
-            accent-color: #F4A67C;
-        }
-
-        .product-modal-option-choice label {
-            cursor: pointer;
-            flex: 1;
-            font-size: 0.8rem;
-            color: #333;
-        }
-
-        .product-modal-option-choice.selected {
-            border-color: #F4A67C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-select {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .product-modal-option-chip {
-            padding: 6px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.75rem;
-            background: white;
-        }
-
-        .product-modal-option-chip:hover {
-            border-color: #F9B58C;
-            background: #FFF9F5;
-        }
-
-        .product-modal-option-chip.selected {
-            border-color: #F4A67C;
-            background: linear-gradient(135deg, #F9B58C 0%, #F4A67C 100%);
-            color: white;
-        }
-
-        .product-modal-toggle-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-        }
-
-        .product-modal-toggle-label {
-            font-size: 0.8rem;
-            color: #333;
-        }
-
-        .product-modal-toggle {
-            position: relative;
-            width: 50px;
-            height: 26px;
-            background: #e0e0e0;
-            border-radius: 13px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .product-modal-toggle.active {
-            background: #F4A67C;
-        }
-
-        .product-modal-toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-
-        .product-modal-toggle.active::after {
-            transform: translateX(24px);
-        }
-
-        .product-modal-personalization {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 14px;
-            background: #FFF9F5;
-            border-radius: 10px;
-            border: 1px solid #F9B58C;
-        }
-
-        .product-modal-personalization-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .product-modal-personalization-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #2c2c2c;
-        }
-
-        .product-modal-personalization-input {
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .product-modal-personalization-input:focus {
-            outline: none;
-            border-color: #F4A67C;
-        }
-
-        .product-modal-personalization-note {
-            font-size: 0.7rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        .product-modal-actions {
-            margin-top: auto;
-            padding-top: 16px;
-        }
-
-        .product-modal-cta-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .product-modal-cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        .product-modal-cta-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        @media (max-width: 1024px) {
-            .product-modal-content {
-                gap: 30px;
-                padding: 30px;
-            }
-
-            .product-modal-title {
-                font-size: 1.3rem;
-            }
-
-            .product-modal-price {
-                font-size: 1rem;
-            }
-        }
-
-        /* Responsive - Mobile */
-        @media (max-width: 768px) {
-            .product-modal-overlay {
-                padding: 0;
-            }
-
-            /* REDUCIR 30% TODO EL MODAL */
-            .product-modal-container {
-                max-height: 100vh;
-                border-radius: 0;
-                transform: scale(0.7);
-            }
-
-            .product-modal-overlay.active .product-modal-container {
-                transform: scale(0.7);
-            }
-
-            .product-modal-content {
-                grid-template-columns: 1fr;
-                gap: 16.8px;
-                /* 30% menos: 24px -> 16.8px */
-                padding: 14px;
-                /* 30% menos: 20px -> 14px */
-                padding-top: 42px;
-                /* 30% menos: 60px -> 42px */
-            }
-
-            .product-modal-left {
-                position: static;
-                gap: 10.5px;
-                /* 30% menos: 15px -> 10.5px */
-            }
-
-            .product-modal-close {
-                top: 10.5px;
-                /* 30% menos: 15px -> 10.5px */
-                right: 10.5px;
-                width: 25.2px;
-                /* 30% menos: 36px -> 25.2px */
-                height: 25.2px;
-            }
-
-            .product-modal-close svg {
-                width: 14px;
-                /* 30% menos: 20px -> 14px */
-                height: 14px;
-            }
-
-            .product-modal-title {
-                font-size: 0.84rem;
-                /* 30% menos: 1.2rem -> 0.84rem */
-            }
-
-            .product-modal-price {
-                font-size: 0.7rem;
-                /* 30% menos: 1rem -> 0.7rem */
-                padding: 5.6px 11.2px;
-                /* 30% menos: 8px -> 5.6px, 16px -> 11.2px */
-            }
-
-            .product-modal-price-note {
-                font-size: 0.525rem;
-                /* 30% menos: 0.75rem -> 0.525rem */
-            }
-
-            .product-modal-description {
-                font-size: 0.56rem;
-                /* 30% menos: 0.8rem -> 0.56rem */
-            }
-
-            .product-modal-image-main {
-                aspect-ratio: 1;
-                border-radius: 8.4px;
-                /* 30% menos: 12px -> 8.4px */
-            }
-
-            .product-modal-thumbnails {
-                gap: 7px;
-                /* 30% menos: 10px -> 7px */
-            }
-
-            .product-modal-thumbnail {
-                width: 42px;
-                /* 30% menos: 60px -> 42px */
-                height: 42px;
-                border-width: 1.4px;
-                /* 30% menos: 2px -> 1.4px */
-                border-radius: 5.6px;
-                /* 30% menos: 8px -> 5.6px */
-            }
-
-            .product-modal-cta-btn {
-                font-size: 0.595rem;
-                /* 30% menos: 0.85rem -> 0.595rem */
-                padding: 8.4px 12.6px;
-                /* 30% menos: 12px -> 8.4px, 18px -> 12.6px */
-                gap: 7px;
-                /* 30% menos: 10px -> 7px */
-            }
-
-            .product-modal-cta-btn svg {
-                width: 12.6px;
-                /* 30% menos: 18px -> 12.6px */
-                height: 12.6px;
-            }
-
-            .product-modal-info {
-                gap: 9.8px;
-                /* 30% menos: 14px -> 9.8px */
-            }
-
-            .product-modal-section-title {
-                font-size: 0.56rem;
-                /* 30% menos: 0.8rem -> 0.56rem */
-                margin-bottom: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-
-            .product-modal-includes-list {
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-                padding-left: 14px;
-                /* 30% menos: 20px -> 14px */
-            }
-
-            .product-modal-includes-list li {
-                font-size: 0.525rem;
-                /* 30% menos: 0.75rem -> 0.525rem */
-            }
-
-            .product-modal-includes-list li::before {
-                font-size: 0.665rem;
-                /* 30% menos: 0.95rem -> 0.665rem */
-            }
-
-            .product-modal-options {
-                gap: 9.8px;
-                /* 30% menos: 14px -> 9.8px */
-            }
-
-            .product-modal-option-group {
-                gap: 4.9px;
-                /* 30% menos: 7px -> 4.9px */
-            }
-
-            .product-modal-option-label {
-                font-size: 0.525rem;
-                /* 30% menos: 0.75rem -> 0.525rem */
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-
-            .product-modal-option-label .required-badge {
-                font-size: 0.455rem;
-                /* 30% menos: 0.65rem -> 0.455rem */
-                padding: 1.4px 4.2px;
-                /* 30% menos: 2px -> 1.4px, 6px -> 4.2px */
-            }
-
-            .product-modal-option-choices {
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-
-            .product-modal-option-choice {
-                gap: 5.6px;
-                /* 30% menos: 8px -> 5.6px */
-                padding: 5.6px 7px;
-                /* 30% menos: 8px -> 5.6px, 10px -> 7px */
-                border-width: 1.4px;
-                /* 30% menos: 2px -> 1.4px */
-            }
-
-            .product-modal-option-choice input[type="radio"] {
-                width: 11.2px;
-                /* 30% menos: 16px -> 11.2px */
-                height: 11.2px;
-            }
-
-            .product-modal-option-choice label {
-                font-size: 0.525rem;
-                /* 30% menos: 0.75rem -> 0.525rem */
-            }
-
-            .product-modal-option-select {
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-
-            .product-modal-option-chip {
-                font-size: 0.49rem;
-                /* 30% menos: 0.7rem -> 0.49rem */
-                padding: 3.5px 7px;
-                /* 30% menos: 5px -> 3.5px, 10px -> 7px */
-                border-width: 1.4px;
-                /* 30% menos: 2px -> 1.4px */
-                border-radius: 12.6px;
-                /* 30% menos: 18px -> 12.6px */
-            }
-
-            .product-modal-toggle-wrapper {
-                padding: 5.6px 7px;
-                /* 30% menos: 8px -> 5.6px, 10px -> 7px */
-                border-width: 1.4px;
-                /* 30% menos: 2px -> 1.4px */
-            }
-
-            .product-modal-toggle-label {
-                font-size: 0.56rem;
-                /* 30% menos: 0.8rem -> 0.56rem */
-            }
-
-            .product-modal-toggle {
-                width: 35px;
-                /* 30% menos: 50px -> 35px */
-                height: 18.2px;
-                /* 30% menos: 26px -> 18.2px */
-                border-radius: 9.1px;
-                /* 30% menos: 13px -> 9.1px */
-            }
-
-            .product-modal-toggle::after {
-                top: 2.1px;
-                /* 30% menos: 3px -> 2.1px */
-                left: 2.1px;
-                width: 14px;
-                /* 30% menos: 20px -> 14px */
-                height: 14px;
-            }
-
-            .product-modal-toggle.active::after {
-                transform: translateX(16.8px);
-                /* 30% menos: 24px -> 16.8px */
-            }
-
-            .product-modal-personalization {
-                gap: 8.4px;
-                /* 30% menos: 12px -> 8.4px */
-                padding: 9.8px;
-                /* 30% menos: 14px -> 9.8px */
-            }
-
-            .product-modal-personalization-field {
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-
-            .product-modal-personalization-label {
-                font-size: 0.56rem;
-                /* 30% menos: 0.8rem -> 0.56rem */
-            }
-
-            .product-modal-personalization-input {
-                padding: 5.6px 7px;
-                /* 30% menos: 8px -> 5.6px, 10px -> 7px */
-                font-size: 0.56rem;
-                /* 30% menos: 0.8rem -> 0.56rem */
-                border-width: 1.4px;
-                /* 30% menos: 2px -> 1.4px */
-            }
-
-            .product-modal-personalization-note {
-                font-size: 0.49rem;
-                /* 30% menos: 0.7rem -> 0.49rem */
-            }
-
-            .product-modal-actions {
-                padding-top: 11.2px;
-                /* 30% menos: 16px -> 11.2px */
-            }
-
-            .product-modal-price-wrapper {
-                gap: 4.2px;
-                /* 30% menos: 6px -> 4.2px */
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="../css/luxury-footer.css">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f9f5ec">
+<title>Brownies y galletas artesanales | Lauren Repostería</title>
+<meta name="description" content="Brownies con chocolate al 70 % y galletas artesanales de seis sabores. Elige presentación, relleno y toppings. Pedidos en Medellín con Lauren.">
+<link rel="canonical" href="https://laurenreposteria.com/html/brownies-galletas.html">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/catalog.css">
+<link rel="stylesheet" href="../css/dialogs.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lauren Repostería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Brownies y galletas artesanales | Lauren Repostería">
+<meta property="og:description" content="Brownies con chocolate al 70 % y galletas artesanales de seis sabores. Elige presentación, relleno y toppings. Pedidos en Medellín con Lauren.">
+<meta property="og:url" content="https://laurenreposteria.com/html/brownies-galletas.html">
+<meta property="og:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/galletas.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Brownies y galletas artesanales | Lauren Repostería">
+<meta name="twitter:description" content="Brownies con chocolate al 70 % y galletas artesanales de seis sabores. Elige presentación, relleno y toppings. Pedidos en Medellín con Lauren.">
+<meta name="twitter:image" content="https://laurenreposteria.com/assets/propuestas-fotograficas/galletas.webp">
+<script src="../js/catalog-data.js" defer>
+</script>
+<script src="../js/catalog-model.js" defer>
+</script>
+<script src="../js/brand-icons.js" defer>
+</script>
+<script src="../js/image-variants.js" defer></script>
+<script src="../js/ui.js" defer>
+</script>
+<script src="../js/cart-manager.js" defer>
+</script>
+<script src="../js/quick-view-modal.js" defer>
+</script>
+<script src="../js/cart-ui.js" defer>
+</script>
+<script src="../js/gallery-data.js" defer>
+</script>
+<script src="../js/site.js" defer>
+</script>
 </head>
-
-<body>
-    <h1 class="visually-hidden">Brownies y galletas artesanales Lauren Repostería</h1>
-    <!-- Glass Navigation Header -->
-    <nav class="glass-nav">
-        <div class="glass-nav-container">
-            <div class="glass-nav-content">
-                <!-- Menú Desplegable (izquierda) -->
-                <div class="nav-menu-wrapper">
-                    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mainNavMenu">Menú</button>
-                    <div class="nav-menu-dropdown" id="mainNavMenu">
-                        <a href="inicio.html">Inicio</a>
-                        <a href="tortas.html">Tortas</a>
-                        <a href="alfajores.html">Alfajores</a>
-                        <a href="brownies-galletas.html" class="active">Brownies y Galletas</a>
-                        <a href="detalles.html">Detalles</a>
-                    </div>
-                </div>
-
-                <!-- Logo Centrado -->
-                <div class="nav-logo-wrapper">
-                    <a href="inicio.html" class="nav-logo">Lauren</a>
-                </div>
-
-                <!-- Ícono Carrito (derecha) -->
-                <button class="nav-icon" type="button" aria-label="Abrir carrito de compras">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                    <span class="cart-badge">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-    <!-- Overlay oscuro del carrito -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-
-    <!-- Panel lateral del carrito -->
-    <div class="cart-panel" id="cartPanel">
-        <div class="cart-header">
-            <div class="cart-title-wrapper">
-                <div class="cart-icon-bg">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M16 6V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a1 1 0 0 0-1-1h-4zm-6-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4V5z" />
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="cart-title">Mi Carrito</h2>
-                    <p class="cart-count">0 productos</p>
-                </div>
-            </div>
-            <button class="cart-close-btn" type="button" aria-label="Cerrar carrito">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-            </button>
-        </div>
-        <div class="cart-content">
-            <div class="cart-items"></div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span class="cart-total-label">Total:</span>
-                <span class="cart-total-value">$0</span>
-            </div>
-            <button class="cart-checkout-btn" type="button">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="currentColor" />
-                </svg>
-                Enviar pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-
-    <!-- SECCIÓN 1: Hero Videos Grid con logo superpuesto -->
-    <section class="hero-main-carousel hero-main-carousel--brownies">
-        <div class="carousel-wrapper">
-            <video class="hero-background-video" preload="metadata" autoplay muted loop playsinline
-                poster="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-individuales.webp">
-                <source src="../assets/optimized/imagenes-brownies-galletas/hero/hero-cookies-mobile.mp4" type="video/mp4"
-                    media="(max-width: 768px)">
-                <source src="../assets/optimized/imagenes-brownies-galletas/hero/hero-cookies-web.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-content-box">
-                <img src="../assets/optimized/logos/logos-lauren-png-59.webp" alt="Lauren Logo" class="hero-logo-translucent">
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Introducción con logo flotante -->
-    <section class="intro-section-modern">
-        <div class="container">
-            <div class="intro-content-wrapper">
-                <!-- Ícono flotante que cae -->
-                <div class="intro-icon-container">
-                    <div class="intro-icon-circle">
-                        <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Lauren Logo"
-                            class="intro-main-icon-img" loading="lazy" decoding="async">
-                    </div>
-                </div>
-                <!-- Header -->
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">BROWNIES Y GALLETAS</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant-center">Dulces artesanales hechos con pasión</p>
-                <p class="intro-text-modern">Descubre nuestros brownies melcochudos y galletas artesanales. Cada
-                    producto está elaborado con ingredientes premium y mucho amor. Perfectos para compartir, regalar o
-                    simplemente disfrutar.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Productos divididos (Brownies | Galletas) -->
-    <section class="products-split-section">
-        <div class="split-container">
-
-            <!-- COLUMNA IZQUIERDA: BROWNIES -->
-            <div class="product-column">
-                <!-- Título -->
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant" style="font-size: 2rem;">BROWNIES</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant-center">Melcochudos y decadentes</p>
-                <p style="text-align: center; color: #666; margin: 1rem 0 0.5rem;">Hechos a base de Nutella y chocolate
-                    al 70%. Textura perfecta entre suave y denso.</p>
-                <p
-                    style="text-align: center; color: #888; font-size: 0.9rem; margin: 0.5rem 0 1.5rem; font-style: italic;">
-                    <strong style="color: #666;">Toppings disponibles:</strong> Nutella • Arequipe • M&M • Hershey's
-                    Blanca • Oreo
-                </p>
-
-                <!-- Galería Brownies estilo Vintage -->
-                <div class="brownies-carousel-wrapper">
-                    <!-- Grupo 1 - 3 imágenes -->
-                    <div class="brownies-carousel-group active">
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/caja-x16.webp" alt="Brownies Lauren"
-                                class="brownies-gallery-img" loading="lazy" decoding="async">
-                            <!-- Botón Ver Precios -->
-                            <div class="pricing-btn-wrapper">
-                                <button class="pricing-btn-integrated" type="button" id="browniesPricingBtn">
-                                    Ver Precios
-                                </button>
-                            </div>
-                        </div>
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-x3.webp"
-                                alt="Brownies Lauren" class="brownies-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-x6.webp"
-                                alt="Brownies Lauren" class="brownies-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-
-                    <!-- Grupo 2 - 3 imágenes -->
-                    <div class="brownies-carousel-group">
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-individuales.webp"
-                                alt="Brownies Lauren" class="brownies-gallery-img" loading="lazy" decoding="async">
-                            <!-- Botón Ver Precios -->
-                            <div class="pricing-btn-wrapper">
-                                <button class="pricing-btn-integrated" type="button" id="browniesPricingBtn2">
-                                    Ver Precios
-                                </button>
-                            </div>
-                        </div>
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/caja-x16.webp" alt="Brownies Lauren"
-                                class="brownies-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                        <div class="brownies-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/brownies/brownies-x3.webp"
-                                alt="Brownies Lauren" class="brownies-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-
-                    <!-- Indicadores del carrusel brownies -->
-                    <div class="brownies-carousel-dots">
-                        <span class="brownies-dot active" data-group="0"></span>
-                        <span class="brownies-dot" data-group="1"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COLUMNA DERECHA: GALLETAS -->
-            <div class="product-column">
-                <!-- Título -->
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant" style="font-size: 2rem;">GALLETAS</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant-center">Artesanales y deliciosas</p>
-                <p style="text-align: center; color: #666; margin: 1rem 0 0.5rem;">Horneadas diariamente con
-                    ingredientes premium. Cada una tiene su relleno especial.</p>
-                <p
-                    style="text-align: center; color: #888; font-size: 0.9rem; margin: 0.5rem 0 1.5rem; font-style: italic;">
-                    <strong style="color: #666;">Sabores:</strong> Chips • Red Velvet • Cocoa • Pistachos • Chocolate
-                    Blanco • Panelita Copelia
-                </p>
-
-                <!-- Galería Galletas estilo Vintage -->
-                <div class="galletas-carousel-wrapper">
-                    <!-- Grupo 1 - 3 imágenes -->
-                    <div class="galletas-carousel-group active">
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/1.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                            <!-- Botón Ver Precios -->
-                            <div class="pricing-btn-wrapper">
-                                <button class="pricing-btn-integrated" type="button" id="galletasPricingBtn">
-                                    Ver Precios
-                                </button>
-                            </div>
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/2.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/3.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-
-                    <!-- Grupo 2 - 3 imágenes -->
-                    <div class="galletas-carousel-group">
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/5.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                            <!-- Botón Ver Precios -->
-                            <div class="pricing-btn-wrapper">
-                                <button class="pricing-btn-integrated" type="button" id="galletasPricingBtn2">
-                                    Ver Precios
-                                </button>
-                            </div>
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/6.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/7.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-
-                    <!-- Grupo 3 - 3 imágenes -->
-                    <div class="galletas-carousel-group">
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/8.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                            <!-- Botón Ver Precios -->
-                            <div class="pricing-btn-wrapper">
-                                <button class="pricing-btn-integrated" type="button" id="galletasPricingBtn3">
-                                    Ver Precios
-                                </button>
-                            </div>
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/9.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                        <div class="galletas-gallery-item">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/imagenes-brownies-galletas/galletas/12.webp" alt="Galletas Lauren"
-                                class="galletas-gallery-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-
-                    <!-- Indicadores del carrusel galletas -->
-                    <div class="galletas-carousel-dots">
-                        <span class="galletas-dot active" data-group="0"></span>
-                        <span class="galletas-dot" data-group="1"></span>
-                        <span class="galletas-dot" data-group="2"></span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SECCIÓN: Información Adicional -->
-    <section class="important-info-section">
-        <div class="container">
-            <div class="info-header">
-                <div class="section-header-decorated">
-                    <div class="section-decoration-left"></div>
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title-elegant">INFORMACIÓN IMPORTANTE</h2>
-                    </div>
-                    <div class="section-decoration-right"></div>
-                </div>
-                <p class="section-subtitle-elegant" style="text-align: center;">Para disfrutar al máximo cada bocado</p>
-            </div>
-
-            <div class="info-cards-grid">
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/pedido.webp" alt="Pedido anticipado"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Pedidos y Frescura</h3>
-                        <p class="info-card-text">Horneamos exclusivamente bajo pedido para garantizar máxima frescura.
-                            Haz tu solicitud con al menos 1 día de anticipación y consúltanos disponibilidad para la
-                            fecha que necesitas.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/letras.webp" alt="Conservación"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Conservación y Consumo</h3>
-                        <p class="info-card-text">Conserva en envase hermético refrigerado. Saca a temperatura ambiente
-                            antes de consumir para mejor sabor. Duración: 4-5 días.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/unica.webp" alt="Ingredientes premium"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Ingredientes de Calidad</h3>
-                        <p class="info-card-text">Usamos ingredientes premium cuidadosamente seleccionados para
-                            garantizar sabor, frescura y calidad en cada bocado.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-
-                <div class="info-card-modern">
-                    <div class="info-card-icon">
-                        <div class="icon-circle">
-                            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/detalles-adicionales/disenos.webp" alt="Toppings y Sabores"
-                                class="icon-img" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                    <div class="info-card-content">
-                        <h3 class="info-card-title">Toppings y Sabores</h3>
-                        <p class="info-card-text">Brownies con toppings: Nutella, Arequipe, M&M, Hershey's u Oreo.
-                            Galletas en sabores: Chips, Red Velvet, Cocoa, Pistachos, Chocolate Blanco y Panelita.</p>
-                    </div>
-                    <div class="info-card-decoration"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Completo -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <!-- LUXURY FOOTER - Minimalista High-End -->
-    <footer class="luxury-footer">
-        <!-- Logo -->
-        <div class="footer-logo">
-            <img src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%20viewBox=%270%200%2024%2024%27%3E%3C/svg%3E" data-src="../assets/optimized/logos/footer-logo.webp" alt="Lauren Repostería" loading="lazy" decoding="async">
-        </div>
-
-        <!-- Iconos de Redes Sociales con colores de marca -->
-        <div class="footer-social">
-            <!-- Instagram con gradiente característico -->
-            <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-                aria-label="Instagram">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="instagram-gradient-footer" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#FD5949;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#D6249F;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#285AEB;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
-                        fill="url(#instagram-gradient-footer)" />
-                </svg>
-            </a>
-
-            <!-- WhatsApp verde característico -->
-            <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                        fill="#25D366" />
-                </svg>
-            </a>
-
-            <!-- TikTok negro característico -->
-            <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-                aria-label="TikTok">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"
-                        fill="#000000" />
-                </svg>
-            </a>
-        </div>
-
-        <!-- Línea Separadora -->
-        <div class="footer-divider"></div>
-
-        <!-- Copyright -->
-        <p class="footer-copyright">
-            © 2025 Lauren Repostería<br>
-            Creando momentos dulces y memorables desde 2022.<br>
-            Repostería artesanal con amor en cada detalle.<br>
-            Medellín, Colombia
-        </p>
-    </footer>
-
-    <!-- Lightbox Modal -->
-    <div class="lightbox-modal" id="lightboxModal">
-        <div class="lightbox-content">
-            <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Cerrar imagen ampliada">&times;</button>
-            <button class="lightbox-prev" id="lightboxPrev" type="button" aria-label="Imagen anterior">‹</button>
-            <button class="lightbox-next" id="lightboxNext" type="button" aria-label="Imagen siguiente">›</button>
-            <img src="../assets/optimized/logos/logos-lauren-png-13.webp" alt="Brownie expandido" class="lightbox-img" id="lightboxImg">
-        </div>
-    </div>
-
-    <!-- Botón Scroll to Top -->
-    <!-- Botón Flotante de Contacto -->
-    <button class="contact-fab" id="contactFab" type="button" aria-label="Menú de contacto" aria-controls="contactMenu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-    </button>
-
-    <!-- Menú de Redes Sociales -->
-    <div class="contact-menu" id="contactMenu">
-        <a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer" class="social-fab whatsapp"
-            aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-            </svg>
-        </a>
-
-        <a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer"
-            class="social-fab instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
-        </a>
-
-        <a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer"
-            class="social-fab tiktok" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path
-                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
-            </svg>
-        </a>
-    </div>
-
-
-    <!-- Scripts del sistema de modal -->
-        <script src="../js/catalog-data.js"></script>
-        <script src="../js/quick-view-modal.js"></script>
-
-        <!-- Script de integración del Quick View Modal y Carruseles -->
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // ========================================
-                // INTEGRACIÓN BROWNIES
-                // ========================================
-                // Conectar imágenes de la galería de Brownies
-                const brownieItems = document.querySelectorAll('.brownies-gallery-item');
-                brownieItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        // Si el click fue en el botón, dejar que el listener del botón lo maneje
-                        if (e.target.closest('button')) return;
-
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Obtener la imagen que fue clickeada
-                        const clickedImg = item.querySelector('.brownies-gallery-img');
-                        const clickedImgSrc = clickedImg ? (clickedImg.dataset.src || clickedImg.currentSrc || clickedImg.src) : null;
-
-                        // Encontrar el grupo al que pertenece
-                        const clickedGroup = item.closest('.brownies-carousel-group');
-
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined' && catalogData['brownies']) {
-                            // Recopilar todas las imágenes del grupo
-                            const imagesInGroup = [];
-                            if (clickedGroup) {
-                                const imgsInGroup = clickedGroup.querySelectorAll('.brownies-gallery-img');
-                                imgsInGroup.forEach(img => {
-                                    const imageSrc = img.dataset.src || img.currentSrc || img.src;
-                                    if (imageSrc) imagesInGroup.push(imageSrc);
-                                });
-                            }
-
-                            // REORDENAR: Poner la imagen clickeada primero
-                            let reorderedImages = [...imagesInGroup];
-                            if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
-                                reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
-                                reorderedImages.unshift(clickedImgSrc);
-                            }
-
-                            // Crear copia del producto con la imagen clickeada como principal
-                            const productWithImages = {
-                                ...catalogData['brownies'],
-                                images: reorderedImages.length > 0 ? reorderedImages : catalogData['brownies'].images,
-                                mainImage: clickedImgSrc || catalogData['brownies'].mainImage
-                            };
-
-                            const tempData = { 'brownies': productWithImages };
-                            openQuickView('brownies', tempData);
-                        }
-                    });
-                    item.style.cursor = 'pointer';
-                });
-
-                // Conectar botones "Ver Precios" de Brownies
-                const brownieButtons = document.querySelectorAll('button[id^="browniesPricingBtn"]');
-                brownieButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined') {
-                            openQuickView('brownies', catalogData);
-                        }
-                    });
-                });
-
-
-                // ========================================
-                // INTEGRACIÓN GALLETAS
-                // ========================================
-                // Conectar imágenes de la galería de Galletas
-                const galletaItems = document.querySelectorAll('.galletas-gallery-item');
-                galletaItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        // Si el click fue en el botón, dejar que el listener del botón lo maneje
-                        if (e.target.closest('button')) return;
-
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Obtener la imagen que fue clickeada
-                        const clickedImg = item.querySelector('.galletas-gallery-img');
-                        const clickedImgSrc = clickedImg ? (clickedImg.dataset.src || clickedImg.currentSrc || clickedImg.src) : null;
-
-                        // Encontrar el grupo al que pertenece
-                        const clickedGroup = item.closest('.galletas-carousel-group');
-
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined' && catalogData['galletas']) {
-                            // Recopilar todas las imágenes del grupo
-                            const imagesInGroup = [];
-                            if (clickedGroup) {
-                                const imgsInGroup = clickedGroup.querySelectorAll('.galletas-gallery-img');
-                                imgsInGroup.forEach(img => {
-                                    const imageSrc = img.dataset.src || img.currentSrc || img.src;
-                                    if (imageSrc) imagesInGroup.push(imageSrc);
-                                });
-                            }
-
-                            // REORDENAR: Poner la imagen clickeada primero
-                            let reorderedImages = [...imagesInGroup];
-                            if (clickedImgSrc && imagesInGroup.includes(clickedImgSrc)) {
-                                reorderedImages = imagesInGroup.filter(src => src !== clickedImgSrc);
-                                reorderedImages.unshift(clickedImgSrc);
-                            }
-
-                            // Crear copia del producto con la imagen clickeada como principal
-                            const productWithImages = {
-                                ...catalogData['galletas'],
-                                images: reorderedImages.length > 0 ? reorderedImages : catalogData['galletas'].images,
-                                mainImage: clickedImgSrc || catalogData['galletas'].mainImage
-                            };
-
-                            const tempData = { 'galletas': productWithImages };
-                            openQuickView('galletas', tempData);
-                        }
-                    });
-                    item.style.cursor = 'pointer';
-                });
-
-                // Conectar botones "Ver Precios" de Galletas
-                const galletaButtons = document.querySelectorAll('button[id^="galletasPricingBtn"]');
-                galletaButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        if (typeof openQuickView === 'function' && typeof catalogData !== 'undefined') {
-                            openQuickView('galletas', catalogData);
-                        }
-                    });
-                });
-
-                // ========================================
-                // ROTACIÓN AUTOMÁTICA DE CARRUSELES
-                // ========================================
-                function initAutoCarousel(groupSelector, dotSelector, intervalTime = 5000) {
-                    const groups = document.querySelectorAll(groupSelector);
-                    const dots = document.querySelectorAll(dotSelector);
-
-                    if (groups.length === 0) return;
-
-                    let currentIndex = 0;
-                    let interval;
-
-                    // Función para mostrar un grupo específico
-                    function showGroup(index) {
-                        // Remover active de todos
-                        groups.forEach(g => {
-                            g.classList.remove('active');
-                            g.style.opacity = '0';
-                            setTimeout(() => {
-                                if (!g.classList.contains('active')) g.style.display = 'none';
-                            }, 500); // Esperar transición CSS si la hay
-                        });
-                        dots.forEach(d => d.classList.remove('active'));
-
-                        // Activar el nuevo
-                        const currentGroup = groups[index];
-                        currentGroup.style.display = 'grid'; // O flex, según CSS original
-                        // Forzar reflow
-                        void currentGroup.offsetWidth;
-
-                        currentGroup.classList.add('active');
-                        currentGroup.style.opacity = '1';
-
-                        if (dots[index]) dots[index].classList.add('active');
-                        currentIndex = index;
-                    }
-
-                    function nextGroup() {
-                        let nextIndex = (currentIndex + 1) % groups.length;
-                        showGroup(nextIndex);
-                    }
-
-                    function startRotation() {
-                        if (interval) clearInterval(interval);
-                        interval = setInterval(nextGroup, intervalTime);
-                    }
-
-                    function stopRotation() {
-                        if (interval) clearInterval(interval);
-                    }
-
-                    // Event listeners para dots (navegación manual)
-                    dots.forEach((dot, index) => {
-                        dot.addEventListener('click', () => {
-                            stopRotation();
-                            showGroup(index);
-                            startRotation(); // Reiniciar timer
-                        });
-                    });
-
-                    // Pausar rotación cuando el mouse está encima del carrusel
-                    const wrapper = groups[0].parentElement;
-                    if (wrapper) {
-                        wrapper.addEventListener('mouseenter', stopRotation);
-                        wrapper.addEventListener('mouseleave', startRotation);
-                    }
-
-                    // Iniciar rotación
-                    startRotation();
-                }
-
-                // Inicializar carruseles de Brownies y Galletas
-                initAutoCarousel('.brownies-carousel-group', '.brownies-dot', 5000);
-                initAutoCarousel('.galletas-carousel-group', '.galletas-dot', 5000);
-
-            });
-        </script>
-        <script src="../js/contact-fab.js"></script>
-        <!-- Scripts del carrito -->
-        <script src="../js/cart-manager.js"></script>
-        <script src="../js/cart-ui.js"></script>
-
-    <script src="../js/performance-optimizer.js"></script>
-
-</body>
-
-</html>
+<body id="arriba">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="announcement">
+<div class="container"><span>Hecho a mano en Medellín · Desde 2022</span>
+<a href="inicio.html#como-pedir">Un momento especial empieza con tiempo <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+<header class="site-header">
+<div class="container nav-inner">
+<a class="brand" href="inicio.html" aria-label="Lauren Repostería, inicio">
+<img src="../assets/brand/lauren-logo-lilac.svg" alt="Lauren · Bocado de alegría" width="300" height="180" class="" fetchpriority="high" decoding="async">
+</a>
+<nav class="nav-links" aria-label="Navegación principal">
+<a href="inicio.html">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html" aria-current="page">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+</nav>
+<div class="nav-actions">
+<button type="button" class="cart-trigger" data-open-cart aria-label="Abrir pedido" aria-haspopup="dialog"><span data-icon="bag" aria-hidden="true"></span><span class="cart-label">Tu pedido</span><span class="cart-count" data-cart-count>0</span>
+</button>
+<button type="button" class="icon-button menu-trigger" id="menuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav"><span data-icon="menu" aria-hidden="true"></span>
+</button>
+</div>
+</div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden>
+<a href="inicio.html">Inicio</a>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html" aria-current="page">Brownies y galletas</a>
+<a href="detalles.html">Detalles</a>
+<a href="inicio.html#como-pedir">Cómo pedir <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</nav>
+</header>
+<main id="contenido">
+<section class="category-hero">
+<div class="container">
+<nav class="breadcrumbs" aria-label="Ruta de navegación">
+<a href="inicio.html">Inicio</a><span aria-hidden="true">/</span><span aria-current="page">Brownies y galletas</span>
+</nav>
+<div class="category-hero-grid">
+<div class="category-copy">
+<p class="eyebrow">El lado más rico de hacer una pausa</p>
+<h1>Solo un bocado<br><em>más.</em>
+</h1>
+<p>Brownies melcochudos y galletas de centro suave. Artesanales, generosos y difíciles de compartir.</p>
+<a class="btn " href="#catalogo">Explorar la colección <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+<div class="category-note"><span data-icon="heart" aria-hidden="true"></span>Hecho a mano, a tu manera.</div>
+</div>
+<div class="category-art">
+<img loading="eager" sizes="(max-width: 600px) 54vw, (max-width: 1280px) 26vw, 320px" srcset="../assets/propuestas-fotograficas/responsive/galletas-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galletas-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galletas-960.webp 960w, ../assets/propuestas-fotograficas/galletas.webp 1122w" src="../assets/propuestas-fotograficas/galletas.webp" alt="Brownies y galletas, creación artesanal de Lauren" width="720" height="900" class="" fetchpriority="high" decoding="async">
+<img fetchpriority="auto" sizes="(max-width: 600px) 54vw, (max-width: 1280px) 26vw, 320px" srcset="../assets/propuestas-fotograficas/responsive/galeria-brownies-02-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galeria-brownies-02-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galeria-brownies-02-960.webp 960w, ../assets/propuestas-fotograficas/galeria-brownies-02.webp 1122w" src="../assets/propuestas-fotograficas/galeria-brownies-02.webp" alt="Otra creación de la colección Brownies y galletas" width="720" height="900" class="" loading="eager" decoding="async">
+</div>
+</div>
+</div>
+</section>
+<section class="section catalog-section" id="catalogo" data-catalog-section>
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">Nuestra colección</p>
+<h2>El antojo tiene<br><em>dos buenos motivos.</em>
+</h2>
+</div>
+<p>Escoge una presentación para ver sabores, toppings y cantidades mínimas.</p>
+</div>
+<div class="product-grid two-columns" data-products="brownies,galletas">
+</div>
+<div class="empty-results" data-empty-results hidden>
+<h3>Aún no encontramos ese antojo.</h3>
+<p>Prueba con otro nombre o descubre toda la colección.</p>
+<button class="btn btn-secondary" type="button" data-reset-filters>Ver toda la colección</button>
+</div>
+<div class="catalog-help">
+<p>Precios en pesos colombianos. Elige una creación para ver sus opciones y el valor de tu presentación.</p>
+<a class="text-link" href="inicio.html#como-pedir">Cómo hacer tu pedido <span data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+</section>
+<section class="section flavor-section" id="galletas">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">Una colección de pequeños antojos</p>
+<h2>Seis formas de decir<br><em>qué delicia.</em>
+</h2>
+</div>
+<p>Descubre los sabores de nuestras galletas y elige el tuyo.</p>
+</div>
+<div class="cookie-grid">
+<article class="cookie">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 30vw, 384px" srcset="../assets/propuestas-fotograficas/responsive/galleta-nutella-corte-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galleta-nutella-corte-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galleta-nutella-corte-960.webp 960w, ../assets/propuestas-fotograficas/galleta-nutella-corte.webp 1122w" src="../assets/propuestas-fotograficas/galleta-nutella-corte.webp" alt="Galleta con chips de chocolate y relleno de Nutella, al corte" width="1122" height="1402" loading="eager" decoding="async">
+<h3>Chips con nueces</h3>
+<p>Con relleno de Nutella.</p>
+<button class="text-link" type="button" data-product="galletas" data-flavor="chips">Elegir este sabor <span data-icon="arrow" aria-hidden="true"></span>
+</button>
+</article>
+<article class="cookie">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 30vw, 384px" srcset="../assets/propuestas-fotograficas/responsive/galeria-galletas-01-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galeria-galletas-01-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galeria-galletas-01-960.webp 960w, ../assets/propuestas-fotograficas/galeria-galletas-01.webp 1122w" src="../assets/propuestas-fotograficas/galeria-galletas-01.webp" alt="Galleta artesanal de la colección Lauren" width="720" height="900" class="" loading="eager" decoding="async">
+<h3>Red velvet</h3>
+<p>Chips blancos y crema de queso.</p>
+<button class="text-link" type="button" data-product="galletas" data-flavor="red-velvet">Elegir este sabor <span data-icon="arrow" aria-hidden="true"></span>
+</button>
+</article>
+<article class="cookie">
+<img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 30vw, 384px" srcset="../assets/propuestas-fotograficas/responsive/galleta-chocolate-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galleta-chocolate-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galleta-chocolate-960.webp 960w, ../assets/propuestas-fotograficas/galleta-chocolate.webp 1122w" src="../assets/propuestas-fotograficas/galleta-chocolate.webp" alt="Galleta artesanal de la colección Lauren" width="720" height="900" class="" loading="eager" decoding="async">
+<h3>Cocoa</h3>
+<p>Chocolate semiamargo y al 70 %.</p>
+<button class="text-link" type="button" data-product="galletas" data-flavor="cocoa">Elegir este sabor <span data-icon="arrow" aria-hidden="true"></span>
+</button>
+</article>
+</div>
+<div class="special-cookies">
+<figure>
+<img fetchpriority="low" sizes="(max-width: 680px) 90vw, (max-width: 1280px) 45vw, 560px" srcset="../assets/propuestas-fotograficas/responsive/galletas-especiales-320.webp 320w, ../assets/propuestas-fotograficas/responsive/galletas-especiales-640.webp 640w, ../assets/propuestas-fotograficas/responsive/galletas-especiales-960.webp 960w, ../assets/propuestas-fotograficas/galletas-especiales.webp 1122w" src="../assets/propuestas-fotograficas/galletas-especiales.webp" alt="Selección de galletas artesanales de Lauren" width="720" height="900" loading="eager" decoding="async">
+<figcaption>Un pequeño antojo. Un gran momento.</figcaption>
+</figure>
+<div class="special-cookie-copy">
+<p class="eyebrow">Para salir de lo de siempre</p>
+<h3>Tres sabores<br><em>muy especiales.</em></h3>
+<div class="special-cookie-list">
+<button type="button" data-product="galletas" data-flavor="pistachos"><span><strong>Pistachos</strong><small>Con chocolate blanco.</small></span><span data-icon="arrow" aria-hidden="true"></span></button>
+<button type="button" data-product="galletas" data-flavor="chocolate-blanco"><span><strong>Chocolate blanco</strong><small>Con mermelada de frambuesa.</small></span><span data-icon="arrow" aria-hidden="true"></span></button>
+<button type="button" data-product="galletas" data-flavor="panelita"><span><strong>Panelita Copelia</strong><small>Con relleno de arequipe.</small></span><span data-icon="arrow" aria-hidden="true"></span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="inspiracion">
+<div class="container">
+<div class="section-heading">
+<div>
+<p class="eyebrow">El álbum de Lauren</p>
+<h2>Un antojo para <em>cada día.</em></h2>
+</div>
+<p>Acércate a sus texturas y descubre tus favoritos. Abre cada foto para verla completa.</p>
+</div>
+<div class="gallery-grid" data-gallery="horneados"></div>
+<div class="gallery-more">
+<button class="btn btn-secondary" type="button" data-gallery-more>Ver más creaciones <span data-icon="plus" aria-hidden="true"></span></button>
+</div>
+</div>
+</section>
+<section class="section faq-section" id="preguntas">
+<div class="container faq-grid">
+<div class="faq-copy">
+<p class="eyebrow">Antes de tu primer bocado</p>
+<h2>Todo claro.<br><em>Todo más dulce.</em>
+</h2>
+<p>Los pequeños detalles también importan al hacer tu pedido.</p>
+<a class="text-link" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20pregunta%20sobre%20mi%20pedido." target="_blank" rel="noopener noreferrer">Te ayudamos por WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div>
+<details class="faq-item">
+<summary>¿Con cuánto tiempo debo hacer mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Hazlo con al menos 1 día de anticipación. La disponibilidad depende de la fecha y del diseño; la confirmamos contigo durante la asesoría.</p>
+</details>
+<details class="faq-item">
+<summary>¿Puedo personalizar mi pedido?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Sí. Puedes elegir las opciones disponibles en cada producto y escribir tu mensaje. Si tienes otra idea, compártela por WhatsApp: definimos juntos el diseño y su valor.</p>
+</details>
+<details class="faq-item">
+<summary>¿Cómo conservo los brownies y las galletas?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Consérvalos en un envase hermético refrigerado. Sácalos a temperatura ambiente antes de consumir para disfrutar mejor su sabor. Duración indicada: 4 a 5 días.</p>
+</details>
+<details class="faq-item">
+<summary>¿Cómo confirmo la entrega y el pago?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Arma tu pedido y abre el resumen en WhatsApp. Allí coordinamos la fecha, la entrega y la forma de pago. Agregar productos al pedido no confirma una reserva.</p>
+</details>
+<details class="faq-item">
+<summary>¿Mi producto será igual a la fotografía?<span data-icon="plus" aria-hidden="true"></span>
+</summary>
+<p>Cada creación se hace a mano. Las imágenes son referencias y pueden existir pequeñas variaciones en los acabados y colores.</p>
+</details>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="footer-top">
+<h2>Hagamos de ese momento<br><em>un dulce recuerdo.</em>
+</h2>
+<a class="btn btn-light" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20Tengo%20una%20idea%20para%20un%20momento%20especial.%20%C2%BFMe%20ayudas%3F" target="_blank" rel="noopener noreferrer">Hablemos de tu idea <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-main">
+<div class="footer-brand">
+<img src="../assets/brand/lauren-logo-light.svg" alt="Lauren Repostería" width="300" height="180" class="" loading="eager" decoding="async">
+<p>Un bocado de alegría.<br>Hecho a mano, pensado para ti.</p>
+</div>
+<nav class="footer-group" aria-label="Catálogo en el pie de página">
+<h3>Descubre</h3>
+<a href="tortas.html">Tortas</a>
+<a href="alfajores.html">Alfajores</a>
+<a href="brownies-galletas.html">Brownies y galletas</a>
+<a href="detalles.html">Detalles especiales</a>
+</nav>
+<div class="footer-group">
+<h3>Sigamos cerca</h3>
+<a href="https://instagram.com/laurenreposteria22" target="_blank" rel="noopener noreferrer">Instagram <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://www.tiktok.com/@laurenreposteria" target="_blank" rel="noopener noreferrer">TikTok <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+<a href="https://wa.me/573104442796" target="_blank" rel="noopener noreferrer">WhatsApp <span data-icon="diagonal" aria-hidden="true"></span>
+</a>
+</div>
+<div class="footer-group">
+<h3>Estamos para ti</h3>
+<p>Medellín, Colombia</p>
+<p>Lunes a sábado<br>9:00 a. m. — 6:00 p. m.</p>
+<a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
+<a href="inicio.html#como-pedir">Cómo hacer tu pedido</a>
+</div>
+</div>
+<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería. Todos los derechos reservados.</span><span>Bocado de alegría, desde 2022.</span>
+<a href="#arriba">Volver arriba <span class="back-to-top" data-icon="arrow" aria-hidden="true"></span>
+</a>
+</div>
+</div>
+</footer>
+<a class="contact-fab" href="https://wa.me/573104442796?text=Hola%2C%20Lauren.%20%C2%BFMe%20ayudas%20con%20mi%20pedido%3F" target="_blank" rel="noopener noreferrer" aria-label="Hablar con Lauren por WhatsApp"><span data-icon="chat" aria-hidden="true"></span>
+</a>
+<dialog id="productDialog" class="product-dialog" aria-labelledby="productTitle">
+</dialog>
+<dialog id="cartDialog" class="cart-dialog" aria-labelledby="cartTitle">
+</dialog>
+<dialog id="lightboxDialog" class="lightbox-dialog" aria-labelledby="lightboxTitle">
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+</div>
+<noscript>
+<div class="container section">
+<p>Para personalizar productos y armar tu pedido, activa JavaScript. También puedes consultar nuestro catálogo por <a class="text-link" href="https://wa.me/573104442796">WhatsApp: +57 310 444 2796</a>.</p>
+</div>
+</noscript>
+</body></html>

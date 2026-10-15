@@ -1,41 +1,20 @@
 # Accesibilidad
 
-Objetivo: cumplir lo máximo posible de WCAG 2.1 AA sin comprometer la estética.
+La implementación incluye estructura semántica, `lang="es"`, enlace para saltar al contenido, un h1 por página, controles de teclado y foco visible. Los SVG decorativos se ocultan del árbol accesible; las acciones de solo icono tienen nombre.
 
-## Estado actual
+## Comportamiento
 
-| Área | Estado |
-| --- | --- |
-| Idioma declarado (`lang="es"`) | ✅ En todas las páginas |
-| Un solo `h1` por página, descriptivo y único | ✅ Verificado |
-| Texto alternativo en imágenes | ✅ Sin `alt` faltantes, vacíos ni genéricos |
-| Botones con `type` y `aria-label` donde aplica | ✅ |
-| Menú y controles con estado accesible (`aria-expanded`) | ✅ |
-| Cierre de modales con teclado (Escape) y foco | ✅ |
-| `prefers-reduced-motion` respetado | ✅ Regla global en `tokens.css` |
-| Enlaces externos con `rel` seguro | ✅ |
-| Jerarquía de encabezados sin saltos | ⚠️ `tortas.html` tiene un salto `h2→h4` puntual |
-| Dimensiones de imagen para evitar CLS | ⚠️ Pendiente (ver [performance](08-performance.md)) |
+- Producto, pedido, galería y video ampliado usan `dialog` nativo, Escape y restauración del foco.
+- Menú con `aria-expanded` y cierre por Escape, selección y clic exterior.
+- Formularios con etiquetas, grupos, campos requeridos, límites y errores junto al dato correspondiente.
+- Controles móviles de acción con áreas táctiles amplias; campos de texto a 16 px.
+- Filtros con estado seleccionado; resultados y avisos accesibles. El temporizador del video no anuncia cada segundo.
+- Movimiento reducido global y video iniciado por el visitante, con controles propios.
 
-## Prácticas aplicadas
+## Comprobación local, septiembre de 2026
 
-- **Estructura semántica**: uso de `main`, `nav`, `footer`, encabezados
-  jerárquicos y botones reales para acciones.
-- **Movimiento reducido**: quien active "reducir movimiento" en su sistema
-  operativo verá el sitio sin animaciones ni autoplay agresivo (carrusel,
-  transiciones), gracias a la media query global.
-- **Contraste**: la paleta lila/violeta sobre fondos claros mantiene contraste
-  suficiente para texto; el texto sobre video/hero usa overlays para preservar
-  legibilidad.
-- **Teclado**: el carrito y los modales se pueden cerrar con Escape; los
-  controles son elementos enfocables.
+Se recorrieron menú móvil, elección de productos, errores de personalización, edición de opciones/cantidad, eliminación/deshacer, galería con Escape y controles del video. Se revisaron muestras visuales en escritorio y móvil y geometría renderizada de las cinco páginas públicas a 360, 430, 768, 1024, 1440 y 1920 px, además de 844 × 390 horizontal: sin desbordamiento horizontal ni imágenes cargadas rotas en esos estados.
 
-## Pendientes recomendados
+Los cinco complementos muestran SVG propios junto a su nombre, sin imágenes raster decorativas.
 
-1. Corregir el salto de encabezados `h2→h4` en `tortas.html` (usar `h3`).
-2. Añadir un enlace "saltar al contenido" (skip link) al inicio de cada página.
-3. Revisar el foco visible en todos los controles interactivos y reforzar
-   `:focus-visible` donde se haya eliminado el `outline`.
-4. Auditar contraste con una herramienta automática (axe, Lighthouse) y ajustar
-   los grises de texto secundario si algún caso queda por debajo de 4.5:1.
-5. Verificar navegación completa solo con teclado en el flujo de compra.
+No es una certificación WCAG. No se hizo una evaluación con lectores de pantalla, una suite de navegadores físicos ni mediciones Lighthouse. La entrevista original todavía no aporta un archivo de subtítulos; añadirlo requiere una transcripción fiel y revisada. No inventar texto para sustituir la narración.
