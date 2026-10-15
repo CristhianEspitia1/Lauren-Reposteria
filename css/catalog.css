@@ -154,3 +154,15 @@
     .category-banner .container { flex-direction: column; align-items: start; gap: 24px; }
     .cookie-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
 }
+/* Sistema gráfico del brandbook, página 19 (ver css/site.css). */
+.category-art::before, .category-art::after { content: ''; position: absolute; z-index: 1; pointer-events: none; }
+.category-art::before { top: -14px; left: -14px; width: 84px; aspect-ratio: 1; border-radius: 50%; background: var(--color-lilac); border: 5px solid var(--color-cream); }
+.category-art::after { top: 2px; left: 2px; width: 52px; aspect-ratio: 1; background: var(--color-white); -webkit-mask: url(../assets/brand/sistema/isotipo-circulo.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/isotipo-circulo.svg) center / contain no-repeat; }
+.category-banner .container::after, .flavor-section .section-heading::after { content: ''; flex-shrink: 0; pointer-events: none; background: var(--color-white); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
+.category-banner .container::after { --graphic: url(../assets/brand/sistema/grito-de-victoria.svg); background: var(--color-lilac); order: -1; width: 84px; aspect-ratio: 1; }
+.flavor-section .section-heading { position: relative; }
+.flavor-section .section-heading::after { --graphic: url(../assets/brand/sistema/mucho-encanto.svg); position: absolute; top: -40px; right: 0; width: clamp(120px, 14vw, 180px); aspect-ratio: 69.7 / 12.2; }
+@media (max-width: 800px) {
+    .category-banner .container::after { display: none; }
+    .flavor-section .section-heading::after { position: static; order: -1; }
+}

@@ -39,8 +39,30 @@ Los SVG de `assets/brand/` conservan los trazados del manual, sin redibujarlos n
 
 | Archivo | Variante y procedencia |
 | --- | --- |
-| `lauren-logo.svg` / `lauren-logo-light.svg` / `lauren-logo-lilac.svg` | Composición completa, página 7. Lila sobre fondos claros (cabecera) y claro sobre fondos de color (pie), como en las páginas 18, 19 y 22 |
+| `lauren-logo.svg` / `lauren-logo-light.svg` | Composición completa, página 7. Tinta sobre fondos claros (cabecera) y claro sobre fondos de color (pie), como en las páginas 19 y 22 |
 | `lauren-sello-light.svg` | Sello circular «Bocado de alegría», página 13 |
+
+### Sistema gráfico
+
+`assets/brand/sistema/` contiene elementos del material gráfico con sus trazados originales extraídos del PDF: de la página 19, `rama`, `isotipo-circulo`, `reposteria`, `corazon`, `grito-de-victoria`, `grateful`, `mucho-encanto`, `porcion-torta`, `mano-flor` y `sello-ovalado`; de la página 18, `sanadora-de-alma`; de la página 20, `dosis-de-encanto`, `brownie` y `para-ti`. La caja «Dulce energía» se descartó por decisión de la marca. Se usan como `mask` CSS y se colorean con la paleta: blanco sobre lila y lila sobre fondos durazno claros. Son decorativos y van en pseudoelementos, como mucho uno por sección. Las variantes por página usan `data-page` en `<body>`:
+
+| Dónde | Elemento |
+| --- | --- |
+| Franja de valores (Inicio) | `corazon` como separador |
+| Sección lila «Tú pones el motivo» | `mano-flor` |
+| Preguntas frecuentes | `sello-ovalado` |
+| Banner de categoría | `grito-de-victoria` |
+| Sección de sabores | `mucho-encanto` |
+| Encabezado de colecciones (Inicio) e inspiración de Tortas | `porcion-torta` |
+| Encabezado de favoritos (Inicio) e inspiración de Brownies | `brownie` |
+| Inspiración de Alfajores | `sanadora-de-alma` |
+| Inspiración de Detalles | `para-ti` |
+| Pie, bajo el logo (solo escritorio) | `dosis-de-encanto` |
+| Sección «Pedir es así de sencillo» | `rama`, recortada en el borde |
+| Sección «El corazón de Lauren» | `reposteria` como firma |
+| Encabezado de redes | `grateful` |
+| Fotos de cabecera del catálogo | `isotipo-circulo` en sello lila |
+| Página 404 | `grito-de-victoria` |
 | `lauren-isotipo.svg` | Símbolo de laurel y corazón, página 14 |
 
 Las variantes `-light.svg` son para fondos oscuros. Se usan versiones monocromas: tinta ciruela de interfaz o crema oficial. Las cabeceras y los pies eligen el archivo adecuado sin filtros CSS. El favicon y el icono compartido `brand` reutilizan el símbolo original.

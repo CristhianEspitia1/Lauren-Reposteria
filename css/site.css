@@ -95,10 +95,14 @@ button svg, a svg { pointer-events: none; }
 .value-line .container { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding-block: 24px; }
 .value-line span { font-size: .6875rem; letter-spacing: .13em; text-transform: uppercase; }
 .value-line i { width: 6px; height: 6px; background: var(--color-apricot); border: 1px solid var(--color-apricot); transform: rotate(45deg); }
-.collection-grid { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px; }
+.collection-grid { display: grid; grid-template-columns: 1.45fr 1fr 1fr; gap: 28px 18px; }
+.collection-featured { grid-row: span 2; display: flex; flex-direction: column; }
+.collection-featured .collection-image { flex: 1; min-height: 0; aspect-ratio: auto; border-radius: 4px 32px 4px 32px; }
+.collection-featured .collection-label h3 { font-size: clamp(1.75rem, 2.6vw, 2.25rem); }
+.collection-featured .collection-label h3 .icon { width: 30px; height: 30px; }
+.collection-featured > p { font-size: .875rem; }
 .collection { display: block; }
-.collection-image { overflow: hidden; aspect-ratio: .78; border-radius: var(--radius-sm); background: var(--color-peach); }
-.collection:nth-child(2n) .collection-image { border-radius: 120px 120px var(--radius-sm) var(--radius-sm); }
+.collection-image { overflow: hidden; aspect-ratio: 1.12; border-radius: var(--radius-sm); background: var(--color-peach); }
 .collection-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 650ms cubic-bezier(.2,.65,.3,1); }
 .collection:hover img { transform: scale(1.035); }
 .collection-label { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding-top: 16px; }
@@ -170,16 +174,23 @@ button svg, a svg { pointer-events: none; }
 .social-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform var(--transition-base); }
 .social-grid a:hover img { transform: scale(1.04); }
 .site-footer { background: var(--color-lilac); color: var(--color-text); }
-.footer-top { display: flex; align-items: center; justify-content: space-between; gap: 40px; padding-block: 60px; border-bottom: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent); }
+.footer-top { display: flex; align-items: end; justify-content: space-between; gap: 40px; padding-block: clamp(56px, 7vw, 88px) 48px; border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent); }
 .footer-top h2 { font-size: clamp(2.5rem, 4vw, 4rem); }
-.footer-main { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 32px; padding-block: 52px; }
-.footer-brand img { width: 160px; height: auto; margin-left: -3px; }
-.footer-brand p { color: var(--color-text); font-size: .75rem; max-width: 190px; margin-top: 18px; }
-.footer-group h3 { font: 500 .625rem var(--font-sans); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 20px; color: var(--color-text); }
-.footer-group a { display: block; width: fit-content; font-size: .75rem; padding-block: 7px; }
-.footer-group a:hover { text-decoration: underline; text-underline-offset: 5px; }
-.footer-group p { font-size: .75rem; margin-top: 7px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent); padding-block: 24px; font-size: .625rem; color: var(--color-text); }
+.footer-main { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 48px; padding-block: 56px; }
+.footer-brand img { width: 168px; height: auto; margin-left: -4px; }
+.footer-brand > a { display: inline-block; }
+.footer-brand p { color: var(--color-text); font-size: .8125rem; line-height: 1.7; max-width: 240px; margin-top: 20px; }
+.footer-social { display: flex; gap: 10px; margin-top: 28px; }
+.footer-social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent); color: var(--color-text); transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast); }
+.footer-social a:hover { background: var(--color-white); border-color: var(--color-white); transform: translateY(-2px); }
+.footer-social svg { width: 18px; height: 18px; fill: currentColor; }
+.footer-group h3 { font: 500 .6875rem var(--font-sans); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 18px; color: var(--color-text); }
+.footer-group a { display: block; width: fit-content; font-size: .875rem; padding-block: 6px; }
+.footer-group a:hover { text-decoration: underline 1px; text-underline-offset: 5px; }
+.footer-group p { font-size: .875rem; line-height: 1.6; padding-block: 6px; }
+.footer-bottom { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; border-top: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent); padding-block: 22px; font-size: .75rem; color: var(--color-text); }
+.footer-bottom > a { justify-self: end; margin-right: 68px; display: inline-flex; align-items: center; gap: 6px; }
+.footer-signature { width: 112px; aspect-ratio: 73.7 / 27; background: var(--color-white); -webkit-mask: url(../assets/brand/sistema/dosis-de-encanto.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/dosis-de-encanto.svg) center / contain no-repeat; }
 .footer-bottom a { padding-block: 8px; }
 .contact-fab { position: fixed; right: 24px; bottom: 24px; display: flex; justify-content: center; align-items: center; gap: 10px; width: 52px; height: 52px; border-radius: 50%; color: var(--color-text); background: var(--color-apricot); border: 1px solid var(--color-white); box-shadow: var(--shadow-float); z-index: 15; transition: transform var(--transition-fast); }
 .contact-fab:hover { transform: translateY(-3px); }
@@ -187,8 +198,7 @@ button svg, a svg { pointer-events: none; }
 .toast button { background: transparent; color: inherit; text-decoration: underline; white-space: nowrap; padding: 8px; font-size: .8125rem; }
 .collection-label h3 { display: flex; gap: 8px; align-items: center; }
 .collection-label h3 .icon { width: 23px; height: 23px; }
-.footer-group a { display: flex; gap: 6px; align-items: center; }
-.footer-group a .icon, .back-to-top .icon { width: 14px; height: 14px; }
+.back-to-top .icon { width: 14px; height: 14px; }
 .back-to-top .icon { transform: rotate(-90deg); }
 @media (min-width: 1025px) { .home-hero h1 { font-size: clamp(4.25rem, 5.9vw, 5.5rem); } }
 @media (max-width: 1024px) {
@@ -232,8 +242,9 @@ button svg, a svg { pointer-events: none; }
     .hero-inset { width: 40%; }
     .hero-inset figcaption { font-size: .6875rem; }
     .value-line span { font-size: .5625rem; letter-spacing: .08em; }
-    .collection-grid { grid-template-columns: repeat(3, minmax(0,1fr)); row-gap: 28px; }
-    .collection-grid .collection:nth-child(4), .collection-grid .collection:nth-child(5) { grid-column: span 1; }
+    .collection-grid { grid-template-columns: 1fr 1fr; }
+    .collection-featured { grid-row: auto; grid-column: 1 / -1; }
+    .collection-featured .collection-image { flex: none; aspect-ratio: 1.25; }
     .celebration-grid, .story-grid { gap: 32px; }
     .celebration-collage { gap: 10px; }
     .celebration-collage > figure:last-child { margin-top: 50px; }
@@ -242,8 +253,7 @@ button svg, a svg { pointer-events: none; }
     .step p { font-size: .8125rem; }
     .faq-grid { grid-template-columns: 1fr; gap: 36px; }
     .faq-copy p { max-width: 350px; }
-    .footer-main { grid-template-columns: 1.25fr 1fr 1fr; }
-    .footer-main .footer-group:last-child { grid-column: 2 / -1; }
+    .footer-main { gap: 32px; }
 }
 @media (max-width: 560px) {
     .section-heading { align-items: start; flex-direction: column; gap: 18px; margin-bottom: 28px; }
@@ -265,10 +275,8 @@ button svg, a svg { pointer-events: none; }
     .value-line .container { flex-wrap: wrap; gap: 12px; padding-block: 18px; justify-content: center; }
     .value-line span { font-size: .625rem; }
     .value-line i:nth-of-type(2), .value-line span:last-child { display: none; }
-    .collection-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 26px 14px; }
-    .collection-grid .collection:last-child { grid-column: 1 / -1; }
-    .collection-grid .collection:last-child .collection-image { aspect-ratio: 1.9; }
-    .collection-grid .collection:last-child img { object-position: center 52%; }
+    .collection-grid { gap: 26px 14px; }
+    .collection-featured .collection-image { aspect-ratio: .95; }
     .collection-label h3 { font-size: 1.1875rem; }
     .collection > p { font-size: .75rem; }
     .celebration-grid, .story-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -289,15 +297,39 @@ button svg, a svg { pointer-events: none; }
     .social-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .social-grid a:nth-child(2n) { margin-top: 0; }
     .social-grid a:nth-child(3) { border-radius: 0 0 0 80px; }
-    .footer-top { align-items: start; flex-direction: column; gap: 26px; padding-block: 42px; }
-    .footer-main { grid-template-columns: 1fr 1fr; gap: 36px 20px; padding-block: 40px; }
-    .footer-brand { grid-column: 1 / -1; display: flex; align-items: center; gap: 24px; }
-    .footer-brand img { width: 125px; }
-    .footer-brand p { margin-top: 0; }
-    .footer-main .footer-group:last-child { grid-column: 1 / -1; }
-    .footer-group a, .footer-group p { font-size: .8125rem; }
-    .footer-bottom { align-items: start; flex-direction: column; gap: 8px; padding-bottom: 32px; }
+    .footer-top { align-items: start; flex-direction: column; gap: 26px; padding-block: 48px 40px; }
+    .footer-main { grid-template-columns: 1fr 1fr; gap: 40px 20px; padding-block: 44px; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-group a, .footer-group p { font-size: .875rem; }
+    .footer-bottom { grid-template-columns: 1fr auto; padding-bottom: 32px; }
+    .footer-bottom > a { margin-right: 56px; }
+    .footer-signature { display: none; }
     .contact-fab { width: 48px; height: 48px; bottom: 16px; right: 16px; }
     .toast { bottom: 78px; gap: 12px; font-size: .75rem; }
 }
 @media (max-height: 520px) and (max-width: 900px) { .site-header { position: relative; } }
+/* Sistema gráfico del brandbook, página 19: trazados originales usados como máscara y coloreados con la paleta. Decorativos, un elemento por sección. */
+.value-line i { width: 9px; height: 10px; border: 0; transform: none; -webkit-mask: url(../assets/brand/sistema/corazon.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/corazon.svg) center / contain no-repeat; }
+.celebration-section, .faq-section { position: relative; isolation: isolate; overflow: hidden; }
+.celebration-section::after, .faq-copy::after { content: ''; display: block; pointer-events: none; background: var(--color-white); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
+.celebration-section::after { --graphic: url(../assets/brand/sistema/mano-flor.svg); position: absolute; z-index: -1; top: clamp(24px, 4vw, 56px); right: max(12px, calc((100vw - var(--page-width)) / 2 - 150px)); width: clamp(64px, 8vw, 112px); aspect-ratio: 40 / 80.2; }
+.faq-copy::after { --graphic: url(../assets/brand/sistema/sello-ovalado.svg); background: var(--color-lilac); width: clamp(88px, 9vw, 118px); aspect-ratio: 52 / 59.5; margin-top: 40px; }
+#colecciones .section-heading, #inspiracion .section-heading, .featured-section .section-heading { position: relative; }
+#colecciones .section-heading::after, #inspiracion .section-heading::after, .featured-section .section-heading::after, .process-section::after, .story-section .editorial-copy::after, .social-heading::before { content: ''; display: block; pointer-events: none; background: var(--color-lilac); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
+.featured-section .section-heading::after { --graphic: url(../assets/brand/sistema/brownie.svg); position: absolute; top: -20px; right: clamp(230px, 24vw, 300px); width: clamp(64px, 6.5vw, 88px); aspect-ratio: 40.6 / 31.2; }
+[data-page=alfajores] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/sanadora-de-alma.svg); aspect-ratio: 39.2 / 16.5; width: clamp(96px, 9vw, 124px); }
+[data-page=brownies-galletas] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/brownie.svg); aspect-ratio: 40.6 / 31.2; }
+[data-page=detalles] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/para-ti.svg); aspect-ratio: 65.8 / 16.4; width: clamp(120px, 11vw, 150px); top: -8px; }
+section#colecciones .section-heading::after { right: 0; }
+#colecciones .section-heading::after, #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/porcion-torta.svg); position: absolute; top: -28px; right: clamp(330px, 32vw, 400px); width: clamp(70px, 7vw, 96px); aspect-ratio: 47.6 / 42.8; }
+.process-section { position: relative; isolation: isolate; overflow: hidden; }
+.process-section::after { --graphic: url(../assets/brand/sistema/rama.svg); position: absolute; z-index: -1; bottom: -24px; left: max(-18px, calc((100vw - var(--page-width)) / 2 - 170px)); width: clamp(84px, 9vw, 128px); aspect-ratio: 41.5 / 61.1; transform: rotate(-12deg); }
+.story-section .editorial-copy::after { --graphic: url(../assets/brand/sistema/reposteria.svg); width: 128px; aspect-ratio: 53.3 / 19; margin-top: 32px; }
+.social-heading::before { --graphic: url(../assets/brand/sistema/grateful.svg); width: 112px; aspect-ratio: 40.5 / 29.6; margin: 0 auto 18px; }
+@media (max-width: 800px) {
+    .faq-copy::after { display: none; }
+    #colecciones .section-heading::after, #inspiracion .section-heading::after, .featured-section .section-heading::after { position: static; order: -1; width: 56px; margin-bottom: -6px; }
+    [data-page=alfajores] #inspiracion .section-heading::after, [data-page=detalles] #inspiracion .section-heading::after { width: 110px; }
+    .process-section::after { width: 72px; bottom: -16px; left: auto; right: -14px; transform: rotate(12deg); }
+    .celebration-section::after { top: 20px; right: 12px; width: 56px; opacity: .8; }
+}

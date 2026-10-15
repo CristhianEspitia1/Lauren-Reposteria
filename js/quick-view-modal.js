@@ -38,7 +38,7 @@
                     </div>
                     <form class="product-form" novalidate>
                         <div class="dialog-scroll">
-                            <div class="product-dialog-heading"><p class="eyebrow">Hecho para ti</p><h2 id="productTitle">${esc(p.name)}</h2></div>
+                            <div class="product-dialog-heading"><h2 id="productTitle">${esc(p.name)}</h2></div>
                             <p class="product-dialog-description">${esc(p.description)}</p>
                             ${p.includes?.length ? `<details class="product-includes"><summary>Qué incluye ${icon('chevron')}</summary><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></details>` : ''}
                             <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>

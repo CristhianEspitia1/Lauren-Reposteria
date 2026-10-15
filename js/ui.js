@@ -3,7 +3,7 @@
     'use strict';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const icon = name => window.LaurenIcons(name);
-    const imagePath = value => typeof value === 'string' && /^\.\.\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light|-lilac)?\.svg)$/.test(value) && !value.slice(3).includes('..') ? value : '../assets/brand/lauren-isotipo.svg';
+    const imagePath = value => typeof value === 'string' && /^\.\.\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.slice(3).includes('..') ? value : '../assets/brand/lauren-isotipo.svg';
     function imageSources(value, sizes) {
         const src = imagePath(value);
         const width = window.LaurenImageWidths?.[src];
