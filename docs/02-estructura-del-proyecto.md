@@ -15,7 +15,6 @@ css/tokens.css                   Colores, fuentes, espacios y movimiento
 css/site.css                     Base, navegación, portada y pie
 css/catalog.css                  Colecciones, filtros y galerías
 css/dialogs.css                  Producto, pedido y ampliación de fotografías
-css/error.css                    Entradas de error
 js/catalog-data.js               Catálogo único
 js/catalog-model.js              Precios, opciones y validación
 js/brand-icons.js / ui.js         Sistema compartido

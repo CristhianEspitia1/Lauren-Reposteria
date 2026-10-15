@@ -1,7 +1,0 @@
-.error-page { min-height: 100dvh; width: min(700px, calc(100% - 40px)); margin-inline: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding-block: 48px; text-align: center; }
-.error-page .brand { width: 150px; margin-bottom: 24px; }
-.error-page h1 { font-size: clamp(3.25rem, 9vw, 5rem); }
-.error-page h1 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); }
-.error-page > p:not(.eyebrow) { color: var(--color-text-soft); }
-.error-page::after { content: ''; width: 76px; aspect-ratio: 1; margin-top: 16px; background: var(--color-lilac); -webkit-mask: url(../assets/brand/sistema/grito-de-victoria.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/grito-de-victoria.svg) center / contain no-repeat; }
-.error-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; }

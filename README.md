@@ -39,9 +39,7 @@ El repositorio contiene solo los archivos que usa la web. La documentación vige
 
 ## Identidad visual
 
-La identidad parte del brandbook de Lauren: crema `#F9F5EC`, lila `#D0B4D7`, durazno `#E5C8BA` y albaricoque `#F8B890`. El sitio usa los logos vectoriales originales y una familia compartida de iconos semánticos para la web. Fotografía protagonista, composición editorial, foco visible y movimiento breve que respeta la preferencia de movimiento reducido. El video conserva su proporción original y solo se carga al reproducirlo.
-
-El manual define P22 Mackinac, Proxima Nova y Gentlemens Script. Sus archivos de fuente no están en el proyecto; la adaptación web mantiene por ahora Playfair Display e Inter. Procedencia, variantes y reglas en la [guía de estilos](docs/06-guia-de-estilos.md).
+El [manual de marca](docs/06-guia-de-estilos.md) es obligatorio para todo cambio visual o de texto: crema `#F9F5EC`, lila `#D0B4D7`, albaricoque `#F8B890` y durazno `#E5C8BA`; Playfair Display e Inter; logos vectoriales originales, iconos Trazo Lauren y una voz cercana, amigable, cariñosa y atenta.
 
 ## Comprobaciones
 

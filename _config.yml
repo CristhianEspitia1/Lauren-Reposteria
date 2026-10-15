@@ -2,6 +2,7 @@
 # del repositorio no deben aparecer como páginas indexables del dominio.
 exclude:
   - README.md
+  - CLAUDE.md
   - PROBLEMAS-PENDIENTES.md
   - docs/
   - Guias/

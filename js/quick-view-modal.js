@@ -40,7 +40,7 @@
                         <div class="dialog-scroll">
                             <div class="product-dialog-heading"><h2 id="productTitle">${esc(p.name)}</h2></div>
                             <p class="product-dialog-description">${esc(p.description)}</p>
-                            ${p.includes?.length ? `<details class="product-includes"><summary>Qué incluye ${icon('chevron')}</summary><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></details>` : ''}
+                            ${p.includes?.length ? `<section class="product-includes" aria-labelledby="productIncludesTitle"><h3 id="productIncludesTitle">Qué incluye</h3><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></section>` : ''}
                             <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>
                             <div class="personal-fields">${this.personalHTML()}</div>
                             ${p.category === 'tortas' ? '<p class="field-note">El precio corresponde al estilo y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.</p>' : ''}

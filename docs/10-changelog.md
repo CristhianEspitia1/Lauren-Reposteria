@@ -4,6 +4,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Manual de marca obligatorio y nueva 404]
+
+- `docs/06-guia-de-estilos.md` pasa a ser el manual de marca 2.0, con solo lo que usa la web hoy. `CLAUDE.md` lo hace obligatorio para todo cambio visual o de texto.
+- La 404 usa la cabecera, el pie, el pedido y el botón de WhatsApp del sitio, un encabezado con foto en arco y sello, y el bloque de colecciones de la portada. Se elimina `css/error.css`.
+
+## [2026-10-15 — Qué incluye siempre visible y nuevo titular]
+
+- La ficha de producto muestra «Qué incluye» siempre abierto, como un bloque con título y lista, sin botón para desplegar. Aplica a los 22 productos que tienen esa información.
+- El titular de la portada pasa a «Un bocado de alegría, hecho a mano.».
+
 ## [2026-10-15 — SEO integral]
 
 - URL limpias: la portada pasa de `/html/inicio.html` (redirección desde `/`) a `/`; las colecciones a `/tortas/`, `/alfajores/`, `/brownies-galletas/` y `/detalles/`. Las direcciones antiguas redirigen con `canonical`. Rutas de páginas y datos desde la raíz (`/assets/…`); el pedido guardado toma la foto vigente del catálogo.

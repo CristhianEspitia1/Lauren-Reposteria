@@ -3,7 +3,7 @@
 Documentación técnica del sitio. Punto de entrada para cualquier persona que
 retome el proyecto.
 
-La fuente de identidad es el brandbook de Lauren. Su aplicación a la web, paleta, tipografías y recursos vectoriales se documentan en la [guía de estilos](06-guia-de-estilos.md).
+El [manual de marca](06-guia-de-estilos.md) es la referencia obligatoria para toda página, componente o texto nuevo.
 
 ## Índice
 
@@ -12,7 +12,7 @@ La fuente de identidad es el brandbook de Lauren. Su aplicación a la web, palet
 3. [Decisiones técnicas (ADR)](03-decisiones-tecnicas.md) — por qué se hizo cada cosa.
 4. [Componentes](04-componentes.md) — módulos JS y componentes de UI.
 5. [Convenciones](05-convenciones.md) — reglas de nombres, HTML, CSS, JS y copy.
-6. [Guía de estilos](06-guia-de-estilos.md) — color, tipografía, espaciado, componentes visuales.
+6. [Manual de marca](06-guia-de-estilos.md) — voz, logo, color, tipografía, formas, iconos, sistema gráfico, componentes y fotografía. Obligatorio.
 7. [Accesibilidad](07-accesibilidad.md) — prácticas implementadas y alcance de comprobación.
 8. [Performance](08-performance.md) — estrategia de rendimiento y media.
 9. [Seguridad](09-seguridad.md) — modelo de amenazas y prácticas.

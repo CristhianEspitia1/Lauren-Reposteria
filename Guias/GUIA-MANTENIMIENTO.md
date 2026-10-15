@@ -31,7 +31,7 @@ El poster de la entrevista está en `assets/optimized/imagenes-inicio/historia-p
 
 ## Estilos e iconos
 
-Consultar [guía de estilos](../docs/06-guia-de-estilos.md). Tokens en `css/tokens.css`; estilos por responsabilidad en `site.css`, `catalog.css` y `dialogs.css`. Usar `LaurenIcons(nombre)` desde el registro original. No reintroducir icon fonts ni parches globales de móvil.
+Seguir el [manual de marca](../docs/06-guia-de-estilos.md), obligatorio para todo cambio. Tokens en `css/tokens.css`; estilos por responsabilidad en `site.css`, `catalog.css` y `dialogs.css`. Usar `LaurenIcons(nombre)` desde el registro original. No reintroducir icon fonts ni parches globales de móvil.
 
 ## Entregar y publicar
 

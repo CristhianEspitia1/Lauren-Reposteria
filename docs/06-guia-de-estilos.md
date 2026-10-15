@@ -1,110 +1,200 @@
-# Guía de estilos
+# Manual de marca
 
-Fuente de identidad: brandbook de Lauren, diseñado por Trilia, de 23 páginas (no se guarda en el repositorio). Las versiones vectoriales que usa la web viven en `assets/brand/`. Fuente de tokens: [`css/tokens.css`](../css/tokens.css).
+Versión 2.0 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
-Personalidad artesanal, detallista, alegre y cercana. El símbolo oficial combina laurel, amor y delicadeza (páginas 14–15). La fotografía y la composición editorial trasladan esa identidad a la web.
+Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
-## Paleta oficial
+## 1. Esencia
 
-Valores RGB/HEX del manual, página 16.
+Lauren Repostería hace tortas, alfajores, brownies, galletas y detalles en Medellín. La web es un catálogo: la persona elige, personaliza, arma su pedido y lo confirma por WhatsApp, donde se acuerdan fecha, entrega y pago.
+
+- **Lema:** Bocado de alegría. Va en el logo, el sello y el titular de portada: «Un bocado de alegría, hecho a mano.».
+- **Promesa:** tortas, alfajores y pequeños detalles hechos a mano para celebrar lo que más quieres.
+- **Valores visibles:** Hecho a mano · Preparado para ti · Detalles que cuentan · Desde Medellín, con amor.
+
+## 2. Voz y tono
+
+Lauren suena **cercana, amigable, cariñosa y atenta**, como quien te atiende en persona. Español de Colombia, trato de tú, plural para el negocio («elegimos», «confirmamos»). Frases cortas que invitan; sin presión, sin exageraciones y sin solemnidad ni lenguaje espiritual.
+
+| Así sí | Así no |
+| --- | --- |
+| Tú pones el motivo. Nosotros, el toque dulce. | ¡¡¡Las mejores tortas de Colombia!!! |
+| Una forma dulce de decir te quiero. | Una experiencia gourmet que trasciende el paladar. |
+| Todo claro. Todo más dulce. | Compra ya, quedan pocas unidades. |
+| Hagamos de ese momento un dulce recuerdo. | Estimado cliente, su solicitud ha sido procesada. |
+
+Reglas:
+
+- Titulares en dos tiempos; la parte emotiva va en `<em>` (itálica resaltada).
+- Botones que dicen lo que pasa: «Encuentra tu antojo», «Elegir detalles», «Hablemos de tu idea». Avisos que nombran el resultado: «Agregado a tu pedido.».
+- Fecha, entrega y pago siempre se confirman con Lauren.
+- Sin emojis, sin anglicismos innecesarios, sin mayúsculas para gritar.
+- Precios, contactos y condiciones solo cambian con confirmación del negocio.
+- Formatos: `$65.000`, «Desde $24.000», «de 9:00 a. m. a 6:00 p. m.», «al menos 2 días», comillas angulares «».
+- Las frases de los dibujos del sistema gráfico no se usan como texto de la web.
+
+## 3. Logo
+
+Vectores originales en `assets/brand/`; nunca se redibujan ni se generan con IA. Una sola tinta.
+
+| Archivo | Uso |
+| --- | --- |
+| `lauren-logo.svg` | Logo completo en ciruela. Cabecera de todas las páginas (150 px escritorio, 134 px móvil). |
+| `lauren-logo-light.svg` | Logo completo en crema. Pie de página sobre lila (168 px). |
+| `lauren-sello-light.svg` | Sello circular «Bocado de alegría» sobre la foto principal de la portada, en disco lila con borde crema. |
+| `../favicon.svg` | Isotipo blanco sobre lila: pestaña e ícono del celular. |
+| `sistema/isotipo-circulo.svg` | Sello sobre las fotos de cabecera del catálogo y en secciones lilas. |
+
+- Mínimo del logo completo: 132 px en pantalla o 3,5 cm impreso; por debajo, isotipo.
+- Área de respeto libre de textos, adornos y bordes de foto.
+- No estirar, girar, recolorear partes, añadir sombras o brillos, ni ponerlo sobre fotos (solo los sellos van sobre fotos).
+
+## 4. Color
+
+Tokens en `css/tokens.css`. Nunca se escriben colores sueltos en las hojas de estilo; las mezclas se hacen con `color-mix()` a partir de los tokens.
+
+Paleta de marca:
 
 | Token | HEX | RGB | CMYK | Pantone | Uso |
 | --- | --- | --- | --- | --- | --- |
-| `--color-cream` | `#f9f5ec` | 249 · 245 · 236 | 3 · 4 · 9 · 0 | 7604 C | Fondo principal |
-| `--color-lilac` | `#d0b4d7` | 208 · 180 · 215 | 20 · 34 · 0 · 0 | 7437 C | Acento de marca |
-| `--color-peach` | `#e5c8ba` | 229 · 200 · 186 | 11 · 25 · 25 · 1 | 7611 C | Apoyo cálido |
-| `--color-apricot` | `#f8b890` | 248 · 184 · 144 | 0 · 36 · 45 · 0 | 1555 C | Selección de texto |
+| `--color-cream` | `#F9F5EC` | 249 245 236 | 3 4 9 0 | 7604 C | Fondo de todas las páginas |
+| `--color-lilac` | `#D0B4D7` | 208 180 215 | 20 34 0 0 | 7437 C | Pie, sellos, avisos, franjas |
+| `--color-apricot` | `#F8B890` | 248 184 144 | 0 36 45 0 | 1555 C | Botón principal, resaltado, detalles, selección de texto |
+| `--color-peach` | `#E5C8BA` | 229 200 186 | 11 25 25 1 | 7611 C | Etiqueta «Desde», fondo de fotos al cargar, hover |
 
-Los fondos y bordes suaves que no son tonos de interfaz se derivan de estos cuatro con `color-mix()`; no se escriben colores sueltos en las hojas de estilo.
+Tinta y apoyo:
 
-Tonos complementarios de interfaz, definidos para superficies, estados y lectura; no son colores adicionales del brandbook:
-
-| Token | Valor | Uso |
+| Token | HEX | Uso |
 | --- | --- | --- |
-| `--color-white` | `#fffdf9` | Producto, controles y superficies |
-| `--color-text` | `#3f3047` | Tinta: texto, logotipos y foco. Nunca como fondo |
-| `--color-text-soft` | `#766a79` | Texto secundario |
-| `--color-lilac-light` | `#efe6f3` | Estados seleccionados y fondos suaves |
-| `--color-border` | `#ddd3dc` | Separadores |
+| `--color-text` | `#3F3047` | Texto, logo y foco. Nunca de fondo |
+| `--color-text-soft` | `#766A79` | Texto secundario |
+| `--color-white` | `#FFFDF9` | Tarjetas, campos y diálogos |
+| `--color-lilac-light` | `#EFE6F3` | Fondos suaves |
+| `--color-border` | `#DDD3DC` | Líneas y separadores |
+| `--color-error` | `#9B3048` | Mensajes de campo |
 
-## Tipografía
+- Jerarquía: crema dominante; lila de marca; albaricoque solo donde se toca o se resalta; ciruela para leer.
+- Fondos de sección: crema (base), lila 45 % + crema (celebración), durazno 35 % + crema (preguntas), lila (pie).
+- Contrastes aprobados: ciruela sobre crema 11,2:1, sobre albaricoque 7,1:1, sobre lila 6,5:1; tinta suave sobre crema 4,7:1. Texto blanco sobre lila o albaricoque no (1,9:1).
 
-El manual (página 17) define **P22 Mackinac** como principal, **Proxima Nova** como secundaria y **Gentlemens Script** como expresiva. El archivo entregado contiene trazados, no archivos de fuente utilizables en la web.
+## 5. Tipografía
 
-La adaptación web actual conserva **Playfair Display**, regular e itálica, para titulares e **Inter** para lectura y controles del diseño aprobado. No son las fuentes oficiales del manual. La sustitución queda pendiente de disponer de los archivos y licencia para uso web. No declarar una fuente como instalada ni reconstruir su alfabeto a partir del PDF. Mantener una petición de fuentes por página con `display=swap`.
+Google Fonts en todas las páginas, una petición con `display=swap`: **Playfair Display** 400 e itálica (`--font-display`) para titulares y nombres de producto; **Inter** 400 y 500 (`--font-sans`) para lectura, botones y formularios.
 
-## Logotipos y símbolo
-
-Los SVG de `assets/brand/` conservan los trazados del manual, sin redibujarlos ni generarlos con IA:
-
-| Archivo | Variante y procedencia |
+| Elemento | Estilo |
 | --- | --- |
-| `lauren-logo.svg` / `lauren-logo-light.svg` | Composición completa, página 7. Tinta sobre fondos claros (cabecera) y claro sobre fondos de color (pie), como en las páginas 19 y 22 |
-| `lauren-sello-light.svg` | Sello circular «Bocado de alegría», página 13 |
-| `lauren-logotipo.svg` / `lauren-logotipo-light.svg` | Logotipo «LAUREN» solo, página 10. Disponible; la web usa el logo completo |
-| `sistema/sello-ovalado.svg` / `sistema/isotipo-circulo.svg` | Variaciones de la página 10 (emblema ovalado e isotipo en círculo) |
-| `lauren-isotipo.svg` | Símbolo de laurel y corazón, página 14 |
-| `../favicon.svg` | Isotipo blanco sobre lila, como en la aplicación a color de la página 9 |
+| Titular de portada | Playfair 400 · 52–96 px · −0,04 em |
+| Titular de sección | Playfair 400 · 36–60 px · −0,04 em |
+| Nombre de producto | Playfair 400 · 20 px |
+| Título pequeño | Inter 500 · 17,6 px |
+| Texto | Inter 400 · 15–16 px · interlineado 1,65–1,85 |
+| Etiqueta (`.eyebrow`) | Inter 500 · 11 px · mayúsculas · +0,18 em · raya albaricoque de 24 × 2 px antes |
+| Botón y enlace | Inter 500 · 13 px |
+| Menú | Inter 400 · 12 px |
 
-Área mínima (página 12): logo completo 3,5 cm (~132 px), logotipo 2 cm (~76 px) e isotipo 1,5 cm (~57 px). El logo de la cabecera mide 150 px en escritorio y 134 px en móvil. El favicon queda por debajo por ser un formato de sistema.
+La itálica de los titulares grandes lleva debajo una franja albaricoque translúcida (portada, secciones y pie; nunca en texto corrido).
 
-### Sistema gráfico
+## 6. Formas y espacio
 
-`assets/brand/sistema/` contiene elementos del material gráfico con sus trazados originales extraídos del PDF: de la página 19, `rama`, `isotipo-circulo`, `reposteria`, `corazon`, `grito-de-victoria`, `grateful`, `mucho-encanto`, `porcion-torta`, `mano-flor` y `sello-ovalado`; de la página 18, `sanadora-de-alma`; de la página 20, `dosis-de-encanto`, `brownie` y `para-ti`. La caja «Dulce energía» se descartó por decisión de la marca. Se usan como `mask` CSS y se colorean con la paleta: blanco sobre lila y lila sobre fondos claros.
+| Forma | Valor | Uso |
+| --- | --- | --- |
+| Esquina de cinta | `--radius-signature` 4 20 4 20 px; al pasar el cursor se invierte | Botones, video, diálogos |
+| Arco | 240 240 5 5 px | Foto principal de portada |
+| Cinta amplia | 4 32 4 32 px | Colección destacada |
+| Casi recta | `--radius-sm` 4 px | Fotos, opciones, campos |
+| Sello | círculo lila, borde crema 6 px | Sellos sobre fotos |
+| Píldora | `--radius-pill` | Cantidad, etiqueta «Desde» |
 
-Gráficos fijos en CSS, dentro del flujo de la página:
+- Espaciado: `--space-xs` 8 · `--space-md` 16 · `--space-lg` 24 · `--space-xl` 32 · `--space-2xl` 48 · `--space-3xl` 64 · `--space-section` 64–120 px.
+- Contenido de 1200 px máximo, márgenes fluidos de 20 a 64 px (`--page-gutter`). El menú pasa a móvil por debajo de 800 px.
+- Una sola sombra, para lo que flota (`--shadow-float`): botón de WhatsApp, avisos, foto inclinada de portada.
 
-| Dónde | Elemento |
+## 7. Iconos
+
+Familia **Trazo Lauren** en `js/brand-icons.js`, llamada con `LaurenIcons(nombre)` o `data-icon`. Retícula de 24, trazo 1,5, puntas redondas, `currentColor`, `aria-hidden="true"`; el control aporta el nombre accesible. Trazo 1,2 (`--icon-stroke-display`) para ilustraciones de 40–64 px. Área táctil mínima de 44 px.
+
+En uso: `cake`, `alfajor`, `brownie`, `cookie`, `gift`, `bag`, `arrow` (avanzar), `diagonal` (otra página o salir), `close`, `plus`, `minus`, `menu`, `check`, `search`, `zoom`, `trash`, `chat`, `play`, `pause`, `sound`, `muted`, `expand` y los complementos `bow`/`ribbon`, `butterfly`, `birthday-topper`, `pearls`, `crown`. Un icono nuevo se dibuja con las mismas reglas y se añade al registro. Ni emojis, ni fuentes de iconos, ni dibujos de otro estilo.
+
+## 8. Sistema gráfico
+
+Dibujos de línea de `assets/brand/sistema/`, usados como `mask` CSS y coloreados con la paleta: lila sobre fondos claros, blanco sobre lila, albaricoque para el corazón.
+
+| Gráfico | Lugar |
 | --- | --- |
-| Franja de valores (Inicio) | `corazon` como separador |
-| Preguntas frecuentes, bajo el enlace | `sello-ovalado` |
-| «Las cosas bonitas se hacen con amor» | `reposteria` como firma |
-| Encabezado de redes | `grateful` |
-| Pie, en la franja inferior (solo escritorio) | `dosis-de-encanto` |
-| Fotos de cabecera del catálogo | `isotipo-circulo` en sello lila |
-| Página 404 | `grito-de-victoria` |
+| `corazon` | Separador de la franja de valores; final de titulares de portada, historia, pie, colecciones y sabores |
+| `porcion-torta` | «Tú pones el motivo…», inspiración de Tortas, titular de redes |
+| `brownie` | «Pequeños grandes favoritos», inspiración de Brownies y galletas, titular de redes |
+| `mano-flor` | Junto a «Una torta tan única como tu celebración» |
+| `isotipo-circulo` | Celebración, catálogos, fotos de cabecera, botón del pie |
+| `mucho-encanto` | «Pedir es así de sencillo» y sabores |
+| `sanadora-de-alma` | Bajo el video de la historia, inspiración de Alfajores |
+| `para-ti` | Inspiración de Detalles |
+| `reposteria` | Firma de «Las cosas bonitas se hacen con amor» |
+| `grateful` | Sobre «Un poquito más de Lauren» |
+| `rama` | Preguntas frecuentes y foto de cabecera de colección |
+| `sello-ovalado` | Preguntas frecuentes, solo escritorio |
+| `dosis-de-encanto` | Firma de la franja inferior del pie, solo escritorio |
+| `grito-de-victoria` | Banner de invitación de cada colección |
 
-El resto lo compone `js/brand-decor.js` con posiciones diseñadas. Las variantes por página usan `data-page` en `<body>`:
+Los gráficos fijos viven en CSS; el resto los coloca `js/brand-decor.js` por sección (variantes con `data-page` en `<body>`). Reglas:
 
-- **Fila del título:** ilustración grande alineada abajo a la derecha de la fila (porción de torta en colecciones e inspiración de Tortas, «Mucho encanto» en «Pedir es así de sencillo», `sanadora-de-alma`, `brownie` o `para-ti` en la inspiración de cada página). Si la fila tiene un texto a la derecha, el gráfico se centra en el hueco entre el título y ese texto (`between`): brownie en favoritos e isotipo en el catálogo y en complementos.
-- **Simetría:** torta y brownie a ambos lados del título de redes.
-- **Diagonal:** en Preguntas, el sello abajo a la izquierda y la rama arriba a la derecha, apoyada sobre la primera línea.
-- **Acompañantes:** mano con flor junto al texto lila de celebración, «Sanadora de alma» bajo el video, «Mucho encanto» junto a «Y en el corazón…», «Grito de victoria» entre el texto y el botón del banner, rama junto a la foto de cabecera del catálogo e isotipo sobre el botón del pie.
+- Completos, dentro del ancho del contenido y sin tocar textos, fotos ni controles; si no caben, prueban su alternativa y si tampoco, no se muestran.
+- Nunca dos en la misma esquina; ningún adorno junto a un botón o enlace; ninguno sobre fotos salvo los sellos.
+- En móvil solo quedan los marcados con `m: 1`, más pequeños.
 
-Reglas: nunca dos gráficos juntos en la misma esquina; ningún adorno junto a un botón o enlace (se confunde con un icono); ningún logotipo ni sello sobre las fotos (salvo el sello del hero y el de las cabeceras del catálogo); corazones solo al final de títulos donde suman sentido (hero, «se hacen con amor», pie, cabeceras del catálogo y sabores). El script solo ajusta cada posición lo justo para que el gráfico quede completo dentro de la sección, dentro del ancho del contenido (nunca en los márgenes) y sin tocar textos, fotos ni controles; Si no cabe, prueba su alternativa y, si tampoco, no se muestra. Se recalcula al cambiar el tamaño de la ventana y al abrir preguntas. En móvil solo quedan los marcados con `m: 1`, a menor tamaño.
+## 9. Componentes
 
-Las variantes `-light.svg` son para fondos oscuros. Se usan versiones monocromas: tinta ciruela de interfaz o crema oficial. Las cabeceras y los pies eligen el archivo adecuado sin filtros CSS. El favicon y el icono compartido `brand` reutilizan el símbolo original.
+Antes de crear un componente nuevo se reutiliza uno existente.
 
-Conservar proporción, orientación y todos los elementos de cada variante; no estirar, invertir, recolorear sus partes por separado ni añadir efectos. Respetar el espacio de seguridad descrito en la página 11; en tamaños pequeños usar una variante simplificada legible, como el isotipo del favicon. Las variantes y los usos correctos están en las páginas 8–13.
+| Componente | Clase | Regla |
+| --- | --- | --- |
+| Botón principal | `.btn` | Albaricoque, flecha, esquina de cinta; hover lila con esquinas invertidas. Uno por bloque |
+| Botón secundario | `.btn-secondary` | Borde lila, fondo transparente; hover durazno |
+| Botón claro | `.btn-light` | Crema sobre lila; hover albaricoque |
+| Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página |
+| Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía |
+| Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
+| Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
+| Casillas | `.toggle-option` | Check y esquina de cinta 3/9 px; marcada en lila |
+| Cantidad | `.quantity-control` | Píldora con botones de 44 px |
+| Contador del pedido | `.cart-count` | Círculo de 22 px junto a la bolsa |
+| Aviso | `.toast` | Lila, radio 12 px, sombra flotante, acción subrayada |
+| WhatsApp flotante | `.contact-fab` | Círculo albaricoque de 52 px, abajo a la derecha |
+| Pregunta frecuente | `.faq-item` | Único elemento desplegable; «+» que gira 45° |
 
-## Composición
+Estructura de toda página pública: cabecera fija con logo, menú y pedido; contenido; pie lila; botón flotante de WhatsApp y diálogos de producto, pedido y galería.
 
-Ancho máximo de 1200 px, márgenes fluidos y secciones con altura natural. Cabecera con categorías visibles en escritorio y menú desplegable en ventanas estrechas. La portada combina un titular editorial con fotografías de producto; las colecciones priorizan elegir una creación y luego sus detalles.
+## 10. Fotografía
 
-Fotografías con proporciones reservadas y recortes elegidos por contexto. Las fichas y galerías usan un encuadre 4:5; la imagen ampliada conserva la toma completa y coloca las miniaturas debajo. Los sabores usan 3:2 y los rellenos, 1:1. El video horizontal conserva todo el encuadre mediante `object-fit: contain`; nunca usar un arco vertical ni zoom para ocultar partes de una entrevista.
+- Mesa de lino marfil, pared crema lisa, luz suave de ventana. Producto, decoración y empaque protagonistas.
+- Proporciones: 4:5 en tarjetas, galerías y fichas; 3:2 en sabores; 1:1 en rellenos; video 16:9 con `object-fit: contain`.
+- Al ampliar se ve la foto completa con miniaturas debajo. Mientras carga, el espacio se ve durazno.
+- Solo fotos reales de Lauren: ni de banco, ni generadas con IA, ni con filtros que cambien el color. Nada encima de la foto salvo los sellos.
+- Inventario: `assets/propuestas-fotograficas/manifest.json`.
 
-## Controles e iconos
+## 11. Movimiento y acceso
 
-`js/brand-icons.js` define **Trazo Lauren**, pictogramas propios en retícula de **24 unidades**, trazo **1.5**, terminales redondos y proporciones regulares. Las acciones tienen geometría clara; los productos se reconocen por sus capas, siluetas y empaques. Evitar ondulaciones en signos funcionales y pequeños adornos que desaparezcan al reducirlos.
+| Interacción | Comportamiento |
+| --- | --- |
+| Botón principal | Esquinas intercambiadas y lila, 600 ms con `--ease-ribbon` |
+| Flecha | Avanza unos píxeles, 560 ms |
+| Menú | Subrayado albaricoque que crece, 420 ms |
+| Diálogos | Aparecen subiendo 10 px, 260 ms |
+| Fotos de producto | Se acercan levemente al pasar el cursor, 600 ms |
 
-El registro incluye `brand`, extraído del isotipo oficial, que conserva su retícula original de 32; los controles no se presentan como dibujos del manual.
+- Todo el contenido visible desde el inicio: sin apariciones en cascada, máscaras ni desvanecimientos al bajar.
+- Sin reproducción automática ni scroll forzado. `prefers-reduced-motion` apaga las animaciones.
+- Foco visible: contorno ciruela de 2 px. Áreas táctiles de 44 px. Ajustes responsive junto a cada componente.
 
-Los tamaños de interfaz suelen ser 20–24 px. Para ilustraciones de 40–64 px se usa `--icon-stroke-display: 1.2`, compartido por los complementos, pasos y estados vacíos. El área interactiva es independiente: controles de cantidad y eliminación con 44 px. Los SVG heredan `currentColor`, llevan `aria-hidden="true"` y `focusable="false"`; el control aporta su nombre accesible. Usar nombres semánticos compartidos, no emojis, icon fonts o dibujos aislados.
+## 12. Antes de publicar
 
-Los complementos usan `bow`, `butterfly`, `birthday-topper`, `pearls` y `crown`: representan el lazo, la mariposa, el letrero de cumpleaños, las perlas y la corona. `catalog-data.js` declara el nombre mediante `icon`; tanto la colección como el editor consumen ese registro. No volver a mostrar las antiguas ilustraciones raster como iconos de interfaz.
-
-`ribbon` reutiliza el mismo lazo de `bow`. `zoom` significa ampliar una fotografía; `plus` añade productos, cantidad o más resultados. Reproducción y pausa usan formas sólidas para distinguir sus estados. Los nombres desconocidos no generan una flecha de sustitución.
-
-El alfajor representa dos galletas redondas de borde liso y una capa central de arequipe. Mantenerlo horizontal, con contornos simples, sin relleno sólido ni bordes ondulados, usando el mismo trazo que el resto de la familia.
-
-La acción principal usa color ciruela, flecha de dirección precisa y esquinas `4px 20px 4px 20px`. Las acciones secundarias son texto/subrayado o superficies neutras. Las opciones, campos, controles de cantidad, búsqueda, avisos y diálogos comparten paleta y foco. Las casillas opcionales usan el check y las esquinas de la marca.
-
-## Movimiento
-
-Cambios breves al interactuar: apertura de diálogos, desplazamiento pequeño de la flecha y transformación de las esquinas. Curva propia `--ease-ribbon`. El contenido está visible desde el inicio, sin apariciones en cascada, máscaras ni desvanecimientos al bajar. Sin scroll forzado ni reproducción automática. Respetar siempre `prefers-reduced-motion`; el contenido sigue accesible sin animación.
-
-Los ajustes responsive viven junto a sus componentes. El menú cambia a 800 px y las composiciones se reorganizan según el contenido; no volver a crear un archivo general de parches móviles.
-
-## Fotografía
-
-Dirección: mesa horizontal de lino marfil, pared crema lisa, luz suave de ventana y encuadres verticales 4:5, salvo los sabores y rellenos. El producto, su decoración y su empaque son la referencia principal. [`manifest.json`](../assets/propuestas-fotograficas/manifest.json) es el inventario de las 107 fotografías publicadas.
+1. Colores solo de `css/tokens.css`.
+2. Titulares en Playfair Display e interfaz en Inter, con la escala de este manual.
+3. Componentes existentes reutilizados.
+4. Iconos de `LaurenIcons`, trazo 1,5.
+5. Logo y dibujos de `assets/brand/`, sin redibujar.
+6. Textos cercanos, amigables, cariñosos y atentos.
+7. Precios, contactos y condiciones confirmados por Lauren.
+8. Fotos reales en sus proporciones.
+9. Foco visible, 44 px y movimiento reducido.
+10. Revisado en móvil y en escritorio.
