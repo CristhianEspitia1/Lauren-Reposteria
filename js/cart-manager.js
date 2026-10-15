@@ -100,7 +100,7 @@ class CartManager {
     generateWhatsAppMessage() {
         if (!this.cart.length) return '';
         const custom = this.isCustom();
-        const lines = [custom ? 'Hola, Lauren. Quiero encargar este pedido personalizado:' : 'Hola, Lauren. Quiero hacer este pedido:', ''];
+        const lines = [custom ? 'Hola, Laura. Quiero encargar este pedido personalizado:' : 'Hola, Laura. Quiero hacer este pedido:', ''];
         this.cart.forEach((item, index) => {
             lines.push(`*${index + 1}. ${item.name}*`);
             for (const [key, value] of Object.entries(item.options)) lines.push(`${key}: ${value}`);

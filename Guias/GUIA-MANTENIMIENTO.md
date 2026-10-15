@@ -6,7 +6,7 @@
 node scripts/dev-server.mjs 5173
 ```
 
-Abrir `http://127.0.0.1:5173/html/inicio.html`. No requiere instalar dependencias. El servidor solo acepta conexiones locales.
+Abrir `http://127.0.0.1:5173/`. No requiere instalar dependencias. El servidor solo acepta conexiones locales.
 
 ## Productos y precios
 

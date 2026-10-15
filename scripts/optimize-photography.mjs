@@ -18,7 +18,7 @@ const totals = Object.fromEntries(widths.map(width => [width, 0]));
 const queue = [...sources];
 
 async function optimize(src) {
-    const file = path.resolve(root, src.replace(/^\.\.\//, ''));
+    const file = path.resolve(root, src.replace(/^\//, ''));
     const sourceStat = await stat(file);
     const { stdout } = await run('webpinfo', [file]);
     const width = Number(stdout.match(/Width:\s*(\d+)/)?.[1]);
@@ -43,14 +43,14 @@ const sorted = Object.fromEntries(sources.map(src => [src, dimensions[src]]));
 await writeFile(path.join(root, 'js/image-variants.js'),
     `/** Generado por scripts/optimize-photography.mjs desde el inventario aprobado. */\nwindow.LaurenImageWidths = Object.freeze(${JSON.stringify(sorted, null, 2)});\n`);
 // Mantener los srcset estáticos en la misma versión que el catálogo dinámico.
-for (const page of ['inicio', 'tortas', 'alfajores', 'brownies-galletas', 'detalles']) {
-    const file = path.join(root, `html/${page}.html`);
+for (const page of ['index.html', 'tortas/index.html', 'alfajores/index.html', 'brownies-galletas/index.html', 'detalles/index.html']) {
+    const file = path.join(root, page);
     const html = await readFile(file, 'utf8');
     const updated = html.replace(/<img\b[^>]*>/g, tag => {
         const src = tag.match(/\bsrc="([^"]+)"/)?.[1];
         if (!dimensions[src] || !/\bsizes="/.test(tag)) return tag;
         const variants = widths.filter(width => width < dimensions[src]).map(width =>
-            `../assets/propuestas-fotograficas/responsive/${path.basename(src, '.webp')}-${width}.webp ${width}w`);
+            `/assets/propuestas-fotograficas/responsive/${path.basename(src, '.webp')}-${width}.webp ${width}w`);
         const srcset = `srcset="${[...variants, `${src} ${dimensions[src]}w`].join(', ')}"`;
         return /\bsrcset="/.test(tag) ? tag.replace(/\bsrcset="[^"]*"/, srcset) : tag.replace('<img ', `<img ${srcset} `);
     });

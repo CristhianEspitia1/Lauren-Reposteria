@@ -96,7 +96,7 @@
                 element.className = options.stamp ? 'decor decor-stamp' : 'decor';
                 element.setAttribute('aria-hidden', 'true');
                 element.hidden = true;
-                element.style.setProperty('--g', `url(../assets/brand/sistema/${graphic}.svg)`);
+                element.style.setProperty('--g', `url(/assets/brand/sistema/${graphic}.svg)`);
                 element.style.setProperty('--c', colors[options.c || 'lilac']);
                 element.style.setProperty('--r', `${options.r || 0}deg`);
                 if (options.flip) element.style.setProperty('--flip', '-1');

@@ -17,6 +17,7 @@ La fuente de identidad es el brandbook de Lauren. Su aplicación a la web, palet
 8. [Performance](08-performance.md) — estrategia de rendimiento y media.
 9. [Seguridad](09-seguridad.md) — modelo de amenazas y prácticas.
 10. [Changelog](10-changelog.md) — histórico de cambios.
+11. [SEO](11-seo.md) — URLs, metadatos, datos estructurados, sitemap y tareas externas.
 11. [Pendientes](../PROBLEMAS-PENDIENTES.md) — decisiones comerciales abiertas.
 
 ## Resumen del proyecto
@@ -30,7 +31,7 @@ sobre el dominio `laurenreposteria.com`.
 ```bash
 # Servidor local (Node, con soporte de Range para video y 404):
 node scripts/dev-server.mjs 5173
-# Abrir: http://127.0.0.1:5173/html/inicio.html
+# Abrir: http://127.0.0.1:5173/
 ```
 
 Ver [README](../README.md) para el detalle de instalación, despliegue y edición

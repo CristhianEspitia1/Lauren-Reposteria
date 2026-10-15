@@ -169,7 +169,7 @@
             if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
             if (Catalog.quoteOnly(this.product)) {
                 const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const message = [`Hola, Lauren. Quisiera cotizar ${this.product.name} para mi torta.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
+                const message = [`Hola, Laura. Quisiera cotizar ${this.product.name} para mi torta.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
                 window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;
             }

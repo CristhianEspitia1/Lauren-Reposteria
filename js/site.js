@@ -34,9 +34,13 @@
         brownies: 'Chocolate al 70 %, Nutella y tus toppings favoritos.',
         galletas: 'Seis sabores. Un centro suave que lo dice todo.'
     };
-    function productCard(product, sizes) {
+    function priceLabel(text) {
+        const match = /^desde\s+/i.exec(text);
+        return match ? `<span class="price-from">Desde</span> ${esc(text.slice(match[0].length))}` : esc(text);
+    }
+    function productCard(product, sizes, compact) {
         const quoted = Catalog.quoteOnly(product);
-        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="eager" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : esc(product.priceFormatted)}</p></div><p class="product-description">${esc(descriptions[product.id] || product.description)}</p><button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
+        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product.priceFormatted)}</p></div>${compact ? '' : `<p class="product-description">${esc(descriptions[product.id] || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
     }
     const groups = { osos: ['oso-pequeno', 'oso-grande', 'oso-fresas'], mix: ['detalle-brownie', 'detalle-hbd', 'detalle-margarita', 'detalle-mix-1', 'detalle-mix-2'], golden: ['detalle-golden-1', 'detalle-golden-2', 'detalle-golden-3', 'detalle-torta'], cajas: ['caja-x6', 'caja-x12', 'vaso-minis'], especiales: ['torta-alfajor', 'alfajor-personalizado', 'alfajor-individual'] };
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -50,7 +54,7 @@
             const searchText = normalize(search?.value.trim() || '');
             const visible = products.filter(p => (filter === 'all' || groups[filter]?.includes(p.id)) && normalize([p.name, p.description, p.category].join(' ')).includes(searchText));
             const sizes = grid.classList.contains('two-columns') ? '(max-width: 600px) 90vw, (max-width: 1280px) 45vw, 584px' : grid.classList.contains('four-columns') ? '(max-width: 800px) 45vw, (max-width: 1280px) 22vw, 280px' : '(max-width: 800px) 45vw, (max-width: 1280px) 30vw, 384px';
-            grid.innerHTML = visible.map(product => productCard(product, sizes)).join('');
+            grid.innerHTML = visible.map(product => productCard(product, sizes, 'compact' in grid.dataset)).join('');
             const count = scope.querySelector('[data-result-count]');
             if (count) count.textContent = `${visible.length} ${visible.length === 1 ? 'creación para elegir' : 'creaciones para elegir'}`;
             const empty = scope.querySelector('[data-empty-results]');
@@ -76,7 +80,7 @@
         });
     });
     document.querySelectorAll('[data-extras]').forEach(grid => {
-        grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(p.priceFormatted)}</p><a class="text-link" href="${esc(wa(`Hola, Lauren. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join('');
+        grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(p.priceFormatted)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join('');
     });
 
     const lightbox = document.getElementById('lightboxDialog');
@@ -85,7 +89,7 @@
     let lightboxIndex = 0;
     function renderLightbox() {
         const item = lightboxItems[lightboxIndex];
-        lightbox.innerHTML = `<button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar imagen">${icon('close')}</button><img class="lightbox-image" src="${esc(imagePath(item.src))}" alt="${esc(item.alt)}" width="720" height="900"><div class="lightbox-footer"><div><p id="lightboxTitle">${esc(item.alt)}</p><small>${lightboxIndex + 1} de ${lightboxItems.length} · Cada creación se hace a mano</small></div><div class="lightbox-controls"><button type="button" class="icon-button lightbox-prev" data-gallery-nav="-1" aria-label="Imagen anterior">${icon('arrow')}</button><button type="button" class="icon-button" data-gallery-nav="1" aria-label="Imagen siguiente">${icon('arrow')}</button></div><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(wa('Hola, Lauren. Quisiera cotizar un diseño inspirado en esta referencia: https://laurenreposteria.com/' + item.src.replace('../', '')))}">Quiero algo así ${icon('diagonal')}</a></div>`;
+        lightbox.innerHTML = `<button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar imagen">${icon('close')}</button><img class="lightbox-image" src="${esc(imagePath(item.src))}" alt="${esc(item.alt)}" width="720" height="900"><div class="lightbox-footer"><div><p id="lightboxTitle">${esc(item.alt)}</p><small>${lightboxIndex + 1} de ${lightboxItems.length} · Cada creación se hace a mano</small></div><div class="lightbox-controls"><button type="button" class="icon-button lightbox-prev" data-gallery-nav="-1" aria-label="Imagen anterior">${icon('arrow')}</button><button type="button" class="icon-button" data-gallery-nav="1" aria-label="Imagen siguiente">${icon('arrow')}</button></div><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(wa('Hola, Laura. Quisiera cotizar un diseño inspirado en esta referencia: https://laurenreposteria.com' + item.src))}">Quiero algo así ${icon('diagonal')}</a></div>`;
     }
     lightbox.addEventListener('click', event => {
         const button = event.target.closest('[data-gallery-nav]');

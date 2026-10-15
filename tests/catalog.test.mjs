@@ -99,8 +99,9 @@ test('Rechaza cantidades inválidas e importes manipulados; vuelve a cotizar des
 test('No ejecuta texto de personalización ni rutas inyectadas', () => {
     const payload = '<img src=x onerror=alert(1)>';
     assert.equal(LaurenUI.escape(payload), '&lt;img src=x onerror=alert(1)&gt;');
-    assert.equal(LaurenUI.imagePath('javascript:alert(1)'), '../assets/brand/lauren-isotipo.svg');
-    assert.equal(LaurenUI.imagePath('../assets/optimized/../../secret.webp'), '../assets/brand/lauren-isotipo.svg');
+    assert.equal(LaurenUI.imagePath('javascript:alert(1)'), '/assets/brand/lauren-isotipo.svg');
+    assert.equal(LaurenUI.imagePath('/assets/optimized/../../secret.webp'), '/assets/brand/lauren-isotipo.svg');
+    assert.equal(LaurenUI.imagePath('//evil.example/assets/optimized/x.webp'), '/assets/brand/lauren-isotipo.svg');
     cart.clearCart(); cart.addItem(item('torta-vintage', {}, { mensaje: payload }));
     assert.equal(cart.getItems()[0].personal.mensaje, payload);
     assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(payload));

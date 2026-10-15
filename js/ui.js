@@ -3,14 +3,14 @@
     'use strict';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const icon = name => window.LaurenIcons(name);
-    const imagePath = value => typeof value === 'string' && /^\.\.\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.slice(3).includes('..') ? value : '../assets/brand/lauren-isotipo.svg';
+    const imagePath = value => typeof value === 'string' && /^\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.includes('..') ? value : '/assets/brand/lauren-isotipo.svg';
     function imageSources(value, sizes) {
         const src = imagePath(value);
         const width = window.LaurenImageWidths?.[src];
         if (!width) return { src };
         const name = src.split('/').pop().replace(/\.webp$/, '');
         const variants = [320, 640, 960].filter(size => size < width)
-            .map(size => `../assets/propuestas-fotograficas/responsive/${name}-${size}.webp ${size}w`);
+            .map(size => `/assets/propuestas-fotograficas/responsive/${name}-${size}.webp ${size}w`);
         return { sizes, srcset: [...variants, `${src} ${width}w`].join(', '), src };
     }
     const imageAttributes = (value, sizes) => Object.entries(imageSources(value, sizes))

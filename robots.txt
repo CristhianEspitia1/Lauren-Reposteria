@@ -1,4 +1,10 @@
+# Lauren Repostería — https://laurenreposteria.com
 User-agent: *
 Allow: /
+# Herramientas internas del repositorio (además excluidas de la publicación en _config.yml).
+Disallow: /scripts/
+Disallow: /tests/
+Disallow: /docs/
+Disallow: /Guias/
 
 Sitemap: https://laurenreposteria.com/sitemap.xml

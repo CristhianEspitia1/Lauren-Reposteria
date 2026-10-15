@@ -10,7 +10,7 @@ Con Node instalado, desde la raíz:
 node scripts/dev-server.mjs 5173
 ```
 
-Abrir [Inicio](http://127.0.0.1:5173/html/inicio.html). El servidor escucha únicamente en `127.0.0.1`, admite HEAD y rangos de video y muestra la página 404. No requiere instalación de dependencias ni compilación.
+Abrir [Inicio](http://127.0.0.1:5173/). El servidor escucha únicamente en `127.0.0.1`, admite HEAD y rangos de video y muestra la página 404. No requiere instalación de dependencias ni compilación.
 
 ## Estructura y mantenimiento
 
@@ -18,8 +18,10 @@ HTML, CSS y JavaScript sin framework. Hosting configurado para GitHub Pages y do
 
 | Archivo | Responsabilidad |
 | --- | --- |
-| `html/inicio.html` | Portada, colecciones, cómo pedir, historia y preguntas |
-| `html/tortas.html`, `alfajores.html`, `brownies-galletas.html`, `detalles.html` | Colecciones y configuración de productos |
+| `index.html` | Portada (`/`): colecciones, cómo pedir, historia y preguntas |
+| `tortas/`, `alfajores/`, `brownies-galletas/`, `detalles/` (`index.html`) | Colecciones en URL limpias (`/tortas/`…) |
+| `html/*.html` | Redirecciones de las direcciones anteriores |
+| `scripts/seo.mjs`, `scripts/social-images.mjs` | Metadatos, JSON-LD, `sitemap.xml`, `llms.txt`, imágenes para compartir e iconos; ver [SEO](docs/11-seo.md) |
 | `js/catalog-data.js` | Única fuente de productos, importes, opciones y personalización |
 | `js/catalog-model.js` | Reglas de precio, dependencias y validación |
 | `js/quick-view-modal.js` | Elegir y editar un producto |
@@ -44,7 +46,8 @@ El manual define P22 Mackinac, Proxima Nova y Gentlemens Script. Sus archivos de
 ## Comprobaciones
 
 ```bash
-node --test tests/catalog.test.mjs
+node --test tests/*.test.mjs
+node scripts/seo.mjs --check
 git diff --check
 ```
 

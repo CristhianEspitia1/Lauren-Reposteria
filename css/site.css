@@ -32,6 +32,8 @@ button svg, a svg { pointer-events: none; }
 .section { padding-block: var(--space-section); }
 .eyebrow { display: flex; align-items: center; gap: 12px; font-size: .6875rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500; }
 .eyebrow::before { content: ''; width: 24px; height: 2px; background: var(--color-apricot); flex-shrink: 0; }
+/* Antetítulo con la palabra clave dentro del h1: conserva la tipografía de .eyebrow. */
+h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .section-heading { display: flex; gap: 32px; justify-content: space-between; align-items: end; margin-bottom: 36px; }
 .section-heading .eyebrow { margin-bottom: 18px; }
 .section-heading > p { max-width: 310px; color: var(--color-text-soft); font-size: .9375rem; }
@@ -157,6 +159,8 @@ button svg, a svg { pointer-events: none; }
 .social-heading .eyebrow::before { display: none; }
 .social-heading h2 { font-size: clamp(2rem, 3.5vw, 3rem); }
 .social-heading a { margin-top: 18px; }
+.social-handle { align-items: center; gap: 8px; }
+.instagram-logo { width: 22px; height: 22px; flex-shrink: 0; }
 .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .social-grid a { display: block; overflow: hidden; }
 .social-grid a:nth-child(2n) { margin-top: 32px; }

@@ -1,0 +1,10 @@
+# GitHub Pages (Jekyll): publica solo la web. La documentación y las herramientas
+# del repositorio no deben aparecer como páginas indexables del dominio.
+exclude:
+  - README.md
+  - PROBLEMAS-PENDIENTES.md
+  - docs/
+  - Guias/
+  - scripts/
+  - tests/
+  - "*.ai"

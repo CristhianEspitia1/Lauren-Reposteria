@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["scripts/dev-server.mjs", "5173"],
       "port": 5173
+    },
+    {
+      "name": "lauren-seo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/dev-server.mjs", "5180"],
+      "port": 5180
     }
   ]
 }

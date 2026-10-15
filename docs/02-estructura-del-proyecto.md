@@ -3,9 +3,14 @@
 El sitio se sirve directamente, sin bundler ni dependencias en runtime.
 
 ```text
-index.html / 404.html             Entrada y error con identidad Lauren
-robots.txt / sitemap.xml / CNAME  Descubrimiento y hosting
-html/                            Inicio y cuatro colecciones
+index.html / 404.html             Portada (/) y error con identidad Lauren
+tortas/ alfajores/ brownies-galletas/ detalles/  Colecciones (index.html)
+html/                            Redirecciones de las direcciones anteriores
+robots.txt / sitemap.xml / CNAME  Descubrimiento y hosting (sitemap generado)
+llms.txt / site.webmanifest       Resumen para asistentes de IA (generado) y manifest
+_config.yml                      Exclusiones de publicación en GitHub Pages
+favicon.ico / assets/icons/       Iconos PNG/ICO y logotipo rasterizado (generados)
+assets/social/                   Imágenes 1200 × 630 para compartir (generadas)
 css/tokens.css                   Colores, fuentes, espacios y movimiento
 css/site.css                     Base, navegación, portada y pie
 css/catalog.css                  Colecciones, filtros y galerías
@@ -22,11 +27,11 @@ assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
 assets/optimized/                Video de la historia, su poster y adornos de detalles
 assets/favicon.svg               Marca vectorial de la pestaña
-scripts/                         Servidor local y copias responsive
-tests/catalog.test.mjs            Pruebas de lógica (Node)
+scripts/                         Servidor local, copias responsive, SEO e imágenes sociales
+tests/                           Pruebas de lógica y de SEO (Node)
 docs/ / Guias/                   Documentación y mantenimiento
 ```
 
-Las páginas de `html/` usan rutas relativas `../assets/`. La página 404 usa rutas desde la raíz para funcionar con direcciones inexistentes de cualquier profundidad. El repositorio contiene solo los archivos que usa la web; `._*`, `.DS_Store` y `tmp/` están ignorados por Git.
+Todas las páginas y los datos de JavaScript usan rutas desde la raíz (`/assets/…`, `/tortas/`), válidas en el dominio propio y en el servidor local. El bloque `<!-- seo: … -->` del `<head>` lo genera `scripts/seo.mjs`; no editarlo a mano. El repositorio contiene solo los archivos que usa la web; `._*`, `.DS_Store` y `tmp/` están ignorados por Git.
 
 Añadir una regla en el componente responsable; no crear otra capa de parches.

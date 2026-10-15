@@ -4,6 +4,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — SEO integral]
+
+- URL limpias: la portada pasa de `/html/inicio.html` (redirección desde `/`) a `/`; las colecciones a `/tortas/`, `/alfajores/`, `/brownies-galletas/` y `/detalles/`. Las direcciones antiguas redirigen con `canonical`. Rutas de páginas y datos desde la raíz (`/assets/…`); el pedido guardado toma la foto vigente del catálogo.
+- `scripts/seo.mjs` genera desde el catálogo títulos, descripciones, canonical, hreflang, Open Graph/Twitter, JSON-LD (`Bakery`, `WebSite`, `CollectionPage`, `FAQPage`, `BreadcrumbList`, `Menu`/`MenuItem` con precios, `VideoObject`), `sitemap.xml` con imágenes y `llms.txt`.
+- `scripts/social-images.mjs`: tarjetas JPEG 1200 × 630 por página, `favicon.ico`, `apple-touch-icon`, iconos del manifest y logotipo PNG. Nuevo `site.webmanifest`.
+- H1 con la búsqueda principal en el antetítulo, preguntas de precio y ubicación con importes del catálogo, textos alternativos descriptivos y carga diferida bajo el primer pantallazo. La 404 enlaza a las colecciones.
+- `_config.yml` evita que GitHub Pages publique documentación y herramientas; `robots.txt` lo refuerza.
+- `tests/seo.test.mjs` (7 pruebas). Detalle y tareas externas en [SEO](11-seo.md).
+
 ## [2026-10-15 — Mensajes de WhatsApp según el tipo de pedido]
 
 - El pedido se clasifica con `Catalog.custom`: es personalizado si incluye una torta o cualquier producto con mensaje, iniciales o tema escrito. Un pedido listo (cajas, bolsitas, brownies, galletas, detalles sin texto) ya no menciona diseño ni «valor final de la personalización».

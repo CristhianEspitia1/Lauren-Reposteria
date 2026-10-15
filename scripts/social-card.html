@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Tarjeta social · Lauren Repostería</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&amp;family=Playfair+Display:ital,wght@0,500;1,500&amp;display=block" rel="stylesheet">
+<style>
+/* Plantilla de scripts/social-images.mjs: 1200 × 630, sin dependencias del sitio. */
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; background: #f9f5ec; }
+body { display: grid; grid-template-columns: 640px 560px; font-family: Inter, system-ui, sans-serif; color: #3d2b33; }
+.copy { display: flex; flex-direction: column; justify-content: center; gap: 26px; padding: 0 56px 0 72px; position: relative; }
+.copy::after { content: ""; position: absolute; inset: 28px 0 28px 28px; border: 1.5px solid #d0b4d7; border-right: 0; border-radius: 28px 0 0 28px; pointer-events: none; }
+.logo { width: 210px; height: auto; }
+.eyebrow { font-size: 19px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #9a6f88; }
+h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 58px; line-height: 1.04; letter-spacing: -.01em; }
+h1 em { color: #b0788f; }
+.foot { font-size: 21px; font-weight: 500; color: #6b5560; }
+.photo { position: relative; overflow: hidden; }
+.photo img { width: 100%; height: 100%; object-fit: cover; object-position: var(--focus, 50% 50%); display: block; }
+.icon { display: grid; place-items: center; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<script>
+// Parámetros: ?eyebrow=&title=&em=&photo=&focus=, ?icon=SIZE&pad=0.12&bg=%23d0b4d7 o ?logo=1
+const q = new URLSearchParams(location.search);
+if (q.has('logo')) {
+    document.body.style.cssText = 'display:grid;place-items:center;width:600px;height:360px;background:#fff';
+    document.documentElement.style.cssText = 'width:600px;height:360px';
+    document.body.innerHTML = '<img src="../assets/brand/lauren-logo.svg" alt="" style="width:460px;height:auto">';
+} else if (q.has('icon')) {
+    const size = Number(q.get('icon'));
+    document.documentElement.style.cssText = document.body.style.cssText = `width:${size}px;height:${size}px;background:${q.get('bg') || 'transparent'};display:block`;
+    const pad = Math.round(size * Number(q.get('pad') || 0));
+    document.body.innerHTML = `<img src="../assets/favicon.svg" alt="" style="display:block;width:${size - pad * 2}px;height:${size - pad * 2}px;margin:${pad}px">`;
+} else {
+    const text = value => String(value || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    document.body.innerHTML = `<div class="copy"><img class="logo" src="../assets/brand/lauren-logo.svg" alt=""><p class="eyebrow">${text(q.get('eyebrow'))}</p><h1>${text(q.get('title'))}<br><em>${text(q.get('em'))}</em></h1><p class="foot">laurenreposteria.com · Pedidos por WhatsApp</p></div><div class="photo" style="--focus:${text(q.get('focus') || '50% 50%')}"><img src="..${text(q.get('photo'))}" alt=""></div>`;
+}
+</script>
+</body>
+</html>

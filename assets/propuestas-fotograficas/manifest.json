@@ -5,643 +5,643 @@
       "id": "torta-vintage",
       "name": "Torta Vintage",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-vintage.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-vintage.webp"
     },
     {
       "id": "torta-sencilla",
       "name": "Torta Sencilla",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-sencilla.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-sencilla.webp"
     },
     {
       "id": "alfajor-personalizado",
       "name": "Alfajores Personalizados",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/alfajor-personalizado.webp"
+      "proposal": "/assets/propuestas-fotograficas/alfajor-personalizado.webp"
     },
     {
       "id": "caja-x6",
       "name": "Caja x6 Alfajores",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/caja-x6.webp"
+      "proposal": "/assets/propuestas-fotograficas/caja-x6.webp"
     },
     {
       "id": "caja-x12",
       "name": "Caja x12 Alfajores",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/caja-x12.webp"
+      "proposal": "/assets/propuestas-fotograficas/caja-x12.webp"
     },
     {
       "id": "vaso-minis",
       "name": "Vaso de Mini Alfajores",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/vaso-minis.webp"
+      "proposal": "/assets/propuestas-fotograficas/vaso-minis.webp"
     },
     {
       "id": "torta-alfajor",
       "name": "Torta de Alfajor",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/torta-alfajor.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-alfajor.webp"
     },
     {
       "id": "alfajor-individual",
       "name": "Alfajores Individuales",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/alfajor-individual.webp"
+      "proposal": "/assets/propuestas-fotograficas/alfajor-individual.webp"
     },
     {
       "id": "brownies",
       "name": "Brownies",
       "category": "brownies",
-      "proposal": "../assets/propuestas-fotograficas/brownies.webp"
+      "proposal": "/assets/propuestas-fotograficas/brownies.webp"
     },
     {
       "id": "galletas",
       "name": "Galletas",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galletas.webp"
+      "proposal": "/assets/propuestas-fotograficas/galletas.webp"
     },
     {
       "id": "oso-pequeno",
       "name": "Oso Pequeño",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/oso-pequeno.webp"
+      "proposal": "/assets/propuestas-fotograficas/oso-pequeno.webp"
     },
     {
       "id": "oso-grande",
       "name": "Oso Grande",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/oso-grande.webp"
+      "proposal": "/assets/propuestas-fotograficas/oso-grande.webp"
     },
     {
       "id": "oso-fresas",
       "name": "Oso con Fresas",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/oso-fresas.webp"
+      "proposal": "/assets/propuestas-fotograficas/oso-fresas.webp"
     },
     {
       "id": "detalle-brownie",
       "name": "Detalle Brownie",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-brownie.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-brownie.webp"
     },
     {
       "id": "detalle-hbd",
       "name": "Detalle HBD",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-hbd.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-hbd.webp"
     },
     {
       "id": "detalle-margarita",
       "name": "Detalle Margarita",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-margarita.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-margarita.webp"
     },
     {
       "id": "detalle-mix-1",
       "name": "Detalle Mix",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-mix-1.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-mix-1.webp"
     },
     {
       "id": "detalle-mix-2",
       "name": "Detalle Mix 2",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-mix-2.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-mix-2.webp"
     },
     {
       "id": "detalle-golden-1",
       "name": "Detalle Golden",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-golden-1.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-golden-1.webp"
     },
     {
       "id": "detalle-golden-2",
       "name": "Detalle Golden Rosa",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-golden-2.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-golden-2.webp"
     },
     {
       "id": "detalle-golden-3",
       "name": "Detalle Golden Mostacho",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-golden-3.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-golden-3.webp"
     },
     {
       "id": "detalle-torta",
       "name": "Detalle con Torta",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-torta.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-torta.webp"
     },
     {
       "id": "galeria-tortas-01",
       "name": "Torta Vintage · 2",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-01.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-01.webp"
     },
     {
       "id": "galeria-tortas-02",
       "name": "Torta Vintage · 3",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-02.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-02.webp"
     },
     {
       "id": "galeria-tortas-03",
       "name": "Torta Sencilla · 2",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-03.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-03.webp"
     },
     {
       "id": "galeria-tortas-04",
       "name": "Torta Sencilla · 3",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-04.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-04.webp"
     },
     {
       "id": "galeria-alfajores-01",
       "name": "Alfajores Personalizados · 2",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-01.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-01.webp"
     },
     {
       "id": "galeria-alfajores-02",
       "name": "Alfajores Personalizados · 3",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-02.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-02.webp"
     },
     {
       "id": "galeria-alfajores-03",
       "name": "Alfajores Personalizados · 4",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-03.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-03.webp"
     },
     {
       "id": "galeria-alfajores-04",
       "name": "Alfajores Personalizados · 5",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-04.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-04.webp"
     },
     {
       "id": "galeria-alfajores-05",
       "name": "Alfajores Personalizados · 6",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-05.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-05.webp"
     },
     {
       "id": "galeria-alfajores-06",
       "name": "Alfajores Personalizados · 7",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-06.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-06.webp"
     },
     {
       "id": "galeria-alfajores-07",
       "name": "Alfajores Personalizados · 8",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-07.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-07.webp"
     },
     {
       "id": "galeria-alfajores-08",
       "name": "Alfajores Personalizados · 9",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-08.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-08.webp"
     },
     {
       "id": "galeria-alfajores-09",
       "name": "Alfajores Personalizados · 10",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-09.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-09.webp"
     },
     {
       "id": "galeria-alfajores-10",
       "name": "Alfajores Personalizados · 11",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-10.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-10.webp"
     },
     {
       "id": "galeria-alfajores-11",
       "name": "Alfajores Personalizados · 12",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-11.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-11.webp"
     },
     {
       "id": "galeria-alfajores-12",
       "name": "Alfajores Personalizados · 13",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-12.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-12.webp"
     },
     {
       "id": "galeria-alfajores-13",
       "name": "Alfajores Personalizados · 14",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-13.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-13.webp"
     },
     {
       "id": "galeria-alfajores-14",
       "name": "Torta de Alfajor · 2",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-14.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-14.webp"
     },
     {
       "id": "galeria-alfajores-15",
       "name": "Alfajores Individuales · 2",
       "category": "alfajores",
-      "proposal": "../assets/propuestas-fotograficas/galeria-alfajores-15.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-alfajores-15.webp"
     },
     {
       "id": "galeria-brownies-01",
       "name": "Brownies · 2",
       "category": "brownies",
-      "proposal": "../assets/propuestas-fotograficas/galeria-brownies-01.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-brownies-01.webp"
     },
     {
       "id": "galeria-brownies-02",
       "name": "Brownies · 3",
       "category": "brownies",
-      "proposal": "../assets/propuestas-fotograficas/galeria-brownies-02.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-brownies-02.webp"
     },
     {
       "id": "galeria-brownies-03",
       "name": "Brownies · 4",
       "category": "brownies",
-      "proposal": "../assets/propuestas-fotograficas/galeria-brownies-03.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-brownies-03.webp"
     },
     {
       "id": "galeria-galletas-01",
       "name": "Galletas · 2",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-galletas-01.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-galletas-01.webp"
     },
     {
       "id": "galeria-galletas-02",
       "name": "Galletas · 3",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-galletas-02-r2.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-galletas-02-r2.webp"
     },
     {
       "id": "galeria-detalles-01",
       "name": "Oso Grande · 2",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/galeria-detalles-01.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-detalles-01.webp"
     },
     {
       "id": "galeria-tortas-05",
       "name": "Torta corazón lila",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-05.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-05.webp"
     },
     {
       "id": "galeria-tortas-06",
       "name": "Torta vintage con frutos rojos",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-06.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-06.webp"
     },
     {
       "id": "galeria-tortas-07",
       "name": "Corazón Hello Kitty",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-07.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-07.webp"
     },
     {
       "id": "galeria-tortas-08",
       "name": "Corazón crema con perlas doradas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-08.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-08.webp"
     },
     {
       "id": "galeria-tortas-09",
       "name": "Torta vintage azul",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-09.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-09.webp"
     },
     {
       "id": "galeria-tortas-10",
       "name": "Torta corazón roja con moño",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-10.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-10.webp"
     },
     {
       "id": "galeria-tortas-11",
       "name": "Torta negra con detalles dorados",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-11.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-11.webp"
     },
     {
       "id": "galeria-tortas-12",
       "name": "Noche estrellada sobre pedestal",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-12.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-12.webp"
     },
     {
       "id": "galeria-tortas-13",
       "name": "Paw Patrol · Máximo",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-13.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-13.webp"
     },
     {
       "id": "galeria-tortas-14",
       "name": "Torta de Las Chicas Superpoderosas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-14.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-14.webp"
     },
     {
       "id": "galeria-tortas-15",
       "name": "Torta verde para primera comunión",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-15.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-15.webp"
     },
     {
       "id": "galeria-tortas-16",
       "name": "Torta con frambuesas y velas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-16.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-16.webp"
     },
     {
       "id": "galeria-tortas-17",
       "name": "Paw Patrol rosa",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-17.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-17.webp"
     },
     {
       "id": "galeria-tortas-18",
       "name": "Torta con flores naturales",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-18.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-18.webp"
     },
     {
       "id": "galeria-tortas-19",
       "name": "Torta lila con flores",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-19.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-19.webp"
     },
     {
       "id": "galeria-tortas-20",
       "name": "Torta de chocolate con galletas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-20.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-20.webp"
     },
     {
       "id": "galeria-tortas-21",
       "name": "Torta roja vintage",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-21.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-21.webp"
     },
     {
       "id": "galeria-tortas-22",
       "name": "Torta infantil con banderines",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-22.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-22.webp"
     },
     {
       "id": "galeria-tortas-23",
       "name": "Torta corazón en blanco y negro",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-23.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-23.webp"
     },
     {
       "id": "galeria-tortas-24",
       "name": "Torta rosada con mensaje",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-24.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-24.webp"
     },
     {
       "id": "galeria-tortas-25",
       "name": "Torta Yaisa",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-25.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-25.webp"
     },
     {
       "id": "galeria-tortas-26",
       "name": "Torta de quince años con rosas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-26.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-26.webp"
     },
     {
       "id": "galeria-tortas-27",
       "name": "Torta azul para primera comunión",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-27.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-27.webp"
     },
     {
       "id": "galeria-tortas-28",
       "name": "Corazón crema y lila",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-28.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-28.webp"
     },
     {
       "id": "galeria-tortas-29",
       "name": "Harry Potter en negro y dorado",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-29.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-29.webp"
     },
     {
       "id": "galeria-tortas-30",
       "name": "Torta PlayStation · Julián",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-30.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-30.webp"
     },
     {
       "id": "galeria-tortas-31",
       "name": "Torta con decoración de celebración",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-31.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-31.webp"
     },
     {
       "id": "galeria-tortas-32",
       "name": "Torta vintage · Susana",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-32.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-32.webp"
     },
     {
       "id": "galeria-tortas-33",
       "name": "Corazón rojo · Hello 24",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-33.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-33.webp"
     },
     {
       "id": "galeria-tortas-34",
       "name": "Torta Mi Grado",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-34.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-34.webp"
     },
     {
       "id": "galeria-tortas-35",
       "name": "Torta blanca de 25 años",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-35.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-35.webp"
     },
     {
       "id": "galeria-tortas-36",
       "name": "Torta Noche estrellada",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-36.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-36.webp"
     },
     {
       "id": "galeria-tortas-37",
       "name": "Torta Hello Kitty",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-37.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-37.webp"
     },
     {
       "id": "galeria-tortas-38",
       "name": "Torta LOL Surprise",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-38.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-38.webp"
     },
     {
       "id": "galeria-tortas-39",
       "name": "Harry Potter en crema y dorado",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-39.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-39.webp"
     },
     {
       "id": "galeria-tortas-40",
       "name": "Torta de sirena · Valery",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-40.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-40.webp"
     },
     {
       "id": "galeria-tortas-41",
       "name": "Torta de grado con estrellas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/galeria-tortas-41.webp"
+      "proposal": "/assets/propuestas-fotograficas/galeria-tortas-41.webp"
     },
     {
       "id": "galleta-nutella-corte",
       "name": "Galleta de Nutella al corte",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galleta-nutella-corte.webp"
+      "proposal": "/assets/propuestas-fotograficas/galleta-nutella-corte.webp"
     },
     {
       "id": "galletas-tres-chocolates",
       "name": "Tres bocados de galleta",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
+      "proposal": "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
     },
     {
       "id": "galleta-pistacho",
       "name": "Galleta de pistacho",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galleta-pistacho.webp"
+      "proposal": "/assets/propuestas-fotograficas/galleta-pistacho.webp"
     },
     {
       "id": "galleta-nutella-mano",
       "name": "Galleta de Nutella en detalle",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galleta-nutella-mano.webp"
+      "proposal": "/assets/propuestas-fotograficas/galleta-nutella-mano.webp"
     },
     {
       "id": "galletas-especiales",
       "name": "Galletas especiales al corte",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galletas-especiales.webp"
+      "proposal": "/assets/propuestas-fotograficas/galletas-especiales.webp"
     },
     {
       "id": "galleta-chocolate",
       "name": "Galleta de chocolate",
       "category": "galletas",
-      "proposal": "../assets/propuestas-fotograficas/galleta-chocolate.webp"
+      "proposal": "/assets/propuestas-fotograficas/galleta-chocolate.webp"
     },
     {
       "id": "sabor-chocolate",
       "name": "Bizcocho de chocolate",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/sabor-chocolate.webp"
+      "proposal": "/assets/propuestas-fotograficas/sabor-chocolate.webp"
     },
     {
       "id": "sabor-red-velvet",
       "name": "Bizcocho red velvet",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/sabor-red-velvet.webp"
+      "proposal": "/assets/propuestas-fotograficas/sabor-red-velvet.webp"
     },
     {
       "id": "sabor-vainilla",
       "name": "Bizcocho de vainilla",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/sabor-vainilla.webp"
+      "proposal": "/assets/propuestas-fotograficas/sabor-vainilla.webp"
     },
     {
       "id": "sabor-zanahoria-con-nueces",
       "name": "Bizcocho de zanahoria y nueces",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/sabor-zanahoria-con-nueces.webp"
+      "proposal": "/assets/propuestas-fotograficas/sabor-zanahoria-con-nueces.webp"
     },
     {
       "id": "relleno-arequipe",
       "name": "Relleno de arequipe",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/relleno-arequipe.webp"
+      "proposal": "/assets/propuestas-fotograficas/relleno-arequipe.webp"
     },
     {
       "id": "relleno-chocolate",
       "name": "Relleno de chocolate",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/relleno-chocolate.webp"
+      "proposal": "/assets/propuestas-fotograficas/relleno-chocolate.webp"
     },
     {
       "id": "relleno-crema-queso",
       "name": "Relleno de crema de queso",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/relleno-crema-queso.webp"
+      "proposal": "/assets/propuestas-fotograficas/relleno-crema-queso.webp"
     },
     {
       "id": "relleno-nutella",
       "name": "Relleno de nutella",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/relleno-nutella.webp"
+      "proposal": "/assets/propuestas-fotograficas/relleno-nutella.webp"
     },
     {
       "id": "relleno-frutos-rojos",
       "name": "Relleno de frutos rojos",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/relleno-frutos-rojos.webp"
+      "proposal": "/assets/propuestas-fotograficas/relleno-frutos-rojos.webp"
     },
     {
       "id": "torta-rosas-mariposas",
       "name": "Torta con rosas y mariposas",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-rosas-mariposas.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp"
     },
     {
       "id": "torta-negra-cumpleanos",
       "name": "Torta negra de cumpleaños",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-negra-cumpleanos.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp"
     },
     {
       "id": "torta-rosa-diecinueve",
       "name": "Torta rosa de diecinueve años",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp"
     },
     {
       "id": "torta-chocolate-amor",
       "name": "Torta de chocolate para celebrar",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-chocolate-amor.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-chocolate-amor.webp"
     },
     {
       "id": "torta-azul-mami",
       "name": "Torta con bordes azules",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-azul-mami.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-azul-mami.webp"
     },
     {
       "id": "torta-amor-amistad",
       "name": "Torta de amor y amistad",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-amor-amistad.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-amor-amistad.webp"
     },
     {
       "id": "torta-uno",
       "name": "Torta Uno",
       "category": "tortas",
-      "proposal": "../assets/propuestas-fotograficas/torta-uno.webp"
+      "proposal": "/assets/propuestas-fotograficas/torta-uno.webp"
     },
     {
       "id": "detalle-golden-chocolate",
       "name": "Detalle Golden con torta de chocolate",
       "category": "detalles",
-      "proposal": "../assets/propuestas-fotograficas/detalle-golden-chocolate.webp"
+      "proposal": "/assets/propuestas-fotograficas/detalle-golden-chocolate.webp"
     }
   ]
 }
