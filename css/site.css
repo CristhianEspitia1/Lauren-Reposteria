@@ -154,6 +154,17 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .faq-item summary svg { width: 20px; height: 20px; transition: transform var(--transition-fast); }
 .faq-item[open] summary svg { transform: rotate(45deg); }
 .faq-item > p { padding: 0 36px 24px 0; font-size: .875rem; line-height: 1.85; color: var(--color-text-soft); max-width: 580px; }
+.faq-more { margin-top: 8px; }
+.faq-hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+.faq-hero p { max-width: 480px; margin-top: 20px; color: var(--color-text-soft); }
+.faq-index { position: sticky; top: 120px; }
+.faq-topics { display: grid; gap: 4px; }
+.faq-topics a { font-size: .875rem; padding: 10px 0; border-bottom: 1px solid color-mix(in srgb, var(--color-lilac) 55%, var(--color-peach)); }
+.faq-topics a:hover { color: var(--color-text-soft); }
+.faq-group + .faq-group { margin-top: 56px; }
+.faq-group { scroll-margin-top: 120px; }
+.faq-group-title { font-size: clamp(1.5rem, 2.4vw, 2rem); margin-bottom: 16px; }
+.inline-link { text-decoration: underline; text-underline-offset: 3px; }
 .social-heading { text-align: center; margin-bottom: 36px; }
 .social-heading .eyebrow { justify-content: center; margin-bottom: 16px; }
 .social-heading .eyebrow::before { display: none; }
@@ -237,6 +248,7 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .step h3 { font-size: 1.25rem; }
     .step p { font-size: .8125rem; }
     .faq-grid { grid-template-columns: 1fr; gap: 36px; }
+    .faq-index { position: static; }
     .faq-copy p { max-width: 350px; }
     .footer-main { gap: 32px; }
 }

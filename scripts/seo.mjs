@@ -33,7 +33,7 @@ export const BUSINESS = {
     email: 'reposterialauren@gmail.com',
     city: 'Medellín', region: 'Antioquia', country: 'CO',
     foundingDate: '2022',
-    hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '09:00', closes: '18:00', text: 'Lunes a sábado, de 9:00 a. m. a 6:00 p. m.' },
+    hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '18:00', text: 'Todos los días, también domingos y festivos, de 9:00 a. m. a 6:00 p. m.' },
     sameAs: ['https://www.instagram.com/laurenreposteria22/', 'https://www.tiktok.com/@laurenreposteria']
 };
 
@@ -94,13 +94,21 @@ export const PAGES = [
         description: () => `Detalles y regalos dulces en Medellín desde ${money(lowest(['detalles']))}: cajas con tortas, alfajores, brownies, galletas y ositos de chocolate personalizables.`,
         imageAlt: 'Detalle Golden de Lauren Repostería: caja de regalo con torta vasca y dulces',
         categories: ['detalles'], gallery: 'detalles'
+    },
+    {
+        key: 'preguntas', file: 'preguntas/index.html', path: '/preguntas/', type: 'WebPage', name: 'Preguntas frecuentes',
+        social: 'inicio',
+        title: 'Preguntas frecuentes | Lauren Repostería',
+        description: () => 'Anticipación, domicilios, pagos, cambios y cuidados de tu pedido en Lauren Repostería, Medellín. Resuelve tus dudas antes de pedir por WhatsApp.',
+        imageAlt: 'Lauren Repostería: torta vintage con frutos rojos y moño de satén',
+        categories: [], gallery: null
     }
 ];
 
 const abs = src => ORIGIN + src;
 const escAttr = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const plain = html => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const socialImage = page => `/assets/social/${page.key}.jpg`;
+const socialImage = page => `/assets/social/${page.social || page.key}.jpg`;
 
 /** Preguntas visibles de la página: el JSON-LD repite exactamente el texto publicado. */
 export function faqs(html) {
@@ -162,12 +170,12 @@ function graph(page, html) {
     if (questions.length) webpage.mainEntity = questions.map(q => ({ '@type': 'Question', name: q.question, acceptedAnswer: { '@type': 'Answer', text: q.answer } }));
     if (page.path !== '/') {
         webpage.breadcrumb = { '@id': `${url}#breadcrumb` };
-        webpage.hasPart = { '@id': `${url}#menu` };
+        if (page.section) webpage.hasPart = { '@id': `${url}#menu` };
         nodes.push({
             '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb`,
             itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: `${ORIGIN}/` }, { '@type': 'ListItem', position: 2, name: page.name, item: url }]
         });
-        nodes.push({ '@type': 'MenuSection', '@id': `${url}#menu`, name: page.section, url, hasMenuItem: productsOf(page.categories).map(p => menuItem(p, page)) });
+        if (page.section) nodes.push({ '@type': 'MenuSection', '@id': `${url}#menu`, name: page.section, url, hasMenuItem: productsOf(page.categories).map(p => menuItem(p, page)) });
     } else {
         nodes.push({
             '@type': 'Menu', '@id': `${ORIGIN}/#menu`, name: `Carta de ${BUSINESS.name}`, inLanguage: 'es-CO',
@@ -273,7 +281,7 @@ function llms() {
 
 - Ciudad: ${BUSINESS.city}, ${BUSINESS.region}, Colombia. Desde ${BUSINESS.foundingDate}.
 - Horario: ${BUSINESS.hours.text}
-- Pedidos: se arman en ${ORIGIN}/ y se confirman por WhatsApp (${BUSINESS.telephoneDisplay}, ${BUSINESS.whatsapp}). Con al menos 1 día de anticipación y sujetos a disponibilidad. Fecha, entrega y pago se coordinan por WhatsApp.
+- Pedidos: se arman en ${ORIGIN}/ y se confirman por WhatsApp (${BUSINESS.telephoneDisplay}, ${BUSINESS.whatsapp}). Con al menos 2 días de anticipación y sujetos a disponibilidad. Se reservan con un anticipo del 50 %; se paga por transferencia o en efectivo. Fecha, entrega y pago se coordinan por WhatsApp.
 - Correo: ${BUSINESS.email}
 - Redes: ${BUSINESS.sameAs.join(', ')}
 - Precios en pesos colombianos (COP). Cada producto se hace a mano; las fotografías son referencias.

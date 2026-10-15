@@ -145,4 +145,8 @@
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-detalles-01.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/detalle-golden-chocolate.webp</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://laurenreposteria.com/preguntas/</loc>
+    <lastmod>2026-10-15</lastmod>
+  </url>
 </urlset>
