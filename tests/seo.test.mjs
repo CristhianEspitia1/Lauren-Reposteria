@@ -64,10 +64,12 @@ test('Los datos estructurados describen el negocio, la carta y las preguntas vis
     }
 });
 
-test('Los precios citados en las preguntas existen en el catálogo', () => {
-    const amounts = new Set([...read('js/catalog-data.js').matchAll(/\bprice"?:\s*(\d+)/g)].map(m => Number(m[1])));
-    for (const { page, html } of pages) for (const { answer } of faqs(html)) {
-        for (const [, amount] of answer.matchAll(/\$(\d{1,3}(?:\.\d{3})+)/g)) assert.ok(amounts.has(Number(amount.replace(/\./g, ''))), `${page.file}: $${amount} no está en el catálogo`);
+test('Los precios de los textos salen del catálogo, no se escriben a mano', () => {
+    for (const { page, html } of pages) {
+        const body = html.slice(html.indexOf('<body'));
+        const loose = body.replace(/<span data-price="[^"]+">[^<]*<\/span>/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
+        assert.doesNotMatch(loose, /\$\d{1,3}(?:\.\d{3})+/, `${page.file}: precio escrito a mano; usar <span data-price="…">`);
+        for (const [, ref, text] of body.matchAll(/<span data-price="([^"]+)">([^<]*)<\/span>/g)) assert.match(text, /^\$\d/, `${page.file}: ${ref} sin precio en el catálogo`);
     }
 });
 

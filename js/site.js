@@ -22,37 +22,26 @@
     });
     matchMedia('(min-width: 801px)').addEventListener('change', event => { if (event.matches && menu) toggleMenu(false); });
 
-    const descriptions = {
-        'torta-vintage': 'Bordes delicados, flores y un acabado hecho a mano.',
-        'torta-sencilla': 'Líneas limpias y el sabor que más te gusta.',
-        'caja-x6': 'Seis pequeños bocados de maicena y arequipe.',
-        'caja-x12': 'Una docena de razones para compartir.',
-        'vaso-minis': '30 mini alfajores en un vaso para regalar.',
-        'alfajor-personalizado': 'Tu ocasión, convertida en un detalle comestible.',
-        'torta-alfajor': 'Tres capas de arequipe para celebrar distinto.',
-        'alfajor-individual': 'Tu presentación favorita, desde 6 unidades.',
-        brownies: 'Chocolate al 70 %, Nutella y tus toppings favoritos.',
-        galletas: 'Seis sabores. Un centro suave que lo dice todo.'
-    };
-    function priceLabel(text) {
-        const match = /^desde\s+/i.exec(text);
-        return match ? `<span class="price-from">Desde</span> ${esc(text.slice(match[0].length))}` : esc(text);
+    function priceLabel(product) {
+        const label = Catalog.priceLabel(product);
+        return label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text);
     }
     function productCard(product, sizes, compact) {
         const quoted = Catalog.quoteOnly(product);
-        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product.priceFormatted)}</p></div>${compact ? '' : `<p class="product-description">${esc(descriptions[product.id] || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
+        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product)}</p></div>${compact ? '' : `<p class="product-description">${esc(product.summary || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
     }
-    const groups = { osos: ['oso-pequeno', 'oso-grande', 'oso-fresas'], mix: ['detalle-brownie', 'detalle-hbd', 'detalle-margarita', 'detalle-mix-1', 'detalle-mix-2'], golden: ['detalle-golden-1', 'detalle-golden-2', 'detalle-golden-3', 'detalle-torta'], cajas: ['caja-x6', 'caja-x12', 'vaso-minis'], especiales: ['torta-alfajor', 'alfajor-personalizado', 'alfajor-individual'] };
+    // Cada sección lista sus categorías (`data-category`); la portada, los destacados (`data-featured`).
+    const productsFor = grid => 'featured' in grid.dataset ? Catalog.all().filter(p => p.featured) : Catalog.all().filter(p => grid.dataset.category.split(',').map(c => c.trim()).includes(p.category));
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    document.querySelectorAll('[data-products]').forEach(grid => {
-        const products = grid.dataset.products.split(',').map(id => Catalog.get(id.trim())).filter(Boolean);
+    document.querySelectorAll('[data-category], [data-featured]').forEach(grid => {
+        const products = productsFor(grid);
         const scope = grid.closest('[data-catalog-section]') || grid.parentElement;
         const search = scope.querySelector('[data-product-search]');
         const filters = Array.from(scope.querySelectorAll('[data-filter]'));
         let filter = 'all';
         function render() {
             const searchText = normalize(search?.value.trim() || '');
-            const visible = products.filter(p => (filter === 'all' || groups[filter]?.includes(p.id)) && normalize([p.name, p.description, p.category].join(' ')).includes(searchText));
+            const visible = products.filter(p => (filter === 'all' || p.group === filter) && normalize([p.name, p.description, p.category].join(' ')).includes(searchText));
             const sizes = grid.classList.contains('two-columns') ? '(max-width: 600px) 90vw, (max-width: 1280px) 45vw, 584px' : grid.classList.contains('four-columns') ? '(max-width: 800px) 45vw, (max-width: 1280px) 22vw, 280px' : '(max-width: 800px) 45vw, (max-width: 1280px) 30vw, 384px';
             grid.innerHTML = visible.map(product => productCard(product, sizes, 'compact' in grid.dataset)).join('');
             const count = scope.querySelector('[data-result-count]');
@@ -73,6 +62,8 @@
         });
         render();
     });
+    // Importes dentro de textos («desde $58.000»): salen del catálogo vigente, no del HTML.
+    document.querySelectorAll('[data-price]').forEach(element => { element.textContent = Catalog.priceRefText(element.dataset.price); });
     document.addEventListener('click', event => {
         const button = event.target.closest('[data-product]');
         if (button) window.quickView.open(button.dataset.product, {
@@ -80,7 +71,7 @@
         });
     });
     document.querySelectorAll('[data-extras]').forEach(grid => {
-        grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(p.priceFormatted)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join('');
+        grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join('');
     });
 
     const lightbox = document.getElementById('lightboxDialog');

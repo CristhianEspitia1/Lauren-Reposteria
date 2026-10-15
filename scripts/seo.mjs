@@ -38,22 +38,12 @@ export const BUSINESS = {
 };
 
 /** Rango de precio real de un producto, recorriendo todas sus combinaciones con precio. */
-export function priceRange(product) {
-    if (Catalog.quoteOnly(product)) return null;
-    const options = (product.options || []).filter(o => !o.multiple && (o.type === 'toggle' || o.choices?.length));
-    const values = options.map(o => o.type === 'toggle' ? [false, true] : o.choices.map(c => c.value));
-    let combos = [{}];
-    for (const [i, option] of options.entries()) {
-        combos = combos.flatMap(combo => values[i].map(value => ({ ...combo, [option.id]: value })));
-        if (combos.length > 20000) throw new Error(`Demasiadas combinaciones en ${product.id}`);
-    }
-    const prices = combos.map(selection => Catalog.price(product, { ...Catalog.defaults(product), ...selection })).filter(Number.isFinite).filter(p => p > 0);
-    if (!prices.length) return null;
-    const unit = Math.min(...prices);
-    return { min: unit, max: Math.max(...prices), minimum: Catalog.minimum(product) };
-}
+export const priceRange = product => Catalog.range(product);
 const productsOf = categories => Catalog.all().filter(p => categories.includes(p.category));
-const lowest = categories => Math.min(...productsOf(categories).map(priceRange).filter(Boolean).map(r => r.min * r.minimum));
+const lowest = categories => Catalog.priceRef('@' + categories.join(','));
+
+/** Importes dentro de los textos (`<span data-price="…">`): se escriben desde el catálogo vigente. */
+export const withPrices = html => html.replace(/(<span data-price="([^"]+)">)[^<]*(<\/span>)/g, (_, open, ref, close) => open + Catalog.priceRefText(ref) + close);
 
 export const PAGES = [
     {
@@ -252,7 +242,7 @@ export function pageImages(page, html) {
     const fromHtml = [...html.matchAll(/\bsrc="(\/assets\/(?:propuestas-fotograficas|optimized)\/[^"]+\.(?:webp|jpg|png))"/g)].map(m => m[1]).filter(src => !src.includes('/responsive/'));
     const fromGallery = page.gallery ? galleryData[page.gallery].map(item => item.src) : [];
     const fromProducts = productsOf(page.categories).flatMap(p => [p.mainImage, ...(p.images || [])]);
-    const featured = page.path === '/' ? [...html.matchAll(/data-products="([^"]+)"/g)].flatMap(m => m[1].split(',')).map(id => Catalog.get(id)?.mainImage) : [];
+    const featured = html.includes('data-featured') ? Catalog.all().filter(p => p.featured).map(p => p.mainImage) : [];
     return [...new Set([...fromHtml, ...fromGallery, ...fromProducts, ...featured].filter(Boolean))];
 }
 
@@ -292,7 +282,7 @@ ${sections}
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const check = process.argv.includes('--check');
-    const pages = PAGES.map(page => ({ page, html: read(page.file) }));
+    const pages = PAGES.map(page => ({ page, html: withPrices(read(page.file)) }));
     const outputs = new Map();
     for (const { page, html } of pages) {
         if (!existsSync(path.join(root, socialImage(page)))) throw new Error(`Falta ${socialImage(page)}: ejecutar node scripts/social-images.mjs`);

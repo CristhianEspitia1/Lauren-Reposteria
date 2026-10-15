@@ -30,6 +30,7 @@ Reglas:
 - Fecha, entrega y pago siempre se confirman con Lauren.
 - Sin emojis, sin anglicismos innecesarios, sin mayúsculas para gritar.
 - Precios, contactos y condiciones solo cambian con confirmación del negocio.
+- Sin precio definido se escribe «Cotiza por WhatsApp» en la tarjeta y «Consultar por WhatsApp» en el botón de la ficha.
 - Formatos: `$65.000`, «Desde $24.000», «de 9:00 a. m. a 6:00 p. m.», «al menos 2 días», comillas angulares «».
 - Las frases de los dibujos del sistema gráfico no se usan como texto de la web.
 
@@ -152,7 +153,7 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Botón secundario | `.btn-secondary` | Borde lila, fondo transparente; hover durazno |
 | Botón claro | `.btn-light` | Crema sobre lila; hover albaricoque |
 | Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página |
-| Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía |
+| Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía; «Cotiza por WhatsApp» si aún no tiene precio |
 | Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
 | Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
 | Casillas | `.toggle-option` | Check y esquina de cinta 3/9 px; marcada en lila |

@@ -26,7 +26,7 @@ node scripts/social-images.mjs  # imágenes 1200 × 630 e iconos (Chrome + sips,
 node --test tests/*.test.mjs    # incluye tests/seo.test.mjs
 ```
 
-Ejecutar `seo.mjs` después de cambiar precios, productos, galerías, preguntas frecuentes o textos SEO. Los títulos, descripciones y textos alternativos de las imágenes sociales se editan en `PAGES` dentro de `scripts/seo.mjs`; los datos del negocio, en `BUSINESS`. El bloque entre `<!-- seo: … -->` y `<!-- /seo -->` de cada página se reescribe completo.
+Ejecutar `seo.mjs` después de cambiar precios, productos, galerías, preguntas frecuentes o textos SEO. Los títulos, descripciones y textos alternativos de las imágenes sociales se editan en `PAGES` dentro de `scripts/seo.mjs`; los datos del negocio, en `BUSINESS`. El bloque entre `<!-- seo: … -->` y `<!-- /seo -->` de cada página se reescribe completo. También reescribe el importe de cada `<span data-price="…">` del cuerpo, para que las preguntas frecuentes y su JSON-LD citen el precio vigente ([formato](12-catalogo.md#precios-dentro-de-los-textos)).
 
 ## Qué genera cada página
 

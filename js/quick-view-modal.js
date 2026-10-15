@@ -28,7 +28,7 @@
         render() {
             const p = this.product;
             const images = [...new Set([p.mainImage, ...(p.images || [])])];
-            const quote = Catalog.quoteOnly(p);
+            const quoteOnly = Catalog.quoteOnly(p);
             this.dialog.innerHTML = `
                 <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar producto">${icon('close')}</button>
                 <div class="product-dialog-layout">
@@ -43,17 +43,14 @@
                             ${p.includes?.length ? `<section class="product-includes" aria-labelledby="productIncludesTitle"><h3 id="productIncludesTitle">Qué incluye</h3><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></section>` : ''}
                             <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>
                             <div class="personal-fields">${this.personalHTML()}</div>
-                            ${p.category === 'tortas' ? '<p class="field-note">El precio corresponde al estilo y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.</p>' : ''}
-                            ${p.id === 'alfajor-individual' ? '<p class="field-note">Mínimo 6 unidades de la misma presentación. El precio mostrado es por unidad o bolsita, según tu elección.</p>' : ''}
-                            ${p.id === 'alfajor-personalizado' ? '<p class="field-note">Cada caja trae 6 alfajores decorados con el mismo tema. Afinamos el diseño contigo por WhatsApp.</p>' : ''}
-                            ${p.id === 'brownies' ? '<p class="field-note">Los individuales se piden en grupos de mínimo 6. El vaso de minis no incluye toppings.</p>' : ''}
-                            ${p.id === 'galletas' ? '<p class="field-note">Mínimo 3 galletas individuales. La caja surtida incluye 6 unidades de todos los sabores.</p>' : ''}
+                            ${(p.notes || []).map(note => `<p class="field-note">${esc(note)}</p>`).join('')}
                         </div>
                         <div class="product-order">
-                            ${!quote ? `<div class="quantity-price"><div><label class="quantity-label" for="productQuantity">${p.id === 'alfajor-individual' ? 'Unidades o bolsitas' : p.id === 'alfajor-personalizado' ? 'Número de cajas' : 'Cantidad de esta presentación'}</label><div class="quantity-control"><button type="button" class="icon-button" data-quantity="-1" aria-label="Reducir cantidad">${icon('minus')}</button><input id="productQuantity" type="number" inputmode="numeric" min="${Catalog.minimum(p)}" max="${Catalog.maximum}" step="1" value="${this.quantity}" aria-describedby="quantityError"><button type="button" class="icon-button" data-quantity="1" aria-label="Aumentar cantidad">${icon('plus')}</button></div></div><div class="order-total" aria-live="polite" aria-atomic="true"><span>Total · COP</span><strong id="productTotal"></strong><small id="productBreakdown"></small></div></div>` : '<p class="field-note">Confirma el diseño y su valor con nuestro equipo.</p>'}
+                            ${!quoteOnly ? `<div class="quantity-price" data-order-priced><div><label class="quantity-label" for="productQuantity">${esc(p.quantityLabel || 'Cantidad de esta presentación')}</label><div class="quantity-control"><button type="button" class="icon-button" data-quantity="-1" aria-label="Reducir cantidad">${icon('minus')}</button><input id="productQuantity" type="number" inputmode="numeric" min="${Catalog.minimum(p)}" max="${Catalog.maximum}" step="1" value="${this.quantity}" aria-describedby="quantityError"><button type="button" class="icon-button" data-quantity="1" aria-label="Aumentar cantidad">${icon('plus')}</button></div></div><div class="order-total" aria-live="polite" aria-atomic="true"><span>Total · COP</span><strong id="productTotal"></strong><small id="productBreakdown"></small></div></div>` : ''}
+                            <p class="field-note" data-order-quote hidden>${quoteOnly ? 'Confirma el diseño y su valor con nuestro equipo.' : 'Esta elección se cotiza por WhatsApp: te contamos el valor y la disponibilidad.'}</p>
                             <p id="quantityError" class="field-error" hidden></p>
                             <p id="productError" class="field-error" role="alert" hidden></p>
-                            <button class="btn" type="submit">${quote ? 'Consultar por WhatsApp' : this.editIndex !== null ? 'Guardar cambios' : 'Agregar a mi pedido'} ${icon(quote ? 'diagonal' : 'plus')}</button>
+                            <button class="btn" type="submit" data-order-submit></button>
                             <p class="field-note">Confirmamos disponibilidad y entrega por WhatsApp.</p>
                         </div>
                     </form>
@@ -91,8 +88,7 @@
             } else {
                 controls = `<div class="choice-list">${(option.choices || []).map((choice, index) => {
                     const checked = option.multiple ? selected?.includes(choice.value) : selected === choice.value;
-                    const priceDependsOnFlavor = this.product.id === 'galletas' && option.id === 'presentacion' && choice.value === 'individual';
-                    const optionPrice = choice.price !== undefined && !priceDependsOnFlavor ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : '';
+                    const optionPrice = typeof choice.price === 'number' ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : '';
                     return `<label class="choice"><input type="${option.multiple ? 'checkbox' : 'radio'}" name="option-${esc(option.id)}" value="${esc(choice.value)}" data-option-input="${esc(option.id)}" ${checked ? 'checked' : ''} aria-describedby="${errorId}"><span>${esc(choice.label)}${optionPrice}</span></label>`;
                 }).join('')}</div>`;
             }
@@ -134,22 +130,28 @@
         updateDependencies() {
             this.dialog.querySelectorAll('[data-option-group]').forEach(group => {
                 const option = this.product.options.find(o => o.id === group.dataset.optionGroup);
-                const visible = Catalog.visible(option, this.selection, this.product);
+                const visible = Catalog.visible(option, this.selection);
                 group.hidden = !visible;
                 group.disabled = !visible;
             });
         }
         updateTotal() {
+            // Con precio: cantidad, total y «Agregar a mi pedido». Sin precio: se consulta por WhatsApp.
+            const quote = Catalog.quote(this.product, this.selection);
+            const priced = this.dialog.querySelector('[data-order-priced]');
+            if (priced) priced.hidden = quote;
+            this.dialog.querySelector('[data-order-quote]').hidden = !quote;
+            this.dialog.querySelector('[data-order-submit]').innerHTML = `${quote ? 'Consultar por WhatsApp' : this.editIndex !== null ? 'Guardar cambios' : 'Agregar a mi pedido'} ${icon(quote ? 'diagonal' : 'plus')}`;
             const output = this.dialog.querySelector('#productTotal');
-            if (!output) return;
+            if (!output || quote) { const error = this.dialog.querySelector('#quantityError'); if (error) error.hidden = true; return; }
             const valid = Number.isInteger(this.quantity) && this.quantity >= Catalog.minimum(this.product) && this.quantity <= Catalog.maximum;
             const unit = Catalog.price(this.product, this.selection);
-            const priced = valid && Number.isSafeInteger(unit);
-            output.textContent = priced ? Catalog.money(unit * this.quantity) : '—';
+            const known = valid && Number.isSafeInteger(unit);
+            output.textContent = known ? Catalog.money(unit * this.quantity) : '—';
             // Desglose visible: cuántas presentaciones, a qué precio y cuántas unidades suman.
             const pack = Catalog.choices(this.product, this.selection).some(o => o.id === 'cantidad') && Number(this.selection.cantidad);
             const units = pack ? ` · ${pack * this.quantity} unidades` : '';
-            this.dialog.querySelector('#productBreakdown').textContent = priced && (this.quantity > 1 || units) ? `${this.quantity} × ${Catalog.money(unit)}${units}` : '';
+            this.dialog.querySelector('#productBreakdown').textContent = known && (this.quantity > 1 || units) ? `${this.quantity} × ${Catalog.money(unit)}${units}` : '';
             const error = this.dialog.querySelector('#quantityError');
             error.hidden = valid;
             error.textContent = `Elige una cantidad entre ${Catalog.minimum(this.product)} y ${Catalog.maximum}.`;
@@ -167,9 +169,9 @@
                 input?.setAttribute('aria-invalid', 'true');
             }
             if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
-            if (Catalog.quoteOnly(this.product)) {
+            if (Catalog.quote(this.product, this.selection)) {
                 const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const message = [`Hola, Laura. Quisiera cotizar ${this.product.name} para mi torta.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
+                const message = [`Hola, Laura. Quisiera cotizar ${this.product.name}${Catalog.quoteOnly(this.product) ? ' para mi torta' : ''}.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
                 window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;
             }

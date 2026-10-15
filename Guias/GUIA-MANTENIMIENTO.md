@@ -10,7 +10,7 @@ Abrir `http://127.0.0.1:5173/`. No requiere instalar dependencias. El servidor s
 
 ## Productos y precios
 
-La fuente única es `js/catalog-data.js`. Mantener el identificador del producto y sus opciones para conservar compatibilidad con pedidos guardados. Ajustar importes y su texto visible juntos, con confirmación del negocio.
+La fuente única es `js/catalog-data.js`, solo datos con el formato de [docs/12-catalogo.md](../docs/12-catalogo.md). Mantener el identificador del producto y sus opciones para conservar compatibilidad con pedidos guardados. Los precios de las tarjetas y de los textos se calculan solos; un precio vacío (`null`) muestra «Cotiza por WhatsApp» y `visible: false` oculta el producto. Cambiar importes solo con confirmación del negocio y ejecutar después `node scripts/seo.mjs`.
 
 Las reglas calculadas se centralizan en `js/catalog-model.js` y se comprueban con:
 

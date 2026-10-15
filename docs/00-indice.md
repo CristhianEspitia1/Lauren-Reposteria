@@ -18,7 +18,8 @@ El [manual de marca](06-guia-de-estilos.md) es la referencia obligatoria para to
 9. [Seguridad](09-seguridad.md) — modelo de amenazas y prácticas.
 10. [Changelog](10-changelog.md) — histórico de cambios.
 11. [SEO](11-seo.md) — URLs, metadatos, datos estructurados, sitemap y tareas externas.
-11. [Pendientes](../PROBLEMAS-PENDIENTES.md) — decisiones comerciales abiertas.
+12. [Catálogo](12-catalogo.md) — campos de cada producto, precios, ocultar y precios dentro de los textos.
+13. [Pendientes](../PROBLEMAS-PENDIENTES.md) — decisiones comerciales abiertas.
 
 ## Resumen del proyecto
 

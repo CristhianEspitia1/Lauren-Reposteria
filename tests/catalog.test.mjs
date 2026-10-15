@@ -146,20 +146,52 @@ test('Persistencia, datos corruptos, migración anterior y almacenamiento bloque
     cart.storage = previous;
 });
 test('Cada tarjeta muestra el precio mínimo real y dice «Desde» cuando hay varios precios', () => {
+    const expected = { 'torta-vintage': 'Desde $65.000', 'torta-sencilla': 'Desde $58.000', 'caja-x6': '$22.000', 'alfajor-personalizado': '$60.000 la caja', 'alfajor-individual': 'Desde $2.000 c/u', brownies: 'Desde $24.000', galletas: 'Desde $24.000', 'oso-grande': 'Desde $49.000', 'detalle-golden-1': 'Desde $88.000', 'detalle-torta': '$105.000', 'extra-perlas': '$5.000 - $10.000', 'extra-coronas': 'Precio en asesoría' };
+    for (const [id, text] of Object.entries(expected)) assert.equal(Catalog.priceLabel(Catalog.get(id)).text, text, id);
     for (const p of Catalog.all().filter(p => !Catalog.quoteOnly(p))) {
-        const opts = Catalog.options(p);
-        const prices = [];
-        const walk = (i, sel) => {
-            if (i === opts.length) { const value = Catalog.price(p, sel); if (Number.isSafeInteger(value)) prices.push(value); return; }
-            const o = opts[i];
-            for (const v of o.type === 'toggle' ? [false, true] : o.multiple ? [[o.choices[0].value]] : o.choices.map(c => c.value)) walk(i + 1, { ...sel, [o.id]: v });
-        };
-        walk(0, {});
-        const [min, max] = [Math.min(...prices), Math.max(...prices)];
-        assert.equal(p.price, min, `${p.id}: precio base`);
-        assert.ok(p.priceFormatted.includes(Catalog.money(min)), `${p.id}: tarjeta ${p.priceFormatted}`);
-        assert.equal(p.priceFormatted.startsWith('Desde'), min !== max, `${p.id}: «Desde»`);
+        const { min, max } = Catalog.range(p);
+        const label = Catalog.priceLabel(p);
+        assert.ok(label.text.includes(Catalog.money(min)), `${p.id}: tarjeta ${label.text}`);
+        assert.equal(label.from, min !== max, `${p.id}: «Desde»`);
     }
+});
+test('Un precio vacío se cotiza por WhatsApp y no entra al pedido', () => {
+    const torta = Catalog.get('torta-vintage');
+    const porciones = torta.options.find(o => o.id === 'porciones');
+    const original = porciones.choices.at(-1).price;
+    porciones.choices.at(-1).price = null;
+    try {
+        assert.equal(Catalog.price(torta, selected(torta.id, { porciones: '25-30' })), null);
+        assert.equal(Catalog.quote(torta, selected(torta.id, { porciones: '25-30' })), true);
+        assert.equal(Catalog.quote(torta, selected(torta.id)), false);
+        assert.equal(Catalog.range(torta).max, 172000, 'El rango ignora la elección sin precio');
+        cart.clearCart(); assert.equal(cart.addItem(item(torta.id, { porciones: '25-30' })), false);
+    } finally { porciones.choices.at(-1).price = original; }
+    const caja = Catalog.get('caja-x6');
+    caja.price = null;
+    try {
+        assert.equal(Catalog.priceLabel(caja).text, 'Cotiza por WhatsApp');
+        assert.equal(Catalog.range(caja), null);
+        assert.equal(Catalog.priceRefText('caja-x6'), 'precio a consultar');
+    } finally { caja.price = 22000; }
+});
+test('Un producto oculto no se muestra, no se pide y no se cotiza en los textos', () => {
+    const data = context.catalogData['oso-pequeno'];
+    data.visible = false;
+    try {
+        assert.equal(Catalog.get('oso-pequeno'), null);
+        assert.ok(!Catalog.all().some(p => p.id === 'oso-pequeno'));
+        assert.equal(Catalog.priceRef('@detalles'), 49000);
+        cart.clearCart(); assert.equal(cart.addItem(item('caja-x6')), true);
+        assert.equal(cart.addItem({ id: 'oso-pequeno', quantity: 1, selection: {}, personal: {} }), false);
+    } finally { data.visible = true; }
+});
+test('Los importes de los textos salen del catálogo', () => {
+    assert.equal(Catalog.priceRefText('@tortas'), '$58.000');
+    assert.equal(Catalog.priceRefText('@alfajores'), '$12.000', 'Pedido mínimo: 6 alfajores de $2.000');
+    assert.equal(Catalog.priceRefText('torta-vintage?porciones=25-30'), '$235.000');
+    assert.equal(Catalog.priceRefText('galletas?presentacion=caja-surtida'), '$46.000');
+    assert.equal(Catalog.priceRefText('no-existe'), 'precio a consultar');
 });
 test('Lo que se cobra aparte exige completarse', () => {
     const oso = Catalog.get('oso-grande');

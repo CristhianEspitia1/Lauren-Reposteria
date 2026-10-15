@@ -10,7 +10,7 @@ Los productos por cotización abren una consulta con sus opciones y mensaje. Las
 
 ## Responsabilidades
 
-- `catalog-data.js`: identidad de cada producto, fotografías, precios y opciones. No mantener catálogos paralelos por página.
+- `catalog-data.js`: identidad de cada producto, fotografías, precios, opciones y visibilidad, como datos puros ([formato](12-catalogo.md)). No mantener catálogos paralelos por página ni precios escritos en el HTML.
 - `catalog-model.js`: cálculo puro, valores iniciales, opciones visibles, límites y validación. UI y carrito consumen las mismas reglas.
 - `cart-manager.js`: normaliza el pedido contra el catálogo vigente, persiste, combina productos iguales y genera el resumen.
 - `quick-view-modal.js` y `cart-ui.js`: presentan los formularios y el pedido; no duplican reglas comerciales.

@@ -4,6 +4,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Catálogo editable, fase 1 del centro de control]
+
+- `js/catalog-data.js` pasa a ser solo datos (JSON), listo para que lo edite el centro de control. Formato en `docs/12-catalogo.md`.
+- Salen del código y pasan a los datos: frases de las tarjetas (`summary`), notas de la ficha (`notes`), filtros (`group`), destacados de la portada (`featured`), mínimo y rótulo de cantidad, complemento del precio y las reglas especiales de galletas y brownies.
+- El precio de cada tarjeta se calcula desde las opciones; se elimina `priceFormatted`. Los precios de las preguntas frecuentes e introducciones se enlazan al catálogo con `data-price`.
+- Precio vacío: la tarjeta dice «Cotiza por WhatsApp» y, en la ficha, una elección sin precio cambia el total por «Consultar por WhatsApp». `visible: false` oculta un producto de la web, del pedido y del SEO.
+- Las páginas listan sus productos por categoría: un producto nuevo aparece solo en su sección. Los precios publicados no cambian.
+
 ## [2026-10-15 — Torta de Alfajor sin frase]
 
 - La Torta de Alfajor ya no ofrece «Mensaje personalizado»: no es personalizable. Solo se elige el tamaño, y el pedido llega a WhatsApp como pedido listo para entregar.
