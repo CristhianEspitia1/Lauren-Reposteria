@@ -57,11 +57,14 @@ test('Campos múltiples, iniciales, colores y límites son obligatorios', () => 
     assert.ok(Catalog.validate(p, selected(p.id, { 'color-letras': ['lila', 'blanco', 'rojo'] }), {}).length);
     assert.ok(Catalog.validate(Catalog.get('detalle-mix-1'), selected('detalle-mix-1', { 'color-letras': ['lila'] }), { iniciales: 'ABC' }).length);
 });
-test('Cotizaciones conservan el producto sin usar la tarifa contradictoria', () => {
+test('Alfajores personalizados: $60.000 por caja de 6 y tema obligatorio; los extras siguen por cotización', () => {
     const p = Catalog.get('alfajor-personalizado');
-    assert.equal(Catalog.quoteOnly(p), true);
-    assert.equal(Catalog.options(p).some(o => o.id === 'diseno'), false);
-    assert.equal(cart.addItem(item(p.id, {}, { tema: 'Cumpleaños' })), false);
+    assert.equal(Catalog.quoteOnly(p), false);
+    cart.clearCart();
+    assert.equal(cart.addItem(item(p.id, {}, {})), false, 'Sin tema no se agrega');
+    assert.equal(cart.addItem(item(p.id, {}, { tema: 'Cumpleaños' }, 2)), true);
+    assert.equal(cart.getTotalPrice(), 120000);
+    assert.equal(cart.addItem(item('extra-perlas')), false);
 });
 test('El carrito fusiona equivalentes, conserva personalizaciones y permite editar', () => {
     cart.clearCart();
@@ -121,4 +124,27 @@ test('Persistencia, datos corruptos, migración anterior y almacenamiento bloque
     cart.clearCart(); assert.equal(cart.addItem(item('caja-x6')), true);
     assert.equal(cart.persistent, false); assert.equal(notified, true); assert.equal(cart.getTotalPrice(), 22000);
     cart.storage = previous;
+});
+test('Cada tarjeta muestra el precio mínimo real y dice «Desde» cuando hay varios precios', () => {
+    for (const p of Catalog.all().filter(p => !Catalog.quoteOnly(p))) {
+        const opts = Catalog.options(p);
+        const prices = [];
+        const walk = (i, sel) => {
+            if (i === opts.length) { const value = Catalog.price(p, sel); if (Number.isSafeInteger(value)) prices.push(value); return; }
+            const o = opts[i];
+            for (const v of o.type === 'toggle' ? [false, true] : o.multiple ? [[o.choices[0].value]] : o.choices.map(c => c.value)) walk(i + 1, { ...sel, [o.id]: v });
+        };
+        walk(0, {});
+        const [min, max] = [Math.min(...prices), Math.max(...prices)];
+        assert.equal(p.price, min, `${p.id}: precio base`);
+        assert.ok(p.priceFormatted.includes(Catalog.money(min)), `${p.id}: tarjeta ${p.priceFormatted}`);
+        assert.equal(p.priceFormatted.startsWith('Desde'), min !== max, `${p.id}: «Desde»`);
+    }
+});
+test('Lo que se cobra aparte exige completarse', () => {
+    const oso = Catalog.get('oso-grande');
+    assert.ok(Catalog.validate(oso, selected(oso.id, { 'mensaje-brownie': true }), {}).length, 'Mensaje pagado vacío');
+    assert.equal(Catalog.validate(oso, selected(oso.id, { 'mensaje-brownie': true }), { 'mensaje-brownie': 'Te quiero' }).length, 0);
+    const golden = Catalog.get('detalle-golden-1');
+    assert.ok(Catalog.validate(golden, { ...selected(golden.id), 'sabor-galleta-sencilla': '' }).length, 'Sabor de galleta vacío');
 });

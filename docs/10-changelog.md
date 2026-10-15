@@ -4,6 +4,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Auditoría de catálogo, precios e imágenes]
+
+- Revisados los 23 productos y 579 combinaciones de opciones: todos los totales del pedido (precio × cantidad) suman bien y todas las fotos de fichas y galerías existen con sus tamaños adaptables.
+- Brownies y Galletas muestran «Desde $24.000», el mínimo real que se puede pedir (antes $6.500 y $8.000 por unidad). Alfajores individuales: «Desde $2.000 c/u». Oso Grande y Detalle Golden pasan a «Desde» porque tienen precios variables.
+- La ficha muestra el desglose del total (p. ej. «2 × $78.000 · 24 unidades») y marca «c/u» en los precios por unidad. El encabezado del pedido cuenta lo mismo que el icono del carrito.
+- El mensaje pagado del Oso Grande (+$4.000) y el sabor de galleta del Detalle Golden pasan a ser obligatorios. Retiradas marcas `priceModifier: true` sin efecto y unificados los rangos de porciones («4 a 5 porciones»).
+- Alfajores personalizados: $60.000 por caja de 6, ya se agregan al pedido (antes solo por cotización). Se quitaron las opciones de un solo valor y la etiqueta «$60.000 (unidad)».
+- Etiquetas de opciones en mayúsculas al estilo español y sin precios escritos a mano: el precio lo añade la ficha desde los datos, con «c/u» cuando es por unidad (`perUnit`).
+- 15 pruebas pasan (2 nuevas: precio de tarjeta = mínimo real; opciones pagadas obligatorias; la de alfajores personalizados se reescribió).
+
 ## [2026-10-15 — Limpieza: un solo diseño]
 
 - Se elige el diseño original (Esencia). Retirados las propuestas 2–4, el comparador `modelos.html`, las páginas de revisión `fotografias.html` e `iconos.html` y sus hojas y scripts.

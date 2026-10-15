@@ -82,7 +82,7 @@ renderizarse para evitar XSS persistente.
 
 ## ADR-008 — Cotizar cuando la unidad de precio no está confirmada
 
-El dato heredado de alfajores personalizados es ambiguo. Se conserva su importe interno y se usa `quoteOnly: true` para ofrecer una consulta con opciones y mensaje. No inferir una nueva tarifa. La decisión comercial pendiente vive en `PROBLEMAS-PENDIENTES.md`.
+Un producto cuyo importe no está confirmado usa `quoteOnly: true`: recoge opciones y mensaje y abre WhatsApp sin mostrar un total. No inferir una tarifa. Hoy solo aplica a los adicionales de torta (categoría `extras`). Los alfajores personalizados salieron de cotización en octubre de 2026, cuando el negocio confirmó $60.000 por caja de 6.
 
 ## ADR-009 — Un solo diseño
 

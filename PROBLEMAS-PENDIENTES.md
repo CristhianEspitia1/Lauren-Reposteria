@@ -1,12 +1,6 @@
 # Estado y decisiones pendientes
 
-Estado local: septiembre de 2026. La implementación y las comprobaciones se registran en [changelog](docs/10-changelog.md); este archivo mantiene únicamente los puntos abiertos.
-
-## Confirmación comercial: alfajores personalizados
-
-El catálogo heredado indica $60.000 por unidad y a la vez un mínimo de seis. No está confirmado si el importe corresponde a una unidad, a la caja de seis o a una referencia de diseño.
-
-El producto usa `quoteOnly: true`: recoge opciones y personalización, muestra que requiere cotización y abre WhatsApp sin presentar ese importe como total confirmado. No se cambió el precio numérico del catálogo. Para habilitar un precio fijo, el negocio debe aclarar la unidad de venta, importe y mínimo; actualizar esos datos y las pruebas correspondientes antes de retirar la marca de cotización.
+Estado local: octubre de 2026. La implementación y las comprobaciones se registran en [changelog](docs/10-changelog.md); este archivo mantiene únicamente los puntos abiertos.
 
 ## Media y operación
 

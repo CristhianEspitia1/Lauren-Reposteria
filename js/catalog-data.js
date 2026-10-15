@@ -46,7 +46,7 @@ const catalogData = {
                     },
                     {
                         "value": "zanahoria",
-                        "label": "Zanahoria con Nueces"
+                        "label": "Zanahoria con nueces"
                     }
                 ]
             },
@@ -62,11 +62,11 @@ const catalogData = {
                     },
                     {
                         "value": "crema-queso",
-                        "label": "Crema de Queso"
+                        "label": "Crema de queso"
                     },
                     {
                         "value": "frutos-rojos",
-                        "label": "Frutos Rojos"
+                        "label": "Frutos rojos"
                     },
                     {
                         "value": "chocolate",
@@ -86,27 +86,27 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "4-5",
-                        "label": "4-5 porciones",
+                        "label": "4 a 5 porciones",
                         "price": 65000
                     },
                     {
                         "value": "8-10",
-                        "label": "8-10 porciones",
+                        "label": "8 a 10 porciones",
                         "price": 105000
                     },
                     {
                         "value": "12-15",
-                        "label": "12-15 porciones",
+                        "label": "12 a 15 porciones",
                         "price": 150000
                     },
                     {
                         "value": "18-20",
-                        "label": "18-20 porciones",
+                        "label": "18 a 20 porciones",
                         "price": 172000
                     },
                     {
                         "value": "25-30",
-                        "label": "25-30 porciones",
+                        "label": "25 a 30 porciones",
                         "price": 235000
                     }
                 ]
@@ -116,7 +116,7 @@ const catalogData = {
             "enabled": true,
             "field": "mensaje",
             "label": "Mensaje personalizado para la torta",
-            "placeholder": "Ej: Feliz Cumpleaños María",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
             "maxLength": 40,
             "required": false,
             "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
@@ -165,7 +165,7 @@ const catalogData = {
                     },
                     {
                         "value": "zanahoria",
-                        "label": "Zanahoria con Nueces"
+                        "label": "Zanahoria con nueces"
                     }
                 ]
             },
@@ -181,11 +181,11 @@ const catalogData = {
                     },
                     {
                         "value": "crema-queso",
-                        "label": "Crema de Queso"
+                        "label": "Crema de queso"
                     },
                     {
                         "value": "frutos-rojos",
-                        "label": "Frutos Rojos"
+                        "label": "Frutos rojos"
                     },
                     {
                         "value": "chocolate",
@@ -205,27 +205,27 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "4-5",
-                        "label": "4-5 porciones",
+                        "label": "4 a 5 porciones",
                         "price": 58000
                     },
                     {
                         "value": "8-10",
-                        "label": "8-10 porciones",
+                        "label": "8 a 10 porciones",
                         "price": 90000
                     },
                     {
                         "value": "12-15",
-                        "label": "12-15 porciones",
+                        "label": "12 a 15 porciones",
                         "price": 135000
                     },
                     {
                         "value": "18-20",
-                        "label": "18-20 porciones",
+                        "label": "18 a 20 porciones",
                         "price": 155000
                     },
                     {
                         "value": "25-30",
-                        "label": "25-30 porciones",
+                        "label": "25 a 30 porciones",
                         "price": 215000
                     }
                 ]
@@ -235,7 +235,7 @@ const catalogData = {
             "enabled": true,
             "field": "mensaje",
             "label": "Mensaje personalizado para la torta",
-            "placeholder": "Ej: Feliz Cumpleaños",
+            "placeholder": "Ej.: Feliz cumpleaños",
             "maxLength": 40,
             "required": false
         }
@@ -303,13 +303,12 @@ const catalogData = {
 
     'alfajor-personalizado': {
         id: 'alfajor-personalizado',
-        // La tarifa histórica mezcla unidad y caja x6. Cotizar hasta confirmación del negocio.
-        quoteOnly: true,
+        // Confirmado por el negocio (octubre de 2026): $60.000 por caja de 6.
         name: 'Alfajores Personalizados',
         price: 60000,
-        priceFormatted: '$60.000',
+        priceFormatted: '$60.000 la caja',
         category: 'alfajores',
-        description: 'Alfajores de maicena personalizados con diseños únicos para tus celebraciones. Cada alfajor es decorado artesanalmente con fondant y detalles especiales según tu ocasión.',
+        description: 'Caja de 6 alfajores de maicena personalizados para tu celebración. Cada alfajor se decora a mano en fondant según tu ocasión.',
         mainImage: '../assets/propuestas-fotograficas/alfajor-personalizado.webp',
         images: [
             "../assets/propuestas-fotograficas/alfajor-personalizado.webp",
@@ -328,45 +327,18 @@ const catalogData = {
             "../assets/propuestas-fotograficas/galeria-alfajores-13.webp"
         ],
         includes: [
-            "Alfajores de maicena rellenos de arequipe",
+            "6 alfajores de maicena rellenos de arequipe",
             "Decoración personalizada en fondant",
-            "Diseño según tu ocasión especial",
-            "Empaque decorativo incluido",
-            "Producto artesanal 100%"
+            "Diseño según tu ocasión",
+            "Empaque decorativo",
+            "Producto 100 % artesanal"
         ],
         customizable: true,
-        options: [
-            {
-                "id": "diseno",
-                "label": "Tipo de diseño",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "basico",
-                        "label": "Diseño Básico - $60.000 (unidad)",
-                        "price": 60000
-                    }
-                ]
-            },
-            {
-                "id": "cantidad",
-                "label": "Cantidad mínima",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "6",
-                        "label": "6 unidades"
-                    }
-                ]
-            }
-        ],
         personalization: {
             "enabled": true,
             "field": "tema",
             "label": "Tema o motivo de la celebración",
-            "placeholder": "Ej: Baby shower, Cumpleaños, Boda, etc.",
+            "placeholder": "Ej.: baby shower, cumpleaños, boda",
             "maxLength": 100,
             "required": true
         }
@@ -473,12 +445,12 @@ const catalogData = {
                     },
                     {
                         "value": "6-8",
-                        "label": "6-8 porciones (13 cm)",
+                        "label": "6 a 8 porciones (13 cm)",
                         "price": 45000
                     },
                     {
                         "value": "10-12",
-                        "label": "10-12 porciones (16 cm)",
+                        "label": "10 a 12 porciones (16 cm)",
                         "price": 60000
                     }
                 ]
@@ -488,7 +460,7 @@ const catalogData = {
             "enabled": true,
             "field": "mensaje",
             "label": "Mensaje personalizado (opcional)",
-            "placeholder": "Ej: Feliz Cumpleaños",
+            "placeholder": "Ej.: Feliz cumpleaños",
             "maxLength": 30,
             "required": false
         }
@@ -498,7 +470,7 @@ const catalogData = {
         id: 'alfajor-individual',
         name: 'Alfajores Individuales',
         price: 2000,
-        priceFormatted: 'Desde $2.000',
+        priceFormatted: 'Desde $2.000 c/u',
         category: 'alfajores',
         description: 'Alfajores de maicena individuales empacados en bolsas. Se venden a partir de 6 unidades por referencia o tamaño.',
         mainImage: '../assets/propuestas-fotograficas/alfajor-individual.webp',
@@ -516,34 +488,37 @@ const catalogData = {
         options: [
             {
                 "id": "presentacion",
-                "label": "Presentación y precio por unidad",
+                "label": "Presentación",
                 "type": "radio",
                 "required": true,
                 "choices": [
                     {
                         "value": "mini-3",
-                        "label": "Minis x3 (2 cm c/u) - $3.000",
+                        "label": "Bolsita de 3 minis (2 cm)",
                         "price": 3000
                     },
                     {
                         "value": "mini-6",
-                        "label": "Minis x6 (2 cm c/u) - $5.000",
+                        "label": "Bolsita de 6 minis (2 cm)",
                         "price": 5000
                     },
                     {
                         "value": "pequeno",
-                        "label": "Pequeño unidad (3 cm) - $2.000",
-                        "price": 2000
+                        "label": "Pequeño (3 cm)",
+                        "price": 2000,
+                        "perUnit": true
                     },
                     {
                         "value": "mediano",
-                        "label": "Mediano unidad (4 cm) - $3.000",
-                        "price": 3000
+                        "label": "Mediano (4 cm)",
+                        "price": 3000,
+                        "perUnit": true
                     },
                     {
                         "value": "grande",
-                        "label": "Grande unidad (5 cm) - $4.000",
-                        "price": 4000
+                        "label": "Grande (5 cm)",
+                        "price": 4000,
+                        "perUnit": true
                     }
                 ]
             }
@@ -554,10 +529,10 @@ const catalogData = {
     'brownies': {
         id: 'brownies',
         name: 'Brownies',
-        price: 6500,
-        priceFormatted: 'Desde $6.500',
+        price: 24000,
+        priceFormatted: 'Desde $24.000',
         category: 'brownies',
-        description: 'Brownie melcochudo a base de Nutella y chocolate al 70%. Toppings a tu elección: Nutella, Arequipe, M&M, Hershey\'s blanca y Galleta Oreo.',
+        description: 'Brownie melcochudo a base de Nutella y chocolate al 70 %. Toppings a tu elección: Nutella, arequipe, M&M, Hershey\'s blanca y galleta Oreo.',
         mainImage: '../assets/propuestas-fotograficas/brownies.webp',
         images: [
             "../assets/propuestas-fotograficas/brownies.webp",
@@ -566,7 +541,7 @@ const catalogData = {
             "../assets/propuestas-fotograficas/galeria-brownies-03.webp"
         ],
         includes: [
-            "Brownies hechos con Nutella y chocolate 70%",
+            "Brownies hechos con Nutella y chocolate al 70 %",
             "Textura melcochuda perfecta",
             "Topping a elección",
             "Horneados frescos bajo pedido"
@@ -578,12 +553,12 @@ const catalogData = {
                 "label": "Presentación",
                 "type": "radio",
                 "required": true,
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "individual",
-                        "label": "Individual (4.5 cm) - Mínimo 6 unidades en bolsa",
-                        "price": 6500
+                        "label": "Individual (4,5 cm), en bolsa",
+                        "price": 6500,
+                        "perUnit": true
                     },
                     {
                         "value": "caja-x3",
@@ -602,7 +577,7 @@ const catalogData = {
                     },
                     {
                         "value": "vaso-minis",
-                        "label": "Vaso de mini brownies x20 unidades (sin toppings)",
+                        "label": "Vaso de 20 mini brownies (sin toppings)",
                         "price": 27000
                     }
                 ]
@@ -634,7 +609,7 @@ const catalogData = {
                     },
                     {
                         "value": "hersheys",
-                        "label": "Hershey's Blanca"
+                        "label": "Hershey's blanca"
                     },
                     {
                         "value": "oreo",
@@ -644,12 +619,11 @@ const catalogData = {
             },
             {
                 "id": "cantidad",
-                "label": "Cantidad (solo para individuales)",
+                "label": "Unidades en la bolsa",
                 "type": "radio",
                 "required": true,
                 "dependsOn": "presentacion",
                 "showWhen": "individual",
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "6",
@@ -680,8 +654,8 @@ const catalogData = {
     'galletas': {
         id: 'galletas',
         name: 'Galletas',
-        price: 8000,
-        priceFormatted: 'Desde $8.000',
+        price: 24000,
+        priceFormatted: 'Desde $24.000',
         category: 'galletas',
         description: 'Galletas artesanales horneadas diariamente con ingredientes premium. Cada una tiene su relleno especial según el sabor.',
         mainImage: '../assets/propuestas-fotograficas/galletas.webp',
@@ -703,16 +677,15 @@ const catalogData = {
                 "label": "Presentación",
                 "type": "radio",
                 "required": true,
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "individual",
-                        "label": "Galleta Individual",
+                        "label": "Galletas individuales",
                         "price": 8000
                     },
                     {
                         "value": "caja-surtida",
-                        "label": "Caja Surtida x6 unidades (todos los sabores)",
+                        "label": "Caja surtida x6 (todos los sabores)",
                         "price": 46000
                     }
                 ]
@@ -722,46 +695,50 @@ const catalogData = {
                 "label": "Sabor de la galleta",
                 "type": "radio",
                 "required": true,
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "chips",
-                        "label": "Chips con Nueces + Nutella (Tradicional)",
-                        "price": 8000
+                        "label": "Chips con nueces + Nutella (tradicional)",
+                        "price": 8000,
+                        "perUnit": true
                     },
                     {
                         "value": "red-velvet",
-                        "label": "Red Velvet con Chips Blanco + Crema de Queso (Tradicional)",
-                        "price": 8000
+                        "label": "Red velvet con chips blancos + crema de queso (tradicional)",
+                        "price": 8000,
+                        "perUnit": true
                     },
                     {
                         "value": "cocoa",
-                        "label": "Cocoa con Chocolate Semiamargo y al 70% (Tradicional)",
-                        "price": 8000
+                        "label": "Cocoa con chocolate semiamargo y al 70 % (tradicional)",
+                        "price": 8000,
+                        "perUnit": true
                     },
                     {
                         "value": "pistachos",
-                        "label": "Pistachos + Chocolate Blanco (Especial)",
-                        "price": 10000
+                        "label": "Pistachos + chocolate blanco (especial)",
+                        "price": 10000,
+                        "perUnit": true
                     },
                     {
                         "value": "chocolate-blanco",
-                        "label": "Galleta con trozos de Chocolate Blanco + Mermelada de Frambuesa (Especial)",
-                        "price": 10000
+                        "label": "Trozos de chocolate blanco + mermelada de frambuesa (especial)",
+                        "price": 10000,
+                        "perUnit": true
                     },
                     {
                         "value": "panelita",
-                        "label": "Panelita Copelia + Arequipe (Especial)",
-                        "price": 10000
+                        "label": "Panelita Copelia + arequipe (especial)",
+                        "price": 10000,
+                        "perUnit": true
                     }
                 ]
             },
             {
                 "id": "cantidad",
-                "label": "Cantidad (mínimo 3 galletas)",
+                "label": "Número de galletas (mínimo 3)",
                 "type": "radio",
                 "required": true,
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "3",
@@ -807,11 +784,11 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "blanco",
-                        "label": "Chocolate Blanco"
+                        "label": "Chocolate blanco"
                     },
                     {
                         "value": "semiamargo",
-                        "label": "Chocolate Semiamargo"
+                        "label": "Chocolate semiamargo"
                     }
                 ]
             },
@@ -823,7 +800,7 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "chips",
-                        "label": "Chips con Nueces"
+                        "label": "Chips con nueces"
                     },
                     {
                         "value": "red-velvet",
@@ -863,7 +840,7 @@ const catalogData = {
         id: 'oso-grande',
         name: 'Oso Grande',
         price: 49000,
-        priceFormatted: '$49.000',
+        priceFormatted: 'Desde $49.000',
         category: 'detalles',
         description: 'Oso de chocolate de tamaño grande acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.',
         mainImage: '../assets/propuestas-fotograficas/oso-grande.webp',
@@ -887,11 +864,11 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "blanco",
-                        "label": "Chocolate Blanco"
+                        "label": "Chocolate blanco"
                     },
                     {
                         "value": "semiamargo",
-                        "label": "Chocolate Semiamargo"
+                        "label": "Chocolate semiamargo"
                     }
                 ]
             },
@@ -903,7 +880,7 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "chips",
-                        "label": "Chips con Nueces"
+                        "label": "Chips con nueces"
                     },
                     {
                         "value": "red-velvet",
@@ -954,7 +931,8 @@ const catalogData = {
             "label": "Mensaje personalizado en el brownie",
             "placeholder": "Escribe tu mensaje corto aquí...",
             "maxLength": 25,
-            "dependsOn": "mensaje-brownie"
+            "dependsOn": "mensaje-brownie",
+            "required": true
         }
     },
 
@@ -985,11 +963,11 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "blanco",
-                        "label": "Chocolate Blanco"
+                        "label": "Chocolate blanco"
                     },
                     {
                         "value": "semiamargo",
-                        "label": "Chocolate Semiamargo"
+                        "label": "Chocolate semiamargo"
                     }
                 ]
             },
@@ -1005,7 +983,7 @@ const catalogData = {
                     },
                     {
                         "value": "chocolate-blanco",
-                        "label": "Crema de Chocolate Blanco"
+                        "label": "Crema de chocolate blanco"
                     }
                 ]
             },
@@ -1017,7 +995,7 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "chips",
-                        "label": "Chips con Nueces"
+                        "label": "Chips con nueces"
                     },
                     {
                         "value": "red-velvet",
@@ -1037,11 +1015,11 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "blanco",
-                        "label": "Chocolate Blanco"
+                        "label": "Chocolate blanco"
                     },
                     {
                         "value": "semiamargo",
-                        "label": "Chocolate Semiamargo"
+                        "label": "Chocolate semiamargo"
                     }
                 ]
             },
@@ -1115,7 +1093,7 @@ const catalogData = {
                 "choices": [
                     {
                         "value": "chips",
-                        "label": "Chips con Nueces"
+                        "label": "Chips con nueces"
                     },
                     {
                         "value": "red-velvet",
@@ -1227,14 +1205,14 @@ const catalogData = {
                 {
                     "id": "iniciales",
                     "label": "Iniciales para las letras (3 letras)",
-                    "placeholder": "Ej: ABC",
+                    "placeholder": "Ej.: ABC",
                     "maxLength": 3,
                     "required": true
                 },
                 {
                     "id": "mensaje-torta",
                     "label": "Mensaje corto en fondant",
-                    "placeholder": "Ej: Feliz Cumpleaños",
+                    "placeholder": "Ej.: Feliz cumpleaños",
                     "maxLength": 30,
                     "required": true
                 }
@@ -1325,7 +1303,7 @@ const catalogData = {
             "enabled": true,
             "field": "iniciales",
             "label": "Iniciales para las letras (2 letras)",
-            "placeholder": "Ej: AB",
+            "placeholder": "Ej.: AB",
             "maxLength": 2,
             "required": true
         }
@@ -1393,7 +1371,7 @@ const catalogData = {
             "enabled": true,
             "field": "iniciales",
             "label": "Iniciales para las letras (2 letras)",
-            "placeholder": "Ej: AB",
+            "placeholder": "Ej.: AB",
             "maxLength": 2,
             "required": true
         }
@@ -1403,7 +1381,7 @@ const catalogData = {
         id: 'detalle-golden-1',
         name: 'Detalle Golden',
         price: 88000,
-        priceFormatted: '$88.000',
+        priceFormatted: 'Desde $88.000',
         category: 'detalles',
         description: 'Mini torta vasca, trufas, galleta especial y alfajores.',
         mainImage: '../assets/propuestas-fotograficas/detalle-golden-1.webp',
@@ -1439,16 +1417,15 @@ const catalogData = {
                 "label": "Tipo de galleta",
                 "type": "radio",
                 "required": true,
-                "priceModifier": true,
                 "choices": [
                     {
                         "value": "sencilla",
-                        "label": "Galleta Sencilla ($88.000)",
+                        "label": "Galleta sencilla",
                         "price": 88000
                     },
                     {
                         "value": "especial",
-                        "label": "Galleta Especial ($94.000)",
+                        "label": "Galleta especial",
                         "price": 94000
                     }
                 ]
@@ -1457,17 +1434,17 @@ const catalogData = {
                 "id": "sabor-galleta-sencilla",
                 "label": "Sabor de galleta sencilla",
                 "type": "radio",
-                "required": false,
+                "required": true,
                 "dependsOn": "tipo-galleta",
                 "showWhen": "sencilla",
                 "choices": [
                     {
                         "value": "chips-nutella",
-                        "label": "Chips con Nueces (Nutella)"
+                        "label": "Chips con nueces (Nutella)"
                     },
                     {
                         "value": "red-velvet-queso",
-                        "label": "Red Velvet (Crema de Queso)"
+                        "label": "Red velvet (crema de queso)"
                     },
                     {
                         "value": "cocoa-chocolate",
@@ -1479,17 +1456,17 @@ const catalogData = {
                 "id": "sabor-galleta-especial",
                 "label": "Sabor de galleta especial",
                 "type": "radio",
-                "required": false,
+                "required": true,
                 "dependsOn": "tipo-galleta",
                 "showWhen": "especial",
                 "choices": [
                     {
                         "value": "pistachos",
-                        "label": "Pistachos (Chocolate Blanco)"
+                        "label": "Pistachos (chocolate blanco)"
                     },
                     {
                         "value": "chocolate-mermelada",
-                        "label": "Chocolate Blanco con Mermelada"
+                        "label": "Chocolate blanco con mermelada"
                     },
                     {
                         "value": "panelita-copelia",
@@ -1621,7 +1598,7 @@ const catalogData = {
             "enabled": true,
             "field": "mensaje-torta",
             "label": "Frase corta o número para la torta",
-            "placeholder": "Ej: Feliz Cumpleaños, 25, Te Amo...",
+            "placeholder": "Ej.: Feliz cumpleaños, 25, Te amo",
             "maxLength": 30,
             "required": true,
             "note": "Cualquier variación en el diseño de la torta puede cambiar el valor"

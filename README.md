@@ -54,7 +54,7 @@ Revisión local de septiembre de 2026: 13 pruebas de lógica, geometría renderi
 
 WhatsApp `573104442796`, Instagram `laurenreposteria22`, TikTok `laurenreposteria`, correo `reposterialauren@gmail.com`. Medellín, desde 2022. Atención de lunes a sábado, 9:00 a. m. a 6:00 p. m. Pedidos con al menos un día de anticipación, sujetos a disponibilidad.
 
-No cambiar importes, contactos ni condiciones sin confirmación del negocio. Los alfajores personalizados quedan por cotización mediante `quoteOnly: true`: el dato heredado de $60.000 no aclara si corresponde a una unidad o a una caja de seis. Ver [pendientes comerciales](PROBLEMAS-PENDIENTES.md).
+No cambiar importes, contactos ni condiciones sin confirmación del negocio. Los alfajores personalizados cuestan $60.000 por caja de 6 (confirmado por el negocio en octubre de 2026). Solo los adicionales de torta siguen por cotización. Ver [pendientes comerciales](PROBLEMAS-PENDIENTES.md).
 
 ## Publicación
 

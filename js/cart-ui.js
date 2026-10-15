@@ -17,7 +17,9 @@
             const items = cartManager.getItems();
             document.querySelectorAll('[data-cart-count]').forEach(counter => { counter.textContent = cartManager.getTotalItems(); });
             document.querySelectorAll('[data-open-cart]').forEach(button => button.setAttribute('aria-label', `Abrir pedido, ${cartManager.getTotalItems()} ${cartManager.getTotalItems() === 1 ? 'producto' : 'productos'}`));
-            this.dialog.querySelector('#cartSummary').textContent = `${items.length} ${items.length === 1 ? 'presentación elegida' : 'presentaciones elegidas'}`;
+            // Mismo número que el contador del encabezado, para que el pedido siempre cuadre.
+            const total = cartManager.getTotalItems();
+            this.dialog.querySelector('#cartSummary').textContent = `${total} ${total === 1 ? 'producto' : 'productos'}`;
             const content = this.dialog.querySelector('#cartContent');
             if (!items.length) {
                 content.innerHTML = `<div class="cart-empty">${icon('bag')}<h3>Algo rico te espera.</h3><p>Elige tus favoritos y reúne aquí los detalles de tu próximo momento especial.</p><button class="btn" type="button" data-explore>Explorar el catálogo ${icon('arrow')}</button></div>`;
