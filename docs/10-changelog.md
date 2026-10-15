@@ -4,6 +4,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Mensajes de WhatsApp según el tipo de pedido]
+
+- El pedido se clasifica con `Catalog.custom`: es personalizado si incluye una torta o cualquier producto con mensaje, iniciales o tema escrito. Un pedido listo (cajas, bolsitas, brownies, galletas, detalles sin texto) ya no menciona diseño ni «valor final de la personalización».
+- Pedido listo: «Quiero hacer este pedido», pide fecha y domicilio o recogida y cierra con «¿Me confirmas la disponibilidad?». Pedido personalizado: «Quiero encargar este pedido personalizado», pide fecha de la celebración, invita a enviar una foto de referencia y propone revisar el diseño.
+- Cada producto muestra «Valor» o «2 × $22.000 = $44.000» en lugar de «Precio por presentación». Las etiquetas pierden aclaraciones de formulario («(opcional)», «(3 letras)») y el interruptor del mensaje pagado del Oso Grande no se repite junto al texto.
+- El aviso del carrito cambia con el tipo de pedido y recuerda la anticipación mínima de un día en pedidos listos. La cotización de adicionales ya no deja líneas vacías.
+
 ## [2026-10-15 — Auditoría de catálogo, precios e imágenes]
 
 - Revisados los 23 productos y 579 combinaciones de opciones: todos los totales del pedido (precio × cantidad) suman bien y todas las fotos de fichas y galerías existen con sus tamaños adaptables.

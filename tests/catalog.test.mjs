@@ -108,8 +108,26 @@ test('No ejecuta texto de personalización ni rutas inyectadas', () => {
 test('Mensaje incluye selección, cantidades, personalización y subtotal; no confirma una compra', () => {
     cart.clearCart(); cart.addItem(item('detalle-hbd', { 'color-letras': ['lila', 'blanco'] }, { iniciales: 'ABC', 'mensaje-torta': 'Feliz día' }, 2));
     const text = decodeURIComponent(cart.generateWhatsAppMessage());
-    for (const value of ['Cantidad: 2', 'ABC', 'Feliz día', 'Lila, Blanco', '$184.000', 'confirmar la fecha']) assert.ok(text.includes(value), value);
+    for (const value of ['pedido personalizado', '2 × $92.000 = $184.000', 'Iniciales para las letras: ABC', 'Feliz día', 'Lila, Blanco', 'Fecha de la celebración', 'el diseño']) assert.ok(text.includes(value), value);
     assert.ok(cart.whatsappURL().startsWith('https://wa.me/573104442796?text='));
+});
+test('Un pedido listo para entregar no habla de diseño ni personalización', () => {
+    cart.clearCart(); cart.addItem(item('caja-x12')); cart.addItem(item('torta-alfajor'));
+    const text = decodeURIComponent(cart.generateWhatsAppMessage());
+    assert.equal(cart.isCustom(), false);
+    for (const value of ['Quiero hacer este pedido:', 'Valor: $37.000', 'Para coordinar la entrega', '¿Me confirmas la disponibilidad']) assert.ok(text.includes(value), value);
+    assert.ok(!/personaliz|diseño/i.test(text), text);
+    cart.clearCart(); cart.addItem(item('torta-alfajor', {}, { mensaje: 'Te quiero' }));
+    assert.equal(cart.isCustom(), true, 'Un mensaje escrito convierte el pedido en personalizado');
+    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes('Mensaje personalizado: Te quiero'));
+    cart.clearCart(); cart.addItem(item('torta-sencilla'));
+    assert.equal(cart.isCustom(), true, 'Las tortas siempre se revisan como diseño');
+});
+test('El interruptor del mensaje pagado no se repite en el resumen', () => {
+    cart.clearCart(); cart.addItem(item('oso-grande', { 'mensaje-brownie': true }, { 'mensaje-brownie': 'Te amo' }));
+    const text = decodeURIComponent(cart.generateWhatsAppMessage());
+    assert.ok(!text.includes('¿Deseas agregar'), text);
+    assert.ok(text.includes('Mensaje personalizado en el brownie: Te amo'));
 });
 test('Persistencia, datos corruptos, migración anterior y almacenamiento bloqueado', () => {
     saved.set(cart.cartKey, 'invalid json'); assert.equal(cart.loadCart().length, 0);

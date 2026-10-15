@@ -65,7 +65,9 @@
         return errors;
     }
     function summary(product, selection) {
+        // El interruptor que activa la personalización se omite: el texto escrito ya lo expresa.
         return Object.fromEntries(choices(product, selection).filter(option => {
+            if (option.id === product.personalization?.dependsOn) return false;
             const value = selection[option.id];
             return Array.isArray(value) ? value.length : value !== false && value !== '';
         }).map(option => {
@@ -74,8 +76,12 @@
             return [option.label, option.type === 'toggle' ? 'Sí' : selected.map(v => option.choices.find(c => c.value === v)?.label || '').join(', ')];
         }));
     }
+    // Etiqueta sin aclaraciones de formulario: «Mensaje personalizado (opcional)» → «Mensaje personalizado».
+    const shortLabel = label => label.replace(/\s*\([^)]*\)$/, '');
     function personalText(product, selection, personal) {
-        return fields(product, selection).filter(field => String(personal[field.id] || '').trim()).map(field => `${field.label}: ${String(personal[field.id]).trim()}`).join('\n');
+        return fields(product, selection).filter(field => String(personal[field.id] || '').trim()).map(field => `${shortLabel(field.label)}: ${String(personal[field.id]).trim()}`).join('\n');
     }
-    window.Catalog = { get, all: () => Object.values(catalogData), money, quoteOnly, defaults, visible, options, choices, price, minimum, maximum, fields, validate, summary, personalText };
+    // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
+    const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
+    window.Catalog = { get, all: () => Object.values(catalogData), money, quoteOnly, defaults, visible, options, choices, price, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

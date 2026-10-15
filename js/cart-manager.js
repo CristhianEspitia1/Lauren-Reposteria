@@ -95,17 +95,23 @@ class CartManager {
     getTotalItems() { return this.cart.reduce((total, item) => total + item.quantity, 0); }
     getTotalPrice() { return this.cart.reduce((total, item) => total + item.price * item.quantity, 0); }
     formatPrice(price) { return Catalog.money(price); }
+    isCustom() { return this.cart.some(item => Catalog.custom(Catalog.get(item.id), item.personalization)); }
+    // El cierre cambia según el pedido: uno listo solo coordina entrega; uno personalizado también el diseño.
     generateWhatsAppMessage() {
         if (!this.cart.length) return '';
-        let text = 'Hola, Lauren. Me gustaría consultar disponibilidad para este pedido:\n\n';
+        const custom = this.isCustom();
+        const lines = [custom ? 'Hola, Lauren. Quiero encargar este pedido personalizado:' : 'Hola, Lauren. Quiero hacer este pedido:', ''];
         this.cart.forEach((item, index) => {
-            text += `${index + 1}. *${item.name}*\nCantidad: ${item.quantity}\nPrecio por presentación: ${this.formatPrice(item.price)}\n`;
-            for (const [key, value] of Object.entries(item.options)) text += `${key}: ${value}\n`;
-            if (item.personalization) text += item.personalization + '\n';
-            text += `Subtotal: ${this.formatPrice(item.price * item.quantity)}\n\n`;
+            lines.push(`*${index + 1}. ${item.name}*`);
+            for (const [key, value] of Object.entries(item.options)) lines.push(`${key}: ${value}`);
+            if (item.personalization) lines.push(item.personalization);
+            const subtotal = this.formatPrice(item.price * item.quantity);
+            lines.push(item.quantity > 1 ? `${item.quantity} × ${this.formatPrice(item.price)} = ${subtotal}` : `Valor: ${subtotal}`, '');
         });
-        text += `*Subtotal de productos: ${this.formatPrice(this.getTotalPrice())} COP*\n\nQuisiera confirmar la fecha, la entrega y el valor final de la personalización.`;
-        return encodeURIComponent(text);
+        lines.push(`*Subtotal de productos: ${this.formatPrice(this.getTotalPrice())} COP*`, '');
+        if (custom) lines.push('Para coordinar:', '- Fecha de la celebración: ', '- Domicilio o recogida: ', '', 'Si tengo una foto de referencia, te la envío por aquí. Quedo pendiente para revisar contigo el diseño y la disponibilidad.');
+        else lines.push('Para coordinar la entrega:', '- Fecha: ', '- Domicilio o recogida: ', '', '¿Me confirmas la disponibilidad, por favor?');
+        return encodeURIComponent(lines.join('\n'));
     }
     whatsappURL() { return this.cart.length ? `https://wa.me/573104442796?text=${this.generateWhatsAppMessage()}` : ''; }
     addEventListener(callback) { this.listeners.push(callback); }
