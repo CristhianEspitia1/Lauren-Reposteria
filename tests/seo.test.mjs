@@ -54,6 +54,7 @@ test('Los datos estructurados describen el negocio, la carta y las preguntas vis
         assert.deepEqual(webpage.mainEntity.map(q => q.name), faqs(html).map(q => q.question));
         if (page.path === '/') { assert.equal(byType('Menu').length, 1); assert.equal(byType('VideoObject').length, 1); continue; }
         assert.deepEqual(byType('BreadcrumbList')[0].itemListElement.map(i => i.item), [`${ORIGIN}/`, ORIGIN + page.path]);
+        if (!page.categories.length) continue; // Páginas informativas, sin carta de productos.
         const items = byType('MenuSection')[0].hasMenuItem;
         assert.ok(items.length > 0);
         for (const item of items) {

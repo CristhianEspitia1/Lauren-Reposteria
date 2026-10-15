@@ -98,7 +98,7 @@ export const PAGES = [
     {
         key: 'preguntas', file: 'preguntas/index.html', path: '/preguntas/', type: 'WebPage', name: 'Preguntas frecuentes',
         social: 'inicio',
-        title: 'Preguntas frecuentes | Lauren Repostería',
+        title: 'Preguntas frecuentes en Medellín | Lauren Repostería',
         description: () => 'Anticipación, domicilios, pagos, cambios y cuidados de tu pedido en Lauren Repostería, Medellín. Resuelve tus dudas antes de pedir por WhatsApp.',
         imageAlt: 'Lauren Repostería: torta vintage con frutos rojos y moño de satén',
         categories: [], gallery: null
