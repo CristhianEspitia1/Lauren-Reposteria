@@ -118,9 +118,10 @@ test('Un pedido listo para entregar no habla de diseño ni personalización', ()
     assert.equal(cart.isCustom(), false);
     for (const value of ['Quiero hacer este pedido:', 'Valor: $37.000', 'Para coordinar la entrega', '¿Me confirmas la disponibilidad']) assert.ok(text.includes(value), value);
     assert.ok(!/personaliz|diseño/i.test(text), text);
-    cart.clearCart(); cart.addItem(item('torta-alfajor', {}, { mensaje: 'Te quiero' }));
+    assert.equal(Catalog.get('torta-alfajor').personalization, null, 'La torta de alfajor no lleva frase');
+    cart.clearCart(); cart.addItem(item('detalle-brownie', {}, { 'mensaje-brownie': 'Te quiero' }));
     assert.equal(cart.isCustom(), true, 'Un mensaje escrito convierte el pedido en personalizado');
-    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes('Mensaje personalizado: Te quiero'));
+    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes('Te quiero'));
     cart.clearCart(); cart.addItem(item('torta-sencilla'));
     assert.equal(cart.isCustom(), true, 'Las tortas siempre se revisan como diseño');
 });

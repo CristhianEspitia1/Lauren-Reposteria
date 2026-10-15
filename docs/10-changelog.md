@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Torta de Alfajor sin frase]
+
+- La Torta de Alfajor ya no ofrece «Mensaje personalizado»: no es personalizable. Solo se elige el tamaño, y el pedido llega a WhatsApp como pedido listo para entregar.
+
 ## [2026-10-15 — Manual de marca obligatorio y nueva 404]
 
 - `docs/06-guia-de-estilos.md` pasa a ser el manual de marca 2.0, con solo lo que usa la web hoy. `CLAUDE.md` lo hace obligatorio para todo cambio visual o de texto.

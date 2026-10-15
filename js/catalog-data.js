@@ -470,14 +470,7 @@ const catalogData = {
                 ]
             }
         ],
-        personalization: {
-            "enabled": true,
-            "field": "mensaje",
-            "label": "Mensaje personalizado (opcional)",
-            "placeholder": "Ej.: Feliz cumpleaños",
-            "maxLength": 30,
-            "required": false
-        }
+        personalization: null
     },
 
     'alfajor-individual': {
