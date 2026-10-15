@@ -6,7 +6,7 @@ El sitio no incorpora framework ni dependencias de cliente. Los principales cost
 - En las cinco páginas públicas, las fotos de portada se solicitan de inmediato y la principal tiene prioridad alta. Las fotos del contenido y las primeras ocho de cada galería usan `loading="eager"`, prioridad baja y `decoding="async"`: comienzan a prepararse al entrar en la página, sin esperar a que el usuario baje. Las miniaturas fuera de la vista del configurador mantienen carga diferida.
 - Se reservan proporciones con CSS y atributos de dimensiones para estabilizar la composición.
 - Las fotos nunca se ocultan con máscaras, opacidad o animaciones activadas por el scroll. Los efectos de interacción no retrasan la presentación del contenido.
-- Galerías paginadas por grupos de ocho. «Ver más creaciones» agrega las nuevas fotos conservando los nodos y las imágenes ya cargadas; no hay carruseles infinitos ni copias para animaciones continuas.
+- Galerías paginadas por grupos de ocho. «Ver más creaciones» agrega las nuevas fotos conservando los nodos y las imágenes ya cargadas; no hay carruseles infinitos ni copias para animaciones continuas. Las galerías de las cuatro páginas de catálogo (`data-gallery-all`) muestran todas las fotos de una vez: las 8 primeras cargan de inmediato y el resto con `loading="lazy"`.
 - La historia carga su poster `assets/optimized/imagenes-inicio/historia-poster.webp`; el MP4 de unos 5 MB se solicita solo al reproducir. Se conserva el original horizontal, sin ampliación artificial para cubrir un marco.
 - Fuentes Playfair Display e Inter en una petición por página, con `display=swap` y preconexión.
 - Scripts con `defer`; estilos divididos entre tokens, base, catálogo y diálogos. Se retiraron las capas de CSS/JS obsoletas.

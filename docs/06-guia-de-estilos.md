@@ -41,29 +41,37 @@ Los SVG de `assets/brand/` conservan los trazados del manual, sin redibujarlos n
 | --- | --- |
 | `lauren-logo.svg` / `lauren-logo-light.svg` | Composición completa, página 7. Tinta sobre fondos claros (cabecera) y claro sobre fondos de color (pie), como en las páginas 19 y 22 |
 | `lauren-sello-light.svg` | Sello circular «Bocado de alegría», página 13 |
+| `lauren-logotipo.svg` / `lauren-logotipo-light.svg` | Logotipo «LAUREN» solo, página 10. Disponible; la web usa el logo completo |
+| `sistema/sello-ovalado.svg` / `sistema/isotipo-circulo.svg` | Variaciones de la página 10 (emblema ovalado e isotipo en círculo) |
+| `lauren-isotipo.svg` | Símbolo de laurel y corazón, página 14 |
+| `../favicon.svg` | Isotipo blanco sobre lila, como en la aplicación a color de la página 9 |
+
+Área mínima (página 12): logo completo 3,5 cm (~132 px), logotipo 2 cm (~76 px) e isotipo 1,5 cm (~57 px). El logo de la cabecera mide 150 px en escritorio y 134 px en móvil. El favicon queda por debajo por ser un formato de sistema.
 
 ### Sistema gráfico
 
-`assets/brand/sistema/` contiene elementos del material gráfico con sus trazados originales extraídos del PDF: de la página 19, `rama`, `isotipo-circulo`, `reposteria`, `corazon`, `grito-de-victoria`, `grateful`, `mucho-encanto`, `porcion-torta`, `mano-flor` y `sello-ovalado`; de la página 18, `sanadora-de-alma`; de la página 20, `dosis-de-encanto`, `brownie` y `para-ti`. La caja «Dulce energía» se descartó por decisión de la marca. Se usan como `mask` CSS y se colorean con la paleta: blanco sobre lila y lila sobre fondos durazno claros. Son decorativos y van en pseudoelementos, como mucho uno por sección. Las variantes por página usan `data-page` en `<body>`:
+`assets/brand/sistema/` contiene elementos del material gráfico con sus trazados originales extraídos del PDF: de la página 19, `rama`, `isotipo-circulo`, `reposteria`, `corazon`, `grito-de-victoria`, `grateful`, `mucho-encanto`, `porcion-torta`, `mano-flor` y `sello-ovalado`; de la página 18, `sanadora-de-alma`; de la página 20, `dosis-de-encanto`, `brownie` y `para-ti`. La caja «Dulce energía» se descartó por decisión de la marca. Se usan como `mask` CSS y se colorean con la paleta: blanco sobre lila y lila sobre fondos claros.
+
+Gráficos fijos en CSS, dentro del flujo de la página:
 
 | Dónde | Elemento |
 | --- | --- |
 | Franja de valores (Inicio) | `corazon` como separador |
-| Sección lila «Tú pones el motivo» | `mano-flor` |
-| Preguntas frecuentes | `sello-ovalado` |
-| Banner de categoría | `grito-de-victoria` |
-| Sección de sabores | `mucho-encanto` |
-| Encabezado de colecciones (Inicio) e inspiración de Tortas | `porcion-torta` |
-| Encabezado de favoritos (Inicio) e inspiración de Brownies | `brownie` |
-| Inspiración de Alfajores | `sanadora-de-alma` |
-| Inspiración de Detalles | `para-ti` |
-| Pie, bajo el logo (solo escritorio) | `dosis-de-encanto` |
-| Sección «Pedir es así de sencillo» | `rama`, recortada en el borde |
-| Sección «El corazón de Lauren» | `reposteria` como firma |
+| Preguntas frecuentes, bajo el enlace | `sello-ovalado` |
+| «Las cosas bonitas se hacen con amor» | `reposteria` como firma |
 | Encabezado de redes | `grateful` |
+| Pie, en la franja inferior (solo escritorio) | `dosis-de-encanto` |
 | Fotos de cabecera del catálogo | `isotipo-circulo` en sello lila |
 | Página 404 | `grito-de-victoria` |
-| `lauren-isotipo.svg` | Símbolo de laurel y corazón, página 14 |
+
+El resto lo compone `js/brand-decor.js` con posiciones diseñadas. Las variantes por página usan `data-page` en `<body>`:
+
+- **Fila del título:** ilustración grande alineada abajo a la derecha de la fila (porción de torta en colecciones e inspiración de Tortas, «Mucho encanto» en «Pedir es así de sencillo», `sanadora-de-alma`, `brownie` o `para-ti` en la inspiración de cada página). Si la fila tiene un texto a la derecha, el gráfico se centra en el hueco entre el título y ese texto (`between`): brownie en favoritos e isotipo en el catálogo y en complementos.
+- **Simetría:** torta y brownie a ambos lados del título de redes.
+- **Diagonal:** en Preguntas, el sello abajo a la izquierda y la rama arriba a la derecha, apoyada sobre la primera línea.
+- **Acompañantes:** mano con flor junto al texto lila de celebración, «Sanadora de alma» bajo el video, «Mucho encanto» junto a «Y en el corazón…», «Grito de victoria» entre el texto y el botón del banner, rama junto a la foto de cabecera del catálogo e isotipo sobre el botón del pie.
+
+Reglas: nunca dos gráficos juntos en la misma esquina; ningún adorno junto a un botón o enlace (se confunde con un icono); ningún logotipo ni sello sobre las fotos (salvo el sello del hero y el de las cabeceras del catálogo); corazones solo al final de títulos donde suman sentido (hero, «se hacen con amor», pie, cabeceras del catálogo y sabores). El script solo ajusta cada posición lo justo para que el gráfico quede completo dentro de la sección, dentro del ancho del contenido (nunca en los márgenes) y sin tocar textos, fotos ni controles; Si no cabe, prueba su alternativa y, si tampoco, no se muestra. Se recalcula al cambiar el tamaño de la ventana y al abrir preguntas. En móvil solo quedan los marcados con `m: 1`, a menor tamaño.
 
 Las variantes `-light.svg` son para fondos oscuros. Se usan versiones monocromas: tinta ciruela de interfaz o crema oficial. Las cabeceras y los pies eligen el archivo adecuado sin filtros CSS. El favicon y el icono compartido `brand` reutilizan el símbolo original.
 

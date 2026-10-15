@@ -244,7 +244,7 @@ const catalogData = {
     'extra-monos': {
         id: 'extra-monos',
         icon: 'bow',
-        name: 'Moños (Lazitos)',
+        name: 'Moños (lacitos)',
         price: 2000,
         priceFormatted: '$2.000 - $3.000',
         category: 'extras',
@@ -280,7 +280,7 @@ const catalogData = {
     'extra-perlas': {
         id: 'extra-perlas',
         icon: 'pearls',
-        name: 'Perlas Comestibles',
+        name: 'Perlas comestibles',
         price: 5000,
         priceFormatted: '$5.000 - $10.000',
         category: 'extras',
@@ -292,7 +292,7 @@ const catalogData = {
     'extra-coronas': {
         id: 'extra-coronas',
         icon: 'crown',
-        name: 'Coronas Especiales',
+        name: 'Coronas especiales',
         price: 0,
         priceFormatted: 'Precio en asesoría',
         category: 'extras',
@@ -468,7 +468,7 @@ const catalogData = {
                     },
                     {
                         "value": "4-6",
-                        "label": "4-6 porciones (11 cm)",
+                        "label": "4 a 6 porciones (11 cm)",
                         "price": 38000
                     },
                     {
@@ -1079,13 +1079,13 @@ const catalogData = {
         price: 60000,
         priceFormatted: '$60.000',
         category: 'detalles',
-        description: 'Brownie de 4-6 porciones con mensaje personalizado, acompañado de galleta y mini alfajores.',
+        description: 'Brownie de 4 a 6 porciones con mensaje personalizado, acompañado de galleta y mini alfajores.',
         mainImage: '../assets/propuestas-fotograficas/detalle-brownie.webp',
         images: [
             "../assets/propuestas-fotograficas/detalle-brownie.webp"
         ],
         includes: [
-            "Brownie de 4-6 porciones",
+            "Brownie de 4 a 6 porciones",
             "1 galleta",
             "6 mini alfajores"
         ],
@@ -1514,7 +1514,7 @@ const catalogData = {
         ],
         includes: [
             "Mini torta vasca",
-            "3 trufas de oreo",
+            "3 trufas de Oreo",
             "Brownie grande",
             "7 mini galletas"
         ],
@@ -1546,14 +1546,14 @@ const catalogData = {
         price: 83000,
         priceFormatted: '$83.000',
         category: 'detalles',
-        description: 'Mini torta vasca, trufas de oreo, brownie grande y alfajor especial.',
+        description: 'Mini torta vasca, trufas de Oreo, brownie grande y alfajor especial.',
         mainImage: '../assets/propuestas-fotograficas/detalle-golden-3.webp',
         images: [
             "../assets/propuestas-fotograficas/detalle-golden-3.webp"
         ],
         includes: [
             "Mini torta vasca",
-            "4 trufas de oreo",
+            "4 trufas de Oreo",
             "Brownie grande",
             "Alfajor mostacho"
         ],

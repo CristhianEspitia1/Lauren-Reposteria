@@ -47,15 +47,11 @@
 </script>
 <script src="../js/site.js" defer>
 </script>
+<script src="../js/brand-decor.js" defer>
+</script>
 </head>
 <body id="arriba" data-page="tortas">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<div class="announcement">
-<div class="container"><span>Hecho a mano en Medellín · Desde 2022</span>
-<a href="inicio.html#como-pedir">Un momento especial empieza con tiempo <span data-icon="diagonal" aria-hidden="true"></span>
-</a>
-</div>
-</div>
 <header class="site-header">
 <div class="container nav-inner">
 <a class="brand" href="inicio.html" aria-label="Lauren Repostería, inicio">
@@ -97,7 +93,7 @@
 <h1>Tu momento.<br><em>Tu torta.</em>
 </h1>
 <p>Vintage, sencilla o tan especial como la imaginas. Elige el estilo, el sabor y cada pequeño detalle.</p>
-<a class="btn " href="#catalogo">Explorar la colección <span data-icon="arrow" aria-hidden="true"></span>
+<a class="btn " href="#inspiracion">Ver las tortas <span data-icon="arrow" aria-hidden="true"></span>
 </a>
 </div>
 <div class="category-art">
@@ -107,26 +103,16 @@
 </div>
 </div>
 </section>
-<section class="section catalog-section" id="catalogo" data-catalog-section>
+<section class="section" id="inspiracion">
 <div class="container">
 <div class="section-heading">
 <div>
-<h2>Dos estilos.<br><em>Infinitas historias.</em>
+<h2>Tortas hechas <em>a tu medida.</em>
 </h2>
 </div>
-<p>Elige tu punto de partida. Dentro encontrarás porciones, sabores y rellenos.</p>
+<p>Elige la que más te guste y la creamos para tu celebración. Desde $58.000.</p>
 </div>
-<div class="product-grid two-columns" data-products="torta-vintage,torta-sencilla">
-</div>
-<div class="empty-results" data-empty-results hidden>
-<h3>Aún no encontramos ese antojo.</h3>
-<p>Prueba con otro nombre o descubre toda la colección.</p>
-<button class="btn btn-secondary" type="button" data-reset-filters>Ver toda la colección</button>
-</div>
-<div class="catalog-help">
-<p>Precios en pesos colombianos. Elige una creación para ver sus opciones y el valor de tu presentación.</p>
-<a class="text-link" href="inicio.html#como-pedir">Cómo hacer tu pedido <span data-icon="arrow" aria-hidden="true"></span>
-</a>
+<div class="gallery-grid" data-gallery="tortas" data-gallery-all>
 </div>
 </div>
 </section>
@@ -139,6 +125,7 @@
 </div>
 <p>Cuatro bizcochos, cinco rellenos y tu combinación favorita.</p>
 </div>
+<h3 class="flavor-label">El bizcocho</h3>
 <div class="flavor-grid">
 <article class="flavor">
 <img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 282px" srcset="../assets/propuestas-fotograficas/responsive/sabor-chocolate-320.webp 320w, ../assets/propuestas-fotograficas/responsive/sabor-chocolate-640.webp 640w, ../assets/propuestas-fotograficas/responsive/sabor-chocolate-960.webp 960w, ../assets/propuestas-fotograficas/sabor-chocolate.webp 1536w" src="../assets/propuestas-fotograficas/sabor-chocolate.webp" alt="Chocolate" width="1536" height="1024" class="" loading="eager" decoding="async">
@@ -162,7 +149,7 @@
 </article>
 </div>
 <div class="filling-list">
-<h3>Y en el corazón…</h3>
+<h3>El relleno</h3>
 <div class="filling-grid">
 <figure><img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px" srcset="../assets/propuestas-fotograficas/responsive/relleno-arequipe-320.webp 320w, ../assets/propuestas-fotograficas/responsive/relleno-arequipe-640.webp 640w, ../assets/propuestas-fotograficas/responsive/relleno-arequipe-960.webp 960w, ../assets/propuestas-fotograficas/relleno-arequipe.webp 1254w" src="../assets/propuestas-fotograficas/relleno-arequipe.webp" alt="Capas de bizcocho con arequipe" width="1254" height="1254" loading="eager" decoding="async"><figcaption>Arequipe</figcaption></figure>
 <figure><img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px" srcset="../assets/propuestas-fotograficas/responsive/relleno-crema-queso-320.webp 320w, ../assets/propuestas-fotograficas/responsive/relleno-crema-queso-640.webp 640w, ../assets/propuestas-fotograficas/responsive/relleno-crema-queso-960.webp 960w, ../assets/propuestas-fotograficas/relleno-crema-queso.webp 1254w" src="../assets/propuestas-fotograficas/relleno-crema-queso.webp" alt="Capas de bizcocho con crema de queso" width="1254" height="1254" loading="eager" decoding="async"><figcaption>Crema de queso</figcaption></figure>
@@ -170,22 +157,6 @@
 <figure><img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px" srcset="../assets/propuestas-fotograficas/responsive/relleno-chocolate-320.webp 320w, ../assets/propuestas-fotograficas/responsive/relleno-chocolate-640.webp 640w, ../assets/propuestas-fotograficas/responsive/relleno-chocolate-960.webp 960w, ../assets/propuestas-fotograficas/relleno-chocolate.webp 1254w" src="../assets/propuestas-fotograficas/relleno-chocolate.webp" alt="Capas de bizcocho con chocolate" width="1254" height="1254" loading="eager" decoding="async"><figcaption>Chocolate</figcaption></figure>
 <figure><img fetchpriority="low" sizes="(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px" srcset="../assets/propuestas-fotograficas/responsive/relleno-nutella-320.webp 320w, ../assets/propuestas-fotograficas/responsive/relleno-nutella-640.webp 640w, ../assets/propuestas-fotograficas/responsive/relleno-nutella-960.webp 960w, ../assets/propuestas-fotograficas/relleno-nutella.webp 1254w" src="../assets/propuestas-fotograficas/relleno-nutella.webp" alt="Capas de bizcocho con Nutella" width="1254" height="1254" loading="eager" decoding="async"><figcaption>Nutella</figcaption></figure>
 </div>
-</div>
-</div>
-</section>
-<section class="section" id="inspiracion">
-<div class="container">
-<div class="section-heading">
-<div>
-<h2>Un poco de <em>inspiración.</em>
-</h2>
-</div>
-</div>
-<div class="gallery-grid" data-gallery="tortas">
-</div>
-<div class="gallery-more">
-<button class="btn btn-secondary" type="button" data-gallery-more>Ver más creaciones <span data-icon="plus" aria-hidden="true"></span>
-</button>
 </div>
 </div>
 </section>
@@ -268,12 +239,12 @@
 <div class="footer-group">
 <h3>Contacto</h3>
 <p>Medellín, Colombia</p>
-<p>Lunes a sábado, 9:00 a. m. — 6:00 p. m.</p>
+<p>Lunes a sábado, de 9:00 a. m. a 6:00 p. m.</p>
 <a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
-<a href="inicio.html#como-pedir">Cómo hacer tu pedido</a>
+<a href="inicio.html#como-pedir">Un momento especial empieza con tiempo</a>
 </div>
 </div>
-<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería</span><span class="footer-signature" aria-hidden="true"></span>
+<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería · Hecho a mano en Medellín desde 2022</span><span class="footer-signature" aria-hidden="true"></span>
 <a href="#arriba">Volver arriba <span class="back-to-top" data-icon="arrow" aria-hidden="true"></span>
 </a>
 </div>

@@ -104,11 +104,12 @@
     });
     document.querySelectorAll('[data-gallery]').forEach(grid => {
         const items = window.galleryData?.[grid.dataset.gallery] || [];
-        let shown = Math.min(8, items.length);
+        // data-gallery-all muestra toda la galería; si no, de 8 en 8 con «Ver más creaciones».
+        let shown = grid.hasAttribute('data-gallery-all') ? items.length : Math.min(8, items.length);
         const more = grid.parentElement.querySelector('[data-gallery-more]');
         function render() {
             const firstNew = grid.childElementCount;
-            grid.insertAdjacentHTML('beforeend', items.slice(firstNew, shown).map((item, offset) => `<button class="gallery-button" type="button" data-gallery-index="${firstNew + offset}" aria-label="Ampliar: ${esc(item.alt)}"><img ${imageAttributes(item.src, '(max-width: 600px) 45vw, (max-width: 800px) 30vw, (max-width: 1280px) 22vw, 288px')} alt="${esc(item.alt)}" width="480" height="600" loading="eager" fetchpriority="low" decoding="async"><span>${icon('zoom')}</span></button>`).join(''));
+            grid.insertAdjacentHTML('beforeend', items.slice(firstNew, shown).map((item, offset) => `<button class="gallery-button" type="button" data-gallery-index="${firstNew + offset}" aria-label="Ampliar: ${esc(item.alt)}"><img ${imageAttributes(item.src, '(max-width: 560px) 31vw, (max-width: 800px) 30vw, (max-width: 1280px) 22vw, 288px')} alt="${esc(item.alt)}" width="480" height="600" loading="${firstNew + offset < 8 ? 'eager' : 'lazy'}" fetchpriority="low" decoding="async"><span>${icon('zoom')}</span></button>`).join(''));
             if (more) more.hidden = shown >= items.length;
         }
         grid.addEventListener('click', event => {

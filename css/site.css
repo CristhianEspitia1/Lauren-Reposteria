@@ -50,14 +50,10 @@ button svg, a svg { pointer-events: none; }
 .text-link svg { width: 18px; height: 18px; }
 .icon-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: transparent; border-radius: var(--radius-pill); transition: background var(--transition-fast); flex-shrink: 0; }
 .icon-button:hover { background: var(--color-peach); }
-.announcement { background: var(--color-lilac); font-size: .6875rem; letter-spacing: .03em; }
-.announcement .container { display: flex; align-items: center; justify-content: space-between; min-height: 34px; gap: 20px; }
-.announcement a { display: inline-flex; align-items: center; gap: 8px; }
-.announcement svg { width: 13px; height: 13px; }
 .site-header { position: sticky; top: 0; z-index: var(--z-nav); background: #f9f5eced; backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-border); }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 92px; }
-.brand { width: 142px; flex-shrink: 0; }
-.brand img { width: 100%; height: 67px; object-fit: contain;  }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 92px; padding-block: 8px; }
+.brand { width: 150px; flex-shrink: 0; }
+.brand img { width: 100%; height: auto; }
 .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.3vw, 32px); }
 .nav-links a { font-size: .75rem; position: relative; padding-block: 20px; }
 .nav-links a::after { content: ''; height: 2px; position: absolute; bottom: 12px; left: 0; right: 0; background: var(--color-apricot); transform: scaleX(0); transform-origin: left; transition: transform var(--transition-base); }
@@ -79,8 +75,6 @@ button svg, a svg { pointer-events: none; }
 .hero-copy .eyebrow { margin-bottom: 26px; }
 .hero-copy > p:not(.eyebrow) { margin-top: 28px; color: var(--color-text-soft); max-width: 345px; font-size: .9375rem; line-height: 1.85; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-top: 30px; }
-.hero-footnote { margin-top: 40px; display: flex; align-items: center; gap: 12px; font-size: .6875rem; color: var(--color-text-soft); }
-.hero-footnote .icon { width: 18px; height: 18px; }
 .hero-art { position: relative; padding: 0 0 38px 24px; }
 .hero-main { overflow: hidden; aspect-ratio: .9; border-radius: 240px 240px 5px 5px; background: var(--color-peach); }
 .hero-main img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
@@ -88,9 +82,6 @@ button svg, a svg { pointer-events: none; }
 .hero-seal img { width: 100%; height: 100%; object-fit: contain; }
 .hero-inset { position: absolute; bottom: 0; left: -28px; width: 34%; padding: 7px; background: var(--color-cream); transform: rotate(-7deg); box-shadow: var(--shadow-float); }
 .hero-inset img { width: 100%; aspect-ratio: .94; object-fit: cover; }
-.hero-inset figcaption { font-family: var(--font-display); font-size: .875rem; font-style: italic; text-align: center; padding-block: 9px 2px; }
-.hero-caption { position: absolute; bottom: 2px; right: 0; font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; display: flex; gap: 20px; align-items: center; }
-.hero-caption::before { content: ''; width: 28px; height: 1px; background: var(--color-text-soft); }
 .value-line { border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
 .value-line .container { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding-block: 24px; }
 .value-line span { font-size: .6875rem; letter-spacing: .13em; text-transform: uppercase; }
@@ -116,12 +107,10 @@ button svg, a svg { pointer-events: none; }
 .celebration-collage { display: grid; grid-template-columns: 1.1fr .7fr; gap: 16px; align-items: center; }
 .celebration-collage img { width: 100%; aspect-ratio: .74; object-fit: cover; border-radius: var(--radius-sm); }
 .celebration-collage > figure:last-child { margin-top: 90px; }
-.celebration-collage figcaption { font-family: var(--font-display); font-style: italic; font-size: .9375rem; margin-top: 12px; }
 .editorial-copy .eyebrow { margin-bottom: 24px; }
 .editorial-copy h2 { margin-bottom: 24px; }
 .editorial-copy p { max-width: 400px; color: var(--color-text-soft); font-size: .9375rem; }
 .editorial-copy .btn { margin-top: 28px; }
-.signature { display: block; font: italic 1.5rem var(--font-display); margin-top: 28px; }
 .process-section .section-heading { align-items: start; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 52px; }
 .step { position: relative; padding-top: 22px; border-top: 1px solid var(--color-border); }
@@ -204,14 +193,12 @@ button svg, a svg { pointer-events: none; }
 @media (max-width: 1024px) {
     .nav-links { gap: 18px; }
     .nav-links a, .cart-trigger { font-size: .6875rem; }
-    .brand { width: 118px; }
     .nav-inner { gap: 16px; min-height: 80px; }
     .hero-grid { gap: 24px; }
     .hero-copy { padding-bottom: 0; }
     .hero-seal { width: 92px; height: 92px; right: -10px; }
     .hero-inset { left: -10px; }
     .hero-copy > p:not(.eyebrow) { margin-top: 20px; }
-    .hero-footnote { margin-top: 26px; }
     .hero-actions { gap: 14px; }
     .collection-grid { gap: 12px; }
     .collection-label h3 { font-size: 1rem; }
@@ -221,11 +208,8 @@ button svg, a svg { pointer-events: none; }
     html { scroll-padding-top: 94px; }
     .nav-links, .cart-label { display: none; }
     .menu-trigger { display: inline-flex; }
-    .announcement .container { justify-content: center; }
-    .announcement a { display: none; }
-    .nav-inner { min-height: 75px; }
-    .brand { width: 126px; }
-    .brand img { height: 61px; }
+    .nav-inner { min-height: 75px; padding-block: 6px; }
+    .brand { width: 134px; }
     .cart-trigger { padding: 8px; }
     .section-heading { gap: 24px; }
     .section-heading > p { max-width: 230px; }
@@ -235,12 +219,9 @@ button svg, a svg { pointer-events: none; }
     .hero-copy > p:not(.eyebrow) { font-size: .8125rem; }
     .hero-actions { margin-top: 22px; }
     .hero-actions .text-link { display: none; }
-    .hero-footnote { font-size: .625rem; }
     .hero-art { padding-left: 0; }
-    .hero-caption { font-size: .5rem; }
     .hero-seal { width: 78px; height: 78px; padding: 10px; border-width: 4px; top: 6px; }
     .hero-inset { width: 40%; }
-    .hero-inset figcaption { font-size: .6875rem; }
     .value-line span { font-size: .5625rem; letter-spacing: .08em; }
     .collection-grid { grid-template-columns: 1fr 1fr; }
     .collection-featured { grid-row: auto; grid-column: 1 / -1; }
@@ -265,13 +246,11 @@ button svg, a svg { pointer-events: none; }
     .hero-copy > p:not(.eyebrow) { font-size: .9375rem; max-width: 330px; }
     .hero-actions { margin-top: 24px; gap: 20px; }
     .hero-actions .text-link { display: inline-flex; }
-    .hero-footnote { display: none; }
     .hero-art { margin-left: 32px; margin-right: 12px; padding-bottom: 30px; }
     .hero-main { aspect-ratio: 1.04; border-radius: 180px 180px var(--radius-sm) var(--radius-sm); }
     .hero-main img { object-position: center 68%; }
     .hero-inset { left: -32px; width: 35%; }
     .hero-seal { right: -15px; top: 12px; width: 90px; height: 90px; }
-    .hero-caption { font-size: .5rem; gap: 10px; }
     .value-line .container { flex-wrap: wrap; gap: 12px; padding-block: 18px; justify-content: center; }
     .value-line span { font-size: .625rem; }
     .value-line i:nth-of-type(2), .value-line span:last-child { display: none; }
@@ -308,28 +287,17 @@ button svg, a svg { pointer-events: none; }
     .toast { bottom: 78px; gap: 12px; font-size: .75rem; }
 }
 @media (max-height: 520px) and (max-width: 900px) { .site-header { position: relative; } }
-/* Sistema gráfico del brandbook, página 19: trazados originales usados como máscara y coloreados con la paleta. Decorativos, un elemento por sección. */
+/* Sistema gráfico del brandbook (páginas 18–20): trazados originales usados como máscara y coloreados con la paleta. */
 .value-line i { width: 9px; height: 10px; border: 0; transform: none; -webkit-mask: url(../assets/brand/sistema/corazon.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/corazon.svg) center / contain no-repeat; }
-.celebration-section, .faq-section { position: relative; isolation: isolate; overflow: hidden; }
-.celebration-section::after, .faq-copy::after { content: ''; display: block; pointer-events: none; background: var(--color-white); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
-.celebration-section::after { --graphic: url(../assets/brand/sistema/mano-flor.svg); position: absolute; z-index: -1; top: clamp(24px, 4vw, 56px); right: max(12px, calc((100vw - var(--page-width)) / 2 - 150px)); width: clamp(64px, 8vw, 112px); aspect-ratio: 40 / 80.2; }
-.faq-copy::after { --graphic: url(../assets/brand/sistema/sello-ovalado.svg); background: var(--color-lilac); width: clamp(88px, 9vw, 118px); aspect-ratio: 52 / 59.5; margin-top: 40px; }
-#colecciones .section-heading, #inspiracion .section-heading, .featured-section .section-heading { position: relative; }
-#colecciones .section-heading::after, #inspiracion .section-heading::after, .featured-section .section-heading::after, .process-section::after, .story-section .editorial-copy::after, .social-heading::before { content: ''; display: block; pointer-events: none; background: var(--color-lilac); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
-.featured-section .section-heading::after { --graphic: url(../assets/brand/sistema/brownie.svg); position: absolute; top: -20px; right: clamp(230px, 24vw, 300px); width: clamp(64px, 6.5vw, 88px); aspect-ratio: 40.6 / 31.2; }
-[data-page=alfajores] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/sanadora-de-alma.svg); aspect-ratio: 39.2 / 16.5; width: clamp(96px, 9vw, 124px); }
-[data-page=brownies-galletas] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/brownie.svg); aspect-ratio: 40.6 / 31.2; }
-[data-page=detalles] #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/para-ti.svg); aspect-ratio: 65.8 / 16.4; width: clamp(120px, 11vw, 150px); top: -8px; }
-section#colecciones .section-heading::after { right: 0; }
-#colecciones .section-heading::after, #inspiracion .section-heading::after { --graphic: url(../assets/brand/sistema/porcion-torta.svg); position: absolute; top: -28px; right: clamp(330px, 32vw, 400px); width: clamp(70px, 7vw, 96px); aspect-ratio: 47.6 / 42.8; }
-.process-section { position: relative; isolation: isolate; overflow: hidden; }
-.process-section::after { --graphic: url(../assets/brand/sistema/rama.svg); position: absolute; z-index: -1; bottom: -24px; left: max(-18px, calc((100vw - var(--page-width)) / 2 - 170px)); width: clamp(84px, 9vw, 128px); aspect-ratio: 41.5 / 61.1; transform: rotate(-12deg); }
+.faq-copy::after, .story-section .editorial-copy::after, .social-heading::before { content: ''; display: block; pointer-events: none; background: var(--color-lilac); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
+.faq-copy::after { --graphic: url(../assets/brand/sistema/sello-ovalado.svg); width: clamp(88px, 9vw, 118px); aspect-ratio: 52 / 59.5; margin-top: 40px; }
 .story-section .editorial-copy::after { --graphic: url(../assets/brand/sistema/reposteria.svg); width: 128px; aspect-ratio: 53.3 / 19; margin-top: 32px; }
 .social-heading::before { --graphic: url(../assets/brand/sistema/grateful.svg); width: 112px; aspect-ratio: 40.5 / 29.6; margin: 0 auto 18px; }
 @media (max-width: 800px) {
     .faq-copy::after { display: none; }
-    #colecciones .section-heading::after, #inspiracion .section-heading::after, .featured-section .section-heading::after { position: static; order: -1; width: 56px; margin-bottom: -6px; }
-    [data-page=alfajores] #inspiracion .section-heading::after, [data-page=detalles] #inspiracion .section-heading::after { width: 110px; }
-    .process-section::after { width: 72px; bottom: -16px; left: auto; right: -14px; transform: rotate(12deg); }
-    .celebration-section::after { top: 20px; right: 12px; width: 56px; opacity: .8; }
 }
+/* Capa decorativa (js/brand-decor.js): el script calcula --x/--y para que cada gráfico quepa completo y no toque el contenido. Los sellos van sobre la esquina de una foto, como .hero-seal. */
+.has-decor { position: relative; isolation: isolate; overflow: clip; }
+.decor { position: absolute; z-index: -1; pointer-events: none; left: var(--x); top: var(--y); width: var(--w); height: var(--h); rotate: var(--r); scale: var(--flip, 1) 1; background: var(--c); -webkit-mask: var(--g) center / contain no-repeat; mask: var(--g) center / contain no-repeat; }
+.decor-stamp { z-index: 2; background: var(--stamp); border: 6px solid var(--color-cream); border-radius: 50%; rotate: 0deg; -webkit-mask: none; mask: none; }
+.decor-stamp::before { content: ''; position: absolute; inset: 14%; background: var(--c); -webkit-mask: var(--g) center / contain no-repeat; mask: var(--g) center / contain no-repeat; }

@@ -9,8 +9,6 @@
 .category-art { position: relative; display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 14px; }
 .category-art img { width: 100%; aspect-ratio: .77; object-fit: cover; border-radius: 160px 160px var(--radius-sm) var(--radius-sm); }
 .category-art img:last-child { border-radius: var(--radius-sm); aspect-ratio: .8; margin-top: 62px; }
-.category-note { display: flex; gap: 12px; align-items: center; font-size: .6875rem; color: var(--color-text-soft); margin-top: 24px; }
-.category-note .icon { width: 18px; height: 18px; }
 .catalog-section { padding-top: 48px; border-top: 1px solid var(--color-border); }
 .catalog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
 .filters { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -53,7 +51,8 @@
 .flavor h3 { margin-top: 18px; font: 1.25rem var(--font-display); }
 .flavor p { font-size: .75rem; color: var(--color-text-soft); margin-top: 8px; }
 .filling-list { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--color-border); }
-.filling-list h3 { font: italic 1.5rem var(--font-display); }
+.filling-list h3, .flavor-label { font: italic 1.5rem var(--font-display); }
+.flavor-label { margin-bottom: 24px; }
 .filling-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
 .filling-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); }
 .filling-grid figcaption { margin-top: 12px; font-size: .875rem; }
@@ -84,7 +83,6 @@
 .special-cookies { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; margin-top: 72px; padding-top: 48px; border-top: 1px solid var(--color-border); }
 .special-cookies figure { margin: 0; }
 .special-cookies img { width: 100%; max-height: 540px; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-signature); }
-.special-cookies figcaption { margin-top: 12px; color: var(--color-text-soft); font: italic .875rem var(--font-display); }
 .special-cookie-copy h3 { font: clamp(2rem, 3.5vw, 3rem)/1.2 var(--font-display); }
 .special-cookie-copy h3 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); }
 .special-cookie-list { margin-top: 24px; }
@@ -132,7 +130,6 @@
     .category-art { grid-template-columns: 1.1fr .9fr; gap: 16px; }
     .category-art img { aspect-ratio: .95; }
     .category-art img:last-child { aspect-ratio: 1.05; margin-top: 40px; }
-    .category-note { font-size: .6875rem; }
     .catalog-section { padding-top: 36px; }
     .product-grid, .product-grid.four-columns { gap: 28px 14px; }
     .product-grid.two-columns { grid-template-columns: 1fr; gap: 32px; }
@@ -149,20 +146,14 @@
     .flavor-grid { grid-template-columns: 1fr 1fr; gap: 26px 16px; }
     .flavor h3 { font-size: 1.1875rem; }
     .filling-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
-    .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .gallery-button span { bottom: 6px; right: 6px; width: 26px; height: 26px; }
+    .gallery-button span svg { width: 14px; height: 14px; }
     .extras-grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
     .category-banner .container { flex-direction: column; align-items: start; gap: 24px; }
     .cookie-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
 }
-/* Sistema gráfico del brandbook, página 19 (ver css/site.css). */
+/* Sello del isotipo sobre las fotos de cabecera; el resto del sistema gráfico vive en js/brand-decor.js. */
 .category-art::before, .category-art::after { content: ''; position: absolute; z-index: 1; pointer-events: none; }
 .category-art::before { top: -14px; left: -14px; width: 84px; aspect-ratio: 1; border-radius: 50%; background: var(--color-lilac); border: 5px solid var(--color-cream); }
 .category-art::after { top: 2px; left: 2px; width: 52px; aspect-ratio: 1; background: var(--color-white); -webkit-mask: url(../assets/brand/sistema/isotipo-circulo.svg) center / contain no-repeat; mask: url(../assets/brand/sistema/isotipo-circulo.svg) center / contain no-repeat; }
-.category-banner .container::after, .flavor-section .section-heading::after { content: ''; flex-shrink: 0; pointer-events: none; background: var(--color-white); -webkit-mask: var(--graphic) center / contain no-repeat; mask: var(--graphic) center / contain no-repeat; }
-.category-banner .container::after { --graphic: url(../assets/brand/sistema/grito-de-victoria.svg); background: var(--color-lilac); order: -1; width: 84px; aspect-ratio: 1; }
-.flavor-section .section-heading { position: relative; }
-.flavor-section .section-heading::after { --graphic: url(../assets/brand/sistema/mucho-encanto.svg); position: absolute; top: -40px; right: 0; width: clamp(120px, 14vw, 180px); aspect-ratio: 69.7 / 12.2; }
-@media (max-width: 800px) {
-    .category-banner .container::after { display: none; }
-    .flavor-section .section-heading::after { position: static; order: -1; }
-}
