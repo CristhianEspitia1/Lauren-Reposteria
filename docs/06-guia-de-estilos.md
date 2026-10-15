@@ -152,7 +152,7 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Botón secundario | `.btn-secondary` | Borde lila, fondo transparente; hover durazno |
 | Botón claro | `.btn-light` | Crema sobre lila; hover albaricoque |
 | Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página |
-| Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía |
+| Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía. Torta sin precio: «Cotiza por WhatsApp» y «Consultar diseño» |
 | Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
 | Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
 | Casillas | `.toggle-option` | Check y esquina de cinta 3/9 px; marcada en lila |

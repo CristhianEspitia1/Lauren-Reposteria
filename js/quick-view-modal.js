@@ -43,7 +43,7 @@
                             ${p.includes?.length ? `<section class="product-includes" aria-labelledby="productIncludesTitle"><h3 id="productIncludesTitle">Qué incluye</h3><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></section>` : ''}
                             <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>
                             <div class="personal-fields">${this.personalHTML()}</div>
-                            ${p.category === 'tortas' ? '<p class="field-note">El precio corresponde al estilo y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.</p>' : ''}
+                            ${p.category === 'tortas' ? `<p class="field-note">${quote ? 'Te contamos el valor de este diseño por WhatsApp, según las porciones que elijas. Los adicionales se confirman en la asesoría.' : p.reference ? 'Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp.' : 'El precio corresponde al estilo y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.'}</p>` : ''}
                             ${p.id === 'alfajor-individual' ? '<p class="field-note">Mínimo 6 unidades de la misma presentación. El precio mostrado es por unidad o bolsita, según tu elección.</p>' : ''}
                             ${p.id === 'alfajor-personalizado' ? '<p class="field-note">Cada caja trae 6 alfajores decorados con el mismo tema. Afinamos el diseño contigo por WhatsApp.</p>' : ''}
                             ${p.id === 'brownies' ? '<p class="field-note">Los individuales se piden en grupos de mínimo 6. El vaso de minis no incluye toppings.</p>' : ''}
@@ -169,7 +169,8 @@
             if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
             if (Catalog.quoteOnly(this.product)) {
                 const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const message = [`Hola, Laura. Quisiera cotizar ${this.product.name} para mi torta.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
+                const intro = this.product.category === 'tortas' ? `Hola, Laura. Quisiera cotizar esta torta: ${this.product.name}.` : `Hola, Laura. Quisiera cotizar ${this.product.name} para mi torta.`;
+                const message = [intro, Catalog.photo(this.product) && `Foto de referencia: ${Catalog.photo(this.product)}`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
                 window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;
             }

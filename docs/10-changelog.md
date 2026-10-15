@@ -4,6 +4,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Cada torta con su ficha]
+
+- La página de Tortas deja la galería de fotos sueltas: cada foto es una tarjeta de producto que abre la misma ficha de Torta Vintage (qué incluye, porciones, bizcocho, relleno, mensaje y total).
+- Los diseños que ya estaban en las fotos de Torta Vintage o Torta Sencilla toman sus porciones y precios. Los demás usan los precios de Torta Vintage como referencia, con descripción propia y una nota de que el valor final se confirma por WhatsApp.
+- Un diseño sin estilo (`null`) queda listo para el panel: muestra «Cotiza por WhatsApp», se eligen porciones sin precio y la consulta llega a WhatsApp con la foto.
+- El pedido incluye el enlace de la foto de cada diseño, para que Laura sepa cuál es. Los diseños no se repiten en el menú del JSON-LD ni en `llms.txt`.
+
 ## [2026-10-15 — Torta de Alfajor sin frase]
 
 - La Torta de Alfajor ya no ofrece «Mensaje personalizado»: no es personalizable. Solo se elige el tamaño, y el pedido llega a WhatsApp como pedido listo para entregar.

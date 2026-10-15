@@ -103,6 +103,8 @@ class CartManager {
         const lines = [custom ? 'Hola, Laura. Quiero encargar este pedido personalizado:' : 'Hola, Laura. Quiero hacer este pedido:', ''];
         this.cart.forEach((item, index) => {
             lines.push(`*${index + 1}. ${item.name}*`);
+            const photo = Catalog.photo(Catalog.get(item.id));
+            if (photo) lines.push(`Foto de referencia: ${photo}`);
             for (const [key, value] of Object.entries(item.options)) lines.push(`${key}: ${value}`);
             if (item.personalization) lines.push(item.personalization);
             const subtotal = this.formatPrice(item.price * item.quantity);

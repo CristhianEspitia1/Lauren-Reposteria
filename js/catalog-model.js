@@ -83,5 +83,7 @@
     }
     // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
-    window.Catalog = { get, all: () => Object.values(catalogData), money, quoteOnly, defaults, visible, options, choices, price, minimum, maximum, fields, validate, summary, personalText, custom };
+    // Los diseños de Tortas viajan a WhatsApp con su foto, para que Laura sepa cuál es.
+    const photo = product => product?.design ? `https://laurenreposteria.com${product.mainImage}` : '';
+    window.Catalog = { get, all: () => Object.values(catalogData), money, quoteOnly, defaults, visible, options, choices, price, minimum, maximum, fields, validate, summary, personalText, custom, photo };
 })();

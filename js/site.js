@@ -40,12 +40,13 @@
     }
     function productCard(product, sizes, compact) {
         const quoted = Catalog.quoteOnly(product);
-        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product.priceFormatted)}</p></div>${compact ? '' : `<p class="product-description">${esc(descriptions[product.id] || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
+        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="Ver ${esc(product.name)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? (product.category === 'tortas' ? esc(product.priceFormatted) : 'A tu medida') : priceLabel(product.priceFormatted)}</p></div>${compact ? '' : `<p class="product-description">${esc(descriptions[product.id] || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
     }
     const groups = { osos: ['oso-pequeno', 'oso-grande', 'oso-fresas'], mix: ['detalle-brownie', 'detalle-hbd', 'detalle-margarita', 'detalle-mix-1', 'detalle-mix-2'], golden: ['detalle-golden-1', 'detalle-golden-2', 'detalle-golden-3', 'detalle-torta'], cajas: ['caja-x6', 'caja-x12', 'vaso-minis'], especiales: ['torta-alfajor', 'alfajor-personalizado', 'alfajor-individual'] };
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    document.querySelectorAll('[data-products]').forEach(grid => {
-        const products = grid.dataset.products.split(',').map(id => Catalog.get(id.trim())).filter(Boolean);
+    // data-products lista productos por id; data-product-category trae todos los de una categoría.
+    document.querySelectorAll('[data-products], [data-product-category]').forEach(grid => {
+        const products = grid.dataset.productCategory ? Catalog.all().filter(p => p.category === grid.dataset.productCategory) : grid.dataset.products.split(',').map(id => Catalog.get(id.trim())).filter(Boolean);
         const scope = grid.closest('[data-catalog-section]') || grid.parentElement;
         const search = scope.querySelector('[data-product-search]');
         const filters = Array.from(scope.querySelectorAll('[data-filter]'));

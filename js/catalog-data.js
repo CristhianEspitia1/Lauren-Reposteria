@@ -1614,6 +1614,85 @@ const catalogData = {
 
 };
 
+/**
+ * Diseños de la página de Tortas: cada foto abre su propia ficha, como Torta Vintage.
+ * 'vintage' o 'sencilla': toma las porciones, precios y detalles de esa torta.
+ * 'diseño': usa los precios de Torta Vintage como referencia, con descripción propia.
+ * null: las porciones van sin precio y se cotiza por WhatsApp.
+ * Formato: [id, nombre, foto, estilo].
+ */
+const tortaDesigns = [
+    ['galeria-tortas-05', 'Torta corazón lila', '/assets/propuestas-fotograficas/galeria-tortas-05.webp', 'vintage'],
+    ['galeria-tortas-01', 'Torta Vintage · 2', '/assets/propuestas-fotograficas/galeria-tortas-01.webp', 'vintage'],
+    ['galeria-tortas-06', 'Torta vintage con frutos rojos', '/assets/propuestas-fotograficas/galeria-tortas-06.webp', 'vintage'],
+    ['galeria-tortas-07', 'Corazón Hello Kitty', '/assets/propuestas-fotograficas/galeria-tortas-07.webp', 'vintage'],
+    ['galeria-tortas-08', 'Corazón crema con perlas doradas', '/assets/propuestas-fotograficas/galeria-tortas-08.webp', 'vintage'],
+    ['galeria-tortas-09', 'Torta vintage azul', '/assets/propuestas-fotograficas/galeria-tortas-09.webp', 'vintage'],
+    ['galeria-tortas-10', 'Torta corazón roja con moño', '/assets/propuestas-fotograficas/galeria-tortas-10.webp', 'vintage'],
+    ['galeria-tortas-11', 'Torta negra con detalles dorados', '/assets/propuestas-fotograficas/galeria-tortas-11.webp', 'diseño'],
+    ['galeria-tortas-12', 'Noche estrellada sobre pedestal', '/assets/propuestas-fotograficas/galeria-tortas-12.webp', 'diseño'],
+    ['galeria-tortas-13', 'Paw Patrol · Máximo', '/assets/propuestas-fotograficas/galeria-tortas-13.webp', 'diseño'],
+    ['galeria-tortas-02', 'Torta Vintage · 3', '/assets/propuestas-fotograficas/galeria-tortas-02.webp', 'vintage'],
+    ['galeria-tortas-14', 'Torta de Las Chicas Superpoderosas', '/assets/propuestas-fotograficas/galeria-tortas-14.webp', 'diseño'],
+    ['galeria-tortas-15', 'Torta verde para primera comunión', '/assets/propuestas-fotograficas/galeria-tortas-15.webp', 'diseño'],
+    ['galeria-tortas-16', 'Torta con frambuesas y velas', '/assets/propuestas-fotograficas/galeria-tortas-16.webp', 'vintage'],
+    ['galeria-tortas-17', 'Paw Patrol rosa', '/assets/propuestas-fotograficas/galeria-tortas-17.webp', 'diseño'],
+    ['galeria-tortas-18', 'Torta con flores naturales', '/assets/propuestas-fotograficas/galeria-tortas-18.webp', 'diseño'],
+    ['galeria-tortas-19', 'Torta lila con flores', '/assets/propuestas-fotograficas/galeria-tortas-19.webp', 'diseño'],
+    ['galeria-tortas-20', 'Torta de chocolate con galletas', '/assets/propuestas-fotograficas/galeria-tortas-20.webp', 'diseño'],
+    ['galeria-tortas-21', 'Torta roja vintage', '/assets/propuestas-fotograficas/galeria-tortas-21.webp', 'vintage'],
+    ['galeria-tortas-22', 'Torta infantil con banderines', '/assets/propuestas-fotograficas/galeria-tortas-22.webp', 'diseño'],
+    ['galeria-tortas-23', 'Torta corazón en blanco y negro', '/assets/propuestas-fotograficas/galeria-tortas-23.webp', 'vintage'],
+    ['galeria-tortas-24', 'Torta rosada con mensaje', '/assets/propuestas-fotograficas/galeria-tortas-24.webp', 'vintage'],
+    ['galeria-tortas-25', 'Torta Yaisa', '/assets/propuestas-fotograficas/galeria-tortas-25.webp', 'diseño'],
+    ['galeria-tortas-26', 'Torta de quince años con rosas', '/assets/propuestas-fotograficas/galeria-tortas-26.webp', 'diseño'],
+    ['galeria-tortas-27', 'Torta azul para primera comunión', '/assets/propuestas-fotograficas/galeria-tortas-27.webp', 'diseño'],
+    ['galeria-tortas-28', 'Corazón crema y lila', '/assets/propuestas-fotograficas/galeria-tortas-28.webp', 'vintage'],
+    ['galeria-tortas-29', 'Harry Potter en negro y dorado', '/assets/propuestas-fotograficas/galeria-tortas-29.webp', 'diseño'],
+    ['galeria-tortas-30', 'Torta PlayStation · Julián', '/assets/propuestas-fotograficas/galeria-tortas-30.webp', 'diseño'],
+    ['galeria-tortas-31', 'Torta con decoración de celebración', '/assets/propuestas-fotograficas/galeria-tortas-31.webp', 'diseño'],
+    ['galeria-tortas-32', 'Torta vintage · Susana', '/assets/propuestas-fotograficas/galeria-tortas-32.webp', 'vintage'],
+    ['galeria-tortas-33', 'Corazón rojo · Hello 24', '/assets/propuestas-fotograficas/galeria-tortas-33.webp', 'vintage'],
+    ['galeria-tortas-34', 'Torta Mi Grado', '/assets/propuestas-fotograficas/galeria-tortas-34.webp', 'diseño'],
+    ['galeria-tortas-35', 'Torta blanca de 25 años', '/assets/propuestas-fotograficas/galeria-tortas-35.webp', 'diseño'],
+    ['galeria-tortas-36', 'Torta Noche estrellada', '/assets/propuestas-fotograficas/galeria-tortas-36.webp', 'diseño'],
+    ['galeria-tortas-37', 'Torta Hello Kitty', '/assets/propuestas-fotograficas/galeria-tortas-37.webp', 'diseño'],
+    ['galeria-tortas-38', 'Torta LOL Surprise', '/assets/propuestas-fotograficas/galeria-tortas-38.webp', 'diseño'],
+    ['galeria-tortas-39', 'Harry Potter en crema y dorado', '/assets/propuestas-fotograficas/galeria-tortas-39.webp', 'diseño'],
+    ['galeria-tortas-40', 'Torta de sirena · Valery', '/assets/propuestas-fotograficas/galeria-tortas-40.webp', 'diseño'],
+    ['galeria-tortas-41', 'Torta de grado con estrellas', '/assets/propuestas-fotograficas/galeria-tortas-41.webp', 'diseño'],
+    ['galeria-tortas-03', 'Torta Sencilla · 2', '/assets/propuestas-fotograficas/galeria-tortas-03.webp', 'sencilla'],
+    ['galeria-tortas-04', 'Torta Sencilla · 3', '/assets/propuestas-fotograficas/galeria-tortas-04.webp', 'sencilla'],
+    ['torta-rosas-mariposas', 'Torta con rosas y mariposas', '/assets/propuestas-fotograficas/torta-rosas-mariposas.webp', 'vintage'],
+    ['torta-negra-cumpleanos', 'Torta negra de cumpleaños', '/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp', 'diseño'],
+    ['torta-rosa-diecinueve', 'Torta rosa de diecinueve años', '/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp', 'diseño'],
+    ['torta-chocolate-amor', 'Torta de chocolate para celebrar', '/assets/propuestas-fotograficas/torta-chocolate-amor.webp', 'diseño'],
+    ['torta-azul-mami', 'Torta con bordes azules', '/assets/propuestas-fotograficas/torta-azul-mami.webp', 'diseño'],
+    ['torta-amor-amistad', 'Torta de amor y amistad', '/assets/propuestas-fotograficas/torta-amor-amistad.webp', 'diseño'],
+    ['torta-uno', 'Torta Uno', '/assets/propuestas-fotograficas/torta-uno.webp', 'diseño']
+];
+for (const [id, name, image, style] of tortaDesigns) {
+    const base = catalogData[style === 'sencilla' ? 'torta-sencilla' : 'torta-vintage'];
+    const own = !style || style === 'diseño';
+    catalogData[id] = {
+        id,
+        name,
+        design: true,
+        reference: style === 'diseño',
+        quoteOnly: !style,
+        price: style ? base.price : null,
+        priceFormatted: style ? base.priceFormatted : 'Cotiza por WhatsApp',
+        category: 'tortas',
+        description: !own ? base.description : style ? 'Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.' : 'Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; te contamos el valor por WhatsApp.',
+        mainImage: image,
+        images: [image],
+        includes: own ? [...base.includes.slice(0, 3), 'Decoración como la de la foto, hecha a mano'] : base.includes,
+        customizable: true,
+        options: base.options.map(option => style || option.id !== 'porciones' ? option : { ...option, choices: option.choices.map(({ price, ...choice }) => choice) }),
+        personalization: base.personalization
+    };
+}
+
 // Compatibilidad
 const detallesProductsData = catalogData;
 const productCardMapping = {};
