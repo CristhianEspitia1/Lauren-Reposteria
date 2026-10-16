@@ -1585,95 +1585,30 @@ window.catalogData = {
         ],
         "personalization": null
     },
-    "galletas": {
-        "id": "galletas",
-        "name": "Galletas",
+    "galleta-chips": {
+        "id": "galleta-chips",
+        "name": "Galleta Chips con nueces",
         "category": "galletas",
+        "group": "tradicionales",
         "visible": true,
-        "featured": true,
-        "summary": "Seis sabores. Un centro suave que lo dice todo.",
-        "description": "Galletas artesanales horneadas diariamente con ingredientes premium. Cada una tiene su relleno especial según el sabor.",
+        "summary": "Con relleno de Nutella.",
+        "description": "Galleta artesanal de chips con nueces y un centro suave de Nutella. Horneada con ingredientes premium.",
         "includes": [
-            "Galletas artesanales",
+            "Galleta artesanal",
             "Ingredientes premium",
-            "Relleno especial según sabor",
-            "Horneadas frescas bajo pedido"
+            "Relleno de Nutella",
+            "Horneada fresca bajo pedido"
         ],
         "notes": [
-            "Mínimo 3 galletas individuales. La caja surtida incluye 6 unidades de todos los sabores."
+            "Mínimo 3 galletas."
         ],
-        "price": null,
-        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
+        "price": 8000,
+        "mainImage": "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galletas.webp",
-            "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
-            "/assets/propuestas-fotograficas/galeria-galletas-02-r2.webp"
+            "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
+            "/assets/propuestas-fotograficas/galleta-nutella-mano.webp"
         ],
         "options": [
-            {
-                "id": "presentacion",
-                "label": "Presentación",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "individual",
-                        "label": "Galletas individuales",
-                        "price": null
-                    },
-                    {
-                        "value": "caja-surtida",
-                        "label": "Caja surtida x6 (todos los sabores)",
-                        "price": 46000
-                    }
-                ]
-            },
-            {
-                "id": "sabor",
-                "label": "Sabor de la galleta",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "chips",
-                        "label": "Chips con nueces + Nutella (tradicional)",
-                        "price": 8000,
-                        "perUnit": true
-                    },
-                    {
-                        "value": "red-velvet",
-                        "label": "Red velvet con chips blancos + crema de queso (tradicional)",
-                        "price": 8000,
-                        "perUnit": true
-                    },
-                    {
-                        "value": "cocoa",
-                        "label": "Cocoa con chocolate semiamargo y al 70 % (tradicional)",
-                        "price": 8000,
-                        "perUnit": true
-                    },
-                    {
-                        "value": "pistachos",
-                        "label": "Pistachos + chocolate blanco (especial)",
-                        "price": 10000,
-                        "perUnit": true
-                    },
-                    {
-                        "value": "chocolate-blanco",
-                        "label": "Trozos de chocolate blanco + mermelada de frambuesa (especial)",
-                        "price": 10000,
-                        "perUnit": true
-                    },
-                    {
-                        "value": "panelita",
-                        "label": "Panelita Copelia + arequipe (especial)",
-                        "price": 10000,
-                        "perUnit": true
-                    }
-                ],
-                "dependsOn": "presentacion",
-                "showWhen": "individual"
-            },
             {
                 "id": "cantidad",
                 "label": "Número de galletas (mínimo 3)",
@@ -1693,11 +1628,274 @@ window.catalogData = {
                         "label": "12 galletas"
                     }
                 ],
-                "dependsOn": "presentacion",
-                "showWhen": "individual",
                 "multiplier": true
             }
         ],
+        "personalization": null
+    },
+    "galleta-red-velvet": {
+        "id": "galleta-red-velvet",
+        "name": "Galleta Red Velvet",
+        "category": "galletas",
+        "group": "tradicionales",
+        "visible": true,
+        "summary": "Chips blancos y crema de queso.",
+        "description": "Galleta artesanal de red velvet con chips blancos y relleno de crema de queso. Horneada con ingredientes premium.",
+        "includes": [
+            "Galleta artesanal",
+            "Ingredientes premium",
+            "Relleno de crema de queso",
+            "Horneada fresca bajo pedido"
+        ],
+        "notes": [
+            "Mínimo 3 galletas."
+        ],
+        "price": 8000,
+        "mainImage": "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
+            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
+        ],
+        "options": [
+            {
+                "id": "cantidad",
+                "label": "Número de galletas (mínimo 3)",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "3",
+                        "label": "3 galletas"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6 galletas"
+                    },
+                    {
+                        "value": "12",
+                        "label": "12 galletas"
+                    }
+                ],
+                "multiplier": true
+            }
+        ],
+        "personalization": null
+    },
+    "galleta-cocoa": {
+        "id": "galleta-cocoa",
+        "name": "Galleta Cocoa",
+        "category": "galletas",
+        "group": "tradicionales",
+        "visible": true,
+        "summary": "Chocolate semiamargo y al 70 %.",
+        "description": "Galleta artesanal de cocoa con chocolate semiamargo y al 70 %. Horneada con ingredientes premium.",
+        "includes": [
+            "Galleta artesanal",
+            "Ingredientes premium",
+            "Chocolate semiamargo y al 70 %",
+            "Horneada fresca bajo pedido"
+        ],
+        "notes": [
+            "Mínimo 3 galletas."
+        ],
+        "price": 8000,
+        "mainImage": "/assets/propuestas-fotograficas/galleta-chocolate.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galleta-chocolate.webp",
+            "/assets/propuestas-fotograficas/galeria-galletas-02-r2.webp"
+        ],
+        "options": [
+            {
+                "id": "cantidad",
+                "label": "Número de galletas (mínimo 3)",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "3",
+                        "label": "3 galletas"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6 galletas"
+                    },
+                    {
+                        "value": "12",
+                        "label": "12 galletas"
+                    }
+                ],
+                "multiplier": true
+            }
+        ],
+        "personalization": null
+    },
+    "galleta-pistachos": {
+        "id": "galleta-pistachos",
+        "name": "Galleta de Pistachos",
+        "category": "galletas",
+        "group": "especiales",
+        "visible": true,
+        "summary": "Con chocolate blanco.",
+        "description": "Galleta artesanal de pistachos con chocolate blanco. Horneada con ingredientes premium.",
+        "includes": [
+            "Galleta artesanal",
+            "Ingredientes premium",
+            "Chocolate blanco",
+            "Horneada fresca bajo pedido"
+        ],
+        "notes": [
+            "Mínimo 3 galletas."
+        ],
+        "price": 10000,
+        "mainImage": "/assets/propuestas-fotograficas/galleta-pistacho.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galleta-pistacho.webp",
+            "/assets/propuestas-fotograficas/galletas.webp"
+        ],
+        "options": [
+            {
+                "id": "cantidad",
+                "label": "Número de galletas (mínimo 3)",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "3",
+                        "label": "3 galletas"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6 galletas"
+                    },
+                    {
+                        "value": "12",
+                        "label": "12 galletas"
+                    }
+                ],
+                "multiplier": true
+            }
+        ],
+        "personalization": null
+    },
+    "galleta-chocolate-blanco": {
+        "id": "galleta-chocolate-blanco",
+        "name": "Galleta de Chocolate blanco",
+        "category": "galletas",
+        "group": "especiales",
+        "visible": true,
+        "summary": "Con mermelada de frambuesa.",
+        "description": "Galleta artesanal de trozos de chocolate blanco y mermelada de frambuesa. Horneada con ingredientes premium.",
+        "includes": [
+            "Galleta artesanal",
+            "Ingredientes premium",
+            "Mermelada de frambuesa",
+            "Horneada fresca bajo pedido"
+        ],
+        "notes": [
+            "Mínimo 3 galletas."
+        ],
+        "price": 10000,
+        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galletas.webp",
+            "/assets/propuestas-fotograficas/galletas-especiales.webp"
+        ],
+        "options": [
+            {
+                "id": "cantidad",
+                "label": "Número de galletas (mínimo 3)",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "3",
+                        "label": "3 galletas"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6 galletas"
+                    },
+                    {
+                        "value": "12",
+                        "label": "12 galletas"
+                    }
+                ],
+                "multiplier": true
+            }
+        ],
+        "personalization": null
+    },
+    "galleta-panelita": {
+        "id": "galleta-panelita",
+        "name": "Galleta de Panelita Copelia",
+        "category": "galletas",
+        "group": "especiales",
+        "visible": true,
+        "summary": "Con relleno de arequipe.",
+        "description": "Galleta artesanal de Panelita Copelia y relleno de arequipe. Horneada con ingredientes premium.",
+        "includes": [
+            "Galleta artesanal",
+            "Ingredientes premium",
+            "Relleno de arequipe",
+            "Horneada fresca bajo pedido"
+        ],
+        "notes": [
+            "Mínimo 3 galletas."
+        ],
+        "price": 10000,
+        "mainImage": "/assets/propuestas-fotograficas/galletas-especiales.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galletas-especiales.webp",
+            "/assets/propuestas-fotograficas/galletas.webp"
+        ],
+        "options": [
+            {
+                "id": "cantidad",
+                "label": "Número de galletas (mínimo 3)",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "3",
+                        "label": "3 galletas"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6 galletas"
+                    },
+                    {
+                        "value": "12",
+                        "label": "12 galletas"
+                    }
+                ],
+                "multiplier": true
+            }
+        ],
+        "personalization": null
+    },
+    "galletas-caja-surtida": {
+        "id": "galletas-caja-surtida",
+        "name": "Caja surtida de galletas",
+        "category": "galletas",
+        "group": "cajas",
+        "visible": true,
+        "featured": true,
+        "summary": "Los seis sabores en una sola caja.",
+        "description": "Seis galletas artesanales, una de cada sabor: tres tradicionales y tres especiales. Horneadas con ingredientes premium.",
+        "includes": [
+            "6 galletas, una de cada sabor",
+            "Ingredientes premium",
+            "Relleno especial según sabor",
+            "Horneadas frescas bajo pedido"
+        ],
+        "price": 46000,
+        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galletas.webp",
+            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp",
+            "/assets/propuestas-fotograficas/galletas-especiales.webp"
+        ],
+        "options": [],
         "personalization": null
     },
     "oso-pequeno": {

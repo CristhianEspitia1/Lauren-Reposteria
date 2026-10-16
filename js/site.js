@@ -72,9 +72,7 @@
     catalogRenders.push(renderPrices);
     document.addEventListener('click', event => {
         const button = event.target.closest('[data-product]');
-        if (button) window.quickView.open(button.dataset.product, {
-            selection: button.dataset.flavor ? { presentacion: 'individual', sabor: button.dataset.flavor } : undefined
-        });
+        if (button) window.quickView.open(button.dataset.product);
     });
     document.querySelectorAll('[data-extras]').forEach(grid => {
         const render = () => { grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join(''); };

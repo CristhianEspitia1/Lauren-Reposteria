@@ -34,13 +34,13 @@ test('Todas las presentaciones de brownies ignoran opciones ocultas', () => {
     assert.equal(Object.hasOwn(options, 'Topping'), false);
     assert.equal(Catalog.validate(Catalog.get('brownies'), { presentacion: 'vaso-minis' }).length, 0);
 });
-test('18 combinaciones de galletas y caja surtida tienen precio correcto', () => {
-    const flavors = Catalog.get('galletas').options.find(o => o.id === 'sabor').choices;
-    for (const flavor of flavors) for (const qty of ['3', '6', '12']) {
-        assert.equal(price('galletas', { sabor: flavor.value, cantidad: qty }), flavor.price * Number(qty));
-        assert.equal(price('galletas', { presentacion: 'caja-surtida', sabor: flavor.value, cantidad: qty }), 46000);
+test('Cada sabor de galleta cobra su precio por unidad y la caja surtida, $46.000', () => {
+    const flavors = { chips: 8000, 'red-velvet': 8000, cocoa: 8000, pistachos: 10000, 'chocolate-blanco': 10000, panelita: 10000 };
+    for (const [flavor, unit] of Object.entries(flavors)) for (const qty of ['3', '6', '12']) {
+        assert.equal(price(`galleta-${flavor}`, { cantidad: qty }), unit * Number(qty));
     }
-    assert.equal(Catalog.validate(Catalog.get('galletas'), { presentacion: 'caja-surtida' }).length, 0);
+    assert.equal(price('galletas-caja-surtida'), 46000);
+    assert.equal(Catalog.validate(Catalog.get('galletas-caja-surtida'), {}).length, 0);
 });
 test('Golden sencillo/especial y mensaje adicional de oso', () => {
     assert.equal(price('detalle-golden-1'), 88000);
@@ -146,7 +146,7 @@ test('Persistencia, datos corruptos, migración anterior y almacenamiento bloque
     cart.storage = previous;
 });
 test('Cada tarjeta muestra el precio mínimo real y dice «Desde» cuando hay varios precios', () => {
-    const expected = { 'torta-vintage': 'Desde $65.000', 'torta-sencilla': 'Desde $58.000', 'caja-x6': '$22.000', 'alfajor-personalizado': '$60.000 la caja', 'alfajor-individual': 'Desde $2.000 c/u', brownies: 'Desde $24.000', galletas: 'Desde $24.000', 'oso-grande': 'Desde $49.000', 'detalle-golden-1': 'Desde $88.000', 'detalle-torta': '$105.000', 'extra-perlas': '$5.000 - $10.000', 'extra-coronas': 'Precio en asesoría' };
+    const expected = { 'torta-vintage': 'Desde $65.000', 'torta-sencilla': 'Desde $58.000', 'caja-x6': '$22.000', 'alfajor-personalizado': '$60.000 la caja', 'alfajor-individual': 'Desde $2.000 c/u', brownies: 'Desde $24.000', 'galleta-chips': 'Desde $24.000', 'galleta-pistachos': 'Desde $30.000', 'galletas-caja-surtida': '$46.000', 'oso-grande': 'Desde $49.000', 'detalle-golden-1': 'Desde $88.000', 'detalle-torta': '$105.000', 'extra-perlas': '$5.000 - $10.000', 'extra-coronas': 'Precio en asesoría' };
     for (const [id, text] of Object.entries(expected)) assert.equal(Catalog.priceLabel(Catalog.get(id)).text, text, id);
     for (const p of Catalog.all().filter(p => !Catalog.quoteOnly(p))) {
         const { min, max } = Catalog.range(p);
@@ -190,7 +190,7 @@ test('Los importes de los textos salen del catálogo', () => {
     assert.equal(Catalog.priceRefText('@tortas'), '$58.000');
     assert.equal(Catalog.priceRefText('@alfajores'), '$12.000', 'Pedido mínimo: 6 alfajores de $2.000');
     assert.equal(Catalog.priceRefText('torta-vintage?porciones=25-30'), '$235.000');
-    assert.equal(Catalog.priceRefText('galletas?presentacion=caja-surtida'), '$46.000');
+    assert.equal(Catalog.priceRefText('galletas-caja-surtida'), '$46.000');
     assert.equal(Catalog.priceRefText('no-existe'), 'precio a consultar');
 });
 test('Lo que se cobra aparte exige completarse', () => {

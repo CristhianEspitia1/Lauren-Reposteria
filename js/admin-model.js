@@ -7,6 +7,7 @@
     ];
     const GROUPS = {
         alfajores: [['cajas', 'Cajas y minis'], ['especiales', 'Especiales']],
+        galletas: [['tradicionales', 'Tradicionales'], ['especiales', 'Especiales'], ['cajas', 'Caja surtida']],
         detalles: [['osos', 'Con ositos'], ['mix', 'Mix y mensajes'], ['golden', 'Golden y tortas']]
     };
     const IMAGE = /^\/assets\/(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)$/;

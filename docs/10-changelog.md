@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-16 — Panel ordenado y galletas por sabor]
+
+- Centro de control: filtros por página de la web (Tortas reúne bases, diseños y adicionales; Brownies y galletas juntos). Los adicionales de torta se muestran con su icono y ya no llevan fotos; se eliminan las 5 fotos antiguas de `assets/optimized/logos`.
+- Galletas: el producto único se separa en seis productos, uno por sabor (`galleta-chips`, `galleta-red-velvet`, `galleta-cocoa`, `galleta-pistachos`, `galleta-chocolate-blanco`, `galleta-panelita`), y `galletas-caja-surtida`. Mismos precios: $8.000 tradicionales y $10.000 especiales por unidad, mínimo 3; caja surtida $46.000. Grupos del panel: Tradicionales, Especiales y Caja surtida. La rejilla de Brownies y galletas pasa a cuatro columnas y los botones «Elegir este sabor» abren la ficha de cada sabor.
+
 ## [2026-10-15 — Centro de control]
 
 - Nueva página privada `/admin/`: acceso con correo, clave y código de app (doble factor TOTP con Firebase Identity Platform), lista de productos con buscador y filtros, editor de precios por opción, textos, cantidad, visibilidad y fotos de la web, productos nuevos desde la plantilla de su sección y publicación con un botón.
