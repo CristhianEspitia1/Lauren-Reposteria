@@ -7,9 +7,9 @@ Los scripts clásicos se cargan con `defer`, en el orden declarado en cada pági
 | `catalog-data.js` | `catalogData` | Datos comerciales únicos, sin lógica ([formato](12-catalogo.md)) |
 | `catalog-model.js` | `Catalog` | `get`, `all` (solo visibles), `defaults`, `price`, `quote`, `range`, `priceLabel`, `priceRefText`, `minimum`, `validate`, `fields`, `summary` |
 | `brand-icons.js` | `LaurenIcons(nombre)`, `LaurenIcons.names` | SVG por nombre semántico e inventario inmutable; nombres desconocidos devuelven cadena vacía |
-| `ui.js` | `LaurenUI` | `escape`, `imagePath`, `wa`, `open`, `close`, `dialogEvents`, `toast` |
+| `ui.js` | `LaurenUI` | `escape`, `imagePath`, `stripArrow` y `centerInStrip` (fila de fotos), `wa`, `open`, `close`, `dialogEvents`, `toast` |
 | `cart-manager.js` | `cartManager` | Estado, persistencia, edición y resumen de WhatsApp |
-| `quick-view-modal.js` | `quickView` | Configurar o editar un producto |
+| `quick-view-modal.js` | `quickView` | Configurar o editar un producto; foto principal y fila de fotos con flechas, miniaturas y deslizar |
 | `cart-ui.js` | `cartUI` | Diálogo lateral, lista, cantidades, eliminar/deshacer y subtotal |
 | `gallery-data.js` | `galleryData` | Referencias reales por colección |
 | `catalog-live.js` | Evento `catalog:updated` | Lee lo publicado en el centro de control y avisa si cambió |

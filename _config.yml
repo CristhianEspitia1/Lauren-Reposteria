@@ -8,4 +8,5 @@ exclude:
   - Guias/
   - scripts/
   - tests/
+  - worker/
   - "*.ai"

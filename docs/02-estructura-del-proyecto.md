@@ -24,9 +24,11 @@ js/gallery-data.js / site.js      Fotografías e interacción del sitio
 js/image-variants.js             Anchos de las fotos para srcset (generado)
 assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
+assets/subidas/                  Fotos subidas desde el centro de control (las escribe worker/fotos)
 assets/optimized/                Video de la historia y su poster
 assets/favicon.svg               Marca vectorial de la pestaña
 scripts/                         Servidor local, copias responsive, SEO e imágenes sociales
+worker/fotos/                    Cloudflare Worker que guarda las fotos subidas desde /admin/ (no se publica)
 tests/                           Pruebas de lógica y de SEO (Node)
 docs/ / Guias/                   Documentación y mantenimiento
 ```

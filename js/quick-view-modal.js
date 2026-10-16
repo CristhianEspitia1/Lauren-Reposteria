@@ -27,14 +27,14 @@
         }
         render() {
             const p = this.product;
-            const images = [...new Set([p.mainImage, ...(p.images || [])])];
+            const images = [...new Set([p.mainImage, ...(p.images || [])].filter(Boolean))];
             const quoteOnly = Catalog.quoteOnly(p);
             this.dialog.innerHTML = `
                 <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar producto">${icon('close')}</button>
                 <div class="product-dialog-layout">
                     <div class="product-visual">
                         <img id="productMainImage" ${imageAttributes(images[0], '(max-width: 760px) 90vw, 490px')} alt="${esc(p.name)}" width="720" height="900">
-                        ${images.length > 1 ? `<div class="product-thumbnails" aria-label="Vistas del producto">${images.map((src, i) => `<button type="button" data-image="${i}" aria-label="Ver imagen ${i + 1} de ${esc(p.name)}" aria-pressed="${i === 0}"><img ${imageAttributes(src, '52px')} alt="" width="52" height="64" loading="lazy"></button>`).join('')}</div>` : ''}
+                        ${images.length > 1 ? `<div class="photo-strip product-thumbnails">${LaurenUI.stripArrow(-1, 'Foto anterior')}<div class="photo-strip-track" role="group" aria-label="Fotos de ${esc(p.name)}">${images.map((src, i) => `<button type="button" data-image="${i}" aria-label="Ver foto ${i + 1} de ${images.length}" aria-pressed="${i === 0}"><img ${imageAttributes(src, '52px')} alt="" width="52" height="65" loading="lazy"></button>`).join('')}</div>${LaurenUI.stripArrow(1, 'Foto siguiente')}</div>` : ''}
                     </div>
                     <form class="product-form" novalidate>
                         <div class="dialog-scroll">
@@ -55,14 +55,34 @@
                         </div>
                     </form>
                 </div>`;
-            this.dialog.querySelectorAll('[data-image]').forEach(button => {
-                button.addEventListener('click', () => {
-                    const image = this.dialog.querySelector('#productMainImage');
-                    setImageSource(image, images[Number(button.dataset.image)]);
-                    image.alt = `${p.name}, imagen ${Number(button.dataset.image) + 1}`;
-                    this.dialog.querySelectorAll('[data-image]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-                });
-            });
+            // Galería: la foto grande y, debajo, una fila de miniaturas. Las flechas y el deslizar pasan de foto;
+            // la miniatura elegida se centra en la fila cuando se puede (la primera empieza a la izquierda).
+            const image = this.dialog.querySelector('#productMainImage');
+            const show = index => {
+                if (index < 0 || index >= images.length) return;
+                this.imageIndex = index;
+                setImageSource(image, images[index]);
+                image.alt = index ? `${p.name}, foto ${index + 1}` : p.name;
+                const thumbs = [...this.dialog.querySelectorAll('[data-image]')];
+                thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === index)));
+                this.dialog.querySelector('[data-strip-step="-1"]').disabled = index === 0;
+                this.dialog.querySelector('[data-strip-step="1"]').disabled = index === images.length - 1;
+                LaurenUI.centerInStrip(thumbs[index]);
+            };
+            this.imageIndex = 0;
+            if (images.length > 1) {
+                this.dialog.querySelectorAll('[data-image]').forEach(button => button.addEventListener('click', () => show(Number(button.dataset.image))));
+                this.dialog.querySelectorAll('[data-strip-step]').forEach(button => button.addEventListener('click', () => show(this.imageIndex + Number(button.dataset.stripStep))));
+                let startX = null, startY = 0;
+                image.addEventListener('touchstart', event => { startX = event.touches[0].clientX; startY = event.touches[0].clientY; }, { passive: true });
+                image.addEventListener('touchend', event => {
+                    if (startX === null) return;
+                    const dx = event.changedTouches[0].clientX - startX, dy = event.changedTouches[0].clientY - startY;
+                    startX = null;
+                    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(this.imageIndex + (dx < 0 ? 1 : -1));
+                }, { passive: true });
+                show(0);
+            }
             this.dialog.querySelectorAll('[data-option-input]').forEach(input => input.addEventListener('change', () => this.optionChange(input)));
             this.bindPersonal();
             this.dialog.querySelectorAll('[data-quantity]').forEach(button => button.addEventListener('click', () => {

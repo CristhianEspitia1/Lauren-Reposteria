@@ -12,4 +12,4 @@
 
 ## Proyecto
 
-Sitio estático sin build (HTML, CSS y JS vanilla). Vista previa: `node scripts/dev-server.mjs 5173`. Comprobaciones: `node --test tests/*.test.mjs` y `node scripts/seo.mjs --check`. Documentación en [docs/00-indice.md](docs/00-indice.md). No cambiar precios, contactos ni condiciones sin confirmación del negocio.
+Sitio estático sin build (HTML, CSS y JS vanilla). El centro de control sube fotos directamente a `main` (`assets/subidas/`, vía `worker/fotos`): hacer `git pull` antes de trabajar. Vista previa: `node scripts/dev-server.mjs 5173`. Comprobaciones: `node --test tests/*.test.mjs` y `node scripts/seo.mjs --check`. Documentación en [docs/00-indice.md](docs/00-indice.md). No cambiar precios, contactos ni condiciones sin confirmación del negocio.

@@ -114,7 +114,7 @@ La itálica de los titulares grandes lleva debajo una franja albaricoque transl�
 
 Familia **Trazo Lauren** en `js/brand-icons.js`, llamada con `LaurenIcons(nombre)` o `data-icon`. Retícula de 24, trazo 1,5, puntas redondas, `currentColor`, `aria-hidden="true"`; el control aporta el nombre accesible. Trazo 1,2 (`--icon-stroke-display`) para ilustraciones de 40–64 px. Área táctil mínima de 44 px.
 
-En uso: `cake`, `alfajor`, `brownie`, `cookie`, `gift`, `bag`, `arrow` (avanzar), `diagonal` (otra página o salir), `close`, `plus`, `minus`, `menu`, `check`, `search`, `zoom`, `trash`, `chat`, `play`, `pause`, `sound`, `muted`, `expand` y los complementos `bow`/`ribbon`, `butterfly`, `birthday-topper`, `pearls`, `crown`. Un icono nuevo se dibuja con las mismas reglas y se añade al registro. Ni emojis, ni fuentes de iconos, ni dibujos de otro estilo.
+En uso: `cake`, `alfajor`, `brownie`, `cookie`, `gift`, `bag`, `arrow` (avanzar; en espejo, la flecha de atrás de la fila de fotos), `diagonal` (otra página o salir), `close`, `plus`, `minus`, `menu`, `check`, `search`, `zoom`, `trash`, `chat`, `play`, `pause`, `sound`, `muted`, `expand` y los complementos `bow`/`ribbon`, `butterfly`, `birthday-topper`, `pearls`, `crown`. Un icono nuevo se dibuja con las mismas reglas y se añade al registro. Ni emojis, ni fuentes de iconos, ni dibujos de otro estilo.
 
 ## 8. Sistema gráfico
 
@@ -161,6 +161,7 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Contador del pedido | `.cart-count` | Círculo de 22 px junto a la bolsa |
 | Aviso | `.toast` | Lila, radio 12 px, sombra flotante, acción subrayada |
 | WhatsApp flotante | `.contact-fab` | Círculo albaricoque de 52 px, abajo a la derecha |
+| Fila de fotos | `.photo-strip` | Miniaturas 4:5 en una sola línea que se desplaza a lo ancho, nunca en varias filas. A cada lado, una flecha `arrow` en círculo de 44 px, blanco cálido translúcido (65 %) con borde; en hover, durazno; apagada al llegar al extremo. La elegida lleva borde ciruela y se centra en la fila cuando se puede (la primera empieza a la izquierda). En la ficha va debajo de la foto principal; en el centro de control, junto a la principal |
 | Pregunta frecuente | `.faq-item` | Único elemento desplegable; «+» que gira 45° |
 | Fila de producto (centro de control) | `.admin-row` | Foto 4:5 de 56 px, nombre Playfair 20 px (abre la ficha, como «Editar») y precio en tinta suave; «Visible» con la casilla de la ficha y «Editar» como enlace de texto. Etiquetas en píldora: durazno «Oculto», lila «Nuevo» y «Con cambios». Las filas se agrupan bajo una etiqueta (`.eyebrow`) con el grupo y su cuenta: Tortas (todas juntas), Adicionales de torta y cada sección |
 | Barra de publicar (centro de control) | `.admin-savebar` | Blanco cálido, borde, radio 12 px y sombra flotante, abajo al centro; cuenta los cambios y lleva «Descartar» (secundario) y «Publicar cambios» (principal) |
@@ -174,6 +175,8 @@ Estructura de toda página pública: cabecera fija con logo, menú y pedido; con
 - Mesa de lino marfil, pared crema lisa, luz suave de ventana. Producto, decoración y empaque protagonistas.
 - Proporciones: 4:5 en tarjetas, galerías y fichas; 3:2 en sabores; 1:1 en rellenos; video 16:9 con `object-fit: contain`.
 - Al ampliar se ve la foto completa con miniaturas debajo. Mientras carga, el espacio se ve durazno.
+- Ficha de producto: la foto principal grande y, debajo, la fila de fotos (`.photo-strip`) con las demás fotos de la misma referencia. Se cambia de foto con las flechas, tocando una miniatura o deslizando el dedo sobre la foto. Las flechas van en la fila, nunca encima de la foto.
+- Fotos subidas desde el centro de control: se guardan en WebP de 1440 px como máximo. Mejor verticales, en 4:5, como las de la web.
 - Solo fotos reales de Lauren: ni de banco, ni generadas con IA, ni con filtros que cambien el color. Nada encima de la foto salvo los sellos.
 - Inventario: `assets/propuestas-fotograficas/manifest.json`.
 

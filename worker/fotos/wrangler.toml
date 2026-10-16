@@ -1,0 +1,16 @@
+# Cloudflare Worker que guarda en el repositorio las fotos subidas desde el centro de control.
+# Guía en docs/13-centro-de-control.md («Subir fotos nuevas»). El secreto GITHUB_TOKEN se pone con
+#   npx wrangler secret put GITHUB_TOKEN
+# y nunca se escribe en este archivo.
+name = "lauren-fotos"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+
+[vars]
+FIREBASE_PROJECT = "lauren-reposteria"
+GITHUB_REPO = "CristhianEspitia1/Lauren-Reposteria"
+GITHUB_BRANCH = "main"
+ALLOWED_ORIGINS = "https://laurenreposteria.com,https://www.laurenreposteria.com,http://localhost:5173"
+# Opcional: correos que pueden subir fotos, separados por comas. Vacío = cualquier administrador con doble factor.
+ADMIN_EMAILS = ""

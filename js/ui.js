@@ -3,7 +3,8 @@
     'use strict';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const icon = name => window.LaurenIcons(name);
-    const imagePath = value => typeof value === 'string' && /^\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.includes('..') ? value : '/assets/brand/lauren-isotipo.svg';
+    // Fotos de la web: las del inventario, el video y las subidas desde el centro de control (assets/subidas). Igual que AdminModel.IMAGE.
+    const imagePath = value => typeof value === 'string' && /^\/assets\/(?:(?:optimized|propuestas-fotograficas|subidas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.includes('..') ? value : '/assets/brand/lauren-isotipo.svg';
     function imageSources(value, sizes) {
         const src = imagePath(value);
         const width = window.LaurenImageWidths?.[src];
@@ -19,6 +20,17 @@
         const sources = imageSources(value, image.getAttribute('sizes') || '100vw');
         if (!sources.srcset) { image.removeAttribute('srcset'); image.removeAttribute('sizes'); }
         Object.entries(sources).forEach(([name, value]) => image.setAttribute(name, value));
+    }
+    /**
+     * Fila de fotos (`.photo-strip`): miniaturas en una sola línea que se desplaza a lo ancho, con una
+     * flecha translúcida a cada lado. Las flechas usan el icono `arrow` (la de atrás, en espejo).
+     */
+    const stripArrow = (step, label) => `<button type="button" class="photo-strip-arrow" data-strip-step="${step}" aria-label="${escape(label)}">${icon('arrow')}</button>`;
+    function centerInStrip(item) {
+        const track = item?.closest('.photo-strip-track');
+        if (!track) return;
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollTo({ left: item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2, behavior: reduced ? 'instant' : 'smooth' });
     }
     const wa = text => `https://wa.me/573104442796?text=${encodeURIComponent(text)}`;
     const openers = new WeakMap();
@@ -66,5 +78,5 @@
         notice.hidden = false;
         toastTimer = setTimeout(() => { if (!notice.contains(document.activeElement)) notice.hidden = true; }, 6500);
     }
-    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, wa, open, close, dialogEvents, toast };
+    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, stripArrow, centerInStrip, wa, open, close, dialogEvents, toast };
 })();

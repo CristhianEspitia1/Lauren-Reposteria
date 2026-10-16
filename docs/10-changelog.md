@@ -18,6 +18,12 @@ auditoría/cambio.
 - Ficha: secciones en el orden en que se usan (Lo básico, Precios, Fotos, Textos, Lo que elige el cliente, Cantidad, Dónde aparece), aviso en vivo «En la tarjeta se verá…», columnas «Opción» y «Precio», textos sin palabras técnicas, cuadros de texto a la medida de su contenido, «Eliminar producto» al final y confirmación al cerrar con cambios sin guardar.
 - Barra de publicar: «N cambios sin publicar. Aún no se ven en la web.». El selector de fotos ya no usa estilos en línea (los bloquea la CSP).
 
+## [2026-10-16 — Una torta, muchas fotos]
+
+- Ficha de producto: la foto principal grande y, debajo, la fila de fotos (`.photo-strip`) en una sola línea, con flechas translúcidas a los lados, la elegida centrada y cambio de foto deslizando el dedo. Nuevo componente en el manual de marca.
+- Centro de control: la principal grande y las demás en una fila con flechas; «Agregar fotos de la web» deja tocar varias a la vez. La regla «cada foto va en un solo producto» pasa a «la foto principal es única»: las demás fotos pueden repetirse entre tortas.
+- «Subir fotos nuevas»: el panel comprime las fotos y el worker de Cloudflare `worker/fotos` las guarda en `assets/subidas/` del repositorio, con un commit por tanda (sin costo; no usa Firebase Storage). Pruebas en `tests/fotos-worker.test.mjs`.
+
 ## [2026-10-16 — Una foto por producto y editor según el tipo]
 
 - Cada foto va en un solo producto. Torta Vintage y Torta Sencilla dejan de mostrar en su ficha las fotos de los diseños de la galería (cada diseño ya tiene la suya). Galletas: Red Velvet y Pistachos quedan con su foto propia, Panelita con `galletas.webp`, Chocolate blanco con `galletas-especiales.webp` y la caja surtida con `galletas-tres-chocolates.webp`.

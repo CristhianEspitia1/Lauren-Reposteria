@@ -106,6 +106,18 @@
 .admin-picker .admin-photos { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); margin-top: 24px; }
 .admin-picker .admin-photo button { padding: 0; background: transparent; text-align: left; font-size: .6875rem; color: var(--color-text-soft); display: grid; gap: 6px; }
 .admin-picker .admin-photo button:hover img { outline: 2px solid var(--color-lilac); }
+.admin-picker .admin-photo button[aria-pressed=true] img { outline: 2px solid var(--color-text); outline-offset: 2px; }
+.admin-photo-added { display: none; align-items: center; gap: 6px; color: var(--color-text); font-weight: 500; }
+.admin-photo-added svg { width: 14px; height: 14px; }
+.admin-picker .admin-photo button[aria-pressed=true] .admin-photo-added { display: inline-flex; }
+.admin-picker-body { display: grid; grid-template-rows: minmax(0, 1fr) auto; max-height: min(92dvh, 960px); }
+.admin-photo-add { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+/* Fotos del producto: la principal grande y, al lado (debajo en el celular), la fila de las demás. */
+.admin-gallery { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: end; gap: 16px; margin-bottom: 12px; }
+.admin-photo-lead img { width: 160px; }
+.admin-photo-strip .admin-photo { width: 96px; }
+.admin-photo-strip .photo-strip-arrow { align-self: flex-start; margin-top: 38px; }
+.admin-photo-strip .admin-photo-actions { flex-direction: column; align-items: flex-start; }
 
 @media (max-width: 800px) {
     .admin-header-inner { min-height: 75px; }
@@ -119,8 +131,9 @@
     .admin .toast { bottom: 172px; }
     .admin-savebar > div .btn { flex: 1; }
     .admin-editor, .admin-picker { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
-    .admin-editor form { max-height: 100dvh; height: 100%; }
+    .admin-editor form, .admin-picker-body { max-height: 100dvh; height: 100%; }
     .admin-choice { grid-template-columns: minmax(0, 1fr) 118px 44px; }
+    .admin-gallery { grid-template-columns: minmax(0, 1fr); }
     .admin-editor-actions > div { flex: 1; }
     .admin-editor-actions .btn { flex: 1; }
     .admin-editor input, .admin-editor select, .admin-editor textarea { font-size: 16px; }

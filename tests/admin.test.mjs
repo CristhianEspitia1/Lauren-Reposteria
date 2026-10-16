@@ -93,16 +93,26 @@ test('Cuenta productos cambiados, nuevos y eliminados', () => {
     assert.equal(removed.length, 1);
     assert.equal(total, 2);
 });
-test('Cada foto va en un solo producto: el catálogo no repite fotos y el panel no deja repetirlas', () => {
+test('Cada tarjeta tiene su foto principal y la ficha admite más fotos de la misma referencia', () => {
     const list = products();
     const seen = new Map();
-    for (const p of list) for (const src of M.photos(p)) {
-        assert.ok(!seen.has(src), `«${src}» está en ${seen.get(src)} y en ${p.id}`);
-        seen.set(src, p.id);
+    for (const p of list) if (p.mainImage) {
+        assert.ok(!seen.has(p.mainImage), `«${p.mainImage}» es la principal de ${seen.get(p.mainImage)} y de ${p.id}`);
+        seen.set(p.mainImage, p.id);
     }
+    // Más fotos: pueden ser de otras tortas o subidas desde el panel.
     const sencilla = list.find(p => p.id === 'torta-sencilla');
-    sencilla.images.push(list.find(p => p.id === 'galeria-tortas-03').mainImage);
-    assert.ok(M.validate(list).some(e => e.includes('ya está en «Torta Sencilla · 2»')));
+    const subida = `${M.UPLOADED}torta-sencilla-lazo-k3x9a1.webp`;
+    sencilla.images.push(list.find(p => p.id === 'galeria-tortas-03').mainImage, subida);
+    assert.equal(M.validate(list).length, 0);
+    assert.equal(M.normalize(list).find(p => p.id === 'torta-sencilla').images.length, 3);
+    // La principal no se repite entre tarjetas.
+    sencilla.images.unshift(sencilla.images.splice(1, 1)[0]);
+    sencilla.mainImage = sencilla.images[0];
+    assert.ok(M.validate(list).some(e => e.includes('ya es la principal de «Torta Sencilla · 2»')));
+    // Solo se aceptan fotos de la web (las subidas quedan en assets/subidas).
+    assert.equal(M.UPLOADED, '/assets/subidas/');
+    for (const src of ['https://otro-sitio.com/a.webp', '/assets/subidas/a.svg', '/assets/otra/a.webp', '//otro-sitio.com/assets/subidas/a.webp']) assert.ok(!M.IMAGE.test(src), src);
     // Al editar, el producto no choca con su propia versión guardada.
     const edit = M.clone(list.find(p => p.id === 'galleta-pistachos'));
     assert.equal(M.validate([edit], list.filter(p => p.id !== edit.id)).length, 0);
