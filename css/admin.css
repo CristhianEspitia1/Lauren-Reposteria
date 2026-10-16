@@ -44,7 +44,9 @@
 .admin-row p { font-size: .75rem; color: var(--color-text-soft); }
 .admin-row-actions { display: flex; align-items: center; gap: 16px; }
 .admin-row-actions .text-link { background: transparent; }
-.admin-row.is-hidden img { opacity: .45; }
+.admin-row-icon { display: grid; place-items: center; width: 56px; height: 70px; border-radius: var(--radius-sm); background: var(--color-peach); color: var(--color-text); }
+.admin-row-icon svg { width: 28px; height: 28px; }
+.admin-row.is-hidden img, .admin-row.is-hidden .admin-row-icon { opacity: .45; }
 .admin-tag { display: inline-block; border-radius: var(--radius-pill); padding: 1px 8px; margin-left: 6px; background: var(--color-peach); color: var(--color-text); font-size: .6875rem; vertical-align: middle; }
 .admin-tag-change { background: var(--color-lilac); }
 
@@ -98,7 +100,7 @@
     .admin-session span { display: none; }
     .admin-top { flex-direction: column; align-items: stretch; }
     .admin-row { grid-template-columns: 48px minmax(0, 1fr); }
-    .admin-row img { width: 48px; height: 60px; }
+    .admin-row img, .admin-row-icon { width: 48px; height: 60px; }
     .admin-row-actions { grid-column: 2; }
     .admin-savebar { flex-direction: column; align-items: stretch; bottom: 12px; }
     .admin .toast { bottom: 150px; }

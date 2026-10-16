@@ -24,7 +24,7 @@ js/gallery-data.js / site.js      Fotografías e interacción del sitio
 js/image-variants.js             Anchos de las fotos para srcset (generado)
 assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
-assets/optimized/                Video de la historia, su poster y adornos de detalles
+assets/optimized/                Video de la historia y su poster
 assets/favicon.svg               Marca vectorial de la pestaña
 scripts/                         Servidor local, copias responsive, SEO e imágenes sociales
 tests/                           Pruebas de lógica y de SEO (Node)

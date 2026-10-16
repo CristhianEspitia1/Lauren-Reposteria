@@ -198,7 +198,7 @@ function render() {
         const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
-        return `<li class="admin-row${p.visible === false ? ' is-hidden' : ''}"><img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy"><div><h2>${esc(p.name || 'Sin nombre')}${tags}</h2><p>${esc(sectionName(p.category))}${p.design ? ' · diseño de la galería' : ''} · ${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}">Editar ${icon('arrow')}</button></div></li>`;
+        return `<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2>${esc(p.name || 'Sin nombre')}${tags}</h2><p>${esc(sectionName(p.category))}${p.design ? ' · diseño de la galería' : ''} · ${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}">Editar ${icon('arrow')}</button></div></li>`;
     }).join('') || '<li class="admin-count">No encontramos productos con esa búsqueda.</li>';
     const total = M.changes(original, products).total;
     $('saveBar').hidden = total === 0;
@@ -349,7 +349,7 @@ function renderEditor() {
                 ${field('Cantidad mínima', 'minimum', p.minimum ?? 1, { type: 'number' })}
                 ${field('Nombre de la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación' })}
             </div>${personal ? `<p class="field-note">Texto que escribe el cliente: ${esc(personal)}.</p>` : ''}</fieldset>`}
-            ${photosHTML(p)}
+            ${p.category === 'extras' ? '' : photosHTML(p)}
             <p class="field-error" id="editorError" role="alert" hidden></p>
         </div>
         <div class="admin-editor-actions">

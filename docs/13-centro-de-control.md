@@ -15,7 +15,7 @@ Reglas que conviene saber:
 - **Ocultar en vez de eliminar.** La casilla «Visible» quita el producto de la web, del pedido y de Google sin perderlo.
 - **Producto nuevo:** toma la estructura del primero de su sección (opciones, porciones, campos de mensaje) con los precios vacíos, y empieza oculto hasta que marques «Visible».
 - **Diseños de la galería de Tortas:** usan los precios y opciones de su torta base. Si cambias los precios de Torta Vintage, cambian en todos sus diseños. «Ponerle precios propios» los separa.
-- **Fotos:** por ahora se eligen entre las fotos que ya tiene la web. Subir fotos nuevas llega cuando se active Storage en Firebase (plan Blaze, `us-east1`).
+- **Fotos:** por ahora se eligen entre las fotos que ya tiene la web. Subir fotos nuevas llega cuando se active Storage en Firebase (plan Blaze, `us-east1`). Los adicionales de torta no llevan fotos: el panel y la web los muestran con su icono.
 - **Historial:** cada publicación guarda una copia en Firestore (`historial`), para recuperar una versión anterior si hace falta.
 
 ## Cómo funciona

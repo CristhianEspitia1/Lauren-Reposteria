@@ -58,7 +58,7 @@ test('Los datos estructurados describen el negocio, la carta y las preguntas vis
         const items = byType('MenuSection')[0].hasMenuItem;
         assert.ok(items.length > 0);
         for (const item of items) {
-            for (const image of item.image) assert.ok(exists(image.replace(ORIGIN, '')), `${item.name}: ${image}`);
+            for (const image of item.image || []) assert.ok(exists(image.replace(ORIGIN, '')), `${item.name}: ${image}`);
             if (item.offers) assert.ok(item.offers.price > 0 && item.offers.priceCurrency === 'COP');
         }
     }

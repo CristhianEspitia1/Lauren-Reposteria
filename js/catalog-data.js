@@ -1175,8 +1175,6 @@ window.catalogData = {
         "price": 2000,
         "priceMax": 3000,
         "icon": "bow",
-        "mainImage": "/assets/optimized/logos/detalles-adicionales/mono.webp",
-        "images": [],
         "options": [],
         "personalization": null
     },
@@ -1189,8 +1187,6 @@ window.catalogData = {
         "price": 2000,
         "priceMax": 3000,
         "icon": "butterfly",
-        "mainImage": "/assets/optimized/logos/detalles-adicionales/mariposa.webp",
-        "images": [],
         "options": [],
         "personalization": null
     },
@@ -1203,8 +1199,6 @@ window.catalogData = {
         "price": 5000,
         "priceMax": 8000,
         "icon": "birthday-topper",
-        "mainImage": "/assets/optimized/logos/detalles-adicionales/hb-1.webp",
-        "images": [],
         "options": [],
         "personalization": null
     },
@@ -1217,8 +1211,6 @@ window.catalogData = {
         "price": 5000,
         "priceMax": 10000,
         "icon": "pearls",
-        "mainImage": "/assets/optimized/logos/detalles-adicionales/perla.webp",
-        "images": [],
         "options": [],
         "personalization": null
     },
@@ -1230,8 +1222,6 @@ window.catalogData = {
         "description": "Diseños personalizados y únicos de coronas.",
         "price": null,
         "icon": "crown",
-        "mainImage": "/assets/optimized/logos/detalles-adicionales/corona.webp",
-        "images": [],
         "options": [],
         "personalization": null
     },

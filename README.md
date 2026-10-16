@@ -30,7 +30,7 @@ HTML, CSS y JavaScript sin framework. Hosting configurado para GitHub Pages y do
 | `js/site.js`, `js/gallery-data.js` | Navegación, colecciones, galerías y reproductor |
 | `js/image-variants.js`, `scripts/optimize-photography.mjs` | Copias responsive de las fotos aprobadas; mantenimiento en [rendimiento](docs/08-performance.md) |
 | `css/tokens.css`, `site.css`, `catalog.css`, `dialogs.css` | Identidad y componentes responsive |
-| `assets/optimized/` | Video de la historia, su poster y adornos de detalles |
+| `assets/optimized/` | Video de la historia y su poster |
 | `assets/brand/` | Logotipos, sello e isotipo SVG de la marca |
 | `assets/propuestas-fotograficas/` | Fotografías WebP del sitio, sus copias responsive y el inventario `manifest.json` |
 | `tests/catalog.test.mjs` | Pruebas de precios, validaciones, persistencia y pedido |

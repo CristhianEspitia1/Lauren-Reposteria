@@ -59,6 +59,7 @@
                 if (Array.isArray(product[key])) product[key] = product[key].map(line => line.trim()).filter(Boolean);
                 if (Array.isArray(product[key]) && !product[key].length) delete product[key];
             }
+            if (product.category === 'extras') { delete product.mainImage; delete product.images; }
             if (product.images) product.images = [...new Set(product.images.filter(Boolean))];
             if (!product.mainImage && product.images?.length) product.mainImage = product.images[0];
             if (product.minimum === 1 || product.minimum === null) delete product.minimum;

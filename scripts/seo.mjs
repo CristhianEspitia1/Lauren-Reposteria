@@ -108,8 +108,9 @@ export function faqs(html) {
 
 function menuItem(product, page) {
     const range = priceRange(product);
-    const images = [...new Set([product.mainImage, ...(product.images || [])])].map(abs);
-    const item = { '@type': 'MenuItem', '@id': `${ORIGIN}${page.path}#${product.id}`, name: product.name, description: product.description, image: images };
+    const images = [...new Set([product.mainImage, ...(product.images || [])].filter(Boolean))].map(abs);
+    const item = { '@type': 'MenuItem', '@id': `${ORIGIN}${page.path}#${product.id}`, name: product.name, description: product.description };
+    if (images.length) item.image = images;
     if (range) {
         const offer = { '@type': 'Offer', price: range.min, priceCurrency: 'COP', availability: 'https://schema.org/MadeToOrder', url: ORIGIN + page.path, seller: { '@id': `${ORIGIN}/#bakery` } };
         if (range.max > range.min) offer.priceSpecification = { '@type': 'PriceSpecification', minPrice: range.min, maxPrice: range.max, priceCurrency: 'COP' };

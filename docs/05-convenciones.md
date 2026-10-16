@@ -23,7 +23,7 @@ Al añadir una fotografía nueva, nombrarla así antes de copiarla al proyecto.
 
 - `assets/propuestas-fotograficas/` para las fotografías publicadas (WebP) y
   `responsive/` para sus copias generadas.
-- `assets/optimized/` para el video de la historia, su poster y los adornos.
+- `assets/optimized/` para el video de la historia y su poster.
 - Los originales y el material de referencia se guardan fuera del repositorio.
 
 ## HTML

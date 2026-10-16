@@ -22,7 +22,7 @@
 | `minimum` | No | Cantidad mínima por pedido (por defecto 1) |
 | `quantityLabel` | No | Rótulo de la cantidad (por defecto «Cantidad de esta presentación») |
 | `icon` | No | Solo extras: icono de `LaurenIcons` |
-| `mainImage`, `images` | Sí | Foto principal y galería de la ficha, rutas de `assets/` |
+| `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
 | `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva |
 | `design` | No | Diseño de la galería de Tortas: su pedido viaja a WhatsApp con el enlace de la foto y no se repite en el JSON-LD |
