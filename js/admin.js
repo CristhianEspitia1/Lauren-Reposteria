@@ -170,7 +170,10 @@ async function loadCatalog() {
     renderFilters(); render();
 }
 
-const FILTERS = [['all', 'Todos'], ...M.SECTIONS, ['designs', 'Diseños de la galería'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
+// Los filtros siguen las páginas de la web: cada torta (base, diseño o adicional) en Tortas, brownies y galletas juntos.
+const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], horneados: ['Brownies y galletas', ['brownies', 'galletas']], detalles: ['Detalles', ['detalles']] };
+const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
+const rank = p => p.design ? 1 : p.category === 'extras' ? 2 : 0;
 function renderFilters() {
     $('filters').innerHTML = FILTERS.map(([id, label]) => `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)}</button>`).join('');
 }
@@ -187,12 +190,11 @@ function render() {
     const { changed } = M.changes(original, products);
     const search = normalizeText($('search').value.trim());
     const shown = products.filter(p => {
-        if (filter === 'designs' && !p.design) return false;
         if (filter === 'hidden' && p.visible !== false) return false;
         if (filter === 'changed' && !changed.includes(p.id)) return false;
-        if (M.SECTIONS.some(([id]) => id === filter) && (p.category !== filter || p.design)) return false;
+        if (PAGES[filter] && !PAGES[filter][1].includes(p.category)) return false;
         return !search || normalizeText(`${p.name} ${sectionName(p.category)}`).includes(search);
-    });
+    }).sort((a, b) => PAGES[filter] ? rank(a) - rank(b) : 0);
     $('count').textContent = `${shown.length} ${shown.length === 1 ? 'producto' : 'productos'}`;
     $('list').innerHTML = shown.map(p => {
         const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;

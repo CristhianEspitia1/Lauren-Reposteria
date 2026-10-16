@@ -5,7 +5,7 @@ Página privada para cambiar productos, precios, textos y fotos sin tocar códig
 ## Cómo se usa
 
 1. **Entrar:** correo y clave. Después, el código de 6 dígitos de la app de códigos (Google Authenticator u otra). La primera vez, el panel muestra un código QR para configurar la app.
-2. **Buscar el producto:** con el buscador o los filtros por sección (Tortas, Adicionales, Alfajores, Brownies, Galletas, Detalles, Diseños de la galería, Ocultos, Con cambios).
+2. **Buscar el producto:** con el buscador o los filtros, que siguen las páginas de la web: Tortas (las dos bases, los diseños de la galería y los adicionales, en ese orden), Alfajores (incluye la Torta de Alfajor), Brownies y galletas, Detalles, Ocultos y Con cambios.
 3. **Editar:** «Editar» abre la ficha con nombre, sección, filtro, visibilidad, precios por opción (porciones, tamaños, presentaciones), textos, cantidad mínima y fotos. «Guardar» deja el cambio en tu borrador.
 4. **Publicar:** la barra de abajo cuenta los cambios. «Publicar cambios» los envía y la web los muestra al recargar. «Descartar» vuelve a lo publicado.
 
