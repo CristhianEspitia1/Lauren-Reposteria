@@ -170,8 +170,8 @@ async function loadCatalog() {
     renderFilters(); render();
 }
 
-// Los filtros siguen las páginas de la web: cada torta (base, diseño o adicional) en Tortas, brownies y galletas juntos.
-const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], horneados: ['Brownies y galletas', ['brownies', 'galletas']], detalles: ['Detalles', ['detalles']] };
+// Un filtro por tipo de producto: cada torta (base, diseño o adicional) en Tortas; brownies y galletas, cada uno en el suyo.
+const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
 const rank = p => p.design ? 1 : p.category === 'extras' ? 2 : 0;
 function renderFilters() {
