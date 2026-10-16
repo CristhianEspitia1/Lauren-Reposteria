@@ -171,7 +171,8 @@
             if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
             if (Catalog.quote(this.product, this.selection)) {
                 const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const message = [`Hola, Laura. Quisiera cotizar ${this.product.name}${Catalog.quoteOnly(this.product) ? ' para mi torta' : ''}.`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
+                const intro = this.product.category === 'tortas' ? `Hola, Laura. Quisiera cotizar esta torta: ${this.product.name}.` : `Hola, Laura. Quisiera cotizar ${this.product.name}${Catalog.quoteOnly(this.product) ? ' para mi torta' : ''}.`;
+                const message = [intro, Catalog.photo(this.product) && `Foto de referencia: ${Catalog.photo(this.product)}`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
                 window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;
             }

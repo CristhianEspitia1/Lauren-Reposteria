@@ -165,7 +165,7 @@ function graph(page, html) {
             '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb`,
             itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: `${ORIGIN}/` }, { '@type': 'ListItem', position: 2, name: page.name, item: url }]
         });
-        if (page.section) nodes.push({ '@type': 'MenuSection', '@id': `${url}#menu`, name: page.section, url, hasMenuItem: productsOf(page.categories).map(p => menuItem(p, page)) });
+        if (page.section) nodes.push({ '@type': 'MenuSection', '@id': `${url}#menu`, name: page.section, url, hasMenuItem: productsOf(page.categories).filter(p => !p.design).map(p => menuItem(p, page)) });
     } else {
         nodes.push({
             '@type': 'Menu', '@id': `${ORIGIN}/#menu`, name: `Carta de ${BUSINESS.name}`, inLanguage: 'es-CO',
@@ -257,7 +257,7 @@ function sitemap(pages) {
 
 function llms() {
     const sections = PAGES.filter(p => p.section).map(page => {
-        const items = productsOf(page.categories).map(product => {
+        const items = productsOf(page.categories).filter(p => !p.design).map(product => {
             const range = priceRange(product);
             const price = !range ? 'precio según diseño' : range.max > range.min ? `desde ${money(range.min)}` : money(range.min);
             const unit = range?.minimum > 1 ? ` por unidad, mínimo ${range.minimum}` : '';

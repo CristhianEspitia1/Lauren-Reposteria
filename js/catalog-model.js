@@ -4,8 +4,18 @@
     const money = value => '$' + new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value);
     // Un producto oculto desde el centro de control no se muestra, no se pide y no se indexa.
     const shown = product => product.visible !== false;
-    const get = id => Object.hasOwn(catalogData, id) && shown(catalogData[id]) ? catalogData[id] : null;
-    const all = () => Object.values(catalogData).filter(shown);
+    // `basedOn`: un diseño toma de su torta base lo que no define (opciones, precios, notas, textos).
+    // Si cambia el precio de la base, cambia en todos sus diseños.
+    const inherited = ['description', 'includes', 'notes', 'price', 'priceSuffix', 'minimum', 'quantityLabel', 'options', 'personalization'];
+    const expanded = new WeakMap();
+    function expand(product) {
+        const base = product.basedOn && Object.hasOwn(catalogData, product.basedOn) ? catalogData[product.basedOn] : null;
+        if (!base || base.basedOn) return product;
+        if (!expanded.has(product)) expanded.set(product, { ...Object.fromEntries(inherited.filter(key => key in base).map(key => [key, base[key]])), ...product });
+        return expanded.get(product);
+    }
+    const get = id => Object.hasOwn(catalogData, id) && shown(catalogData[id]) ? expand(catalogData[id]) : null;
+    const all = () => Object.values(catalogData).filter(shown).map(expand);
     const quoteOnly = product => product.category === 'extras' || product.quoteOnly === true;
     function visible(option, selection) {
         if (!option.dependsOn) return true;
@@ -140,5 +150,7 @@
     }
     // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
-    window.Catalog = { get, all, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    // Los diseños de Tortas viajan a WhatsApp con su foto, para que Laura sepa cuál es.
+    const photo = product => product?.design ? `https://laurenreposteria.com${product.mainImage}` : '';
+    window.Catalog = { get, all, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

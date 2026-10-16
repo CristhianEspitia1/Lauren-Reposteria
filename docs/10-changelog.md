@@ -11,6 +11,14 @@ auditoría/cambio.
 - El precio de cada tarjeta se calcula desde las opciones; se elimina `priceFormatted`. Los precios de las preguntas frecuentes e introducciones se enlazan al catálogo con `data-price`.
 - Precio vacío: la tarjeta dice «Cotiza por WhatsApp» y, en la ficha, una elección sin precio cambia el total por «Consultar por WhatsApp». `visible: false` oculta un producto de la web, del pedido y del SEO.
 - Las páginas listan sus productos por categoría: un producto nuevo aparece solo en su sección. Los precios publicados no cambian.
+- Los diseños de la galería de Tortas pasan al mismo formato con `basedOn`: heredan opciones, precios y notas de Torta Vintage o Torta Sencilla, así que un cambio de precio en la torta base llega a todos sus diseños.
+
+## [2026-10-15 — Cada torta con su ficha]
+
+- La página de Tortas deja la galería de fotos sueltas: cada foto es una tarjeta de producto que abre la misma ficha de Torta Vintage (qué incluye, porciones, bizcocho, relleno, mensaje y total).
+- Los diseños que ya estaban en las fotos de Torta Vintage o Torta Sencilla toman sus porciones y precios. Los demás usan los precios de Torta Vintage como referencia, con descripción propia y una nota de que el valor final se confirma por WhatsApp.
+- Un diseño sin estilo (`null`) queda listo para el panel: muestra «Cotiza por WhatsApp», se eligen porciones sin precio y la consulta llega a WhatsApp con la foto.
+- El pedido incluye el enlace de la foto de cada diseño, para que Laura sepa cuál es. Los diseños no se repiten en el menú del JSON-LD ni en `llms.txt`.
 
 ## [2026-10-15 — Torta de Alfajor sin frase]
 

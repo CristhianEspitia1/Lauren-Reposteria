@@ -260,6 +260,912 @@ window.catalogData = {
             "required": false
         }
     },
+    "galeria-tortas-05": {
+        "id": "galeria-tortas-05",
+        "name": "Torta corazón lila",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-05.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-05.webp"
+        ]
+    },
+    "galeria-tortas-01": {
+        "id": "galeria-tortas-01",
+        "name": "Torta Vintage · 2",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-01.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-01.webp"
+        ]
+    },
+    "galeria-tortas-06": {
+        "id": "galeria-tortas-06",
+        "name": "Torta vintage con frutos rojos",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-06.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-06.webp"
+        ]
+    },
+    "galeria-tortas-07": {
+        "id": "galeria-tortas-07",
+        "name": "Corazón Hello Kitty",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-07.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-07.webp"
+        ]
+    },
+    "galeria-tortas-08": {
+        "id": "galeria-tortas-08",
+        "name": "Corazón crema con perlas doradas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-08.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-08.webp"
+        ]
+    },
+    "galeria-tortas-09": {
+        "id": "galeria-tortas-09",
+        "name": "Torta vintage azul",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-09.webp"
+        ]
+    },
+    "galeria-tortas-10": {
+        "id": "galeria-tortas-10",
+        "name": "Torta corazón roja con moño",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-10.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-10.webp"
+        ]
+    },
+    "galeria-tortas-11": {
+        "id": "galeria-tortas-11",
+        "name": "Torta negra con detalles dorados",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-11.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-11.webp"
+        ]
+    },
+    "galeria-tortas-12": {
+        "id": "galeria-tortas-12",
+        "name": "Noche estrellada sobre pedestal",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-12.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-12.webp"
+        ]
+    },
+    "galeria-tortas-13": {
+        "id": "galeria-tortas-13",
+        "name": "Paw Patrol · Máximo",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-13.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-13.webp"
+        ]
+    },
+    "galeria-tortas-02": {
+        "id": "galeria-tortas-02",
+        "name": "Torta Vintage · 3",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-02.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-02.webp"
+        ]
+    },
+    "galeria-tortas-14": {
+        "id": "galeria-tortas-14",
+        "name": "Torta de Las Chicas Superpoderosas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-14.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-14.webp"
+        ]
+    },
+    "galeria-tortas-15": {
+        "id": "galeria-tortas-15",
+        "name": "Torta verde para primera comunión",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-15.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-15.webp"
+        ]
+    },
+    "galeria-tortas-16": {
+        "id": "galeria-tortas-16",
+        "name": "Torta con frambuesas y velas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-16.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-16.webp"
+        ]
+    },
+    "galeria-tortas-17": {
+        "id": "galeria-tortas-17",
+        "name": "Paw Patrol rosa",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-17.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-17.webp"
+        ]
+    },
+    "galeria-tortas-18": {
+        "id": "galeria-tortas-18",
+        "name": "Torta con flores naturales",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-18.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-18.webp"
+        ]
+    },
+    "galeria-tortas-19": {
+        "id": "galeria-tortas-19",
+        "name": "Torta lila con flores",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-19.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-19.webp"
+        ]
+    },
+    "galeria-tortas-20": {
+        "id": "galeria-tortas-20",
+        "name": "Torta de chocolate con galletas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-20.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-20.webp"
+        ]
+    },
+    "galeria-tortas-21": {
+        "id": "galeria-tortas-21",
+        "name": "Torta roja vintage",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-21.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-21.webp"
+        ]
+    },
+    "galeria-tortas-22": {
+        "id": "galeria-tortas-22",
+        "name": "Torta infantil con banderines",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-22.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-22.webp"
+        ]
+    },
+    "galeria-tortas-23": {
+        "id": "galeria-tortas-23",
+        "name": "Torta corazón en blanco y negro",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-23.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-23.webp"
+        ]
+    },
+    "galeria-tortas-24": {
+        "id": "galeria-tortas-24",
+        "name": "Torta rosada con mensaje",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-24.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-24.webp"
+        ]
+    },
+    "galeria-tortas-25": {
+        "id": "galeria-tortas-25",
+        "name": "Torta Yaisa",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-25.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-25.webp"
+        ]
+    },
+    "galeria-tortas-26": {
+        "id": "galeria-tortas-26",
+        "name": "Torta de quince años con rosas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-26.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-26.webp"
+        ]
+    },
+    "galeria-tortas-27": {
+        "id": "galeria-tortas-27",
+        "name": "Torta azul para primera comunión",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-27.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-27.webp"
+        ]
+    },
+    "galeria-tortas-28": {
+        "id": "galeria-tortas-28",
+        "name": "Corazón crema y lila",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-28.webp"
+        ]
+    },
+    "galeria-tortas-29": {
+        "id": "galeria-tortas-29",
+        "name": "Harry Potter en negro y dorado",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-29.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-29.webp"
+        ]
+    },
+    "galeria-tortas-30": {
+        "id": "galeria-tortas-30",
+        "name": "Torta PlayStation · Julián",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-30.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-30.webp"
+        ]
+    },
+    "galeria-tortas-31": {
+        "id": "galeria-tortas-31",
+        "name": "Torta con decoración de celebración",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-31.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-31.webp"
+        ]
+    },
+    "galeria-tortas-32": {
+        "id": "galeria-tortas-32",
+        "name": "Torta vintage · Susana",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-32.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-32.webp"
+        ]
+    },
+    "galeria-tortas-33": {
+        "id": "galeria-tortas-33",
+        "name": "Corazón rojo · Hello 24",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-33.webp"
+        ]
+    },
+    "galeria-tortas-34": {
+        "id": "galeria-tortas-34",
+        "name": "Torta Mi Grado",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-34.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-34.webp"
+        ]
+    },
+    "galeria-tortas-35": {
+        "id": "galeria-tortas-35",
+        "name": "Torta blanca de 25 años",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-35.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-35.webp"
+        ]
+    },
+    "galeria-tortas-36": {
+        "id": "galeria-tortas-36",
+        "name": "Torta Noche estrellada",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-36.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-36.webp"
+        ]
+    },
+    "galeria-tortas-37": {
+        "id": "galeria-tortas-37",
+        "name": "Torta Hello Kitty",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-37.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-37.webp"
+        ]
+    },
+    "galeria-tortas-38": {
+        "id": "galeria-tortas-38",
+        "name": "Torta LOL Surprise",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-38.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-38.webp"
+        ]
+    },
+    "galeria-tortas-39": {
+        "id": "galeria-tortas-39",
+        "name": "Harry Potter en crema y dorado",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-39.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-39.webp"
+        ]
+    },
+    "galeria-tortas-40": {
+        "id": "galeria-tortas-40",
+        "name": "Torta de sirena · Valery",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-40.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-40.webp"
+        ]
+    },
+    "galeria-tortas-41": {
+        "id": "galeria-tortas-41",
+        "name": "Torta de grado con estrellas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-41.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-41.webp"
+        ]
+    },
+    "galeria-tortas-03": {
+        "id": "galeria-tortas-03",
+        "name": "Torta Sencilla · 2",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-sencilla",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-03.webp"
+        ]
+    },
+    "galeria-tortas-04": {
+        "id": "galeria-tortas-04",
+        "name": "Torta Sencilla · 3",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-sencilla",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-04.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-04.webp"
+        ]
+    },
+    "torta-rosas-mariposas": {
+        "id": "torta-rosas-mariposas",
+        "name": "Torta con rosas y mariposas",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "mainImage": "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp"
+        ]
+    },
+    "torta-negra-cumpleanos": {
+        "id": "torta-negra-cumpleanos",
+        "name": "Torta negra de cumpleaños",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp"
+        ]
+    },
+    "torta-rosa-diecinueve": {
+        "id": "torta-rosa-diecinueve",
+        "name": "Torta rosa de diecinueve años",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp"
+        ]
+    },
+    "torta-chocolate-amor": {
+        "id": "torta-chocolate-amor",
+        "name": "Torta de chocolate para celebrar",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-chocolate-amor.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-chocolate-amor.webp"
+        ]
+    },
+    "torta-azul-mami": {
+        "id": "torta-azul-mami",
+        "name": "Torta con bordes azules",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-azul-mami.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-azul-mami.webp"
+        ]
+    },
+    "torta-amor-amistad": {
+        "id": "torta-amor-amistad",
+        "name": "Torta de amor y amistad",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-amor-amistad.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-amor-amistad.webp"
+        ]
+    },
+    "torta-uno": {
+        "id": "torta-uno",
+        "name": "Torta Uno",
+        "category": "tortas",
+        "visible": true,
+        "design": true,
+        "basedOn": "torta-vintage",
+        "reference": true,
+        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno premium",
+            "Decoración como la de la foto, hecha a mano"
+        ],
+        "notes": [
+            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+        ],
+        "mainImage": "/assets/propuestas-fotograficas/torta-uno.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-uno.webp"
+        ]
+    },
     "extra-monos": {
         "id": "extra-monos",
         "name": "Moños (lacitos)",

@@ -6,7 +6,7 @@ Sitio estático, sin build ni backend. Las cinco páginas públicas comparten es
 
 Inicio → colección → producto → presentación, sabores y personalización → pedido → consulta por WhatsApp. El visitante puede editar opciones, cambiar cantidades, eliminar y deshacer antes de abrir WhatsApp. La consulta no confirma una compra, fecha ni pago.
 
-Los productos por cotización abren una consulta con sus opciones y mensaje. Las galerías permiten ampliar una referencia y consultar un diseño inspirado en esa fotografía.
+Los productos por cotización abren una consulta con sus opciones y mensaje. En Tortas, cada foto es un diseño con su propia ficha (`tortaDesigns` en `catalog-data.js`): con estilo vintage o sencilla usa sus porciones y precios; con estilo `diseño` usa los de Torta Vintage como referencia; sin estilo (`null`) se eligen las porciones sin precio y se cotiza por WhatsApp con la foto de referencia. Las galerías permiten ampliar una referencia y consultar un diseño inspirado en esa fotografía.
 
 ## Responsabilidades
 
