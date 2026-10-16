@@ -1,6 +1,6 @@
 # Catálogo de productos
 
-`js/catalog-data.js` guarda solo datos (JSON dentro de `window.catalogData`), sin lógica. Es el formato que editará el centro de control: cada producto es un objeto con los campos de esta tabla, y la web lo muestra sin tocar HTML ni JS. Las reglas (precio, validación, etiquetas) viven en `js/catalog-model.js`.
+`js/catalog-data.js` guarda solo datos (JSON dentro de `window.catalogData`), sin lógica. Es el mismo formato que publica el [centro de control](13-centro-de-control.md) en Firestore: cada producto es un objeto con los campos de esta tabla, y la web lo muestra sin tocar HTML ni JS. Las reglas (precio, validación, etiquetas) viven en `js/catalog-model.js`.
 
 ## Campos de un producto
 
@@ -25,6 +25,9 @@
 | `mainImage`, `images` | Sí | Foto principal y galería de la ficha, rutas de `assets/` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
 | `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva |
+| `design` | No | Diseño de la galería de Tortas: su pedido viaja a WhatsApp con el enlace de la foto y no se repite en el JSON-LD |
+| `basedOn` | No | Torta base (`torta-vintage`, `torta-sencilla`) de la que hereda lo que no define: opciones, precios, notas, textos, mínimo |
+| `reference` | No | El precio es de referencia (diseño propio con precios de la torta base) |
 
 ## Opciones y precios
 

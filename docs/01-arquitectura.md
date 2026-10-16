@@ -1,6 +1,6 @@
 # Arquitectura
 
-Sitio estático, sin build ni backend. Las cinco páginas públicas comparten estilos, reglas del catálogo, iconografía y diálogos. El hosting sirve archivos; el navegador construye el pedido y prepara un enlace de WhatsApp.
+Sitio estático, sin build. El único servicio externo es Firebase: el [centro de control](13-centro-de-control.md) publica el catálogo en Firestore y la web lo lee en vivo, con `js/catalog-data.js` como copia local. Las cinco páginas públicas comparten estilos, reglas del catálogo, iconografía y diálogos. El hosting sirve archivos; el navegador construye el pedido y prepara un enlace de WhatsApp.
 
 ## Recorrido
 

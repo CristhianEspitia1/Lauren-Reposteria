@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Centro de control | Lauren Repostería</title>
+<meta name="theme-color" content="#f9f5ec">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/dialogs.css">
+<link rel="stylesheet" href="/css/admin.css">
+<script src="/js/catalog-data.js" defer></script>
+<script src="/js/catalog-model.js" defer></script>
+<script src="/js/brand-icons.js" defer></script>
+<script src="/js/ui.js" defer></script>
+<script src="/js/firebase-config.js" defer></script>
+<script src="/js/vendor/qrcode.min.js" defer></script>
+<script src="/js/admin-model.js" defer></script>
+<script src="/js/admin.js" type="module"></script>
+</head>
+<body class="admin">
+<header class="admin-header">
+<div class="container admin-header-inner">
+<a class="brand" href="/" aria-label="Ver la web de Lauren Repostería">
+<img src="/assets/brand/lauren-logo.svg" alt="Lauren Repostería · Bocado de alegría" width="300" height="180">
+</a>
+<div class="admin-session" id="adminSession" hidden>
+<span id="adminUser"></span>
+<button type="button" class="text-link" id="signOut">Cerrar sesión</button>
+</div>
+</div>
+</header>
+
+<main id="adminMain">
+<section class="admin-auth container" id="authView" aria-labelledby="authTitle">
+<div class="admin-card">
+<p class="eyebrow">Centro de control</p>
+<h1 id="authTitle">Hola de <em>nuevo.</em></h1>
+<p class="admin-lead" id="authLead">Entra con tu correo y tu clave.</p>
+
+<form class="admin-form" id="loginForm" novalidate>
+<div class="personal-field"><label for="loginEmail">Correo</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+<div class="personal-field"><label for="loginPassword">Clave</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+<p class="field-error" id="loginError" role="alert" hidden></p>
+<button class="btn" type="submit">Entrar <span data-icon="arrow"></span></button>
+</form>
+
+<form class="admin-form" id="codeForm" novalidate hidden>
+<div class="personal-field"><label for="codeInput">Código de 6 dígitos</label><input id="codeInput" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></div>
+<p class="field-note">Ábrelo en tu app de códigos (Google Authenticator u otra).</p>
+<p class="field-error" id="codeError" role="alert" hidden></p>
+<button class="btn" type="submit">Confirmar <span data-icon="arrow"></span></button>
+</form>
+
+<form class="admin-form" id="enrollForm" novalidate hidden>
+<p>Para cuidar tu cuenta, cada vez que entres te pediremos un código de tu celular. Configúralo una sola vez:</p>
+<ol class="admin-steps">
+<li>Instala Google Authenticator (o tu app de códigos favorita).</li>
+<li>Escanea este código con la app.</li>
+<li>Escribe el código de 6 dígitos que aparece.</li>
+</ol>
+<img class="admin-qr" id="enrollQr" alt="Código QR para tu app de códigos" width="200" height="200">
+<p class="field-note">¿Estás en el celular? <a class="admin-inline-link" id="enrollLink" href="#">Ábrelo directo en la app</a> o escribe esta clave: <code id="enrollSecret"></code></p>
+<div class="personal-field"><label for="enrollCode">Código de 6 dígitos</label><input id="enrollCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></div>
+<p class="field-error" id="enrollError" role="alert" hidden></p>
+<button class="btn" type="submit">Activar <span data-icon="check"></span></button>
+</form>
+</div>
+</section>
+
+<section class="admin-app container" id="appView" hidden aria-labelledby="appTitle">
+<div class="admin-top">
+<div>
+<p class="eyebrow">Centro de control</p>
+<h1 id="appTitle">Tus <em>productos.</em></h1>
+<p class="admin-lead">Cambia precios, textos y fotos. Cuando termines, toca «Publicar cambios» y la web se actualiza al instante.</p>
+</div>
+<button type="button" class="btn" id="newProduct">Nuevo producto <span data-icon="plus"></span></button>
+</div>
+<div class="admin-tools">
+<label class="admin-search"><span data-icon="search"></span><span class="visually-hidden">Buscar producto</span><input id="search" type="search" placeholder="Buscar producto"></label>
+<div class="admin-filters" role="group" aria-label="Filtrar por sección" id="filters"></div>
+</div>
+<p class="admin-count" id="count" aria-live="polite"></p>
+<ul class="admin-list" id="list"></ul>
+</section>
+</main>
+
+<div class="admin-savebar" id="saveBar" hidden>
+<p><strong id="saveCount"></strong> Tus cambios aún no se ven en la web.</p>
+<div>
+<button type="button" class="btn-secondary btn" id="discard">Descartar</button>
+<button type="button" class="btn" id="publish">Publicar cambios <span data-icon="check"></span></button>
+</div>
+</div>
+
+<dialog class="product-dialog admin-editor" id="editor" aria-labelledby="editorTitle"></dialog>
+<dialog class="product-dialog admin-picker" id="picker" aria-labelledby="pickerTitle"></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

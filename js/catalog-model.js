@@ -152,5 +152,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
     // Los diseños de Tortas viajan a WhatsApp con su foto, para que Laura sepa cuál es.
     const photo = product => product?.design ? `https://laurenreposteria.com${product.mainImage}` : '';
-    window.Catalog = { get, all, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { get, all, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

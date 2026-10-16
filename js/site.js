@@ -33,8 +33,11 @@
     // Cada sección lista sus categorías (`data-category`); la portada, los destacados (`data-featured`).
     const productsFor = grid => 'featured' in grid.dataset ? Catalog.all().filter(p => p.featured) : Catalog.all().filter(p => grid.dataset.category.split(',').map(c => c.trim()).includes(p.category));
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    // Todo lo que sale del catálogo se vuelve a pintar si llega una versión nueva (catalog-live.js).
+    const catalogRenders = [];
+    document.addEventListener('catalog:updated', () => catalogRenders.forEach(render => render()));
     document.querySelectorAll('[data-category], [data-featured]').forEach(grid => {
-        const products = productsFor(grid);
+        let products = productsFor(grid);
         const scope = grid.closest('[data-catalog-section]') || grid.parentElement;
         const search = scope.querySelector('[data-product-search]');
         const filters = Array.from(scope.querySelectorAll('[data-filter]'));
@@ -61,9 +64,12 @@
             render(); search?.focus();
         });
         render();
+        catalogRenders.push(() => { products = productsFor(grid); render(); });
     });
     // Importes dentro de textos («desde $58.000»): salen del catálogo vigente, no del HTML.
-    document.querySelectorAll('[data-price]').forEach(element => { element.textContent = Catalog.priceRefText(element.dataset.price); });
+    const renderPrices = () => document.querySelectorAll('[data-price]').forEach(element => { element.textContent = Catalog.priceRefText(element.dataset.price); });
+    renderPrices();
+    catalogRenders.push(renderPrices);
     document.addEventListener('click', event => {
         const button = event.target.closest('[data-product]');
         if (button) window.quickView.open(button.dataset.product, {
@@ -71,7 +77,9 @@
         });
     });
     document.querySelectorAll('[data-extras]').forEach(grid => {
-        grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join('');
+        const render = () => { grid.innerHTML = Catalog.all().filter(p => p.category === 'extras').map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join(''); };
+        render();
+        catalogRenders.push(render);
     });
 
     const lightbox = document.getElementById('lightboxDialog');

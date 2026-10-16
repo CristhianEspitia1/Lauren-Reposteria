@@ -4,6 +4,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-15 — Centro de control]
+
+- Nueva página privada `/admin/`: acceso con correo, clave y código de app (doble factor TOTP con Firebase Identity Platform), lista de productos con buscador y filtros, editor de precios por opción, textos, cantidad, visibilidad y fotos de la web, productos nuevos desde la plantilla de su sección y publicación con un botón.
+- Firestore (`us-east1`): `catalogo/actual` con lectura pública y escritura solo de administradores con doble factor; cada publicación queda en `historial`. Reglas en `firestore.rules`.
+- La web lee lo publicado en vivo (`js/catalog-live.js`) y vuelve a pintar tarjetas, precios de los textos y pedido. Sin conexión sigue con `js/catalog-data.js`. CSP: `connect-src` admite `firestore.googleapis.com`.
+- Manual de marca: fila de producto y barra de publicar del centro de control.
+
 ## [2026-10-15 — Catálogo editable, fase 1 del centro de control]
 
 - `js/catalog-data.js` pasa a ser solo datos (JSON), listo para que lo edite el centro de control. Formato en `docs/12-catalogo.md`.

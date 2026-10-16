@@ -6,6 +6,11 @@ class CartManager {
         this.listeners = [];
         this.persistent = true;
         this.cart = this.loadCart();
+        // Una versión nueva del catálogo vuelve a calcular el pedido guardado con sus precios.
+        if (typeof document !== 'undefined') document.addEventListener('catalog:updated', () => {
+            this.cart = this.loadCart();
+            this.notifyListeners('cartUpdated');
+        });
         window.addEventListener('storage', event => {
             if (event.key === this.cartKey || event.key === null) {
                 this.cart = this.loadCart();

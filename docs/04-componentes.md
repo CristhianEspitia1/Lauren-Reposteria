@@ -12,6 +12,8 @@ Los scripts clásicos se cargan con `defer`, en el orden declarado en cada pági
 | `quick-view-modal.js` | `quickView` | Configurar o editar un producto |
 | `cart-ui.js` | `cartUI` | Diálogo lateral, lista, cantidades, eliminar/deshacer y subtotal |
 | `gallery-data.js` | `galleryData` | Referencias reales por colección |
+| `catalog-live.js` | Evento `catalog:updated` | Lee lo publicado en el centro de control y avisa si cambió |
+| `admin-model.js`, `admin.js` | `AdminModel`, página `/admin/` | Centro de control: acceso con doble factor, borrador y publicación ([detalle](13-centro-de-control.md)) |
 | `site.js` | Atributos `data-*` | Navegación, productos por `data-category` o `data-featured`, filtros por `group`, importes `data-price`, galería y video |
 
 ## Producto y pedido

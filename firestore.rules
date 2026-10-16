@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// Centro de control de Lauren Repostería.
+// - catalogo/actual: el catálogo publicado. Lo lee cualquiera (la web lo muestra);
+//   solo lo escribe un administrador con sesión iniciada y doble factor (app de códigos).
+// - historial: copia de cada versión guardada, para poder deshacer. Solo administradores.
+// - Todo lo demás está cerrado.
+// No hay registro público: los administradores se crean en la consola de Firebase.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function admin() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_second_factor == 'totp';
+    }
+
+    function version() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['json', 'updatedAt', 'updatedBy'])
+        && data.json is string
+        && data.json.size() > 2
+        && data.json.size() < 900000
+        && data.updatedAt == request.time
+        && data.updatedBy == request.auth.token.email;
+    }
+
+    match /catalogo/actual {
+      allow read: if true;
+      allow write: if admin() && version();
+    }
+
+    match /historial/{id} {
+      allow read: if admin();
+      allow create: if admin() && version();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

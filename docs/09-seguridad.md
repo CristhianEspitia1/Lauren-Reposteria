@@ -1,6 +1,6 @@
 # Seguridad
 
-Catálogo público, sin autenticación, base de datos ni pasarela de pago. El pedido permanece en el navegador. WhatsApp recibe el resumen cuando el visitante abre el enlace y decide enviarlo.
+Catálogo público, sin pasarela de pago. El catálogo publicado vive en Firestore (lectura pública, escritura solo de administradores con doble factor; ver `firestore.rules` y el [centro de control](13-centro-de-control.md)). Sin registro público: los administradores se crean en la consola de Firebase. El pedido permanece en el navegador. WhatsApp recibe el resumen cuando el visitante abre el enlace y decide enviarlo.
 
 ## Controles implementados
 

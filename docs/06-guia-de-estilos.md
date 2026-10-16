@@ -108,7 +108,7 @@ La itálica de los titulares grandes lleva debajo una franja albaricoque transl�
 
 - Espaciado: `--space-xs` 8 · `--space-md` 16 · `--space-lg` 24 · `--space-xl` 32 · `--space-2xl` 48 · `--space-3xl` 64 · `--space-section` 64–120 px.
 - Contenido de 1200 px máximo, márgenes fluidos de 20 a 64 px (`--page-gutter`). El menú pasa a móvil por debajo de 800 px.
-- Una sola sombra, para lo que flota (`--shadow-float`): botón de WhatsApp, avisos, foto inclinada de portada.
+- Una sola sombra, para lo que flota (`--shadow-float`): botón de WhatsApp, avisos, foto inclinada de portada y barra de publicar del centro de control.
 
 ## 7. Iconos
 
@@ -162,6 +162,10 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Aviso | `.toast` | Lila, radio 12 px, sombra flotante, acción subrayada |
 | WhatsApp flotante | `.contact-fab` | Círculo albaricoque de 52 px, abajo a la derecha |
 | Pregunta frecuente | `.faq-item` | Único elemento desplegable; «+» que gira 45° |
+| Fila de producto (centro de control) | `.admin-row` | Foto 4:5 de 56 px, nombre Playfair 20 px, sección y precio en tinta suave; «Visible» con la casilla de la ficha y «Editar» como enlace de texto. Etiquetas en píldora: durazno «Oculto», lila «Nuevo» y «Con cambios» |
+| Barra de publicar (centro de control) | `.admin-savebar` | Blanco cálido, borde, radio 12 px y sombra flotante, abajo al centro; cuenta los cambios y lleva «Descartar» (secundario) y «Publicar cambios» (principal) |
+
+El centro de control (`/admin/`) usa los mismos tokens, letras y componentes: campos y opciones de la ficha, casillas, botones, enlaces y avisos. Sus textos siguen la voz de la marca.
 
 Estructura de toda página pública: cabecera fija con logo, menú y pedido; contenido; pie lila; botón flotante de WhatsApp y diálogos de producto, pedido y galería.
 
