@@ -109,3 +109,5 @@
     .admin-editor-actions .btn { flex: 1; }
     .admin-editor input, .admin-editor select, .admin-editor textarea { font-size: 16px; }
 }
+.admin-form .text-link { background: transparent; margin-top: 12px; }
+#verifyBox .field-note { font-size: .875rem; margin-bottom: 16px; }

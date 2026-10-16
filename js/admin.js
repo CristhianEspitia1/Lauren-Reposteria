@@ -6,7 +6,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
 import {
     initializeAuth, indexedDBLocalPersistence, browserLocalPersistence, onAuthStateChanged, signInWithEmailAndPassword,
-    signOut, getMultiFactorResolver, multiFactor, TotpMultiFactorGenerator
+    signOut, getMultiFactorResolver, multiFactor, TotpMultiFactorGenerator, sendEmailVerification
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
 import { getFirestore, doc, collection, getDoc, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore-lite.js';
 
@@ -45,7 +45,9 @@ const authMessage = error => ({
     'auth/invalid-verification-code': 'Ese código no coincide. Escribe el que aparece ahora en tu app.',
     'auth/missing-code': 'Escribe el código de 6 dígitos.',
     'auth/network-request-failed': 'No hay conexión. Revisa tu internet e inténtalo de nuevo.',
-    'auth/user-disabled': 'Esta cuenta está desactivada.'
+    'auth/user-disabled': 'Esta cuenta está desactivada.',
+    'auth/unverified-email': 'Primero confirma tu correo con el enlace que te enviamos.',
+    'auth/requires-recent-login': 'Por seguridad, sal y vuelve a entrar para terminar este paso.'
 }[error?.code] || 'Algo no salió bien. Inténtalo de nuevo en un momento.');
 
 views.login.addEventListener('submit', async event => {
@@ -76,8 +78,29 @@ views.code.addEventListener('submit', async event => {
     finally { button.disabled = false; }
 });
 
+// El doble factor solo se activa con el correo confirmado: primero se envía el enlace de confirmación.
+const enrollParts = () => views.enroll.querySelectorAll('ol, img, .field-note, .personal-field, button[type=submit]');
 async function startEnrollment(user) {
     showAuth('enroll', 'Un paso más para proteger tu cuenta.');
+    showError('enrollError', '');
+    $('verifyBox')?.remove();
+    enrollParts().forEach(el => { el.hidden = false; });
+    if (!user.emailVerified) {
+        enrollParts().forEach(el => { el.hidden = true; });
+        views.enroll.insertAdjacentHTML('beforeend', `<div id="verifyBox"><p class="field-note">Antes, confirma tu correo: te enviamos un enlace a <strong>${esc(user.email)}</strong>. Ábrelo, toca el enlace y vuelve aquí. Si no lo ves, revisa la carpeta de spam.</p><button type="button" class="btn" id="verifyDone">Ya lo confirmé ${icon('arrow')}</button><p><button type="button" class="text-link" id="verifyResend">Enviar el correo otra vez</button></p></div>`);
+        const send = async () => {
+            try { await sendEmailVerification(user); LaurenUI.toast('Te enviamos el correo de confirmación.'); }
+            catch (error) { showError('enrollError', authMessage(error)); }
+        };
+        $('verifyResend').addEventListener('click', send);
+        $('verifyDone').addEventListener('click', async () => {
+            await user.reload();
+            if (auth.currentUser?.emailVerified) { await auth.currentUser.getIdToken(true); startEnrollment(auth.currentUser); }
+            else showError('enrollError', 'Todavía no vemos el correo confirmado. Abre el enlace del correo y vuelve a tocar el botón.');
+        });
+        await send();
+        return;
+    }
     try {
         const session = await multiFactor(user).getSession();
         enrollment = await TotpMultiFactorGenerator.generateSecret(session);
