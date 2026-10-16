@@ -4,6 +4,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-16 — Centro de control más sencillo]
+
+- Lista: filtros con la cuenta de productos («Ocultos» y «Con cambios» solo cuando hay alguno), grupos con título (Tortas, Diseños de la galería, Adicionales de torta y cada sección) y el nombre del producto abre su ficha.
+- Ficha: secciones en el orden en que se usan (Lo básico, Precios, Fotos, Textos, Lo que elige el cliente, Cantidad, Dónde aparece), aviso en vivo «En la tarjeta se verá…», columnas «Opción» y «Precio», textos sin palabras técnicas, cuadros de texto a la medida de su contenido, «Eliminar producto» al final y confirmación al cerrar con cambios sin guardar.
+- Barra de publicar: «N cambios sin publicar. Aún no se ven en la web.». El selector de fotos ya no usa estilos en línea (los bloquea la CSP).
+
 ## [2026-10-16 — Una foto por producto y editor según el tipo]
 
 - Cada foto va en un solo producto. Torta Vintage y Torta Sencilla dejan de mostrar en su ficha las fotos de los diseños de la galería (cada diseño ya tiene la suya). Galletas: Red Velvet y Pistachos quedan con su foto propia, Panelita con `galletas.webp`, Chocolate blanco con `galletas-especiales.webp` y la caja surtida con `galletas-tres-chocolates.webp`.

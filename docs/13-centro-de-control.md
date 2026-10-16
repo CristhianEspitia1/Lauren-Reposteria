@@ -5,9 +5,9 @@ Página privada para cambiar productos, precios, textos y fotos sin tocar códig
 ## Cómo se usa
 
 1. **Entrar:** correo y clave. Después, el código de 6 dígitos de la app de códigos (Google Authenticator u otra). La primera vez, el panel muestra un código QR para configurar la app.
-2. **Buscar el producto:** con el buscador o los filtros, que siguen las páginas de la web: Tortas (las dos bases, los diseños de la galería y los adicionales, en ese orden), Alfajores (incluye la Torta de Alfajor), Brownies, Galletas (un producto por sabor y la caja surtida), Detalles, Ocultos y Con cambios.
-3. **Editar:** «Editar» abre la ficha de ese producto con lo que le aplica: nombre, sección, filtro, visibilidad, precios por opción (porciones, tamaños, presentaciones), textos y fotos. La cantidad mínima y su nombre solo aparecen en Alfajores, Brownies, Galletas y Detalles, que se piden por cantidad; las tortas y sus diseños se piden de a una. «Guardar» deja el cambio en tu borrador.
-4. **Publicar:** la barra de abajo cuenta los cambios. «Publicar cambios» los envía y la web los muestra al recargar. «Descartar» vuelve a lo publicado.
+2. **Buscar el producto:** con el buscador o los filtros, que siguen las páginas de la web y dicen cuántos productos hay en cada uno: Tortas (las dos bases, los diseños de la galería y los adicionales), Alfajores (incluye la Torta de Alfajor), Brownies, Galletas (un producto por sabor y la caja surtida) y Detalles. «Ocultos» y «Con cambios» solo aparecen cuando hay alguno. La lista se agrupa con un título por grupo; tocar el nombre o «Editar» abre la ficha.
+3. **Editar:** la ficha muestra solo lo que le aplica a ese producto, en este orden: **Lo básico** (nombre, visible, portada), **Precios** (con el aviso «En la tarjeta se verá…» que cambia mientras escribes), **Fotos** (la primera es la de la tarjeta), **Textos**, **Lo que elige el cliente** (sabores, rellenos, colores), **Cantidad** (solo Alfajores, Brownies, Galletas y Detalles, que se piden por cantidad) y **Dónde aparece** (sección y filtro, que casi nunca cambian). «Eliminar producto» queda al final, lejos de «Guardar». Si cierras la ficha con cambios sin guardar, el panel te pregunta antes. «Guardar» deja el cambio en tu borrador.
+4. **Publicar:** la barra de abajo cuenta los cambios sin publicar. «Publicar cambios» los envía y la web los muestra al recargar. «Descartar» vuelve a lo publicado.
 
 Reglas que conviene saber:
 

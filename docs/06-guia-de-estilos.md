@@ -162,7 +162,7 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Aviso | `.toast` | Lila, radio 12 px, sombra flotante, acción subrayada |
 | WhatsApp flotante | `.contact-fab` | Círculo albaricoque de 52 px, abajo a la derecha |
 | Pregunta frecuente | `.faq-item` | Único elemento desplegable; «+» que gira 45° |
-| Fila de producto (centro de control) | `.admin-row` | Foto 4:5 de 56 px, nombre Playfair 20 px, sección y precio en tinta suave; «Visible» con la casilla de la ficha y «Editar» como enlace de texto. Etiquetas en píldora: durazno «Oculto», lila «Nuevo» y «Con cambios» |
+| Fila de producto (centro de control) | `.admin-row` | Foto 4:5 de 56 px, nombre Playfair 20 px (abre la ficha, como «Editar») y precio en tinta suave; «Visible» con la casilla de la ficha y «Editar» como enlace de texto. Etiquetas en píldora: durazno «Oculto», lila «Nuevo» y «Con cambios». Las filas se agrupan bajo una etiqueta (`.eyebrow`) con el grupo y su cuenta: Tortas, Diseños de la galería, Adicionales de torta y cada sección |
 | Barra de publicar (centro de control) | `.admin-savebar` | Blanco cálido, borde, radio 12 px y sombra flotante, abajo al centro; cuenta los cambios y lleva «Descartar» (secundario) y «Publicar cambios» (principal) |
 
 El centro de control (`/admin/`) usa los mismos tokens, letras y componentes: campos y opciones de la ficha, casillas, botones, enlaces y avisos. Sus textos siguen la voz de la marca.

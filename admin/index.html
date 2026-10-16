@@ -81,13 +81,13 @@
 <div>
 <p class="eyebrow">Centro de control</p>
 <h1 id="appTitle">Tus <em>productos.</em></h1>
-<p class="admin-lead">Cambia precios, textos y fotos. Cuando termines, toca «Publicar cambios» y la web se actualiza al instante.</p>
+<p class="admin-lead">Toca un producto para cambiar su precio, sus fotos o sus textos. Cuando termines, «Publicar cambios» actualiza la web al instante.</p>
 </div>
 <button type="button" class="btn" id="newProduct">Nuevo producto <span data-icon="plus"></span></button>
 </div>
 <div class="admin-tools">
 <label class="admin-search"><span data-icon="search"></span><span class="visually-hidden">Buscar producto</span><input id="search" type="search" placeholder="Buscar producto"></label>
-<div class="admin-filters" role="group" aria-label="Filtrar por sección" id="filters"></div>
+<div class="admin-filters" role="group" aria-label="Ver por sección" id="filters"></div>
 </div>
 <p class="admin-count" id="count" aria-live="polite"></p>
 <ul class="admin-list" id="list"></ul>
@@ -95,7 +95,7 @@
 </main>
 
 <div class="admin-savebar" id="saveBar" hidden>
-<p><strong id="saveCount"></strong> Tus cambios aún no se ven en la web.</p>
+<p><strong id="saveCount"></strong> <span id="saveHint"></span></p>
 <div>
 <button type="button" class="btn-secondary btn" id="discard">Descartar</button>
 <button type="button" class="btn" id="publish">Publicar cambios <span data-icon="check"></span></button>

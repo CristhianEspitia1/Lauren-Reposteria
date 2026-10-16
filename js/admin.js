@@ -167,44 +167,52 @@ async function loadCatalog() {
     }
     products = Object.values(M.clone(original));
     fresh.clear();
-    renderFilters(); render();
+    render();
 }
 
 // Un filtro por tipo de producto: cada torta (base, diseño o adicional) en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
-const rank = p => p.design ? 1 : p.category === 'extras' ? 2 : 0;
+// La lista se agrupa como la web: tortas base, diseños de la galería, adicionales y cada sección.
+const groupOf = p => p.design || p.basedOn ? 'Diseños de la galería' : p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
+const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.design || p.basedOn ? 1 : 0);
+const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : PAGES[id][1].includes(p.category));
 function renderFilters() {
-    $('filters').innerHTML = FILTERS.map(([id, label]) => `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)}</button>`).join('');
+    const { changed } = M.changes(original, products);
+    $('filters').innerHTML = FILTERS.map(([id, label]) => {
+        const count = products.filter(p => inFilter(p, id, changed)).length;
+        return (id === 'hidden' || id === 'changed') && !count && filter !== id ? '' : `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)} <span class="admin-filter-count">${count}</span></button>`;
+    }).join('');
 }
 $('filters').addEventListener('click', event => {
     const button = event.target.closest('[data-filter]');
     if (!button) return;
-    filter = button.dataset.filter; renderFilters(); render();
+    filter = button.dataset.filter; render();
 });
 $('search').addEventListener('input', render);
 const normalizeText = value => String(value || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 function render() {
     useDraft();
+    renderFilters();
     const { changed } = M.changes(original, products);
     const search = normalizeText($('search').value.trim());
-    const shown = products.filter(p => {
-        if (filter === 'hidden' && p.visible !== false) return false;
-        if (filter === 'changed' && !changed.includes(p.id)) return false;
-        if (PAGES[filter] && !PAGES[filter][1].includes(p.category)) return false;
-        return !search || normalizeText(`${p.name} ${sectionName(p.category)}`).includes(search);
-    }).sort((a, b) => PAGES[filter] ? rank(a) - rank(b) : 0);
-    $('count').textContent = `${shown.length} ${shown.length === 1 ? 'producto' : 'productos'}`;
+    const shown = products.filter(p => inFilter(p, filter, changed) && (!search || normalizeText(`${p.name} ${groupOf(p)}`).includes(search)))
+        .map((p, i) => [p, i]).sort(([a, i], [b, j]) => order(a) - order(b) || i - j).map(([p]) => p);
+    $('count').textContent = search ? `${shown.length} ${shown.length === 1 ? 'producto encontrado' : 'productos encontrados'}` : '';
+    let group = '';
     $('list').innerHTML = shown.map(p => {
         const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;
+        const base = p.basedOn && products.find(b => b.id === p.basedOn);
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
-        return `<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2>${esc(p.name || 'Sin nombre')}${tags}</h2><p>${esc(sectionName(p.category))}${p.design ? ' · diseño de la galería' : ''} · ${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}">Editar ${icon('arrow')}</button></div></li>`;
-    }).join('') || '<li class="admin-count">No encontramos productos con esa búsqueda.</li>';
+        const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+    }).join('') || `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`;
     const total = M.changes(original, products).total;
     $('saveBar').hidden = total === 0;
-    $('saveCount').textContent = total === 1 ? '1 cambio.' : `${total} cambios.`;
+    $('saveCount').textContent = total === 1 ? '1 cambio sin publicar.' : `${total} cambios sin publicar.`;
+    $('saveHint').textContent = total === 1 ? 'Aún no se ve en la web.' : 'Aún no se ven en la web.';
 }
 $('list').addEventListener('change', event => {
     const input = event.target.closest('[data-visible]');
@@ -242,6 +250,7 @@ $('publish').addEventListener('click', async () => {
             transaction.set(doc(collection(db, 'historial')), version);
         });
         original = data; loadedJson = json; products = Object.values(M.clone(data)); fresh.clear();
+        if (filter === 'changed') filter = 'all';
         render();
         LaurenUI.toast('Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
     } catch (error) {
@@ -256,6 +265,15 @@ const editor = $('editor');
 LaurenUI.dialogEvents(editor);
 let edit = null;
 let editingId = null;
+let pristine = '';
+// Cerrar la ficha con cambios sin guardar pide confirmación (botón cerrar, Cancelar, fondo o Esc).
+const leaveEditor = () => JSON.stringify(edit) === pristine || confirm('Tienes cambios sin guardar en este producto. ¿Salir sin guardarlos?');
+editor.addEventListener('click', event => {
+    const bounds = editor.getBoundingClientRect();
+    const outside = event.target === editor && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+    if ((outside || event.target.closest('[data-close-dialog]')) && !leaveEditor()) event.stopImmediatePropagation();
+}, true);
+editor.addEventListener('cancel', event => { if (!leaveEditor()) event.preventDefault(); });
 
 $('newProduct').addEventListener('click', () => {
     const category = M.SECTIONS.some(([id]) => id === filter) ? filter : 'tortas';
@@ -265,6 +283,7 @@ $('newProduct').addEventListener('click', () => {
 function openEditor(product, isNew = false) {
     edit = M.clone(product);
     editingId = isNew ? null : product.id;
+    pristine = JSON.stringify(edit);
     renderEditor();
     LaurenUI.open(editor);
 }
@@ -279,45 +298,66 @@ const field = (label, path, value, { type = 'text', note = '', placeholder = '',
 const check = (label, path, checked) => `<label class="toggle-option"><input type="checkbox" data-path="${path}" data-kind="bool" ${checked ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>${esc(label)}</span></label>`;
 const moneyValue = value => (typeof value === 'number' ? M.formatMoney(value) : value ?? '');
 
-function optionsHTML(p) {
+// Precio que verá el cliente en la tarjeta, con lo que hay escrito ahora mismo.
+function pricePreview() {
+    try {
+        const values = JSON.stringify(edit, (key, value) => typeof value === 'number' && Number.isNaN(value) ? 'NaN' : value);
+        if (values.includes('"NaN"')) return 'Revisa los precios: escríbelos solo con números.';
+        return `En la tarjeta se verá: <strong>${esc(window.Catalog.priceLabel(window.Catalog.resolve(M.clone(edit))).text)}</strong>`;
+    } catch { return ''; }
+}
+
+function pricesHTML(p) {
+    const preview = `<p class="field-note admin-preview" id="pricePreview" aria-live="polite">${pricePreview()}</p>`;
     if (p.basedOn) {
         const base = products.find(b => b.id === p.basedOn);
         const own = Array.isArray(p.options);
-        return `<fieldset class="admin-fieldset"><legend>Porciones, sabores y precios</legend>
-            <div class="personal-field"><label for="f-basedOn">Torta base</label><select id="f-basedOn" data-path="basedOn" data-kind="text">${products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => `<option value="${esc(b.id)}" ${b.id === p.basedOn ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></div>
-            ${own ? `<p class="field-note">Este diseño tiene precios propios.</p>${optionList(p)}<button type="button" class="admin-add" data-action="inherit">Volver a usar los precios de ${esc(base?.name || 'la torta base')}</button>`
-        : `<p class="field-note">Usa las porciones, sabores y precios de ${esc(base?.name || 'su torta base')}. Si cambias los precios de esa torta, cambian aquí también.</p><button type="button" class="admin-add" data-action="own-prices">${icon('plus')} Ponerle precios propios</button>`}
+        return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}
+            <div class="personal-field"><label for="f-basedOn">Toma los precios de</label><select id="f-basedOn" data-path="basedOn" data-kind="text">${products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => `<option value="${esc(b.id)}" ${b.id === p.basedOn ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></div>
+            ${own ? `<p class="field-note">Este diseño tiene precios propios.</p>${groupsHTML(p, true)}<p><button type="button" class="admin-add" data-action="inherit">${icon('arrow')} Volver a los precios de ${esc(base?.name || 'la torta base')}</button></p>`
+        : `<p class="field-note">Usa las porciones, sabores y precios de ${esc(base?.name || 'su torta base')}: si cambias los de esa torta, cambian aquí también.</p><p><button type="button" class="admin-add" data-action="own-prices">${icon('plus')} Ponerle precios propios</button></p>`}
         </fieldset>`;
     }
-    const pricedOptions = (p.options || []).some(M.priced);
-    const basePrice = pricedOptions ? '' : `<div class="admin-grid">${field(p.category === 'extras' ? 'Precio desde' : 'Precio', 'price', moneyValue(p.price), { type: 'money', placeholder: 'Cotiza por WhatsApp', note: 'Déjalo vacío para mostrar «Cotiza por WhatsApp».' })}${p.category === 'extras' ? field('Precio hasta', 'priceMax', moneyValue(p.priceMax), { type: 'money', placeholder: 'Opcional' }) : field('Complemento del precio', 'priceSuffix', p.priceSuffix, { placeholder: 'Ej.: c/u, la caja' })}</div>`;
-    return `<fieldset class="admin-fieldset"><legend>Precio y opciones</legend>${basePrice}${optionList(p)}
-        ${p.category === 'extras' ? '' : `<p><button type="button" class="admin-add" data-action="add-option" data-priced="true">${icon('plus')} Agregar opciones con precio (porciones, tamaños)</button></p><p><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar opciones sin precio (sabores, colores)</button></p>`}</fieldset>`;
+    const extras = p.category === 'extras';
+    const pricedGroups = (p.options || []).some(M.priced);
+    const basePrice = pricedGroups ? '' : `<div class="admin-grid">${field(extras ? 'Precio desde' : 'Precio', 'price', moneyValue(p.price), { type: 'money', placeholder: 'Cotiza por WhatsApp', note: 'Déjalo vacío para mostrar «Cotiza por WhatsApp».' })}${extras ? field('Precio hasta', 'priceMax', moneyValue(p.priceMax), { type: 'money', placeholder: 'Opcional' }) : field('Texto después del precio', 'priceSuffix', p.priceSuffix, { placeholder: 'Ej.: c/u, la caja', note: 'Opcional.' })}</div>`;
+    return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}${basePrice}${groupsHTML(p, true)}
+        ${extras ? '' : `<p><button type="button" class="admin-add" data-action="add-option" data-priced="true">${icon('plus')} ${pricedGroups ? 'Agregar otro grupo de precios' : 'Poner un precio por tamaño o porciones'}</button></p>`}</fieldset>`;
 }
 
-function optionList(p) {
-    // Primero los grupos con precio (porciones, tamaños): es lo que más se edita.
-    const order = (p.options || []).map((option, o) => [option, o]).sort(([a], [b]) => M.priced(b) - M.priced(a));
-    return order.map(([option, o]) => {
+// Sabores, colores y casillas: lo que el cliente elige sin cambiar el precio (o con un costo fijo).
+function choicesHTML(p) {
+    if (p.category === 'extras' || (p.basedOn && !Array.isArray(p.options))) return '';
+    return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
+        <p class="field-note">Sabores, rellenos, colores… El cliente elige una opción de cada grupo.</p>
+        ${groupsHTML(p, false)}
+        <p><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button></p></fieldset>`;
+}
+
+function groupsHTML(p, pricedOnes) {
+    return (p.options || []).map((option, o) => [option, o]).filter(([option]) => (option.type !== 'toggle' && M.priced(option)) === pricedOnes).map(([option, o]) => {
         const path = `options.${o}`;
-        if (option.type === 'toggle') return `<div class="admin-option"><div class="admin-option-head">${field('Casilla adicional', `${path}.label`, option.label)}</div>${field('Costo adicional', `${path}.priceModifier`, moneyValue(option.priceModifier), { type: 'money', placeholder: 'Sin costo' })}</div>`;
-        const isPriced = M.priced(option);
+        if (option.type === 'toggle') return `<div class="admin-option">${field('Casilla que puede marcar', `${path}.label`, option.label)}${field('Costo adicional', `${path}.priceModifier`, moneyValue(option.priceModifier), { type: 'money', placeholder: 'Sin costo' })}</div>`;
         const depends = option.dependsOn ? (() => {
             const parent = p.options.find(x => x.id === option.dependsOn);
             const values = [].concat(option.showWhen).map(v => parent?.choices?.find(c => c.value === v)?.label || v).join(' o ');
             return `<p class="field-note">Solo aparece cuando se elige «${esc(values)}» en «${esc(parent?.label || '')}».</p>`;
         })() : '';
         const multiplier = option.multiplier ? '<p class="field-note">Multiplica el precio por la cantidad elegida.</p>' : '';
-        const rows = (option.choices || []).map((choice, c) => `<div class="admin-choice${isPriced ? '' : ' no-price'}"><input aria-label="Opción" data-path="${path}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" ${option.multiplier ? 'readonly' : ''}>${isPriced ? `<div class="admin-money"><input aria-label="Precio de ${esc(choice.label)}" data-path="${path}.choices.${c}.price" data-kind="money" inputmode="numeric" value="${esc(moneyValue(choice.price))}" placeholder="Cotiza"></div>` : ''}${option.multiplier ? '<span></span>' : `<button type="button" class="icon-button" data-action="remove-choice" data-option="${o}" data-choice="${c}" aria-label="Quitar ${esc(choice.label)}">${icon('close')}</button>`}</div>`).join('');
-        return `<div class="admin-option"><div class="admin-option-head">${field(isPriced ? 'Opciones con precio' : 'Opciones', `${path}.label`, option.label)}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar grupo</button></div>${depends}${multiplier}${rows}${option.multiplier ? '' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} Agregar opción</button>`}${isPriced ? '<p class="field-note">Un precio vacío muestra «Cotiza por WhatsApp» para esa opción.</p>' : ''}</div>`;
+        const head = pricedOnes ? '<div class="admin-choice admin-choice-head" aria-hidden="true"><span>Opción</span><span>Precio</span><span></span></div>' : '';
+        const rows = (option.choices || []).map((choice, c) => `<div class="admin-choice${pricedOnes ? '' : ' no-price'}"><input aria-label="Opción ${c + 1} de ${esc(option.label)}" data-path="${path}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" placeholder="Escribe la opción" ${option.multiplier ? 'readonly' : ''}>${pricedOnes ? `<div class="admin-money"><input aria-label="Precio de ${esc(choice.label || `la opción ${c + 1}`)}" data-path="${path}.choices.${c}.price" data-kind="money" inputmode="numeric" value="${esc(moneyValue(choice.price))}" placeholder="Cotiza"></div>` : ''}${option.multiplier ? '<span></span>' : `<button type="button" class="icon-button" data-action="remove-choice" data-option="${o}" data-choice="${c}" aria-label="Quitar ${esc(choice.label || 'esta opción')}">${icon('close')}</button>`}</div>`).join('');
+        return `<div class="admin-option">${field(pricedOnes ? 'Título del grupo (lo ve el cliente)' : 'Título del grupo (lo ve el cliente)', `${path}.label`, option.label, { placeholder: pricedOnes ? 'Ej.: Número de porciones' : 'Ej.: Sabor del bizcocho' })}${depends}${multiplier}${head}${rows}
+            <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} Agregar opción</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div>
+            ${pricedOnes ? '<p class="field-note">Un precio vacío muestra «Cotiza por WhatsApp» para esa opción.</p>' : ''}</div>`;
     }).join('');
 }
 
 function photosHTML(p) {
     const images = M.photos(p);
     return `<fieldset class="admin-fieldset"><legend>Fotos</legend>
-        <div class="admin-photos">${images.map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="" width="112" height="140" loading="lazy"><div class="admin-photo-actions">${i === 0 ? '<span class="admin-photo-main">Principal</span>' : `<button type="button" data-action="main-photo" data-src="${esc(src)}">Hacer principal</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>
-        <button type="button" class="admin-add" data-action="pick-photo">${icon('plus')} Agregar una foto de la web</button>
+        <p class="field-note">${images.length ? 'La primera es la que se ve en la tarjeta.' : 'Este producto aún no tiene foto. Agrega una para mostrarlo en la web.'}</p>
+        <div class="admin-photos">${images.map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="Foto ${i + 1}" width="112" height="140" loading="lazy"><div class="admin-photo-actions">${i === 0 ? '<span class="admin-photo-main">Principal</span>' : `<button type="button" data-action="main-photo" data-src="${esc(src)}">Poner primero</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>
+        <p><button type="button" class="admin-add" data-action="pick-photo">${icon('plus')} Agregar una foto de la web</button></p>
         <p class="field-note">Muy pronto podrás subir fotos nuevas desde aquí.</p></fieldset>`;
 }
 
@@ -326,36 +366,39 @@ function renderEditor() {
     const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
     const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${base.name}.` : '';
     const groups = M.GROUPS[p.category];
+    // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
+    const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
     const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
+    const section = `<div class="personal-field"><label for="f-category">Sección de la web</label><select id="f-category" data-path="category" data-kind="text">${M.SECTIONS.map(([id, label]) => `<option value="${id}" ${p.category === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>`;
+    const where = `<fieldset class="admin-fieldset"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? `<div class="personal-field"><label for="f-group">Filtro en la página</label><select id="f-group" data-path="group" data-kind="text"><option value="">Ninguno</option>${groups.map(([id, label]) => `<option value="${id}" ${p.group === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>` : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
     editor.innerHTML = `<form novalidate>
         <div class="dialog-scroll">
-            <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar sin guardar">${icon('close')}</button>
-            <p class="eyebrow">${editingId ? 'Editar producto' : 'Nuevo producto'}</p>
+            <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
+            <p class="eyebrow">${editingId ? (p.basedOn ? 'Diseño de la galería' : sectionName(p.category)) : 'Nuevo producto'}</p>
             <h2 id="editorTitle">${esc(p.name || 'Sin nombre')}</h2>
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
-                ${field('Nombre', 'name', p.name, { attrs: 'required maxlength="80"' })}
-                <div class="admin-grid">
-                    <div class="personal-field"><label for="f-category">Sección</label><select id="f-category" data-path="category" data-kind="text">${M.SECTIONS.map(([id, label]) => `<option value="${id}" ${p.category === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>
-                    ${groups ? `<div class="personal-field"><label for="f-group">Filtro en la página</label><select id="f-group" data-path="group" data-kind="text"><option value="">Ninguno</option>${groups.map(([id, label]) => `<option value="${id}" ${p.group === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>` : ''}
-                </div>
+                ${editingId ? '' : section}
+                ${field('Nombre', 'name', p.name, { attrs: 'required maxlength="80"', placeholder: 'Ej.: Torta Mariposa' })}
                 <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${p.design ? '' : check('Mostrar en la portada', 'featured', p.featured === true)}</div>
             </fieldset>
-            ${optionsHTML(p)}
+            ${pricesHTML(p)}
+            ${p.category === 'extras' ? '' : photosHTML(p)}
             <fieldset class="admin-fieldset"><legend>Textos</legend>
                 ${p.design ? '' : field('Frase corta de la tarjeta', 'summary', p.summary, { note: 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
-                ${field('Descripción', 'description', p.description, { area: true, placeholder: base?.description || '', note: inherited('description') })}
-                ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.includes || []).join('\n'), note: inherited('includes') })}
-                ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.notes || []).join('\n'), note: inherited('notes') || 'Aclaraciones que se ven bajo las opciones.' })}
+                ${field('Descripción', 'description', p.description, { area: true, placeholder: base?.description || '', note: inherited('description'), attrs: rows(Array(Math.ceil(String(p.description || base?.description || '').length / 70)).fill(0)) })}
+                ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.includes || []).join('\n'), note: inherited('includes'), attrs: rows(p.includes || base?.includes || []) })}
+                ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.notes || []).join('\n'), note: inherited('notes') || 'Aclaraciones que se ven bajo las opciones.', attrs: rows(Array(Math.ceil((p.notes || base?.notes || []).join(' ').length / 70)).fill(0), 2) })}
             </fieldset>
-            ${!M.QUANTITY.includes(p.category) || p.basedOn ? '' : `<fieldset class="admin-fieldset"><legend>Pedido</legend><div class="admin-grid">
-                ${field('Cantidad mínima', 'minimum', p.minimum ?? 1, { type: 'number' })}
-                ${field('Nombre de la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación' })}
-            </div>${personal ? `<p class="field-note">Texto que escribe el cliente: ${esc(personal)}.</p>` : ''}</fieldset>`}
-            ${p.category === 'extras' ? '' : photosHTML(p)}
+            ${choicesHTML(p)}
+            ${!M.QUANTITY.includes(p.category) || p.basedOn ? '' : `<fieldset class="admin-fieldset"><legend>Cantidad</legend><div class="admin-grid">
+                ${field('Cantidad mínima por pedido', 'minimum', p.minimum ?? 1, { type: 'number', attrs: 'min="1" max="99"' })}
+                ${field('Cómo se llama la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación', note: 'Ej.: Número de cajas.' })}
+            </div>${personal ? `<p class="field-note">El cliente también escribe: ${esc(personal)}.</p>` : ''}</fieldset>`}
+            ${editingId ? where : (groups ? where.replace(section, '') : '')}
+            ${editingId ? '<div class="admin-delete"><button type="button" class="admin-danger" data-action="delete">Eliminar producto</button><p class="field-note">Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p></div>' : ''}
             <p class="field-error" id="editorError" role="alert" hidden></p>
         </div>
         <div class="admin-editor-actions">
-            ${editingId ? '<button type="button" class="admin-danger" data-action="delete">Eliminar producto</button>' : '<span></span>'}
             <div><button type="button" class="btn btn-secondary" data-close-dialog>Cancelar</button><button type="submit" class="btn">Guardar ${icon('check')}</button></div>
         </div>
     </form>`;
@@ -384,6 +427,8 @@ editor.addEventListener('input', event => {
     if (edit.basedOn && ['description', 'includes', 'notes'].includes(path) && (value === '' || (Array.isArray(value) && !value.join('').trim()))) delete edit[path];
     else setPath(edit, path, value);
     if (path === 'name') editor.querySelector('#editorTitle').textContent = value || 'Sin nombre';
+    const preview = editor.querySelector('#pricePreview');
+    if (preview) preview.innerHTML = pricePreview();
     if (path === 'category' || path === 'basedOn') { if (path === 'category') delete edit.group; renderEditor(); }
 });
 
@@ -417,6 +462,7 @@ editor.addEventListener('click', event => {
 editor.addEventListener('submit', event => {
     event.preventDefault();
     if (!edit.name?.trim()) { showError('editorError', 'Ponle un nombre al producto.'); editor.querySelector('#f-name')?.focus(); return; }
+    showError('editorError', '');
     if (!editingId) {
         edit.id = M.unique(M.slug(edit.name), new Set(products.map(p => p.id)));
         fresh.add(edit.id);
@@ -429,7 +475,7 @@ editor.addEventListener('submit', event => {
     edit.images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
     edit.mainImage = edit.images[0] || '';
     const errors = M.validate([edit], products.filter(p => p.id !== editingId)).filter(message => !message.includes('identificador'));
-    if (errors.length) { showError('editorError', errors[0]); return; }
+    if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
     else {
@@ -438,7 +484,7 @@ editor.addEventListener('submit', event => {
     }
     LaurenUI.close(editor);
     render();
-    LaurenUI.toast('Guardado en tus cambios. Publica cuando termines.');
+    LaurenUI.toast('Guardado. Toca «Publicar cambios» para que se vea en la web.');
 });
 
 /* ---------- Fotos de la web ---------- */
@@ -453,7 +499,7 @@ async function openPicker() {
     // Solo las fotos libres: las de este producto y las de cualquier otro no se ofrecen.
     const used = new Set([...M.photos(edit), ...M.takenPhotos(products.filter(p => p.id !== editingId)).keys()]);
     const free = [...manifest].filter(item => !used.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
-    picker.innerHTML = `<div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">Elige una <em>foto.</em></h2><p class="admin-lead">${free.length ? `Primero las de ${esc(sectionName(edit.category))}. Las que ya usa otro producto no aparecen: cada foto va en un solo producto.` : 'Todas las fotos de la web ya están en otros productos. Muy pronto podrás subir fotos nuevas desde aquí.'}</p><div class="admin-photos" style="margin-top:24px">${free.map(item => `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy">${esc(item.name)}</button></div>`).join('')}</div></div>`;
+    picker.innerHTML = `<div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">Elige una <em>foto.</em></h2><p class="admin-lead">${free.length ? `Primero las de ${esc(sectionName(edit.category))}. Las que ya usa otro producto no aparecen: cada foto va en un solo producto.` : 'Todas las fotos de la web ya están en otros productos. Muy pronto podrás subir fotos nuevas desde aquí.'}</p><div class="admin-photos">${free.map(item => `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy">${esc(item.name)}</button></div>`).join('')}</div></div>`;
     picker.addEventListener('close', () => editor.open || LaurenUI.open(editor), { once: true });
     LaurenUI.open(picker);
 }

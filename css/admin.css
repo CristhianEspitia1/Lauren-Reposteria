@@ -37,7 +37,7 @@
 .admin-filters button:hover { border-color: var(--color-lilac); }
 .admin-filters button[aria-pressed="true"] { background: color-mix(in srgb, var(--color-lilac) 45%, var(--color-white)); border-color: var(--color-text); }
 .admin-count { font-size: .75rem; color: var(--color-text-soft); margin-bottom: 12px; }
-.admin-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--color-border); }
+.admin-list { list-style: none; padding: 0; margin: 0; }
 .admin-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding-block: 12px; border-bottom: 1px solid var(--color-border); }
 .admin-row img { width: 56px; height: 70px; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }
 .admin-row h2 { font-size: 1.25rem; letter-spacing: 0; line-height: 1.35; }
@@ -47,6 +47,13 @@
 .admin-row-icon { display: grid; place-items: center; width: 56px; height: 70px; border-radius: var(--radius-sm); background: var(--color-peach); color: var(--color-text); }
 .admin-row-icon svg { width: 28px; height: 28px; }
 .admin-row.is-hidden img, .admin-row.is-hidden .admin-row-icon { opacity: .45; }
+.admin-group { padding: 32px 0 12px; border-bottom: 1px solid var(--color-border); }
+.admin-group:first-child { padding-top: 8px; }
+.admin-group .eyebrow { margin: 0; }
+.admin-empty { padding: 32px 0; color: var(--color-text-soft); font-size: .9375rem; }
+.admin-row-name { background: transparent; padding: 0; font: inherit; color: inherit; text-align: left; letter-spacing: inherit; cursor: pointer; text-decoration: underline transparent; text-underline-offset: 4px; transition: text-decoration-color var(--transition-fast); }
+.admin-row-name:hover { text-decoration-color: currentColor; }
+.admin-filter-count { color: var(--color-text-soft); margin-left: 4px; }
 .admin-tag { display: inline-block; border-radius: var(--radius-pill); padding: 1px 8px; margin-left: 6px; background: var(--color-peach); color: var(--color-text); font-size: .6875rem; vertical-align: middle; }
 .admin-tag-change { background: var(--color-lilac); }
 
@@ -70,8 +77,11 @@
 .admin-toggles { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-bottom: 16px; }
 .admin-option { padding: 16px 0; border-bottom: 1px dashed var(--color-border); }
 .admin-option:last-of-type { border-bottom: 0; }
-.admin-option-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.admin-option-head .personal-field { flex: 1; margin-bottom: 0; }
+.admin-option .personal-field { margin-bottom: 14px; }
+.admin-option-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.admin-choice-head { margin-bottom: 4px; font-size: .6875rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-soft); }
+.admin-preview { margin: 0 0 18px; font-size: .8125rem; color: var(--color-text); }
+.admin-preview strong { font-weight: 500; }
 .admin-choice { display: grid; grid-template-columns: minmax(0, 1fr) 150px 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
 .admin-choice.no-price { grid-template-columns: minmax(0, 1fr) 44px; }
 .admin-choice input { display: block; width: 100%; min-height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-white); padding: 10px 12px; color: var(--color-text); }
@@ -84,13 +94,14 @@
 .admin-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; margin-bottom: 12px; }
 .admin-photo { display: grid; gap: 6px; }
 .admin-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }
-.admin-photo-actions { display: flex; justify-content: space-between; align-items: center; font-size: .6875rem; }
-.admin-photo-actions button { background: transparent; min-height: 36px; text-decoration: underline; text-underline-offset: 3px; font-size: .6875rem; }
-.admin-photo-main { font-size: .6875rem; font-weight: 500; }
-.admin-editor-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px clamp(24px, 4vw, 40px); border-top: 1px solid var(--color-border); background: var(--color-white); }
+.admin-photo-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 8px; font-size: .75rem; }
+.admin-photo-actions button { background: transparent; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; font-size: .75rem; }
+.admin-photo-main { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.admin-delete { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.admin-editor-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px clamp(24px, 4vw, 40px); border-top: 1px solid var(--color-border); background: var(--color-white); }
 .admin-editor-actions > div { display: flex; gap: 10px; }
 .admin-danger { background: transparent; color: var(--color-error); font-size: .8125rem; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; }
-.admin-picker .admin-photos { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+.admin-picker .admin-photos { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); margin-top: 24px; }
 .admin-picker .admin-photo button { padding: 0; background: transparent; text-align: left; font-size: .6875rem; color: var(--color-text-soft); display: grid; gap: 6px; }
 .admin-picker .admin-photo button:hover img { outline: 2px solid var(--color-lilac); }
 
@@ -103,11 +114,12 @@
     .admin-row img, .admin-row-icon { width: 48px; height: 60px; }
     .admin-row-actions { grid-column: 2; }
     .admin-savebar { flex-direction: column; align-items: stretch; bottom: 12px; }
-    .admin .toast { bottom: 150px; }
+    .admin .toast { bottom: 172px; }
     .admin-savebar > div .btn { flex: 1; }
     .admin-editor, .admin-picker { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
     .admin-editor form { max-height: 100dvh; height: 100%; }
     .admin-choice { grid-template-columns: minmax(0, 1fr) 118px 44px; }
+    .admin-editor-actions > div { flex: 1; }
     .admin-editor-actions .btn { flex: 1; }
     .admin-editor input, .admin-editor select, .admin-editor textarea { font-size: 16px; }
 }
