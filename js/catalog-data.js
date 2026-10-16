@@ -25,23 +25,7 @@ window.catalogData = {
         "price": null,
         "mainImage": "/assets/propuestas-fotograficas/torta-vintage.webp",
         "images": [
-            "/assets/propuestas-fotograficas/torta-vintage.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-01.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-02.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-06.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-16.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-05.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-08.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-32.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-24.webp",
-            "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-10.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-21.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-23.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-07.webp"
+            "/assets/propuestas-fotograficas/torta-vintage.webp"
         ],
         "options": [
             {
@@ -160,9 +144,7 @@ window.catalogData = {
         "price": null,
         "mainImage": "/assets/propuestas-fotograficas/torta-sencilla.webp",
         "images": [
-            "/assets/propuestas-fotograficas/torta-sencilla.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-04.webp"
+            "/assets/propuestas-fotograficas/torta-sencilla.webp"
         ],
         "options": [
             {
@@ -1651,8 +1633,7 @@ window.catalogData = {
         "price": 8000,
         "mainImage": "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
-            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
+            "/assets/propuestas-fotograficas/galeria-galletas-01.webp"
         ],
         "options": [
             {
@@ -1745,8 +1726,7 @@ window.catalogData = {
         "price": 10000,
         "mainImage": "/assets/propuestas-fotograficas/galleta-pistacho.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galleta-pistacho.webp",
-            "/assets/propuestas-fotograficas/galletas.webp"
+            "/assets/propuestas-fotograficas/galleta-pistacho.webp"
         ],
         "options": [
             {
@@ -1790,9 +1770,8 @@ window.catalogData = {
             "Mínimo 3 galletas."
         ],
         "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
+        "mainImage": "/assets/propuestas-fotograficas/galletas-especiales.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galletas.webp",
             "/assets/propuestas-fotograficas/galletas-especiales.webp"
         ],
         "options": [
@@ -1837,9 +1816,8 @@ window.catalogData = {
             "Mínimo 3 galletas."
         ],
         "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas-especiales.webp",
+        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galletas-especiales.webp",
             "/assets/propuestas-fotograficas/galletas.webp"
         ],
         "options": [
@@ -1882,11 +1860,9 @@ window.catalogData = {
             "Horneadas frescas bajo pedido"
         ],
         "price": 46000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
+        "mainImage": "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galletas.webp",
-            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp",
-            "/assets/propuestas-fotograficas/galletas-especiales.webp"
+            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
         ],
         "options": [],
         "personalization": null

@@ -6,7 +6,7 @@ Página privada para cambiar productos, precios, textos y fotos sin tocar códig
 
 1. **Entrar:** correo y clave. Después, el código de 6 dígitos de la app de códigos (Google Authenticator u otra). La primera vez, el panel muestra un código QR para configurar la app.
 2. **Buscar el producto:** con el buscador o los filtros, que siguen las páginas de la web: Tortas (las dos bases, los diseños de la galería y los adicionales, en ese orden), Alfajores (incluye la Torta de Alfajor), Brownies, Galletas (un producto por sabor y la caja surtida), Detalles, Ocultos y Con cambios.
-3. **Editar:** «Editar» abre la ficha con nombre, sección, filtro, visibilidad, precios por opción (porciones, tamaños, presentaciones), textos, cantidad mínima y fotos. «Guardar» deja el cambio en tu borrador.
+3. **Editar:** «Editar» abre la ficha de ese producto con lo que le aplica: nombre, sección, filtro, visibilidad, precios por opción (porciones, tamaños, presentaciones), textos y fotos. La cantidad mínima y su nombre solo aparecen en Alfajores, Brownies, Galletas y Detalles, que se piden por cantidad; las tortas y sus diseños se piden de a una. «Guardar» deja el cambio en tu borrador.
 4. **Publicar:** la barra de abajo cuenta los cambios. «Publicar cambios» los envía y la web los muestra al recargar. «Descartar» vuelve a lo publicado.
 
 Reglas que conviene saber:
@@ -15,6 +15,7 @@ Reglas que conviene saber:
 - **Ocultar en vez de eliminar.** La casilla «Visible» quita el producto de la web, del pedido y de Google sin perderlo.
 - **Producto nuevo:** toma la estructura del primero de su sección (opciones, porciones, campos de mensaje) con los precios vacíos, y empieza oculto hasta que marques «Visible».
 - **Diseños de la galería de Tortas:** usan los precios y opciones de su torta base. Si cambias los precios de Torta Vintage, cambian en todos sus diseños. «Ponerle precios propios» los separa.
+- **Cada foto va en un solo producto.** La ficha de un producto muestra solo sus fotos; «Agregar una foto de la web» ofrece solo las que no usa ningún otro producto, y el panel no deja publicar una foto repetida ni un producto visible sin foto. Así la ficha de Torta Vintage no muestra los diseños de la galería, que tienen la suya.
 - **Fotos:** por ahora se eligen entre las fotos que ya tiene la web. Subir fotos nuevas llega cuando se active Storage en Firebase (plan Blaze, `us-east1`). Los adicionales de torta no llevan fotos: el panel y la web los muestran con su icono.
 - **Historial:** cada publicación guarda una copia en Firestore (`historial`), para recuperar una versión anterior si hace falta.
 

@@ -93,3 +93,35 @@ test('Cuenta productos cambiados, nuevos y eliminados', () => {
     assert.equal(removed.length, 1);
     assert.equal(total, 2);
 });
+test('Cada foto va en un solo producto: el catálogo no repite fotos y el panel no deja repetirlas', () => {
+    const list = products();
+    const seen = new Map();
+    for (const p of list) for (const src of M.photos(p)) {
+        assert.ok(!seen.has(src), `«${src}» está en ${seen.get(src)} y en ${p.id}`);
+        seen.set(src, p.id);
+    }
+    const sencilla = list.find(p => p.id === 'torta-sencilla');
+    sencilla.images.push(list.find(p => p.id === 'galeria-tortas-03').mainImage);
+    assert.ok(M.validate(list).some(e => e.includes('ya está en «Torta Sencilla · 2»')));
+    // Al editar, el producto no choca con su propia versión guardada.
+    const edit = M.clone(list.find(p => p.id === 'galleta-pistachos'));
+    assert.equal(M.validate([edit], list.filter(p => p.id !== edit.id)).length, 0);
+    assert.ok(!M.takenPhotos(list, edit).has(edit.mainImage));
+});
+test('Un producto visible necesita foto, salvo los adicionales de torta', () => {
+    const list = products();
+    const brownie = list.find(p => p.category === 'brownies');
+    Object.assign(brownie, { mainImage: '', images: [] });
+    assert.ok(M.validate(list).some(e => e.includes('elige al menos una foto')));
+    brownie.visible = false;
+    assert.equal(M.validate(list).length, 0);
+});
+test('La cantidad mínima y su nombre solo existen en las secciones que se piden por cantidad', () => {
+    const list = products();
+    const vintage = list.find(p => p.id === 'torta-vintage');
+    Object.assign(vintage, { minimum: 3, quantityLabel: 'Tortas' });
+    const normal = M.toCatalog(M.normalize(list));
+    assert.ok(!('minimum' in normal['torta-vintage']) && !('quantityLabel' in normal['torta-vintage']));
+    assert.equal(normal['alfajor-individual'].minimum, 6);
+    assert.ok(!M.QUANTITY.includes('tortas') && !M.QUANTITY.includes('extras'));
+});

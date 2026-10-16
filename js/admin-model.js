@@ -9,6 +9,8 @@
         alfajores: [['cajas', 'Cajas y minis'], ['especiales', 'Especiales']],
         detalles: [['osos', 'Con ositos'], ['mix', 'Mix y mensajes'], ['golden', 'Golden y tortas']]
     };
+    // Secciones que se piden por cantidad: solo en ellas el panel muestra cantidad mínima y su nombre.
+    const QUANTITY = ['alfajores', 'brownies', 'galletas', 'detalles'];
     const IMAGE = /^\/assets\/(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)$/;
     const clone = value => JSON.parse(JSON.stringify(value));
     const slug = text => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
@@ -27,6 +29,10 @@
     }
     const formatMoney = value => typeof value === 'number' && Number.isFinite(value) ? new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value) : '';
     const priced = option => Boolean(option.choices?.some(choice => Object.hasOwn(choice, 'price')));
+    const photos = product => [...new Set([product.mainImage, ...(product.images || [])].filter(Boolean))];
+    /** Fotos que ya usan los demás productos: cada foto va en un solo producto. */
+    const takenPhotos = (products, except) => new Map(products.filter(p => p !== except && !(except?.id && p.id === except.id))
+        .flatMap(p => photos(p).map(src => [src, p.name?.trim() || 'otro producto'])));
     /**
      * Producto nuevo con la estructura del primero de su sección (opciones, porciones, campos de
      * mensaje), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
@@ -62,6 +68,7 @@
             if (product.category === 'extras') { delete product.mainImage; delete product.images; }
             if (product.images) product.images = [...new Set(product.images.filter(Boolean))];
             if (!product.mainImage && product.images?.length) product.mainImage = product.images[0];
+            if (!QUANTITY.includes(product.category) || product.basedOn) { delete product.minimum; delete product.quantityLabel; }
             if (product.minimum === 1 || product.minimum === null) delete product.minimum;
             const optionIds = new Set();
             for (const option of product.options || []) {
@@ -96,6 +103,9 @@
             money(p.priceMax, `${name} (precio máximo)`);
             if (p.minimum !== undefined && p.minimum !== null && !(Number.isInteger(p.minimum) && p.minimum >= 1 && p.minimum <= 99)) errors.push(`${name}: la cantidad mínima va de 1 a 99.`);
             for (const src of [p.mainImage, ...(p.images || [])].filter(Boolean)) if (!IMAGE.test(src) || src.includes('..')) errors.push(`${name}: hay una foto que no es de la web.`);
+            if (p.category !== 'extras' && p.visible !== false && !photos(p).length) errors.push(`${name}: elige al menos una foto para mostrarlo en la web.`);
+            const taken = takenPhotos(all, p);
+            for (const src of photos(p)) if (taken.has(src)) errors.push(`${name}: la foto «${src.split('/').pop().replace(/\.\w+$/, '')}» ya está en «${taken.get(src)}». Cada foto va en un solo producto.`);
             for (const option of p.options || []) {
                 if (!String(option.label || '').trim()) errors.push(`${name}: hay un grupo de opciones sin título.`);
                 if (option.type === 'toggle') { money(option.priceModifier, `${name} · ${option.label}`); continue; }
@@ -116,5 +126,5 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { SECTIONS, GROUPS, IMAGE, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, validate, changes };
+    window.AdminModel = { SECTIONS, GROUPS, QUANTITY, IMAGE, photos, takenPhotos, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, validate, changes };
 })();

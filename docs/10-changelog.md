@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-16 — Una foto por producto y editor según el tipo]
+
+- Cada foto va en un solo producto. Torta Vintage y Torta Sencilla dejan de mostrar en su ficha las fotos de los diseños de la galería (cada diseño ya tiene la suya). Galletas: Red Velvet y Pistachos quedan con su foto propia, Panelita con `galletas.webp`, Chocolate blanco con `galletas-especiales.webp` y la caja surtida con `galletas-tres-chocolates.webp`.
+- Centro de control: «Agregar una foto de la web» ofrece solo fotos libres; no se publica una foto repetida ni un producto visible sin foto. La cantidad mínima y su nombre solo aparecen en Alfajores, Brownies, Galletas y Detalles.
+
 ## [2026-10-16 — Panel ordenado y galletas por sabor]
 
 - Centro de control: un filtro por tipo de producto (Tortas reúne bases, diseños y adicionales; Alfajores incluye la Torta de Alfajor; Brownies y Galletas por separado). Los adicionales de torta se muestran con su icono y ya no llevan fotos; se eliminan las 5 fotos antiguas de `assets/optimized/logos`.

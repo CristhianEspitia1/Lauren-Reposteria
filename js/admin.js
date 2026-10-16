@@ -314,7 +314,7 @@ function optionList(p) {
 }
 
 function photosHTML(p) {
-    const images = [...new Set([p.mainImage, ...(p.images || [])].filter(Boolean))];
+    const images = M.photos(p);
     return `<fieldset class="admin-fieldset"><legend>Fotos</legend>
         <div class="admin-photos">${images.map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="" width="112" height="140" loading="lazy"><div class="admin-photo-actions">${i === 0 ? '<span class="admin-photo-main">Principal</span>' : `<button type="button" data-action="main-photo" data-src="${esc(src)}">Hacer principal</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>
         <button type="button" class="admin-add" data-action="pick-photo">${icon('plus')} Agregar una foto de la web</button>
@@ -347,7 +347,7 @@ function renderEditor() {
                 ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.includes || []).join('\n'), note: inherited('includes') })}
                 ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.notes || []).join('\n'), note: inherited('notes') || 'Aclaraciones que se ven bajo las opciones.' })}
             </fieldset>
-            ${p.category === 'extras' || p.basedOn ? '' : `<fieldset class="admin-fieldset"><legend>Pedido</legend><div class="admin-grid">
+            ${!M.QUANTITY.includes(p.category) || p.basedOn ? '' : `<fieldset class="admin-fieldset"><legend>Pedido</legend><div class="admin-grid">
                 ${field('Cantidad mínima', 'minimum', p.minimum ?? 1, { type: 'number' })}
                 ${field('Nombre de la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación' })}
             </div>${personal ? `<p class="field-note">Texto que escribe el cliente: ${esc(personal)}.</p>` : ''}</fieldset>`}
@@ -428,7 +428,7 @@ editor.addEventListener('submit', event => {
     }
     edit.images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
     edit.mainImage = edit.images[0] || '';
-    const errors = M.validate([edit], products).filter(message => !message.includes('identificador'));
+    const errors = M.validate([edit], products.filter(p => p.id !== editingId)).filter(message => !message.includes('identificador'));
     if (errors.length) { showError('editorError', errors[0]); return; }
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
@@ -450,9 +450,10 @@ async function openPicker() {
         try { manifest = (await (await fetch('/assets/propuestas-fotograficas/manifest.json')).json()).items.filter(item => M.IMAGE.test(item.proposal)); }
         catch { LaurenUI.toast('No pudimos cargar las fotos. Inténtalo de nuevo.'); return; }
     }
-    const used = new Set([edit.mainImage, ...(edit.images || [])]);
-    const sorted = [...manifest].sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
-    picker.innerHTML = `<div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">Elige una <em>foto.</em></h2><p class="admin-lead">Primero las de ${esc(sectionName(edit.category))}.</p><div class="admin-photos" style="margin-top:24px">${sorted.filter(item => !used.has(item.proposal)).map(item => `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy">${esc(item.name)}</button></div>`).join('')}</div></div>`;
+    // Solo las fotos libres: las de este producto y las de cualquier otro no se ofrecen.
+    const used = new Set([...M.photos(edit), ...M.takenPhotos(products.filter(p => p.id !== editingId)).keys()]);
+    const free = [...manifest].filter(item => !used.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
+    picker.innerHTML = `<div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">Elige una <em>foto.</em></h2><p class="admin-lead">${free.length ? `Primero las de ${esc(sectionName(edit.category))}. Las que ya usa otro producto no aparecen: cada foto va en un solo producto.` : 'Todas las fotos de la web ya están en otros productos. Muy pronto podrás subir fotos nuevas desde aquí.'}</p><div class="admin-photos" style="margin-top:24px">${free.map(item => `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy">${esc(item.name)}</button></div>`).join('')}</div></div>`;
     picker.addEventListener('close', () => editor.open || LaurenUI.open(editor), { once: true });
     LaurenUI.open(picker);
 }
