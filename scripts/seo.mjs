@@ -243,7 +243,7 @@ export function pageImages(page, html) {
     const fromHtml = [...html.matchAll(/\bsrc="(\/assets\/(?:propuestas-fotograficas|optimized)\/[^"]+\.(?:webp|jpg|png))"/g)].map(m => m[1]).filter(src => !src.includes('/responsive/'));
     const fromGallery = page.gallery ? galleryData[page.gallery].map(item => item.src) : [];
     const fromProducts = productsOf(page.categories).flatMap(p => [p.mainImage, ...(p.images || [])]);
-    const featured = html.includes('data-featured') ? Catalog.all().filter(p => p.featured).map(p => p.mainImage) : [];
+    const featured = html.includes('data-featured') ? Catalog.featured().map(p => p.mainImage) : [];
     return [...new Set([...fromHtml, ...fromGallery, ...fromProducts, ...featured].filter(Boolean))];
 }
 

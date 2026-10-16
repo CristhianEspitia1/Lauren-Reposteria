@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-16 — Portada con cuatro lugares]
+
+- «Mostrar en la portada» admite como máximo 4 productos (`Catalog.FEATURED`): el panel bloquea la casilla cuando ya hay 4 y no deja publicar más; la web y el SEO usan `Catalog.featured()`, que nunca devuelve más de 4.
+
 ## [2026-10-16 — Todas las tortas iguales]
 
 - Las 50 tortas se tratan igual: todas mandan su foto en el mensaje de WhatsApp y todas pueden marcarse «Mostrar en la portada» y tener frase corta. Se quitan del catálogo las marcas internas `design` y `reference`; solo `basedOn` indica de qué torta toma los precios (y esas no se repiten en el JSON-LD, como antes).

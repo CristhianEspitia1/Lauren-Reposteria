@@ -12,6 +12,7 @@ Página privada para cambiar productos, precios, textos y fotos sin tocar códig
 Reglas que conviene saber:
 
 - **Precio vacío = «Cotiza por WhatsApp».** Vale para un producto entero o para una sola opción (por ejemplo, 25 a 30 porciones).
+- **La portada tiene 4 lugares.** «Mostrar en la portada» pone el producto en «Pequeños grandes favoritos» de la página de inicio. Caben 4: con 4 marcados, la casilla de los demás se bloquea y dice cuáles ocupan la portada; hay que desmarcar uno para poner otro. El panel tampoco publica más de 4 y la web, aunque llegaran más, solo muestra los 4 primeros.
 - **Ocultar en vez de eliminar.** La casilla «Visible» quita el producto de la web, del pedido y de Google sin perderlo.
 - **Producto nuevo:** toma la estructura del primero de su sección (opciones, porciones, campos de mensaje) con los precios vacíos, y empieza oculto hasta que marques «Visible».
 - **Precios de las tortas:** Torta Vintage y Torta Sencilla fijan los precios por porciones; las demás tortas toman los de una de ellas (la fila dice «precios de Torta Vintage»). Si cambias los precios de Torta Vintage, cambian en todas las que los toman. «Ponerle precios propios» le da a una torta sus propios precios.

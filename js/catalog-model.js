@@ -16,6 +16,9 @@
     }
     const get = id => Object.hasOwn(catalogData, id) && shown(catalogData[id]) ? expand(catalogData[id]) : null;
     const all = () => Object.values(catalogData).filter(shown).map(expand);
+    // La vitrina de la portada tiene cuatro lugares: nunca se muestran más, aunque lleguen más marcados.
+    const FEATURED = 4;
+    const featured = () => all().filter(p => p.featured).slice(0, FEATURED);
     const quoteOnly = product => product.category === 'extras' || product.quoteOnly === true;
     function visible(option, selection) {
         if (!option.dependsOn) return true;
@@ -152,5 +155,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es.
     const photo = product => product?.category === 'tortas' && product.mainImage ? `https://laurenreposteria.com${product.mainImage}` : '';
-    window.Catalog = { get, all, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { get, all, FEATURED, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

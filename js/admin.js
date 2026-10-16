@@ -295,7 +295,7 @@ const field = (label, path, value, { type = 'text', note = '', placeholder = '',
         : `<input id="${id}" data-path="${path}" data-kind="${type}" value="${esc(value ?? '')}" placeholder="${esc(placeholder)}" ${type === 'money' ? 'inputmode="numeric"' : ''} ${type === 'number' ? 'inputmode="numeric"' : ''} ${attrs}>`;
     return `<div class="personal-field"><label for="${id}">${esc(label)}</label>${type === 'money' ? `<div class="admin-money">${control}</div>` : control}${note ? `<p class="field-note">${note}</p>` : ''}</div>`;
 };
-const check = (label, path, checked) => `<label class="toggle-option"><input type="checkbox" data-path="${path}" data-kind="bool" ${checked ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>${esc(label)}</span></label>`;
+const check = (label, path, checked, disabled = false) => `<label class="toggle-option"><input type="checkbox" data-path="${path}" data-kind="bool" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>${esc(label)}</span></label>`;
 const moneyValue = value => (typeof value === 'number' ? M.formatMoney(value) : value ?? '');
 
 // Precio que verá el cliente en la tarjeta, con lo que hay escrito ahora mismo.
@@ -366,6 +366,11 @@ function renderEditor() {
     const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
     const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${base.name}.` : '';
     const groups = M.GROUPS[p.category];
+    // La portada tiene cuatro lugares: si ya están ocupados por otros, la casilla no se puede marcar.
+    const max = window.Catalog.FEATURED;
+    const others = products.filter(x => x.id !== editingId && x.featured === true);
+    const full = others.length >= max && p.featured !== true;
+    const names = list => list.map(x => x.name).join(', ').replace(/, ([^,]*)$/, ' y $1');
     // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
     const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
     const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
@@ -379,7 +384,8 @@ function renderEditor() {
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
                 ${editingId ? '' : section}
                 ${field('Nombre', 'name', p.name, { attrs: 'required maxlength="80"', placeholder: 'Ej.: Torta Mariposa' })}
-                <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true)}</div>
+                <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true, full)}</div>
+                <p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} productos: ${esc(names(others))}. Desmarca uno de ellos para poner este.` : `En la portada caben ${max} productos. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}.`}</p>
             </fieldset>
             ${pricesHTML(p)}
             ${p.category === 'extras' ? '' : photosHTML(p)}
@@ -429,7 +435,12 @@ editor.addEventListener('input', event => {
     if (path === 'name') editor.querySelector('#editorTitle').textContent = value || 'Sin nombre';
     const preview = editor.querySelector('#pricePreview');
     if (preview) preview.innerHTML = pricePreview();
-    if (path === 'category' || path === 'basedOn') { if (path === 'category') delete edit.group; renderEditor(); }
+    if (path === 'category' || path === 'basedOn' || path === 'featured') {
+        if (path === 'category') delete edit.group;
+        const scroll = editor.querySelector('.dialog-scroll').scrollTop;
+        renderEditor();
+        editor.querySelector('.dialog-scroll').scrollTop = scroll;
+    }
 });
 
 editor.addEventListener('click', event => {
