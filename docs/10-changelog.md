@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-16 — Todas las tortas iguales]
+
+- Las 50 tortas se tratan igual: todas mandan su foto en el mensaje de WhatsApp y todas pueden marcarse «Mostrar en la portada» y tener frase corta. Se quitan del catálogo las marcas internas `design` y `reference`; solo `basedOn` indica de qué torta toma los precios (y esas no se repiten en el JSON-LD, como antes).
+
 ## [2026-10-16 — Centro de control más sencillo]
 
 - Lista: filtros con la cuenta de productos («Ocultos» y «Con cambios» solo cuando hay alguno), grupos con título (Tortas, con todas las tortas juntas; Adicionales de torta y cada sección) y el nombre del producto abre su ficha.

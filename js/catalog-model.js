@@ -4,7 +4,7 @@
     const money = value => '$' + new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value);
     // Un producto oculto desde el centro de control no se muestra, no se pide y no se indexa.
     const shown = product => product.visible !== false;
-    // `basedOn`: un diseño toma de su torta base lo que no define (opciones, precios, notas, textos).
+    // `basedOn`: una torta toma de otra (Vintage o Sencilla) lo que no define (opciones, precios, notas, textos).
     // Si cambia el precio de la base, cambia en todos sus diseños.
     const inherited = ['description', 'includes', 'notes', 'price', 'priceSuffix', 'minimum', 'quantityLabel', 'options', 'personalization'];
     const expanded = new WeakMap();
@@ -150,7 +150,7 @@
     }
     // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
-    // Los diseños de Tortas viajan a WhatsApp con su foto, para que Laura sepa cuál es.
-    const photo = product => product?.design ? `https://laurenreposteria.com${product.mainImage}` : '';
+    // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es.
+    const photo = product => product?.category === 'tortas' && product.mainImage ? `https://laurenreposteria.com${product.mainImage}` : '';
     window.Catalog = { get, all, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

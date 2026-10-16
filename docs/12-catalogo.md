@@ -25,9 +25,7 @@
 | `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
 | `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva |
-| `design` | No | Diseño de la galería de Tortas: su pedido viaja a WhatsApp con el enlace de la foto y no se repite en el JSON-LD |
-| `basedOn` | No | Torta base (`torta-vintage`, `torta-sencilla`) de la que hereda lo que no define: opciones, precios, notas, textos, mínimo |
-| `reference` | No | El precio es de referencia (diseño propio con precios de la torta base) |
+| `basedOn` | No | Torta (`torta-vintage`, `torta-sencilla`) de la que toma lo que no define: opciones, precios, notas, textos, mínimo. No se repite en el JSON-LD |
 
 ## Opciones y precios
 

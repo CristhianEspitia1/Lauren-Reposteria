@@ -170,12 +170,12 @@ async function loadCatalog() {
     render();
 }
 
-// Un filtro por tipo de producto: cada torta (base, diseño o adicional) en Tortas; brownies y galletas, cada uno en el suyo.
+// Un filtro por tipo de producto: todas las tortas y sus adicionales en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
 // La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
 const groupOf = p => p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
-const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.design || p.basedOn ? 1 : 0);
+const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0);
 const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : PAGES[id][1].includes(p.category));
 function renderFilters() {
     const { changed } = M.changes(original, products);
@@ -379,12 +379,12 @@ function renderEditor() {
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
                 ${editingId ? '' : section}
                 ${field('Nombre', 'name', p.name, { attrs: 'required maxlength="80"', placeholder: 'Ej.: Torta Mariposa' })}
-                <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${p.design ? '' : check('Mostrar en la portada', 'featured', p.featured === true)}</div>
+                <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true)}</div>
             </fieldset>
             ${pricesHTML(p)}
             ${p.category === 'extras' ? '' : photosHTML(p)}
             <fieldset class="admin-fieldset"><legend>Textos</legend>
-                ${p.design ? '' : field('Frase corta de la tarjeta', 'summary', p.summary, { note: 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
+                ${field('Frase corta de la tarjeta', 'summary', p.summary, { note: 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
                 ${field('Descripción', 'description', p.description, { area: true, placeholder: base?.description || '', note: inherited('description'), attrs: rows(Array(Math.ceil(String(p.description || base?.description || '').length / 70)).fill(0)) })}
                 ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.includes || []).join('\n'), note: inherited('includes'), attrs: rows(p.includes || base?.includes || []) })}
                 ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.notes || []).join('\n'), note: inherited('notes') || 'Aclaraciones que se ven bajo las opciones.', attrs: rows(Array(Math.ceil((p.notes || base?.notes || []).join(' ').length / 70)).fill(0), 2) })}
@@ -479,7 +479,7 @@ editor.addEventListener('submit', event => {
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
     else {
-        const last = products.findLastIndex(p => p.category === saved.category && !p.design);
+        const last = products.findLastIndex(p => p.category === saved.category);
         products.splice(last + 1, 0, saved);
     }
     LaurenUI.close(editor);

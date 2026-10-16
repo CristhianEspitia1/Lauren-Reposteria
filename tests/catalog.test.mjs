@@ -200,23 +200,25 @@ test('Lo que se cobra aparte exige completarse', () => {
     const golden = Catalog.get('detalle-golden-1');
     assert.ok(Catalog.validate(golden, { ...selected(golden.id), 'sabor-galleta-sencilla': '' }).length, 'Sabor de galleta vacío');
 });
-test('Cada foto de Tortas abre su ficha con precio: su estilo o, como referencia, Torta Vintage', () => {
-    const designs = Catalog.all().filter(p => p.design);
-    assert.ok(designs.length > 40);
+test('Todas las tortas son iguales: ficha con precio y su foto en el mensaje de WhatsApp', () => {
+    const tortas = Catalog.all().filter(p => p.category === 'tortas');
+    assert.ok(tortas.length > 40);
     const vintagePrices = Catalog.get('torta-vintage').options.find(o => o.id === 'porciones').choices;
-    for (const p of designs) {
-        assert.equal(p.category, 'tortas');
+    for (const p of tortas) {
+        assert.ok(!('design' in p) && !('reference' in p), `${p.id} no lleva marcas internas`);
         assert.equal(Catalog.quoteOnly(p), false, p.id);
         assert.ok(Catalog.photo(p).startsWith('https://laurenreposteria.com/assets/'), p.id);
-        if (p.reference) for (const choice of vintagePrices) assert.equal(price(p.id, { porciones: choice.value }), choice.price, p.id);
+        if (p.basedOn === 'torta-vintage' && !Array.isArray(context.catalogData[p.id].options)) for (const choice of vintagePrices) assert.equal(price(p.id, { porciones: choice.value }), choice.price, p.id);
     }
-    assert.equal(price('galeria-tortas-03', { porciones: '25-30' }), 215000, 'Los diseños sencillos usan los precios de Torta Sencilla');
-    const reference = Catalog.get('galeria-tortas-13');
-    assert.equal(reference.reference, true);
-    assert.equal(Catalog.priceLabel(reference).text, 'Desde $65.000');
-    assert.ok(!/vintage/i.test(reference.description), 'Un diseño propio no se describe como vintage');
-    cart.clearCart(); assert.equal(cart.addItem(item(reference.id, { porciones: '12-15' })), true);
+    assert.equal(price('galeria-tortas-03', { porciones: '25-30' }), 215000, 'Toma los precios de Torta Sencilla');
+    const torta = Catalog.get('galeria-tortas-13');
+    assert.equal(Catalog.priceLabel(torta).text, 'Desde $65.000');
+    assert.ok(!/vintage/i.test(torta.description), 'Una torta propia no se describe como vintage');
+    cart.clearCart(); assert.equal(cart.addItem(item(torta.id, { porciones: '12-15' })), true);
     assert.equal(cart.getTotalPrice(), 150000);
-    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(`Foto de referencia: https://laurenreposteria.com${reference.mainImage}`));
+    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(`Foto de referencia: https://laurenreposteria.com${torta.mainImage}`));
+    cart.clearCart(); assert.equal(cart.addItem(item('torta-vintage', { porciones: '4-5' })), true);
+    assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes('Foto de referencia: https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp'), 'Torta Vintage también manda su foto');
+    assert.equal(Catalog.photo(Catalog.get('alfajor-individual')), '', 'Solo las tortas mandan foto');
     cart.clearCart();
 });

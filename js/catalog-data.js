@@ -247,7 +247,6 @@ window.catalogData = {
         "name": "Torta corazón lila",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-05.webp",
         "images": [
@@ -259,7 +258,6 @@ window.catalogData = {
         "name": "Torta Vintage · 2",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-01.webp",
         "images": [
@@ -271,7 +269,6 @@ window.catalogData = {
         "name": "Torta vintage con frutos rojos",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-06.webp",
         "images": [
@@ -283,7 +280,6 @@ window.catalogData = {
         "name": "Corazón Hello Kitty",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-07.webp",
         "images": [
@@ -295,7 +291,6 @@ window.catalogData = {
         "name": "Corazón crema con perlas doradas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-08.webp",
         "images": [
@@ -307,7 +302,6 @@ window.catalogData = {
         "name": "Torta vintage azul",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
         "images": [
@@ -319,7 +313,6 @@ window.catalogData = {
         "name": "Torta corazón roja con moño",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-10.webp",
         "images": [
@@ -331,9 +324,7 @@ window.catalogData = {
         "name": "Torta negra con detalles dorados",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -354,9 +345,7 @@ window.catalogData = {
         "name": "Noche estrellada sobre pedestal",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -377,9 +366,7 @@ window.catalogData = {
         "name": "Paw Patrol · Máximo",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -400,7 +387,6 @@ window.catalogData = {
         "name": "Torta Vintage · 3",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-02.webp",
         "images": [
@@ -412,9 +398,7 @@ window.catalogData = {
         "name": "Torta de Las Chicas Superpoderosas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -435,9 +419,7 @@ window.catalogData = {
         "name": "Torta verde para primera comunión",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -458,7 +440,6 @@ window.catalogData = {
         "name": "Torta con frambuesas y velas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-16.webp",
         "images": [
@@ -470,9 +451,7 @@ window.catalogData = {
         "name": "Paw Patrol rosa",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -493,9 +472,7 @@ window.catalogData = {
         "name": "Torta con flores naturales",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -516,9 +493,7 @@ window.catalogData = {
         "name": "Torta lila con flores",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -539,9 +514,7 @@ window.catalogData = {
         "name": "Torta de chocolate con galletas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -562,7 +535,6 @@ window.catalogData = {
         "name": "Torta roja vintage",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-21.webp",
         "images": [
@@ -574,9 +546,7 @@ window.catalogData = {
         "name": "Torta infantil con banderines",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -597,7 +567,6 @@ window.catalogData = {
         "name": "Torta corazón en blanco y negro",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-23.webp",
         "images": [
@@ -609,7 +578,6 @@ window.catalogData = {
         "name": "Torta rosada con mensaje",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-24.webp",
         "images": [
@@ -621,9 +589,7 @@ window.catalogData = {
         "name": "Torta Yaisa",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -644,9 +610,7 @@ window.catalogData = {
         "name": "Torta de quince años con rosas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -667,9 +631,7 @@ window.catalogData = {
         "name": "Torta azul para primera comunión",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -690,7 +652,6 @@ window.catalogData = {
         "name": "Corazón crema y lila",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
         "images": [
@@ -702,9 +663,7 @@ window.catalogData = {
         "name": "Harry Potter en negro y dorado",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -725,9 +684,7 @@ window.catalogData = {
         "name": "Torta PlayStation · Julián",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -748,9 +705,7 @@ window.catalogData = {
         "name": "Torta con decoración de celebración",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -771,7 +726,6 @@ window.catalogData = {
         "name": "Torta vintage · Susana",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-32.webp",
         "images": [
@@ -783,7 +737,6 @@ window.catalogData = {
         "name": "Corazón rojo · Hello 24",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
         "images": [
@@ -795,9 +748,7 @@ window.catalogData = {
         "name": "Torta Mi Grado",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -818,9 +769,7 @@ window.catalogData = {
         "name": "Torta blanca de 25 años",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -841,9 +790,7 @@ window.catalogData = {
         "name": "Torta Noche estrellada",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -864,9 +811,7 @@ window.catalogData = {
         "name": "Torta Hello Kitty",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -887,9 +832,7 @@ window.catalogData = {
         "name": "Torta LOL Surprise",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -910,9 +853,7 @@ window.catalogData = {
         "name": "Harry Potter en crema y dorado",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -933,9 +874,7 @@ window.catalogData = {
         "name": "Torta de sirena · Valery",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -956,9 +895,7 @@ window.catalogData = {
         "name": "Torta de grado con estrellas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -979,7 +916,6 @@ window.catalogData = {
         "name": "Torta Sencilla · 2",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-sencilla",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
         "images": [
@@ -991,7 +927,6 @@ window.catalogData = {
         "name": "Torta Sencilla · 3",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-sencilla",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-04.webp",
         "images": [
@@ -1003,7 +938,6 @@ window.catalogData = {
         "name": "Torta con rosas y mariposas",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp",
         "images": [
@@ -1015,9 +949,7 @@ window.catalogData = {
         "name": "Torta negra de cumpleaños",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -1038,9 +970,7 @@ window.catalogData = {
         "name": "Torta rosa de diecinueve años",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -1061,9 +991,7 @@ window.catalogData = {
         "name": "Torta de chocolate para celebrar",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -1084,9 +1012,7 @@ window.catalogData = {
         "name": "Torta con bordes azules",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -1107,9 +1033,7 @@ window.catalogData = {
         "name": "Torta de amor y amistad",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -1130,9 +1054,7 @@ window.catalogData = {
         "name": "Torta Uno",
         "category": "tortas",
         "visible": true,
-        "design": true,
         "basedOn": "torta-vintage",
-        "reference": true,
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",

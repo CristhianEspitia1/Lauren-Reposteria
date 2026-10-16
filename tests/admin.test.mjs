@@ -30,7 +30,7 @@ test('Un producto nuevo toma la estructura de su sección, sin precios, sin foto
     assert.equal(torta.images.length, 0);
     assert.equal(torta.options.map(o => o.id).join(), 'sabor,relleno,porciones');
     assert.ok(torta.options.find(o => o.id === 'porciones').choices.every(c => c.price === null));
-    assert.ok(!('basedOn' in torta) && !('design' in torta));
+    assert.ok(!('basedOn' in torta));
     const extra = M.template('extras', products());
     assert.equal(extra.price, null); assert.equal(extra.priceMax, null);
     const oso = M.template('detalles', products());

@@ -38,9 +38,9 @@
      * mensaje), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
      */
     function template(category, products) {
-        const base = products.find(p => p.category === category && !p.basedOn && !p.design);
+        const base = products.find(p => p.category === category && !p.basedOn);
         const product = base ? clone(base) : { category, options: [], personalization: null };
-        for (const key of ['design', 'reference', 'basedOn', 'featured', 'summary', 'priceMax']) delete product[key];
+        for (const key of ['basedOn', 'featured', 'summary', 'priceMax']) delete product[key];
         Object.assign(product, { id: '', name: '', category, visible: false, description: '', mainImage: '', images: [] });
         product.price = null;
         if (category === 'extras') product.priceMax = null;
