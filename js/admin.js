@@ -173,8 +173,8 @@ async function loadCatalog() {
 // Un filtro por tipo de producto: cada torta (base, diseño o adicional) en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
-// La lista se agrupa como la web: tortas base, diseños de la galería, adicionales y cada sección.
-const groupOf = p => p.design || p.basedOn ? 'Diseños de la galería' : p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
+// La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
+const groupOf = p => p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
 const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.design || p.basedOn ? 1 : 0);
 const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : PAGES[id][1].includes(p.category));
 function renderFilters() {
@@ -314,7 +314,7 @@ function pricesHTML(p) {
         const own = Array.isArray(p.options);
         return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}
             <div class="personal-field"><label for="f-basedOn">Toma los precios de</label><select id="f-basedOn" data-path="basedOn" data-kind="text">${products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => `<option value="${esc(b.id)}" ${b.id === p.basedOn ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></div>
-            ${own ? `<p class="field-note">Este diseño tiene precios propios.</p>${groupsHTML(p, true)}<p><button type="button" class="admin-add" data-action="inherit">${icon('arrow')} Volver a los precios de ${esc(base?.name || 'la torta base')}</button></p>`
+            ${own ? `<p class="field-note">Esta torta tiene precios propios.</p>${groupsHTML(p, true)}<p><button type="button" class="admin-add" data-action="inherit">${icon('arrow')} Volver a los precios de ${esc(base?.name || 'la otra torta')}</button></p>`
         : `<p class="field-note">Usa las porciones, sabores y precios de ${esc(base?.name || 'su torta base')}: si cambias los de esa torta, cambian aquí también.</p><p><button type="button" class="admin-add" data-action="own-prices">${icon('plus')} Ponerle precios propios</button></p>`}
         </fieldset>`;
     }
@@ -374,7 +374,7 @@ function renderEditor() {
     editor.innerHTML = `<form novalidate>
         <div class="dialog-scroll">
             <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
-            <p class="eyebrow">${editingId ? (p.basedOn ? 'Diseño de la galería' : sectionName(p.category)) : 'Nuevo producto'}</p>
+            <p class="eyebrow">${editingId ? sectionName(p.category) : 'Nuevo producto'}</p>
             <h2 id="editorTitle">${esc(p.name || 'Sin nombre')}</h2>
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
                 ${editingId ? '' : section}

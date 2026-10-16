@@ -6,7 +6,7 @@ auditoría/cambio.
 
 ## [2026-10-16 — Centro de control más sencillo]
 
-- Lista: filtros con la cuenta de productos («Ocultos» y «Con cambios» solo cuando hay alguno), grupos con título (Tortas, Diseños de la galería, Adicionales de torta y cada sección) y el nombre del producto abre su ficha.
+- Lista: filtros con la cuenta de productos («Ocultos» y «Con cambios» solo cuando hay alguno), grupos con título (Tortas, con todas las tortas juntas; Adicionales de torta y cada sección) y el nombre del producto abre su ficha.
 - Ficha: secciones en el orden en que se usan (Lo básico, Precios, Fotos, Textos, Lo que elige el cliente, Cantidad, Dónde aparece), aviso en vivo «En la tarjeta se verá…», columnas «Opción» y «Precio», textos sin palabras técnicas, cuadros de texto a la medida de su contenido, «Eliminar producto» al final y confirmación al cerrar con cambios sin guardar.
 - Barra de publicar: «N cambios sin publicar. Aún no se ven en la web.». El selector de fotos ya no usa estilos en línea (los bloquea la CSP).
 
