@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Un solo resumen al unir]
+
+- «Agregar fotos de la web» ya no pregunta en cada foto. Al tocarlas quedan marcadas «Se une a este» o «Se mueve aquí», y al tocar «Listo» (o cerrar) aparece un solo resumen con la lista de productos que se unen (foto, nombre y cuántas fotos traen) y de dónde salen las fotos movidas. «Volver» deja seguir eligiendo y «Unir y seguir» confirma.
+
 ## [2026-10-17 — Agregar fotos de la web mueve y une]
 
 - En «Agregar fotos de la web», cada foto vive en un solo producto. Una foto adicional de otro producto se mueve: sale de allí al guardar. La foto de la tarjeta de otro producto ofrece unirlo, con una confirmación de la marca (`.admin-confirm`): todas sus fotos pasan a la ficha abierta y ese producto se elimina al guardar; en la web se ve al publicar. Las tortas base (Vintage y Sencilla) no se pueden unir porque otras toman sus precios. El selector dice dónde está hoy cada foto.

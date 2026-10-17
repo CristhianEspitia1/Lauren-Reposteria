@@ -622,7 +622,7 @@ editor.addEventListener('submit', event => {
     }
     LaurenUI.close(editor);
     render();
-    LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(' y ')} quedó dentro de «${saved.name}». Toca «Publicar cambios» para que se vea en la web.` : 'Guardado. Toca «Publicar cambios» para que se vea en la web.');
+    LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(', ').replace(/, ([^,]*)$/, ' y $1')} ${joined.length === 1 ? 'quedó' : 'quedaron'} dentro de «${saved.name}». Toca «Publicar cambios» para que se vea en la web.` : 'Guardado. Toca «Publicar cambios» para que se vea en la web.');
 });
 
 /* ---------- Subir fotos nuevas (worker/fotos: Cloudflare las guarda y las sirve al instante) ---------- */
@@ -742,11 +742,12 @@ async function openPicker() {
     const uploaded = [...new Set([...await uploadedPhotos(), ...others.flatMap(M.photos).filter(src => src.startsWith(M.UPLOADED))])]
         .map(src => ({ proposal: src, name: 'Foto subida', category: others.find(p => M.photos(p).includes(src))?.category }));
     takenMains = M.takenPhotos(others);
+    pending = { merges: new Set(), moves: new Set() };
     const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
-    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, te preguntamos si quieres unir ese producto a este.</p><div class="admin-photos">${items.map(item => {
+    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, ese producto se une a este. Al tocar «Listo» te mostramos el resumen antes de hacerlo.</p><div class="admin-photos">${items.map(item => {
         const main = takenMains.get(item.proposal);
         const holder = main ? null : others.find(p => M.photos(p).includes(item.proposal));
-        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»: se mueve aquí` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} Agregada</span></button></div>`;
+        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button></div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     picker.addEventListener('close', () => {
         renderEditor();
@@ -756,7 +757,9 @@ async function openPicker() {
     LaurenUI.open(picker);
 }
 const pressPhotos = (list, pressed) => list.forEach(src => picker.querySelector(`[data-photo="${CSS.escape(src)}"]`)?.setAttribute('aria-pressed', String(pressed)));
-picker.addEventListener('click', async event => {
+// Lo que se une o se mueve mientras el selector está abierto: se confirma todo junto al tocar «Listo».
+let pending = { merges: new Set(), moves: new Set() };
+picker.addEventListener('click', event => {
     const button = event.target.closest('[data-photo]');
     if (!button) return;
     const src = button.dataset.photo;
@@ -764,25 +767,20 @@ picker.addEventListener('click', async event => {
         // Soltar la foto de la tarjeta de un producto unido deshace la unión y devuelve todas sus fotos.
         const undo = [...merges].find(([, merge]) => merge.main === src);
         const drop = undo ? undo[1].photos : [src];
-        if (undo) merges.delete(undo[0]);
-        drop.forEach(s => moves.delete(s));
+        if (undo) { merges.delete(undo[0]); pending.merges.delete(undo[0]); }
+        drop.forEach(s => { moves.delete(s); pending.moves.delete(s); });
         edit.images = (edit.images || []).filter(s => !drop.includes(s));
         if (drop.includes(edit.mainImage)) edit.mainImage = edit.images[0] || '';
         pressPhotos(drop, false);
         return;
     }
-    // La foto de la tarjeta de otro producto: se ofrece unir ese producto a este (sus fotos pasan aquí y él se elimina).
+    // La foto de la tarjeta de otro producto: ese producto se une a este (sus fotos pasan aquí y él se elimina al guardar).
     const owner = takenMains.has(src) ? products.find(p => p.id !== editingId && !merges.has(p.id) && p.mainImage === src) : null;
     if (owner) {
         if (products.some(p => p.basedOn === owner.id)) { LaurenUI.toast(`«${owner.name}» no se puede unir: otras tortas toman sus precios.`); return; }
         const photos = M.photos(owner);
-        const ok = await askConfirm({
-            title: `¿Unir <em>${esc(owner.name)}</em> aquí?`,
-            text: `${photos.length === 1 ? 'Su foto pasa' : `Sus ${photos.length} fotos pasan`} a «${esc(edit.name || 'este producto')}» y «${esc(owner.name)}» se elimina del panel. En la web se verá cuando guardes y publiques los cambios.`,
-            action: 'Unir'
-        });
-        if (!ok) return;
         merges.set(owner.id, { main: src, photos });
+        pending.merges.add(owner.id);
         edit.images = [...new Set([...(edit.images || []), ...photos])];
         if (!edit.mainImage) edit.mainImage = src;
         pressPhotos(photos, true);
@@ -790,16 +788,48 @@ picker.addEventListener('click', async event => {
     }
     // Si es una foto adicional de otros productos, se mueve: al guardar sale de ellos.
     const holders = products.filter(p => p.id !== editingId && !merges.has(p.id) && M.photos(p).includes(src)).map(p => p.id);
-    if (holders.length) moves.set(src, holders);
+    if (holders.length) { moves.set(src, holders); pending.moves.add(src); }
     edit.images = [...(edit.images || []), src];
     if (!edit.mainImage) edit.mainImage = src;
     button.setAttribute('aria-pressed', 'true');
 });
 
+// «Listo», cerrar, Esc o tocar fuera: si algo se une o se mueve, primero el resumen; «Volver» deja seguir eligiendo.
+const listNames = names => names.map(n => `«${esc(n)}»`).join(', ').replace(/, ([^,]*)$/, ' y $1');
+async function finishPicker() {
+    const joined = [...pending.merges].map(id => products.find(p => p.id === id)).filter(Boolean);
+    const moved = [...pending.moves].filter(src => moves.has(src));
+    if (!joined.length && !moved.length) { picker.close(); return; }
+    const from = [...new Set(moved.flatMap(src => moves.get(src)))].map(id => products.find(p => p.id === id)?.name).filter(Boolean);
+    const [one, many] = joined.every(p => p.category === 'tortas') ? ['torta', 'tortas'] : ['producto', 'productos'];
+    const here = `«${esc(edit.name || 'este producto')}»`;
+    const count = n => `${n} ${n === 1 ? 'foto' : 'fotos'}`;
+    const ok = await askConfirm({
+        title: joined.length ? `¿Unir ${joined.length === 1 ? `<em>${esc(joined[0].name)}</em>` : `<em>${joined.length} ${many}</em>`} a ${here}?` : `¿Mover <em>${moved.length === 1 ? 'una foto' : `${moved.length} fotos`}</em> aquí?`,
+        body: `${joined.length ? `<p>${joined.length === 1 ? `Esta ${one} pasa` : `Estas ${many} pasan`} a ${here} con todas sus fotos y ${joined.length === 1 ? 'se elimina' : 'se eliminan'} del panel:</p>
+            <ul class="admin-confirm-list">${joined.map(p => `<li><img src="${esc(imagePath(p.mainImage))}" alt="" width="40" height="50"><span>${esc(p.name)}</span><small>${count(M.photos(p).length)}</small></li>`).join('')}</ul>` : ''}
+            ${moved.length ? `<p>${joined.length ? 'Además, ' : ''}${moved.length === 1 ? 'una foto sale' : `${moved.length} fotos salen`} de ${listNames(from)} y ${moved.length === 1 ? 'queda' : 'quedan'} solo aquí.</p>` : ''}
+            <p class="field-note">En la web se verá cuando guardes la ficha y publiques los cambios.</p>`,
+        action: joined.length ? 'Unir y seguir' : 'Mover y seguir',
+        cancel: 'Volver'
+    });
+    if (!ok) return;
+    pending = { merges: new Set(), moves: new Set() };
+    picker.close();
+}
+picker.addEventListener('click', event => {
+    const bounds = picker.getBoundingClientRect();
+    const outside = event.target === picker && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+    if (!outside && !event.target.closest('[data-close-dialog]')) return;
+    event.stopImmediatePropagation();
+    finishPicker();
+}, true);
+picker.addEventListener('cancel', event => { event.preventDefault(); finishPicker(); });
+
 /* ---------- Confirmación con las piezas de la marca (nunca el aviso del navegador) ---------- */
 const confirmDialog = $('confirmDialog');
-function askConfirm({ title, text, action }) {
-    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">${title}</h2><p class="admin-lead">${text}</p><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">Cancelar</button><button type="submit" class="btn" value="ok">${esc(action)} ${icon('check')}</button></div></form>`;
+function askConfirm({ title, body, action, cancel = 'Cancelar' }) {
+    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">${title}</h2><div class="admin-confirm-body">${body}</div><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">${esc(cancel)}</button><button type="submit" class="btn" value="ok">${esc(action)} ${icon('check')}</button></div></form>`;
     confirmDialog.returnValue = '';
     confirmDialog.showModal();
     confirmDialog.querySelector('[value="ok"]').focus();
