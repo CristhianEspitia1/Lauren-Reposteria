@@ -7,6 +7,17 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Pedir tu torta, paso a paso, y revisión del móvil]
+
+- «Pedir tu torta es así de sencillo»: cuatro pasos pensados para tortas (Elige tu torta, Escoge porciones y sabor, Dale tu toque, La confirmamos contigo), en cuatro columnas en escritorio, dos en tableta y una en móvil.
+- «Una torta tan única como tu celebración»: sin frase, más compacta (64 px arriba y abajo; 48 en móvil) y con «Encuentra tu estilo» a la derecha del titular (en móvil, debajo).
+- La mano con flores (`mano-flor`) pasa al hueco bajo la tarjeta de Tortas de «Tú pones el motivo…», antes de «Pedir tu torta…»: 96 px, centrada y a 48 px del texto de la tarjeta; solo escritorio. Para que siempre quepa completa, en escritorio esa sección reserva 192 px abajo (`.collections-section`) y «Pedir tu torta…» empieza a 32 px, más junto a la sección anterior. Las tarjetas de colección cuentan enteras como ocupadas para los dibujos.
+- La foto de Tortas en «Tú pones el motivo…» recorre las fotos de las tortas visibles del catálogo cada 4 s con un fundido (`data-photo-cycle` en `js/site.js`): toma también las que se suben desde el panel y se actualiza si cambia el catálogo. Se detiene con el cursor o el foco, fuera de pantalla, con la pestaña oculta, con movimiento reducido y con «ahorro de datos».
+- Se recupera el isotipo de «Los detalles hacen la diferencia» en Tortas, que se había perdido al quitar la sección de celebración; en móvil va al final de la frase (`desk` en `js/brand-decor.js`).
+- Casilla «Portada» del panel: desmarcar y volver a marcar deja la torta como estaba publicada, sin un cambio fantasma.
+- Revisión del móvil en 320, 360, 375, 390 y 414 px y en tableta, en las siete páginas: sin desbordes ni dibujos sobre el contenido. Áreas táctiles de 44 px en pantallas táctiles (pie, ruta, nombres de producto, barra del video); etiqueta y franja de valores a 11 px; horario y año del pie con espacios duros; pie en una columna por debajo de 380 px y su línea final apilada; `text-size-adjust` para el iPhone.
+- Manual de marca 2.2 y su versión visual: pasos para pedir, tortas de la portada, foto que cambia (única excepción a la reproducción automática), icono `heart`, lugares de `mano-flor` e `isotipo-circulo`, y reglas del móvil.
+
 ## [2026-10-17 — La portada se centra en las tortas]
 
 - Inicio: después de «Tú pones el motivo…» va «Pedir es así de sencillo» y luego «Una torta tan única como tu celebración», con su frase, cuatro tortas y el botón «Encuentra tu estilo». Salen «Pequeños grandes favoritos» y las dos fotos fijas de la celebración; la mano con flores (`mano-flor`) acompaña el nuevo titular.

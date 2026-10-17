@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 2.1 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 2.2 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -31,7 +31,7 @@ Reglas:
 - Sin emojis, sin anglicismos innecesarios, sin mayúsculas para gritar.
 - Precios, contactos y condiciones solo cambian con confirmación del negocio.
 - Sin precio definido se escribe «Cotiza por WhatsApp» en la tarjeta y «Consultar por WhatsApp» en el botón de la ficha.
-- Formatos: `$65.000`, «Desde $24.000», «de 9:00 a. m. a 6:00 p. m.», «al menos 2 días», comillas angulares «».
+- Formatos: `$65.000`, «Desde $24.000», «de 9:00 a. m. a 6:00 p. m.», «al menos 2 días», comillas angulares «». En HTML, «a.&nbsp;m.», «p.&nbsp;m.» y «desde&nbsp;2022» llevan espacio duro para que no se partan entre dos líneas en el teléfono.
 - Las frases de los dibujos del sistema gráfico no se usan como texto de la web.
 
 ## 3. Logo
@@ -114,7 +114,7 @@ La itálica de los titulares grandes lleva debajo una franja albaricoque transl�
 
 Familia **Trazo Lauren** en `js/brand-icons.js`, llamada con `LaurenIcons(nombre)` o `data-icon`. Retícula de 24, trazo 1,5, puntas redondas, `currentColor`, `aria-hidden="true"`; el control aporta el nombre accesible. Trazo 1,2 (`--icon-stroke-display`) para ilustraciones de 40–64 px. Área táctil mínima de 44 px.
 
-En uso: `cake`, `alfajor`, `brownie`, `cookie`, `gift`, `bag`, `arrow` (avanzar; en espejo, la flecha de atrás de la fila de fotos), `diagonal` (otra página o salir), `close`, `plus`, `minus`, `menu`, `check`, `search`, `zoom`, `trash`, `chat`, `play`, `pause`, `sound`, `muted`, `expand`, `more` (tres puntos: abre las opciones de algo, como el menú de una foto en el centro de control) y los complementos `bow`/`ribbon`, `butterfly`, `birthday-topper`, `pearls`, `crown`. Un icono nuevo se dibuja con las mismas reglas y se añade al registro. Ni emojis, ni fuentes de iconos, ni dibujos de otro estilo.
+En uso: `cake`, `alfajor`, `brownie`, `cookie`, `gift`, `bag`, `arrow` (avanzar; en espejo, la flecha de atrás de la fila de fotos), `diagonal` (otra página o salir), `close`, `plus`, `minus`, `menu`, `check`, `search`, `zoom`, `trash`, `chat`, `heart` (paso «Escoge porciones y sabor»), `play`, `pause`, `sound`, `muted`, `expand`, `more` (tres puntos: abre las opciones de algo, como el menú de una foto en el centro de control) y los complementos `bow`/`ribbon`, `butterfly`, `birthday-topper`, `pearls`, `crown`. Un icono nuevo se dibuja con las mismas reglas y se añade al registro. Ni emojis, ni fuentes de iconos, ni dibujos de otro estilo.
 
 ## 8. Sistema gráfico
 
@@ -125,9 +125,9 @@ Dibujos de línea de `assets/brand/sistema/`, usados como `mask` CSS y coloreado
 | `corazon` | Separador de la franja de valores; final de titulares de portada, historia, pie, colecciones y sabores |
 | `porcion-torta` | «Tú pones el motivo…», inspiración de Tortas, titular de redes |
 | `brownie` | Inspiración de Brownies y galletas, titular de redes |
-| `mano-flor` | Tortas de la portada: en blanco, entre «Una torta tan única como tu celebración» y su frase; en móvil, sobre el titular |
-| `isotipo-circulo` | Catálogos, fotos de cabecera, botón del pie |
-| `mucho-encanto` | «Pedir es así de sencillo» y sabores |
+| `mano-flor` | Lila, 96 px, centrada bajo la tarjeta de Tortas de «Tú pones el motivo…» (y del mismo bloque en la 404), a 48 px de su texto, en el hueco antes de «Pedir tu torta…». En escritorio esa sección reserva el hueco abajo (`.collections-section`: tres `--space-3xl`, 192 px) y «Pedir tu torta…» empieza a 32 px (`--space-xl`), para que ambas secciones se vean juntas. Solo escritorio: en el teléfono la tarjeta ocupa todo el ancho y no queda hueco |
+| `isotipo-circulo` | Complementos de Tortas («Los detalles hacen la diferencia»: entre el título y la frase; en móvil, al final de la frase), catálogos, fotos de cabecera, botón del pie |
+| `mucho-encanto` | «Pedir tu torta es así de sencillo» y sabores |
 | `sanadora-de-alma` | Bajo el video de la historia, inspiración de Alfajores |
 | `para-ti` | Inspiración de Detalles |
 | `reposteria` | Firma de «Las cosas bonitas se hacen con amor» |
@@ -140,7 +140,7 @@ Dibujos de línea de `assets/brand/sistema/`, usados como `mask` CSS y coloreado
 Los gráficos fijos viven en CSS; el resto los coloca `js/brand-decor.js` por sección (variantes con `data-page` en `<body>`). Reglas:
 
 - Completos, dentro del ancho del contenido y sin tocar textos, fotos ni controles; si no caben, prueban su alternativa y si tampoco, no se muestran.
-- Nunca dos en la misma esquina; ningún adorno junto a un botón o enlace; ninguno sobre fotos salvo los sellos.
+- Nunca dos en la misma esquina; ningún adorno junto a un botón o enlace (las tarjetas de colección, que son un enlace entero, cuentan como ocupadas); ninguno sobre fotos salvo los sellos.
 - En móvil solo quedan los marcados con `m: 1`, más pequeños.
 
 ## 9. Componentes
@@ -153,7 +153,9 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Botón secundario | `.btn-secondary` | Borde lila, fondo transparente; hover durazno |
 | Botón claro | `.btn-light` | Crema sobre lila; hover albaricoque |
 | Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página |
-| Tortas de la portada | `#tortas-favoritas` | Fondo lila 45 % + crema. Fila de título con «Una torta tan única *como tu celebración.*» y su frase a la derecha; debajo, cuatro tarjetas de torta (`.product-grid.four-columns`, compactas) y el botón principal «Encuentra tu estilo» centrado debajo (`.section-action`, 48 px). Las tortas se eligen en el centro de control con «Portada»; si hay menos de cuatro marcadas, se completan con las siguientes del catálogo |
+| Tortas de la portada | `.featured-cakes` | Fondo lila 45 % + crema, sección compacta (64 px arriba y abajo; 48 en móvil). Fila de título con «Una torta tan única *como tu celebración.*», sin frase, y a la derecha el botón principal «Encuentra tu estilo», alineado con la última línea del titular (en móvil, debajo del titular). Debajo, cuatro tarjetas de torta (`.product-grid.four-columns`, compactas). Las tortas se eligen en el centro de control con «Portada»; si hay menos de cuatro marcadas, se completan con las siguientes del catálogo |
+| Pasos para pedir | `.steps` | «Pedir tu torta es así de *sencillo.*», en la portada después de «Tú pones el motivo…»: cuatro pasos de torta (Elige tu torta, Escoge porciones y sabor, Dale tu toque, La confirmamos contigo), cada uno con número en itálica, icono de 40 px a trazo 1,2, título Playfair y texto en tinta suave. Cuatro columnas en escritorio, dos hasta 800 px y una en móvil |
+| Foto que cambia | `[data-photo-cycle]` | Solo la foto de Tortas en «Tú pones el motivo…»: recorre en orden aleatorio las fotos de las tortas visibles del catálogo (también las que se suben desde el centro de control), una cada 4 s con un fundido de 800 ms. La siguiente se carga antes de mostrarse. Con movimiento reducido o «ahorro de datos» en el teléfono, queda fija |
 | Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía; «Cotiza por WhatsApp» si aún no tiene precio |
 | Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
 | Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
@@ -173,6 +175,8 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 El centro de control (`/admin/`) usa los mismos tokens, letras y componentes: campos y opciones de la ficha, casillas, botones, enlaces y avisos. Sus textos siguen la voz de la marca. Nada se ve genérico: no hay desplegables, menús ni avisos del sistema; las listas cortas (torta base, sección, filtro) se eligen con las opciones `.choice`, las acciones de una foto van en el menú de foto y toda pregunta o aviso usa la confirmación de la marca (`.admin-confirm`). Solo queda el aviso del navegador al cerrar la pestaña con cambios sin publicar, que la web no puede cambiar.
 
 Estructura de toda página pública: cabecera fija con logo, menú y pedido; contenido; pie lila; botón flotante de WhatsApp y diálogos de producto, pedido y galería.
+
+En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para que ningún enlace se parta) y su línea final se apila: primero «© … Hecho a mano en Medellín desde 2022» y debajo «Volver arriba», lejos del botón de WhatsApp.
 
 ## 10. Fotografía
 
@@ -194,10 +198,13 @@ Estructura de toda página pública: cabecera fija con logo, menú y pedido; con
 | Menú | Subrayado albaricoque que crece, 420 ms |
 | Diálogos | Aparecen subiendo 10 px, 260 ms |
 | Fotos de producto | Se acercan levemente al pasar el cursor, 600 ms |
+| Foto de Tortas en la portada | Cambia cada 4 s con un fundido de 800 ms |
 
 - Todo el contenido visible desde el inicio: sin apariciones en cascada, máscaras ni desvanecimientos al bajar.
-- Sin reproducción automática ni scroll forzado. `prefers-reduced-motion` apaga las animaciones.
+- Sin reproducción automática ni scroll forzado. Única excepción: la foto de Tortas en «Tú pones el motivo…», que cambia sola, sin sonido ni texto, y se detiene con el cursor o el foco encima, fuera de pantalla y con la pestaña oculta. `prefers-reduced-motion` apaga las animaciones y deja esa foto fija.
 - Foco visible: contorno ciruela de 2 px. Áreas táctiles de 44 px. Ajustes responsive junto a cada componente.
+- En pantallas táctiles, lo pequeño se toca en 44 px de alto sin cambiar cómo se ve: enlaces del pie, la ruta («Inicio / Tortas»), el nombre de cada producto y la barra del video.
+- En el teléfono ningún texto de lectura baja de 11 px: la etiqueta (`.eyebrow`) y la franja de valores van a 11 px. Solo el contador del pedido, la píldora «Desde» y el tiempo del video son más pequeños, por ser marcas y no texto para leer.
 
 ## 12. Antes de publicar
 

@@ -189,4 +189,60 @@
         reduced.addEventListener('change', () => { if (reduced.matches) video.pause(); });
         update();
     });
+
+    /*
+     * Foto que cambia (`data-photo-cycle`): la de Tortas en «Tú pones el motivo…» recorre, en orden aleatorio, las fotos
+     * de las tortas visibles del catálogo (también las que se suben desde el centro de control), una cada 4 s con un
+     * fundido. Se detiene con el cursor o el foco encima, fuera de pantalla, con la pestaña oculta y con movimiento
+     * reducido (queda la foto fija). La siguiente foto se carga antes de mostrarse.
+     */
+    document.querySelectorAll('[data-photo-cycle]').forEach(frame => {
+        const shown = frame.querySelector('img');
+        if (!shown) return;
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+        const card = frame.closest('a') || frame;
+        const spare = shown.cloneNode();
+        Object.assign(spare, { alt: '', loading: 'eager' });
+        spare.classList.remove('is-shown');
+        spare.removeAttribute('src');
+        spare.removeAttribute('srcset');
+        spare.setAttribute('aria-hidden', 'true');
+        frame.append(spare);
+        shown.dataset.photo = shown.getAttribute('src');
+        let layers = [shown, spare], items = [], next = 0, timer = 0, onScreen = false, paused = false, busy = false;
+        function collect() {
+            const seen = new Set();
+            items = Catalog.all().filter(p => p.category === frame.dataset.photoCycle)
+                .flatMap(p => [p.mainImage, ...(p.images || [])].filter(Boolean).map(src => ({ src, alt: p.name })))
+                .filter(item => !seen.has(item.src) && seen.add(item.src));
+            for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [items[i], items[j]] = [items[j], items[i]]; }
+            next = 0;
+        }
+        // Con «ahorro de datos» activado en el teléfono, la foto queda fija.
+        const running = () => items.length > 1 && onScreen && !paused && !document.hidden && !reduced.matches && !navigator.connection?.saveData;
+        function schedule() { clearTimeout(timer); timer = running() && !busy ? setTimeout(advance, 4000) : 0; }
+        async function advance() {
+            const [current, incoming] = layers;
+            let item = items[next++ % items.length];
+            if (item.src === current.dataset.photo) item = items[next++ % items.length];
+            busy = true;
+            LaurenUI.setImageSource(incoming, item.src);
+            try { await incoming.decode(); } catch { busy = false; schedule(); return; }
+            busy = false;
+            // Si se pausó mientras cargaba, esta foto se muestra al seguir.
+            if (!running()) { next = Math.max(0, next - 1); schedule(); return; }
+            Object.assign(incoming.dataset, { photo: item.src });
+            incoming.alt = item.alt; incoming.removeAttribute('aria-hidden'); incoming.classList.add('is-shown');
+            current.alt = ''; current.setAttribute('aria-hidden', 'true'); current.classList.remove('is-shown');
+            layers = [incoming, current];
+            schedule();
+        }
+        collect();
+        catalogRenders.push(() => { collect(); schedule(); });
+        ['mouseenter', 'focusin'].forEach(type => card.addEventListener(type, () => { paused = true; schedule(); }));
+        ['mouseleave', 'focusout'].forEach(type => card.addEventListener(type, () => { paused = card.matches(':hover, :focus-within'); schedule(); }));
+        document.addEventListener('visibilitychange', schedule);
+        reduced.addEventListener('change', schedule);
+        new IntersectionObserver(entries => { onScreen = entries[entries.length - 1].isIntersecting; schedule(); }).observe(frame);
+    });
 })();

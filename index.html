@@ -39,8 +39,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/tokens.css?v=c948957e37">
-<link rel="stylesheet" href="/css/site.css?v=3d66754540">
-<link rel="stylesheet" href="/css/catalog.css?v=785f335408">
+<link rel="stylesheet" href="/css/site.css?v=4c4ebb9ab7">
+<link rel="stylesheet" href="/css/catalog.css?v=57f8170be8">
 <link rel="stylesheet" href="/css/dialogs.css?v=ff6a9b447e">
 <script src="/js/catalog-data.js?v=446fbb14f4" defer>
 </script>
@@ -59,9 +59,9 @@
 </script>
 <script src="/js/gallery-data.js?v=7c667a6a2c" defer>
 </script>
-<script src="/js/site.js?v=7d6db7b76d" defer>
+<script src="/js/site.js?v=77e704030b" defer>
 </script>
-<script src="/js/brand-decor.js?v=be8a296cf5" defer>
+<script src="/js/brand-decor.js?v=ff8fc6c1b9" defer>
 </script>
 <script src="/js/catalog-live.js?v=7e15179d01" defer></script>
 </head>
@@ -127,7 +127,7 @@
 <div class="container"><span>Hecho a mano</span><i aria-hidden="true"></i><span>Preparado para ti</span><i aria-hidden="true"></i><span>Detalles que cuentan</span><i aria-hidden="true"></i><span>Desde Medellín, con amor</span>
 </div>
 </div>
-<section class="section" id="colecciones">
+<section class="section collections-section" id="colecciones">
 <div class="container">
 <div class="section-heading">
 <div>
@@ -137,8 +137,8 @@
 </div>
 <div class="collection-grid">
 <a class="collection collection-featured" href="/tortas/">
-<div class="collection-image">
-<img fetchpriority="low" sizes="(max-width: 800px) 92vw, (max-width: 1280px) 46vw, 560px" srcset="/assets/propuestas-fotograficas/responsive/galeria-tortas-26-320.webp 320w, /assets/propuestas-fotograficas/responsive/galeria-tortas-26-640.webp 640w, /assets/propuestas-fotograficas/responsive/galeria-tortas-26-960.webp 960w, /assets/propuestas-fotograficas/galeria-tortas-26.webp 1122w" src="/assets/propuestas-fotograficas/galeria-tortas-26.webp" alt="Torta de dos pisos con rosas y mariposas doradas" width="720" height="900" loading="lazy" decoding="async">
+<div class="collection-image" data-photo-cycle="tortas">
+<img class="is-shown" fetchpriority="low" sizes="(max-width: 800px) 92vw, (max-width: 1280px) 46vw, 560px" srcset="/assets/propuestas-fotograficas/responsive/galeria-tortas-26-320.webp 320w, /assets/propuestas-fotograficas/responsive/galeria-tortas-26-640.webp 640w, /assets/propuestas-fotograficas/responsive/galeria-tortas-26-960.webp 960w, /assets/propuestas-fotograficas/galeria-tortas-26.webp 1122w" src="/assets/propuestas-fotograficas/galeria-tortas-26.webp" alt="Torta de dos pisos con rosas y mariposas doradas" width="720" height="900" loading="lazy" decoding="async">
 </div>
 <div class="collection-label">
 <h3><span data-icon="cake" aria-hidden="true"></span>Tortas</h3><span data-icon="diagonal" aria-hidden="true"></span>
@@ -188,40 +188,41 @@
 <div class="container">
 <div class="section-heading">
 <div>
-<h2>Pedir es así de <em>sencillo.</em>
+<h2>Pedir tu torta es así de <em>sencillo.</em>
 </h2>
 </div>
 </div>
 <div class="steps">
 <article class="step"><span class="step-number">01</span><span class="step-illustration" data-icon="cake" aria-hidden="true"></span>
-<h3>Encuentra tu favorito</h3>
-<p>Recorre las colecciones y descubre ese detalle que va con tu momento.</p>
+<h3>Elige tu torta</h3>
+<p>Mira nuestras tortas y escoge el estilo que va con tu celebración: vintage, sencilla o ese diseño que te enamoró.</p>
 </article>
-<article class="step"><span class="step-number">02</span><span class="step-illustration" data-icon="ribbon" aria-hidden="true"></span>
-<h3>Hazlo muy tuyo</h3>
-<p>Elige sabores, presentación y mensaje. Reúne todo en tu pedido y revisa el subtotal.</p>
+<article class="step"><span class="step-number">02</span><span class="step-illustration" data-icon="heart" aria-hidden="true"></span>
+<h3>Escoge porciones y sabor</h3>
+<p>Elige para cuántas personas es, el sabor del bizcocho y el relleno que más te guste. El precio se ajusta a lo que eliges.</p>
 </article>
-<article class="step"><span class="step-number">03</span><span class="step-illustration" data-icon="gift" aria-hidden="true"></span>
-<h3>Lo hacemos realidad</h3>
-<p>Abre tu pedido en WhatsApp. Confirmamos disponibilidad, fecha y entrega contigo.</p>
+<article class="step"><span class="step-number">03</span><span class="step-illustration" data-icon="ribbon" aria-hidden="true"></span>
+<h3>Dale tu toque</h3>
+<p>Escribe el mensaje que llevará y, si quieres, súmale moños, mariposas, perlas o una corona.</p>
+</article>
+<article class="step"><span class="step-number">04</span><span class="step-illustration" data-icon="chat" aria-hidden="true"></span>
+<h3>La confirmamos contigo</h3>
+<p>Abre tu pedido en WhatsApp con al menos 2 días de anticipación. Allí acordamos la fecha, la entrega y el pago.</p>
 </article>
 </div>
 </div>
 </section>
-<section class="section celebration-section" id="tortas-favoritas">
+<section class="section celebration-section featured-cakes" id="tortas-favoritas">
 <div class="container">
 <div class="section-heading">
 <div>
 <h2>Una torta tan única<br><em>como tu celebración.</em>
 </h2>
 </div>
-<p>Un cumpleaños, un «te quiero» o simplemente porque sí. Elegimos cada sabor, color y detalle contigo para crear algo que se sienta tuyo.</p>
-</div>
-<div class="product-grid four-columns" data-compact data-featured>
-</div>
-<div class="section-action">
 <a class="btn" href="/tortas/#inspiracion">Encuentra tu estilo <span data-icon="arrow" aria-hidden="true"></span>
 </a>
+</div>
+<div class="product-grid four-columns" data-compact data-featured>
 </div>
 </div>
 </section>
@@ -348,13 +349,13 @@
 <div class="footer-group">
 <h3>Contacto</h3>
 <p>Medellín, Colombia</p>
-<p>Todos los días, de 9:00 a. m. a 6:00 p. m.</p>
+<p>Todos los días, de 9:00&nbsp;a.&nbsp;m. a 6:00&nbsp;p.&nbsp;m.</p>
 <a href="mailto:reposterialauren@gmail.com">reposterialauren@gmail.com</a>
 <a href="/#como-pedir">Un momento especial empieza con tiempo</a>
 <a href="/preguntas/">Preguntas frecuentes</a>
 </div>
 </div>
-<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería · Hecho a mano en Medellín desde 2022</span><span class="footer-signature" aria-hidden="true"></span>
+<div class="footer-bottom"><span>© <span data-year>2026</span> Lauren Repostería · Hecho a mano en Medellín desde&nbsp;2022</span><span class="footer-signature" aria-hidden="true"></span>
 <a href="#arriba">Volver arriba <span class="back-to-top" data-icon="arrow" aria-hidden="true"></span>
 </a>
 </div>

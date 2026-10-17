@@ -303,8 +303,11 @@ function toggleHome(input) {
         LaurenUI.toast(`La portada ya tiene sus ${window.Catalog.FEATURED} tortas. Desmarca una para poner esta.`);
         return;
     }
-    const product = { ...products[index], featured: input.checked };
-    if (!input.checked) delete product.featured;
+    // La marca vuelve a quedar como estaba publicada (mismo lugar o sin ella), para no contar un cambio que no lo es.
+    const product = { ...products[index] };
+    if (input.checked) product.featured = true;
+    else if (original[product.id] && 'featured' in original[product.id]) product.featured = false;
+    else delete product.featured;
     products[index] = product;
     render();
     LaurenUI.toast(!input.checked ? 'Saldrá de la portada cuando publiques.' : product.visible === false ? 'Irá a la portada cuando la hagas visible y publiques.' : 'Irá a la portada cuando publiques.');

@@ -21,7 +21,7 @@
      * [gráfico, opciones]. to: elemento al que acompaña. box: usa su caja completa (si no, la de su texto y fotos);
      * end: el final de su última línea; between: [a, b] centra el gráfico en el hueco entre dos elementos de una fila.
      * at: punto de esa caja en fracciones [x, y]. d: desplazamiento del centro del gráfico, en tamaños del gráfico.
-     * w: ancho en escritorio; r: giro; flip: espejo; c: color; m: también en móvil; stamp: sello con disco de ese color
+     * w: ancho en escritorio; desk: esa posición solo se usa en escritorio; r: giro; flip: espejo; c: color; m: también en móvil; stamp: sello con disco de ese color
      * sobre una foto; alt: posiciones alternativas.
      * Criterio: cada sección reparte sus gráficos (nunca dos juntos), ningún adorno junto a un botón o enlace, y los
      * corazones solo al final de títulos donde suman sentido.
@@ -31,14 +31,18 @@
             ['corazon', { to: 'h1', end: 1, d: [1.1, -.5], w: 18, c: 'apricot', m: 1 }]
         ],
         '#colecciones': [
-            ['porcion-torta', row(136, { m: 1 })]
+            ['porcion-torta', row(136, { m: 1 })],
+            // La mano con flores, centrada en el hueco bajo la tarjeta de Tortas (48 px bajo su texto), antes de «Pedir tu torta…».
+            // Solo escritorio; el hueco lo reserva .collections-section en css/site.css.
+            ['mano-flor', { to: '.collection-featured > p', box: 1, at: [.5, 1], d: [0, .75], w: 96 }]
         ],
         '.process-section': [
             ['mucho-encanto', row(204, { d: [-.5, -.9], m: 1 })]
         ],
-        // Tortas de la portada: la mano con flores en el hueco entre el título y la frase; en móvil, junto al título.
-        '#tortas-favoritas': [
-            ['mano-flor', { between: ['.section-heading h2', '.section-heading > p'], d: [0, 0], w: 64, c: 'white', m: 1, alt: [{ to: '.section-heading h2', box: 1, at: [1, .5], d: [-.5, 0] }] }]
+        // Complementos de Tortas («Los detalles hacen la diferencia»): el isotipo en el hueco entre el título y la frase;
+        // en móvil, donde la frase va debajo del título, al final de la frase.
+        '#complementos': [
+            ['isotipo-circulo', { between: ['.section-heading h2', '.section-heading > p'], desk: 1, d: [0, 0], w: 84, c: 'white', m: 1, alt: [{ to: '.section-heading > p', end: 1, d: [.9, -.3] }] }]
         ],
         '.story-section': [
             ['corazon', { to: 'h2', end: 1, d: [1.2, -.1], w: 18, c: 'apricot', m: 1 }],
@@ -75,8 +79,8 @@
             [inspiration[0], row(inspiration[1], { m: 1, between: ['.section-heading h2', '.section-heading > p'], alt: [{ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5] }, { to: '.section-heading h2', end: 1, d: [.9, -.35] }] })]
         ]
     };
-    // Bloques con adornos sin texto que cuentan enteros como ocupados.
-    const solid = '.eyebrow, .category-art, .footer-signature, .hero-seal, .hero-art figure';
+    // Bloques que cuentan enteros como ocupados: adornos sin texto y tarjetas que son un enlace completo.
+    const solid = '.eyebrow, .category-art, .footer-signature, .hero-seal, .hero-art figure, .collection';
     // Gráficos CSS dentro del flujo (ver css/site.css): [elemento, pseudoelemento, posición].
     const pseudo = [['.social-heading', '::before', 'top-center'], ['.faq-copy', '::after', 'bottom-left'], ['.story-section .editorial-copy', '::after', 'bottom-left']];
     const pictures = new Set(['IMG', 'VIDEO', 'PICTURE', 'CANVAS', 'IFRAME']);
@@ -209,6 +213,7 @@
             const scales = item.small ? [1] : mobile.matches ? [.66, .56] : [1, .88, .76];
             const spots = [item, ...[].concat(item.alt || [])].map(spot => ({ ...spot, to: spot.to || item.to }));
             for (const spot of spots) {
+                if (spot.desk && mobile.matches) continue;
                 for (const scale of scales) {
                     const w = item.w * scale, h = w / item.ratio;
                     const angle = Math.abs((item.r || 0) * Math.PI / 180);

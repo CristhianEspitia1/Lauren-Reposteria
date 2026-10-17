@@ -7,9 +7,11 @@ La implementación incluye estructura semántica, `lang="es"`, enlace para salta
 - Producto, pedido, galería y video ampliado usan `dialog` nativo, Escape y restauración del foco.
 - Menú con `aria-expanded` y cierre por Escape, selección y clic exterior.
 - Formularios con etiquetas, grupos, campos requeridos, límites y errores junto al dato correspondiente.
-- Controles móviles de acción con áreas táctiles amplias; campos de texto a 16 px.
+- Controles móviles de acción con áreas táctiles amplias; campos de texto a 16 px. En pantallas táctiles, los enlaces del pie, la ruta de navegación, el nombre de cada producto y la barra del video se tocan en 44 px de alto (con relleno o `::after`, sin mover el diseño).
+- `text-size-adjust: 100%`: el iPhone no agranda el texto por su cuenta al girar la pantalla.
 - Filtros con estado seleccionado; resultados y avisos accesibles. El temporizador del video no anuncia cada segundo.
 - Movimiento reducido global y video iniciado por el visitante, con controles propios.
+- La foto de Tortas de la portada cambia cada 4 s, pero se detiene con el cursor o el foco en la tarjeta, fuera de pantalla, con la pestaña oculta, con movimiento reducido y con «ahorro de datos» activado en el teléfono. Solo cambia la foto: el nombre del enlace sigue siendo «Tortas» y el texto alternativo pasa a la foto visible.
 
 ## Comprobación local, septiembre de 2026
 

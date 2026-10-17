@@ -33,6 +33,9 @@
 .product-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-top: 16px; }
 .product-name { background: transparent; padding: 0; text-align: left; font: 1.25rem/1.35 var(--font-display); }
 .product-name:hover { text-decoration: underline 2px var(--color-apricot); text-underline-offset: 5px; }
+/* El nombre se toca en 44 px de alto sin mover la tarjeta. */
+.product-name { position: relative; }
+.product-name::after { content: ''; position: absolute; inset: -11px 0; }
 .product-price { font-size: .75rem; white-space: nowrap; }
 .price-from { display: inline-block; background: var(--color-peach); color: var(--color-text); border-radius: var(--radius-pill); padding: 1px 8px; margin-right: 2px; font-size: .9em; letter-spacing: .02em; }
 .product-description { font-size: .75rem; color: var(--color-text-soft); margin-top: 8px; line-height: 1.7; }
@@ -123,7 +126,7 @@
 @media (max-width: 560px) {
     .category-hero { padding-block: 24px 36px; }
     .category-hero-grid { grid-template-columns: 1fr; gap: 32px; }
-    .breadcrumbs { margin-bottom: 24px; }
+    .breadcrumbs { margin-bottom: 24px; font-size: .75rem; }
     .category-copy .eyebrow { margin-bottom: 18px; }
     .category-copy h1 { font-size: clamp(2.875rem, 12vw, 4rem); }
     .category-copy > p:not(.eyebrow) { font-size: .9375rem; }
@@ -139,7 +142,7 @@
     .product-meta { flex-direction: column; }
     .product-description { font-size: .75rem; }
     .product-image .product-open { bottom: 10px; right: 10px; width: 36px; height: 36px; }
-    .product-card .text-link { font-size: .75rem; }
+    .product-card .text-link, .extra a { font-size: .75rem; }
     .filter { padding: 10px 16px; }
     .filters { gap: 8px; }
     .search-field input { font-size: 16px; }
