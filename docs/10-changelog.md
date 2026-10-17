@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Borrar fotos subidas sin usar]
+
+- Las fotos subidas se guardan en el worker de fotos y «Quitar» solo las saca del producto, por eso seguían en «Agregar fotos de la web». Ahora las que ningún producto usa se marcan «Foto subida, sin usar» y sus tres puntos tienen «Borrar para siempre», con la confirmación de la marca. El worker suma `DELETE /fotos/<nombre>` (borra la foto y su miniatura, solo con sesión de administrador), con su prueba en `tests/fotos-worker.test.mjs`.
+
 ## [2026-10-17 — Un solo resumen al unir]
 
 - «Agregar fotos de la web» ya no pregunta en cada foto. Al tocarlas quedan marcadas «Se une a este» o «Se mueve aquí», y al tocar «Listo» (o cerrar) aparece un solo resumen con la lista de productos que se unen (foto, nombre y cuántas fotos traen) y de dónde salen las fotos movidas. «Volver» deja seguir eligiendo y «Unir y seguir» confirma.

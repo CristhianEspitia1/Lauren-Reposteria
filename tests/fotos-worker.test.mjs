@@ -26,7 +26,8 @@ function fakeWorker(vars = {}) {
     const kv = {
         async get(key, options) { return store.has(key) ? store.get(key).value.buffer.slice(0) : null; },
         async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata }); },
-        async list() { return { keys: [...store.keys()].map(name => ({ name })), list_complete: true }; }
+        async list() { return { keys: [...store.keys()].map(name => ({ name })), list_complete: true }; },
+        async delete(key) { store.delete(key); }
     };
     const env = { FIREBASE_PROJECT: PROJECT, ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '', FOTOS: kv, ...vars };
     let googleCalls = 0;
@@ -99,6 +100,25 @@ test('Lista solo las fotos subidas, sin sus miniaturas', async () => {
     const response = await worker.call(new Request(`${WORKER}/fotos`, { headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }));
     assert.deepEqual((await response.json()).fotos, [foto]);
     assert.equal(worker.googleCalls(), 1, 'las llaves de Google se guardan en memoria');
+});
+
+test('Borra una foto subida y su miniatura, solo con sesión de administrador', async () => {
+    const worker = fakeWorker();
+    const { foto } = await (await upload(worker)).json();
+    const name = foto.split('/').pop();
+    const remove = async (target, token) => worker.call(new Request(`${WORKER}/fotos/${target}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token ?? await idToken()}`, Origin: ORIGIN } }));
+    assert.equal((await remove(name, 'x.y.z')).status, 401);
+    assert.equal((await remove(name.replace('.webp', '-320.webp'))).status, 400, 'la miniatura no se borra sola');
+    assert.equal((await remove('..%2Fsecreto.webp')).status, 400);
+    assert.equal(worker.store.size, 2, 'nada se borró aún');
+    const response = await remove(name);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { borrada: name });
+    assert.equal(worker.store.size, 0, 'se borran la foto y su miniatura');
+    assert.equal((await remove(name)).status, 404);
+    assert.equal((await worker.call(new Request(foto))).status, 404);
+    const preflight = await worker.call(new Request(`${WORKER}/fotos/${name}`, { method: 'OPTIONS', headers: { Origin: ORIGIN } }));
+    assert.match(preflight.headers.get('Access-Control-Allow-Methods'), /DELETE/);
 });
 
 test('Rechaza otros archivos, otros sitios, sesiones sin doble factor y correos fuera de la lista', async () => {

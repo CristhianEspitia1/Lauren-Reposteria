@@ -538,24 +538,27 @@ editor.addEventListener('scroll', event => {
     if (event.target.classList?.contains('photo-strip-track')) stripEnds(event.target);
 }, true);
 // El menú de una foto flota en la capa superior (la fila de fotos no lo recorta): se ubica bajo sus tres puntos,
-// alineado a la derecha, o encima si no cabe debajo.
-editor.addEventListener('beforetoggle', event => {
-    const menu = event.target;
-    if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
-    const anchor = editor.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
-    menu.style.top = `${anchor.bottom + 4}px`;
-    menu.style.left = 'auto';
-    menu.style.right = `${Math.max(8, document.documentElement.clientWidth - anchor.right)}px`;
-}, true);
-editor.addEventListener('toggle', event => {
-    const menu = event.target;
-    if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
-    const anchor = editor.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
-    const box = menu.getBoundingClientRect();
-    if (box.left < 8) { menu.style.right = 'auto'; menu.style.left = '8px'; }
-    if (box.bottom > innerHeight - 8) menu.style.top = `${Math.max(8, anchor.top - 4 - box.height)}px`;
-}, true);
-addEventListener('resize', () => editor.querySelector('.admin-photo-menu:popover-open')?.hidePopover());
+// alineado a la derecha, o encima si no cabe debajo. Lo usan la ficha y el selector de fotos.
+function placeMenus(root) {
+    root.addEventListener('beforetoggle', event => {
+        const menu = event.target;
+        if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
+        const anchor = root.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
+        menu.style.top = `${anchor.bottom + 4}px`;
+        menu.style.left = 'auto';
+        menu.style.right = `${Math.max(8, document.documentElement.clientWidth - anchor.right)}px`;
+    }, true);
+    root.addEventListener('toggle', event => {
+        const menu = event.target;
+        if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
+        const anchor = root.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
+        const box = menu.getBoundingClientRect();
+        if (box.left < 8) { menu.style.right = 'auto'; menu.style.left = '8px'; }
+        if (box.bottom > innerHeight - 8) menu.style.top = `${Math.max(8, anchor.top - 4 - box.height)}px`;
+    }, true);
+}
+placeMenus(editor);
+addEventListener('resize', () => document.querySelector('.admin-photo-menu:popover-open')?.hidePopover());
 function stripEnds(track) {
     const strip = track.closest('.photo-strip');
     strip.querySelector('[data-strip-step="-1"]').disabled = track.scrollLeft <= 2;
@@ -743,11 +746,14 @@ async function openPicker() {
         .map(src => ({ proposal: src, name: 'Foto subida', category: others.find(p => M.photos(p).includes(src))?.category }));
     takenMains = M.takenPhotos(others);
     pending = { merges: new Set(), moves: new Set() };
+    // Una foto subida que no usa ningún producto (ni en el borrador ni en lo publicado) se puede borrar para siempre.
+    const used = new Set([...products, ...Object.values(original), edit].flatMap(M.photos));
+    const spare = src => src.startsWith(M.UPLOADED) && !used.has(src);
     const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
-    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, ese producto se une a este. Al tocar «Listo» te mostramos el resumen antes de hacerlo.</p><div class="admin-photos">${items.map(item => {
+    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, ese producto se une a este. Al tocar «Listo» te mostramos el resumen antes de hacerlo.</p><div class="admin-photos">${items.map((item, i) => {
         const main = takenMains.get(item.proposal);
         const holder = main ? null : others.find(p => M.photos(p).includes(item.proposal));
-        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button></div>`;
+        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : spare(item.proposal) ? 'Foto subida, sin usar' : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button>${spare(item.proposal) ? `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="spareMenu${i}" aria-label="Opciones de esta foto subida">${icon('more')}</button><div class="admin-photo-menu" id="spareMenu${i}" popover><button type="button" data-delete-upload="${esc(item.proposal)}">${icon('trash')} Borrar para siempre</button></div></div>` : ''}</div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     picker.addEventListener('close', () => {
         renderEditor();
@@ -792,6 +798,30 @@ picker.addEventListener('click', event => {
     edit.images = [...(edit.images || []), src];
     if (!edit.mainImage) edit.mainImage = src;
     button.setAttribute('aria-pressed', 'true');
+});
+
+placeMenus(picker);
+picker.addEventListener('scroll', () => picker.querySelector('.admin-photo-menu:popover-open')?.hidePopover(), true);
+// «Borrar para siempre»: solo fotos subidas que ningún producto usa; se borran del worker de fotos con su miniatura.
+picker.addEventListener('click', async event => {
+    const remove = event.target.closest('[data-delete-upload]');
+    if (!remove) return;
+    const src = remove.dataset.deleteUpload;
+    remove.closest('[popover]')?.hidePopover();
+    const ok = await askConfirm({
+        title: '¿Borrar <em>esta foto</em> para siempre?',
+        body: `<ul class="admin-confirm-list"><li><img src="${esc(imagePath(src))}" alt="" width="40" height="50"><span>Foto subida</span><small>sin usar</small></li></ul>
+            <p>Ningún producto la usa. Se borra de tus fotos subidas y no se puede recuperar.</p>`,
+        action: 'Borrar',
+        cancel: 'Conservarla'
+    });
+    if (!ok) return;
+    try {
+        await photosApi(`/${src.split('/').pop()}`, { method: 'DELETE' });
+        uploadedList = uploadedList?.filter(s => s !== src) || null;
+        remove.closest('.admin-photo').remove();
+        LaurenUI.toast('Listo, borramos la foto.');
+    } catch (error) { LaurenUI.toast(error.code === 'no-existe' ? 'Esa foto ya estaba borrada.' : uploadError(error)); }
 });
 
 // «Listo», cerrar, Esc o tocar fuera: si algo se une o se mueve, primero el resumen; «Volver» deja seguir eligiendo.

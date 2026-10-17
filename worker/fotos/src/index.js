@@ -11,6 +11,8 @@
  *   GET  /fotos        Fotos ya subidas: { fotos: [url] } (solo administradores).
  *   POST /fotos/subir  Una foto (multipart: foto, su miniatura de 320 px y nombre) → { foto: url }. La web
  *                      usa la miniatura (<nombre>-320.webp) en las filas de fotos.
+ *   DELETE /fotos/<nombre>  Borra una foto subida y su miniatura (solo administradores). El panel solo lo
+ *                      ofrece para fotos que ningún producto usa.
  */
 const NAME = /^[a-z0-9-]{1,80}\.(?:webp|jpg)$/;
 const THUMB = /-320\.(?:webp|jpg)$/;
@@ -110,14 +112,15 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
             const cors = allowed.includes(origin) ? {
                 'Access-Control-Allow-Origin': origin,
                 'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
                 'Access-Control-Max-Age': '86400'
             } : {};
             const reply = (status, data) => new Response(JSON.stringify(data), {
                 status,
                 headers: { ...security, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', Vary: 'Origin', ...cors }
             });
-            if (!['/fotos', '/fotos/subir'].includes(url.pathname)) return reply(404, { error: 'no-existe' });
+            const remove = /^\/fotos\/([^/]+)$/.exec(url.pathname)?.[1];
+            if (!['/fotos', '/fotos/subir'].includes(url.pathname) && remove === undefined) return reply(404, { error: 'no-existe' });
             if (!cors['Access-Control-Allow-Origin']) return reply(403, { error: 'origen' });
             if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...cors, Vary: 'Origin' } });
             try {
@@ -127,6 +130,16 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 const admins = String(env.ADMIN_EMAILS || '').toLowerCase().split(',').map(e => e.trim()).filter(Boolean);
                 if (admins.length && !admins.includes(String(user.email || '').toLowerCase())) throw new HttpError(403, 'permiso');
                 const link = name => `${url.origin}/f/${name}`;
+
+                if (remove !== undefined && remove !== 'subir') {
+                    if (request.method !== 'DELETE') throw new HttpError(405, 'metodo');
+                    if (!NAME.test(remove) || THUMB.test(remove)) throw new HttpError(400, 'nombre');
+                    if (!(await env.FOTOS.get(remove, { type: 'arrayBuffer' }))) throw new HttpError(404, 'no-existe');
+                    const [base, type] = [remove.replace(/\.\w+$/, ''), remove.split('.').pop()];
+                    await env.FOTOS.delete(`${base}-320.${type}`);
+                    await env.FOTOS.delete(remove);
+                    return reply(200, { borrada: remove });
+                }
 
                 if (url.pathname === '/fotos') {
                     if (request.method !== 'GET') throw new HttpError(405, 'metodo');
