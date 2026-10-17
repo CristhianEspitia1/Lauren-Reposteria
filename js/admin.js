@@ -238,11 +238,13 @@ async function loadCatalog() {
 
 // Un filtro por tipo de producto: todas las tortas y sus adicionales en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
-const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
+const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['home', 'En portada'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
+// La portada muestra hasta cuatro tortas marcadas con «Portada» (Catalog.FEATURED).
+const onHome = p => p.featured === true && window.Catalog.featurable(p);
 // La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
 const groupOf = p => p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
 const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0);
-const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : PAGES[id][1].includes(p.category));
+const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : PAGES[id][1].includes(p.category));
 function renderFilters() {
     const { changed } = M.changes(original, products);
     $('filters').innerHTML = FILTERS.map(([id, label]) => {
@@ -272,8 +274,10 @@ function render() {
         const base = p.basedOn && products.find(b => b.id === p.basedOn);
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
+        const homeId = `home-${esc(p.id)}`;
+        const home = window.Catalog.featurable(p) ? `<label class="toggle-option" for="${homeId}"><input id="${homeId}" type="checkbox" data-home="${esc(p.id)}" ${onHome(p) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Portada</span></label>` : '';
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
-        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
     }).join('') || `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`;
     const total = M.changes(original, products).total;
     $('saveBar').hidden = total === 0;
@@ -281,6 +285,8 @@ function render() {
     $('saveHint').textContent = total === 1 ? 'Aún no se ve en la web.' : 'Aún no se ven en la web.';
 }
 $('list').addEventListener('change', event => {
+    const homeInput = event.target.closest('[data-home]');
+    if (homeInput) return toggleHome(homeInput);
     const input = event.target.closest('[data-visible]');
     if (!input) return;
     const index = products.findIndex(p => p.id === input.dataset.visible);
@@ -288,6 +294,21 @@ $('list').addEventListener('change', event => {
     render();
     LaurenUI.toast(input.checked ? 'Se verá en la web cuando publiques.' : 'Quedará oculto cuando publiques.');
 });
+// Botón «Portada» de cada torta: hasta cuatro; con la portada llena, avisa cuáles están y no marca una quinta.
+function toggleHome(input) {
+    const index = products.findIndex(p => p.id === input.dataset.home);
+    const others = products.filter(p => p.id !== input.dataset.home && onHome(p));
+    if (input.checked && others.length >= window.Catalog.FEATURED) {
+        input.checked = false;
+        LaurenUI.toast(`La portada ya tiene sus ${window.Catalog.FEATURED} tortas. Desmarca una para poner esta.`);
+        return;
+    }
+    const product = { ...products[index], featured: input.checked };
+    if (!input.checked) delete product.featured;
+    products[index] = product;
+    render();
+    LaurenUI.toast(!input.checked ? 'Saldrá de la portada cuando publiques.' : product.visible === false ? 'Irá a la portada cuando la hagas visible y publiques.' : 'Irá a la portada cuando publiques.');
+}
 $('list').addEventListener('click', event => {
     const button = event.target.closest('[data-edit]');
     if (button) openEditor(products.find(p => p.id === button.dataset.edit));
@@ -483,9 +504,10 @@ function renderEditor() {
     const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
     const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${esc(base.name)}.` : '';
     const groups = M.GROUPS[p.category];
-    // La portada tiene cuatro lugares: si ya están ocupados por otros, la casilla no se puede marcar.
+    // La portada tiene cuatro lugares, solo para tortas: si ya están ocupados por otras, la casilla no se puede marcar.
     const max = window.Catalog.FEATURED;
-    const others = products.filter(x => x.id !== editingId && x.featured === true);
+    const homeable = window.Catalog.featurable(p);
+    const others = products.filter(x => x.id !== editingId && onHome(x));
     const full = others.length >= max && p.featured !== true;
     const names = list => list.map(x => x.name).join(', ').replace(/, ([^,]*)$/, ' y $1');
     // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
@@ -522,8 +544,8 @@ function renderEditor() {
                 <div class="admin-side-track"><div class="admin-side-sticky">
                 <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
                 <fieldset class="admin-fieldset admin-side-state"><legend>En la web</legend>
-                    <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true, full)}</div>
-                    <p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} productos: ${esc(names(others))}. Desmarca uno de ellos para poner este.` : `En la portada caben ${max} productos. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}.`}</p>
+                    <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${homeable ? check('Mostrar en la portada', 'featured', p.featured === true, full) : ''}</div>
+                    ${homeable ? `<p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} tortas: ${esc(names(others))}. Desmarca una de ellas para poner esta.` : `En la portada caben ${max} tortas. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}; si faltan, la web la completa con las siguientes del catálogo.`}</p>` : ''}
                 </fieldset>
                 </div></div>
                 ${where}

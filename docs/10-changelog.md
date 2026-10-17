@@ -6,6 +6,13 @@ auditoría/cambio. Cada día que se lleva a producción se marca con una etiquet
 Git con su fecha (por ejemplo, `2026-10-17`) y una versión en GitHub con sus notas,
 para tener un punto fijo al que volver.
 
+## [2026-10-17 — La portada se centra en las tortas]
+
+- Inicio: después de «Tú pones el motivo…» va «Pedir es así de sencillo» y luego «Una torta tan única como tu celebración», con su frase, cuatro tortas y el botón «Encuentra tu estilo». Salen «Pequeños grandes favoritos» y las dos fotos fijas de la celebración; la mano con flores (`mano-flor`) acompaña el nuevo titular.
+- `Catalog.featured()` devuelve solo tortas: primero las marcadas con `featured` y, si faltan, las siguientes del catálogo, hasta 4. `Catalog.featurable()` dice qué puede ir a la portada.
+- Centro de control: casilla «Portada» en la fila de cada torta y filtro «En portada». La casilla de la ficha solo aparece en tortas y el límite de 4 cuenta solo tortas. Los productos de otras secciones que tenían la marca dejan de salir en la portada.
+- Manual de marca 2.1: sección «Tortas de la portada», fila del panel con «Portada» y nuevos lugares de `mano-flor`, `brownie` e `isotipo-circulo`.
+
 ## [2026-10-17 — Catálogo publicado al día solo]
 
 - Nuevo workflow «Catálogo publicado» (`.github/workflows/catalogo.yml`): cada hora revisa, con solo dos archivos, si lo publicado en el centro de control cambió. Si cambió, ejecuta `scripts/pull-catalog.mjs`, corre las pruebas y las comprobaciones de SEO y, solo si pasan, hace commit en `main` y pide la publicación de GitHub Pages. También se lanza a mano desde la pestaña Actions.

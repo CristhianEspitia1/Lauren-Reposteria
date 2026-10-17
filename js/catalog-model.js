@@ -16,9 +16,15 @@
     }
     const get = id => Object.hasOwn(catalogData, id) && shown(catalogData[id]) ? expand(catalogData[id]) : null;
     const all = () => Object.values(catalogData).filter(shown).map(expand);
-    // La vitrina de la portada tiene cuatro lugares: nunca se muestran más, aunque lleguen más marcados.
+    // La portada muestra cuatro tortas: primero las marcadas en el centro de control («Portada») y, si faltan,
+    // las siguientes tortas del catálogo. Nunca más de cuatro, aunque lleguen más marcadas.
     const FEATURED = 4;
-    const featured = () => all().filter(p => p.featured).slice(0, FEATURED);
+    const FEATURED_CATEGORY = 'tortas';
+    const featurable = product => product.category === FEATURED_CATEGORY;
+    function featured() {
+        const tortas = all().filter(featurable);
+        return [...tortas.filter(p => p.featured), ...tortas.filter(p => !p.featured)].slice(0, FEATURED);
+    }
     const quoteOnly = product => product.category === 'extras' || product.quoteOnly === true;
     function visible(option, selection) {
         if (!option.dependsOn) return true;
@@ -155,5 +161,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
     const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { get, all, FEATURED, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

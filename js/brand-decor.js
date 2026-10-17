@@ -33,15 +33,12 @@
         '#colecciones': [
             ['porcion-torta', row(136, { m: 1 })]
         ],
-        '.featured-section': [
-            ['brownie', { between: ['.section-heading h2', '.section-heading .text-link'], d: [0, -.05], w: 112, m: 1 }]
-        ],
-        '.celebration-section': [
-            ['mano-flor', { to: '.celebration-grid > .editorial-copy', box: 1, at: [1, .5], d: [-.5, 0], w: 96, c: 'white' }],
-            ['isotipo-circulo', { between: ['.section-heading h2', '.section-heading > p'], d: [0, 0], w: 84, c: 'white', m: 1 }]
-        ],
         '.process-section': [
             ['mucho-encanto', row(204, { d: [-.5, -.9], m: 1 })]
+        ],
+        // Tortas de la portada: la mano con flores en el hueco entre el título y la frase; en móvil, junto al título.
+        '#tortas-favoritas': [
+            ['mano-flor', { between: ['.section-heading h2', '.section-heading > p'], d: [0, 0], w: 64, c: 'white', m: 1, alt: [{ to: '.section-heading h2', box: 1, at: [1, .5], d: [-.5, 0] }] }]
         ],
         '.story-section': [
             ['corazon', { to: 'h2', end: 1, d: [1.2, -.1], w: 18, c: 'apricot', m: 1 }],

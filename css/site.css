@@ -102,13 +102,9 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .collection-label h3 { font: 1.1875rem var(--font-display); }
 .collection-label svg { width: 18px; height: 18px; }
 .collection > p { font-size: .6875rem; color: var(--color-text-soft); margin-top: 5px; }
-.featured-section { padding-top: 0; }
-/* La celebración: una composición fotográfica asimétrica. */
 .celebration-section { background: color-mix(in srgb, var(--color-lilac) 45%, var(--color-cream)); }
-.celebration-grid { display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: clamp(40px, 7vw, 100px); }
-.celebration-collage { display: grid; grid-template-columns: 1.1fr .7fr; gap: 16px; align-items: center; }
-.celebration-collage img { width: 100%; aspect-ratio: .74; object-fit: cover; border-radius: var(--radius-sm); }
-.celebration-collage > figure:last-child { margin-top: 90px; }
+/* Tortas de la portada: las cuatro que se eligen en el centro de control, con su botón debajo. */
+.section-action { display: flex; justify-content: center; margin-top: var(--space-2xl); }
 .editorial-copy .eyebrow { margin-bottom: 24px; }
 .editorial-copy h2 { margin-bottom: 24px; }
 .editorial-copy p { max-width: 400px; color: var(--color-text-soft); font-size: .9375rem; }
@@ -241,9 +237,7 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .collection-grid { grid-template-columns: 1fr 1fr; }
     .collection-featured { grid-row: auto; grid-column: 1 / -1; }
     .collection-featured .collection-image { flex: none; aspect-ratio: 1.25; }
-    .celebration-grid, .story-grid { gap: 32px; }
-    .celebration-collage { gap: 10px; }
-    .celebration-collage > figure:last-child { margin-top: 50px; }
+    .story-grid { gap: 32px; }
     .steps { gap: 24px; }
     .step h3 { font-size: 1.25rem; }
     .step p { font-size: .8125rem; }
@@ -274,11 +268,8 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .collection-featured .collection-image { aspect-ratio: .95; }
     .collection-label h3 { font-size: 1.1875rem; }
     .collection > p { font-size: .75rem; }
-    .celebration-grid, .story-grid { grid-template-columns: 1fr; gap: 40px; }
-    .celebration-collage { max-width: 440px; gap: 16px; }
-    .celebration-grid .editorial-copy { order: -1; }
+    .story-grid { grid-template-columns: 1fr; gap: 40px; }
     .editorial-copy p { font-size: .9375rem; }
-    .celebration-collage > figure:last-child { margin-top: 60px; }
     .steps { grid-template-columns: 1fr; gap: 28px; margin-top: 32px; }
     .step { display: grid; grid-template-columns: 36px 1fr; column-gap: 20px; padding-top: 24px; }
     .step-number { grid-row: span 2; margin-bottom: 0; }

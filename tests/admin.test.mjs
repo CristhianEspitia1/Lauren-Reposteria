@@ -137,16 +137,33 @@ test('La cantidad mínima y su nombre solo existen en las secciones que se piden
     assert.equal(normal['alfajor-individual'].minimum, 6);
     assert.ok(!M.QUANTITY.includes('tortas') && !M.QUANTITY.includes('extras'));
 });
-test('La portada tiene cuatro lugares: no se publica un quinto y la web nunca muestra más de cuatro', () => {
+test('La portada muestra cuatro tortas: no se publica una quinta y la web nunca muestra más de cuatro', () => {
     const list = products();
-    assert.equal(list.filter(p => p.featured).length, 4);
+    const tortas = list.filter(p => p.category === 'tortas' && p.visible !== false);
+    tortas.slice(0, 4).forEach(p => { p.featured = true; });
     assert.equal(M.validate(list).length, 0);
-    const quinto = list.find(p => p.id === 'torta-sencilla');
-    quinto.featured = true;
+    const quinta = tortas[4];
+    quinta.featured = true;
     assert.ok(M.validate(list).some(e => e.includes('caben 4')));
     // Al editar, la ficha se compara con los demás productos.
-    assert.ok(M.validate([quinto], list.filter(p => p.id !== quinto.id)).some(e => e.includes('caben 4')));
+    assert.ok(M.validate([quinta], list.filter(p => p.id !== quinta.id)).some(e => e.includes('caben 4')));
+    // Un producto de otra sección con la marca antigua no ocupa lugar en la portada.
+    delete quinta.featured;
+    list.find(p => p.category === 'alfajores').featured = true;
+    assert.equal(M.validate(list).length, 0);
     const previous = context.catalogData;
     context.catalogData = M.toCatalog(list);
-    try { assert.equal(Catalog.featured().length, 4); } finally { context.catalogData = previous; }
+    try {
+        assert.equal(Catalog.featured().map(p => p.id).join(), tortas.slice(0, 4).map(p => p.id).join());
+        assert.ok(Catalog.featured().every(p => p.category === 'tortas'));
+    } finally { context.catalogData = previous; }
+});
+test('Con menos de cuatro tortas marcadas, la portada se completa con las siguientes tortas del catálogo', () => {
+    const list = products();
+    list.forEach(p => { delete p.featured; });
+    const tortas = list.filter(p => p.category === 'tortas' && p.visible !== false);
+    tortas[5].featured = true;
+    const previous = context.catalogData;
+    context.catalogData = M.toCatalog(list);
+    try { assert.equal(Catalog.featured().map(p => p.id).join(), [tortas[5], ...tortas.slice(0, 3)].map(p => p.id).join()); } finally { context.catalogData = previous; }
 });

@@ -189,7 +189,7 @@
     .admin-top { flex-direction: column; align-items: stretch; }
     .admin-row { grid-template-columns: 48px minmax(0, 1fr); }
     .admin-row img, .admin-row-icon { width: 48px; height: 60px; }
-    .admin-row-actions { grid-column: 2; }
+    .admin-row-actions { grid-column: 2; flex-wrap: wrap; gap: 4px 16px; }
     .admin-savebar { flex-direction: column; align-items: stretch; bottom: 12px; }
     .admin .toast { bottom: 172px; }
     .admin-savebar > div .btn { flex: 1; }

@@ -124,11 +124,12 @@
                 }
             }
         }
-        // La vitrina de la portada tiene cuatro lugares (Catalog.FEATURED).
+        // La portada tiene cuatro lugares, solo para tortas (Catalog.FEATURED).
         const max = window.Catalog?.FEATURED || 4;
         const pool = all === products ? products : [...all.filter(o => !products.some(p => p === o || (p.id && p.id === o.id))), ...products];
-        const marked = pool.filter(p => p.featured === true);
-        if (marked.length > max && products.some(p => p.featured === true)) errors.push(`En la portada caben ${max} productos y hay ${marked.length} marcados. Desmarca «Mostrar en la portada» en alguno.`);
+        const onHome = p => p.featured === true && p.category === 'tortas';
+        const marked = pool.filter(onHome);
+        if (marked.length > max && products.some(onHome)) errors.push(`En la portada caben ${max} tortas y hay ${marked.length} marcadas. Desmarca «Portada» en alguna.`);
         return [...new Set(errors)];
     }
     /** Productos nuevos, cambiados y eliminados respecto de lo publicado. */
