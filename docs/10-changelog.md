@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — La sesión del panel se cierra sola]
+
+- El centro de control cierra la sesión tras 30 minutos sin actividad, también al volver otro día con la sesión guardada. Los cambios sin publicar y la ficha abierta se conservan para el mismo usuario hasta que vuelva a entrar en esa pestaña.
+
 ## [2026-10-16 — Portada con cuatro lugares]
 
 - «Mostrar en la portada» admite como máximo 4 productos (`Catalog.FEATURED`): el panel bloquea la casilla cuando ya hay 4 y no deja publicar más; la web y el SEO usan `Catalog.featured()`, que nunca devuelve más de 4.

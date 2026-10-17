@@ -4,7 +4,7 @@ Página privada para cambiar productos, precios, textos y fotos sin tocar códig
 
 ## Cómo se usa
 
-1. **Entrar:** correo y clave. Después, el código de 6 dígitos de la app de códigos (Google Authenticator u otra). La primera vez, el panel muestra un código QR para configurar la app.
+1. **Entrar:** correo y clave. Después, el código de 6 dígitos de la app de códigos (Google Authenticator u otra). La primera vez, el panel muestra un código QR para configurar la app. La sesión queda abierta entre visitas, pero se cierra sola tras 30 minutos sin usar el panel (en cualquiera de sus pestañas). Si tenías cambios sin publicar o una ficha abierta, al entrar de nuevo con el mismo correo sigues donde ibas, mientras no cierres la pestaña.
 2. **Buscar el producto:** con el buscador o los filtros, que siguen las páginas de la web y dicen cuántos productos hay en cada uno: Tortas (todas las tortas y los adicionales), Alfajores (incluye la Torta de Alfajor), Brownies, Galletas (un producto por sabor y la caja surtida) y Detalles. «Ocultos» y «Con cambios» solo aparecen cuando hay alguno. La lista se agrupa con un título por grupo: todas las tortas van juntas en «Tortas», primero Torta Vintage y Torta Sencilla; tocar el nombre o «Editar» abre la ficha.
 3. **Editar:** la ficha muestra solo lo que le aplica a ese producto, en este orden: **Lo básico** (nombre, visible, portada), **Precios** (con el aviso «En la tarjeta se verá…» que cambia mientras escribes), **Fotos** (la principal, que va en la tarjeta, y al lado la fila con las demás), **Textos**, **Lo que elige el cliente** (sabores, rellenos, colores), **Cantidad** (solo Alfajores, Brownies, Galletas y Detalles, que se piden por cantidad) y **Dónde aparece** (sección y filtro, que casi nunca cambian). «Eliminar producto» queda al final, lejos de «Guardar». Si cierras la ficha con cambios sin guardar, el panel te pregunta antes. «Guardar» deja el cambio en tu borrador.
 4. **Publicar:** la barra de abajo cuenta los cambios sin publicar. «Publicar cambios» los envía y la web los muestra al recargar. «Descartar» vuelve a lo publicado.
@@ -37,6 +37,7 @@ Reglas que conviene saber:
 
 - Lo publicado vive en el documento `catalogo/actual` (`json`, `updatedAt`, `updatedBy`). Publicar es una transacción: si alguien publicó mientras editabas, se detiene y pide recargar.
 - Firebase Auth usa Identity Platform: sin registro público, doble factor por app de códigos y usuarios creados solo desde la consola (Authentication → Usuarios).
+- Cierre por inactividad: `js/admin.js` guarda la hora de la última actividad (toque, tecla, escritura o desplazamiento) en `localStorage` (`lauren-admin-actividad`), compartida entre pestañas. Cada 30 segundos, al volver a la pestaña y al recuperar la sesión guardada, si pasaron más de 30 minutos (`IDLE_MS`) cierra la sesión. Si el navegador no deja guardar, cuenta solo la pestaña abierta.
 - `?vista-previa` en `localhost` abre el panel sin sesión para revisar el diseño; no publica.
 
 ## Pendientes

@@ -53,6 +53,31 @@ const authMessage = error => ({
     'auth/requires-recent-login': 'Por seguridad, sal y vuelve a entrar para terminar este paso.'
 }[error?.code] || 'Algo no salió bien. Inténtalo de nuevo en un momento.');
 
+// La sesión se cierra sola tras 30 minutos sin usar el panel, también si se vuelve otro día.
+// La última actividad se comparte entre pestañas; los cambios sin publicar se conservan para seguir al entrar de nuevo.
+const IDLE_MS = 30 * 60 * 1000;
+const ACTIVITY_KEY = 'lauren-admin-actividad';
+let lastActivity = 0;
+let signedIn = '';
+let kept = null;
+let signedOutNote = '';
+const readActivity = () => { try { return Number(localStorage.getItem(ACTIVITY_KEY)) || 0; } catch { return 0; } };
+function markActivity(force = false) {
+    const now = Date.now();
+    if (!force && now - lastActivity < 15000) return;
+    lastActivity = now;
+    try { localStorage.setItem(ACTIVITY_KEY, String(now)); } catch { /* sin almacenamiento cuenta solo esta pestaña */ }
+}
+const idle = () => Date.now() - Math.max(lastActivity, readActivity()) > IDLE_MS;
+async function closeIfIdle() {
+    if (preview || !auth.currentUser || !idle()) return;
+    signedOutNote = 'Por tu seguridad, cerramos la sesión tras 30 minutos sin actividad. Entra de nuevo con tu clave y el código.';
+    await signOut(auth);
+}
+['pointerdown', 'keydown', 'input', 'wheel', 'touchstart'].forEach(type => window.addEventListener(type, () => markActivity(), { capture: true, passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) closeIfIdle(); });
+setInterval(closeIfIdle, 30000);
+
 views.login.addEventListener('submit', async event => {
     event.preventDefault();
     showError('loginError', '');
@@ -130,20 +155,37 @@ views.enroll.addEventListener('submit', async event => {
 
 $('signOut').addEventListener('click', async () => {
     if (hasChanges() && !confirm('Tienes cambios sin publicar. ¿Quieres salir de todos modos?')) return;
+    signedIn = '';
     await signOut(auth);
 });
 
 onAuthStateChanged(auth, async user => {
     if (preview) return;
-    if (!user) { showAuth(resolver ? 'code' : 'login', resolver ? 'Ahora, el código de tu celular.' : 'Entra con tu correo y tu clave.'); return; }
+    if (!user) {
+        // Si la sesión se cerró sola (inactividad o vencida), el borrador y la ficha abierta esperan al mismo usuario.
+        if (signedIn && (hasChanges() || editor.open || picker.open)) kept = { email: signedIn, editor: editor.open || picker.open };
+        signedIn = '';
+        showAuth(resolver ? 'code' : 'login', resolver ? 'Ahora, el código de tu celular.' : signedOutNote || 'Entra con tu correo y tu clave.');
+        document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
+        signedOutNote = '';
+        return;
+    }
+    if (idle()) { await closeIfIdle(); return; }
     if (!multiFactor(user).enrolledFactors.some(f => f.factorId === TotpMultiFactorGenerator.FACTOR_ID)) { await startEnrollment(user); return; }
     const token = await user.getIdTokenResult();
     if (token.signInSecondFactor !== TotpMultiFactorGenerator.FACTOR_ID) { await signOut(auth); return; }
+    markActivity(true);
+    signedIn = user.email;
     $('adminUser').textContent = user.email;
     $('adminSession').hidden = false;
     $('authView').hidden = true;
     $('appView').hidden = false;
-    await loadCatalog();
+    const resume = kept?.email === user.email ? kept : null;
+    kept = null;
+    if (!resume) { await loadCatalog(); return; }
+    render();
+    if (resume.editor) { renderEditor(); LaurenUI.open(editor); }
+    LaurenUI.toast('Seguimos donde ibas: tus cambios siguen aquí.');
 });
 
 /* ---------- Catálogo en borrador ---------- */
@@ -645,7 +687,7 @@ async function openPicker() {
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     picker.addEventListener('close', () => {
         renderEditor();
-        if (!editor.open) LaurenUI.open(editor);
+        if (!editor.open && !$('appView').hidden) LaurenUI.open(editor);
         editor.querySelector('.admin-photos')?.scrollIntoView({ block: 'center' });
     }, { once: true });
     LaurenUI.open(picker);
