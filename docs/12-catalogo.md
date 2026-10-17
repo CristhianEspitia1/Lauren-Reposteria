@@ -55,7 +55,7 @@ Si el producto se oculta o queda sin precio, el texto dice «precio a consultar�
 
 ## Después de cambiar el catálogo
 
-Si el cambio se publicó desde el centro de control, primero se trae al repositorio (también regenera el SEO):
+Lo publicado desde el centro de control llega solo al repositorio en menos de una hora (workflow «Catálogo publicado», ver [centro de control](13-centro-de-control.md#cómo-funciona)). Para traerlo ya, también regenera el SEO:
 
 ```bash
 node scripts/pull-catalog.mjs

@@ -4,6 +4,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Catálogo publicado al día solo]
+
+- Nuevo workflow «Catálogo publicado» (`.github/workflows/catalogo.yml`): cada hora revisa, con solo dos archivos, si lo publicado en el centro de control cambió. Si cambió, ejecuta `scripts/pull-catalog.mjs`, corre las pruebas y las comprobaciones de SEO y, solo si pasan, hace commit en `main` y pide la publicación de GitHub Pages. También se lanza a mano desde la pestaña Actions.
+- `scripts/pull-catalog.mjs` sale con 1 si el repositorio está atrasado y con 2 si algo falla, sin cambiar nada.
+- Antes de trabajar en el repositorio: `git pull` (CLAUDE.md, README y guía del centro de control).
+
 ## [2026-10-17 — Reauditoría y limpieza]
 
 - Panel sin avisos del navegador: salir con cambios, descartar, publicar con errores, salir de la ficha sin guardar, quitar un grupo y eliminar un producto usan la confirmación de la marca (`.admin-confirm`), con el foco en la opción segura; sin «Cancelar» es un aviso de un botón.

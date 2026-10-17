@@ -12,4 +12,4 @@
 
 ## Proyecto
 
-Sitio estático sin build (HTML, CSS y JS vanilla). Las fotos subidas desde el centro de control las guarda y sirve el worker de Cloudflare `worker/fotos` (se publica solo al cambiar esa carpeta en `main`). Vista previa: `node scripts/dev-server.mjs 5173`. Comprobaciones: `node --test tests/*.test.mjs` y `node scripts/seo.mjs --check`. Documentación en [docs/00-indice.md](docs/00-indice.md). No cambiar precios, contactos ni condiciones sin confirmación del negocio.
+Sitio estático sin build (HTML, CSS y JS vanilla). Las fotos subidas desde el centro de control las guarda y sirve el worker de Cloudflare `worker/fotos` (se publica solo al cambiar esa carpeta en `main`). El workflow `.github/workflows/catalogo.yml` trae cada hora a `main` el catálogo publicado desde el panel: antes de trabajar, `git pull`. Vista previa: `node scripts/dev-server.mjs 5173`. Comprobaciones: `node --test tests/*.test.mjs` y `node scripts/seo.mjs --check`. Documentación en [docs/00-indice.md](docs/00-indice.md). No cambiar precios, contactos ni condiciones sin confirmación del negocio.

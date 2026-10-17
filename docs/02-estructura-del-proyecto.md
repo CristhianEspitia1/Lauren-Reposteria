@@ -27,7 +27,11 @@ assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest
 assets/optimized/                Video de la historia y su poster
 assets/favicon.svg               Marca vectorial de la pestaña
 scripts/                         Servidor local, copias responsive, SEO e imágenes sociales
+admin/ / css/admin.css           Centro de control (/admin/, no se indexa)
+js/admin.js / admin-model.js      Panel: acceso, ficha, fotos y reglas del borrador
+js/firebase-config.js / catalog-live.js  Proyecto de Firebase y lectura en vivo de lo publicado
 worker/fotos/                    Cloudflare Worker que guarda y sirve las fotos subidas desde /admin/ (no se publica en Pages)
+.github/workflows/catalogo.yml   Trae cada hora el catálogo publicado y regenera el SEO
 tests/                           Pruebas de lógica y de SEO (Node)
 docs/ / Guias/                   Documentación y mantenimiento
 ```

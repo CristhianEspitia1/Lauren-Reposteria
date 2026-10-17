@@ -1,0 +1,87 @@
+# Catálogo publicado: trae al repositorio lo que se publica desde el centro de control (Firestore catalogo/actual)
+# y regenera el SEO (JSON-LD, sitemap.xml, llms.txt), para que la primera pintura de la web, Google y los asistentes
+# vean lo mismo que la web en vivo. Guía en docs/13-centro-de-control.md.
+#
+# Cada hora, una revisión liviana (solo dos archivos) compara lo publicado con js/catalog-data.js. Si el repositorio
+# quedó atrás, otro trabajo trae el repositorio completo, ejecuta scripts/pull-catalog.mjs, corre las pruebas y, solo
+# si todo pasa, hace commit y push a main y pide la publicación de GitHub Pages. Si algo falla, no cambia nada.
+name: Catálogo publicado
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalogo-publicado
+  cancel-in-progress: false
+
+jobs:
+  revisar:
+    name: Revisar si el repositorio está al día
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      atrasado: ${{ steps.revision.outputs.atrasado }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/pull-catalog.mjs
+            js/catalog-data.js
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: revision
+        name: Comparar con lo publicado
+        run: |
+          set +e
+          node scripts/pull-catalog.mjs --check
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "atrasado=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "atrasado=true" >> "$GITHUB_OUTPUT" ;;
+            *) exit "$code" ;;
+          esac
+
+  traer:
+    name: Traer el catálogo y publicar
+    needs: revisar
+    if: needs.revisar.outputs.atrasado == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Traer el catálogo y regenerar el SEO
+        run: node scripts/pull-catalog.mjs | tee "$RUNNER_TEMP/resumen.txt"
+      - name: Comprobar antes de publicar
+        run: |
+          node --test tests/*.test.mjs
+          node scripts/seo.mjs --check
+          node scripts/pull-catalog.mjs --check
+      - name: Commit y push
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then echo "publicado=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git commit -q -m 'Catálogo al día con lo publicado en el centro de control' -m "$(cat "$RUNNER_TEMP/resumen.txt")"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "publicado=true" >> "$GITHUB_OUTPUT"
+      - name: Pedir la publicación de GitHub Pages
+        if: steps.commit.outputs.publicado == 'true' && github.ref_name == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --silent

@@ -39,10 +39,11 @@ Reglas que conviene saber:
 - Firebase Auth usa Identity Platform: sin registro público, doble factor por app de códigos y usuarios creados solo desde la consola (Authentication → Usuarios).
 - Cierre por inactividad: `js/admin.js` guarda la hora de la última actividad (toque, tecla, escritura o desplazamiento) en `localStorage` (`lauren-admin-actividad`), compartida entre pestañas. Cada 30 segundos, al volver a la pestaña y al recuperar la sesión guardada, si pasaron más de 30 minutos (`IDLE_MS`) cierra la sesión. Si el navegador no deja guardar, cuenta solo la pestaña abierta.
 - `?vista-previa` en `localhost` abre el panel sin sesión para revisar el diseño; no publica.
+- **Catálogo del repositorio al día solo:** `js/catalog-data.js` (la primera pintura de la web), el JSON-LD, el sitemap y `llms.txt` salen del catálogo del repositorio. El workflow «Catálogo publicado» (`.github/workflows/catalogo.yml`) revisa cada hora si lo publicado cambió. Si cambió, ejecuta `node scripts/pull-catalog.mjs`, corre las pruebas y, solo si pasan, hace commit en `main` y pide la publicación de la web. Si algo falla, no cambia nada y GitHub avisa por correo. Para no esperar la hora: GitHub → Actions → «Catálogo publicado» → «Run workflow», o el script a mano.
+- Como ese workflow hace commits en `main`, antes de trabajar en el repositorio hay que hacer `git pull`. GitHub pausa los workflows programados tras 60 días sin actividad en el repositorio; si pasa, se reactiva en la pestaña Actions.
 
 ## Pendientes
 
-- **Copia de la web y SEO automáticos:** `js/catalog-data.js` (la primera pintura de la web), el JSON-LD, el sitemap y `llms.txt` salen del catálogo del repositorio. Después de publicar cambios, `node scripts/pull-catalog.mjs` los pone al día y luego se hace commit y push; `--check` avisa si el repositorio quedó atrás. Falta que corra solo.
 - **Ventana de temporada:** se diseña primero en el manual de marca.
 
 ## Subir fotos nuevas: cómo funciona
@@ -67,7 +68,7 @@ Panel (/admin/) ──foto + miniatura + token de Firebase──▶ Worker laure
 
 ```bash
 firebase deploy --only firestore:rules --project lauren-reposteria
-node scripts/pull-catalog.mjs   # trae lo publicado y regenera el SEO
+node scripts/pull-catalog.mjs   # trae lo publicado y regenera el SEO (el workflow lo hace solo cada hora)
 node --test tests/*.test.mjs
 # El worker de fotos se publica solo al subir cambios de worker/fotos a main.
 ```
