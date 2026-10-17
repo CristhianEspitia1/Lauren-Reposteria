@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Ficha con vista previa al lado]
+
+- La ficha de editar y crear del centro de control pasa a dos columnas en escritorio: el formulario a la izquierda y, a la derecha y fija, la tarjeta real de la web que cambia mientras se escribe, con «En la web» (Visible y Portada) y, al final, «Dónde aparece». En el celular, la tarjeta va arriba en pequeño. El panel carga `css/catalog.css` para usar la misma tarjeta. Manual y versión visual actualizados.
+
 ## [2026-10-17 — Menú de tres puntos en las fotos]
 
 - La fila de fotos (ficha de la web y centro de control) tiene ahora las flechas flotando sobre los extremos de las miniaturas: círculo de 28 px con área táctil de 44 px y sombra flotante, centradas en la altura de las fotos, y ocultas al llegar al final. La fila usa todo el ancho. Manual y versión visual actualizados.

@@ -412,6 +412,19 @@ function photosHTML(p) {
         <p class="field-note" id="uploadStatus" aria-live="polite">${uploading ? esc(uploading) : 'Puedes elegir varias a la vez. Mejor verticales, como las de la web: se ajustan solas para que carguen rápido.'}</p></fieldset>`;
 }
 
+// «Así se verá en la web»: la misma tarjeta de la web (o el bloque de adicional), con lo que hay escrito ahora.
+function cardPreview(p) {
+    let r = p;
+    try { r = window.Catalog.resolve(M.clone(p)); } catch { /* precios a medio escribir: se usa el borrador tal cual */ }
+    let price = '';
+    try { const label = window.Catalog.priceLabel(r); price = label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text); } catch { price = 'Revisa los precios'; }
+    if (p.category === 'extras') return `<article class="extra"><span class="extra-symbol">${icon(p.icon || 'gift')}</span><h3>${esc(p.name || 'Sin nombre')}</h3><p>${price}</p><span class="text-link">Consultar ${icon('diagonal')}</span></article>`;
+    const quoted = window.Catalog.quoteOnly(r);
+    const src = M.photos(p)[0];
+    return `<article class="product-card"><div class="product-image">${src ? `<img src="${esc(imagePath(src))}" alt="" width="600" height="680">` : '<span class="admin-card-empty">Sin foto</span>'}<span class="product-open">${icon('diagonal')}</span></div><div class="product-meta"><h3 class="product-name">${esc(p.name || 'Sin nombre')}</h3><p class="product-price">${quoted ? 'A tu medida' : price}</p></div><p class="product-description">${esc(r.summary || r.description || '')}</p><span class="text-link">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</span></article>`;
+}
+const previewTitle = p => `Así se verá en la web${p.visible === false ? ' <span class="admin-tag">Oculto</span>' : ''}`;
+
 function renderEditor() {
     const p = edit;
     const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
@@ -426,17 +439,15 @@ function renderEditor() {
     const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
     const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
     const section = `<div class="personal-field"><label for="f-category">Sección de la web</label><select id="f-category" data-path="category" data-kind="text">${M.SECTIONS.map(([id, label]) => `<option value="${id}" ${p.category === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>`;
-    const where = `<fieldset class="admin-fieldset"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? `<div class="personal-field"><label for="f-group">Filtro en la página</label><select id="f-group" data-path="group" data-kind="text"><option value="">Ninguno</option>${groups.map(([id, label]) => `<option value="${id}" ${p.group === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>` : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
+    const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? `<div class="personal-field"><label for="f-group">Filtro en la página</label><select id="f-group" data-path="group" data-kind="text"><option value="">Ninguno</option>${groups.map(([id, label]) => `<option value="${id}" ${p.group === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>` : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
     editor.innerHTML = `<form novalidate>
         <div class="dialog-scroll">
             <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
             <p class="eyebrow">${editingId ? sectionName(p.category) : 'Nuevo producto'}</p>
             <h2 id="editorTitle">${esc(p.name || 'Sin nombre')}</h2>
+            <div class="admin-editor-layout"><div class="admin-editor-main">
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
-                ${editingId ? '' : section}
                 ${field('Nombre', 'name', p.name, { attrs: 'required maxlength="80"', placeholder: 'Ej.: Torta Mariposa' })}
-                <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true, full)}</div>
-                <p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} productos: ${esc(names(others))}. Desmarca uno de ellos para poner este.` : `En la portada caben ${max} productos. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}.`}</p>
             </fieldset>
             ${pricesHTML(p)}
             ${p.category === 'extras' ? '' : photosHTML(p)}
@@ -451,9 +462,19 @@ function renderEditor() {
                 ${field('Cantidad mínima por pedido', 'minimum', p.minimum ?? 1, { type: 'number', attrs: 'min="1" max="99"' })}
                 ${field('Cómo se llama la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación', note: 'Ej.: Número de cajas.' })}
             </div>${personal ? `<p class="field-note">El cliente también escribe: ${esc(personal)}.</p>` : ''}</fieldset>`}
-            ${editingId ? where : (groups ? where.replace(section, '') : '')}
             ${editingId ? '<div class="admin-delete"><button type="button" class="admin-danger" data-action="delete">Eliminar producto</button><p class="field-note">Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p></div>' : ''}
             <p class="field-error" id="editorError" role="alert" hidden></p>
+            </div>
+            <aside class="admin-editor-side" aria-label="Vista previa y estado">
+                <div class="admin-side-track"><div class="admin-side-sticky">
+                <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
+                <fieldset class="admin-fieldset admin-side-state"><legend>En la web</legend>
+                    <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${check('Mostrar en la portada', 'featured', p.featured === true, full)}</div>
+                    <p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} productos: ${esc(names(others))}. Desmarca uno de ellos para poner este.` : `En la portada caben ${max} productos. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}.`}</p>
+                </fieldset>
+                </div></div>
+                ${where}
+            </aside></div>
         </div>
         <div class="admin-editor-actions">
             <div><button type="button" class="btn btn-secondary" data-close-dialog>Cancelar</button><button type="submit" class="btn">Guardar ${icon('check')}</button></div>
@@ -487,6 +508,8 @@ editor.addEventListener('input', event => {
     if (path === 'name') editor.querySelector('#editorTitle').textContent = value || 'Sin nombre';
     const preview = editor.querySelector('#pricePreview');
     if (preview) preview.innerHTML = pricePreview();
+    editor.querySelector('#cardPreview').innerHTML = cardPreview(edit);
+    editor.querySelector('#cardPreviewTitle').innerHTML = previewTitle(edit);
     if (path === 'category' || path === 'basedOn' || path === 'featured') {
         if (path === 'category') delete edit.group;
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
