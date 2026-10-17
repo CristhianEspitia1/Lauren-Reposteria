@@ -183,10 +183,13 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .social-handle { align-items: center; gap: 8px; }
 .instagram-logo { width: 22px; height: 22px; flex-shrink: 0; }
 .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-.social-grid a { display: block; overflow: hidden; }
-.social-grid a:nth-child(2n) { margin-top: 32px; }
-.social-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform var(--transition-base); }
-.social-grid a:hover img { transform: scale(1.04); }
+.social-grid a { position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--color-peach); }
+.social-grid img, .social-grid video { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-base); }
+.social-grid video { position: absolute; inset: 0; visibility: hidden; }
+.social-grid video.is-playing { visibility: visible; }
+.social-grid a:hover img, .social-grid a:hover video { transform: scale(1.04); }
+.social-actions { display: flex; justify-content: center; margin-top: 16px; }
+.social-actions .text-link { padding: 0; background: transparent; }
 .site-footer { background: var(--color-lilac); color: var(--color-text); }
 .footer-top { display: flex; align-items: end; justify-content: space-between; gap: 40px; padding-block: clamp(56px, 7vw, 88px) 48px; border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent); }
 .footer-top h2 { font-size: clamp(2.5rem, 4vw, 4rem); }
@@ -295,8 +298,6 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .step-illustration { top: 18px; right: 2px; }
     .step h3 { padding-right: 38px; }
     .social-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .social-grid a:nth-child(2n) { margin-top: 0; }
-    .social-grid a:nth-child(3) { border-radius: 0 0 0 80px; }
     .footer-top { align-items: start; flex-direction: column; gap: 26px; padding-block: 48px 40px; }
     .footer-main { grid-template-columns: 1fr 1fr; gap: 40px 20px; padding-block: 44px; }
     .footer-brand { grid-column: 1 / -1; }

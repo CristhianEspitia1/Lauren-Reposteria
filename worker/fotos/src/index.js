@@ -3,7 +3,7 @@
  * en https://lauren-reposteria.crizczi22.workers.dev).
  *
  * El panel (/admin/) sube aquí las fotos nuevas y este worker las guarda en Workers KV (binding FOTOS,
- * plan gratuito, sin tarjeta) y las sirve a la web. No usa llaves ni secretos: solo atiende a quien
+ * plan gratuito, sin tarjeta) y las sirve a la web. Las fotos no usan llaves ni secretos: solo atiende a quien
  * entró al panel con clave y código, verificando el token de Firebase con las llaves públicas de
  * Google (doble factor por app, TOTP).
  *
@@ -13,7 +13,11 @@
  *                      usa la miniatura (<nombre>-320.webp) en las filas de fotos.
  *   DELETE /fotos/<nombre>  Borra una foto subida y su miniatura (solo administradores). El panel solo lo
  *                      ofrece para fotos que ningún producto usa.
+ *   GET  /instagram…   Lo último de Instagram para la portada (ver instagram.js). Es lo único que usa un secreto:
+ *                      INSTAGRAM_TOKEN, opcional.
  */
+import { createInstagram } from './instagram.js';
+
 const NAME = /^[a-z0-9-]{1,80}\.(?:webp|jpg)$/;
 const THUMB = /-320\.(?:webp|jpg)$/;
 const MAX_BYTES = 3 * 1024 * 1024;
@@ -79,6 +83,7 @@ async function readPhoto(file, max) {
 }
 
 export function createHandler({ fetchImpl = (...args) => fetch(...args), now = () => Date.now() / 1000 } = {}) {
+    const instagram = createInstagram({ fetchImpl, now });
     let cachedKeys = null;
     let keysUntil = 0;
     async function googleKeys() {
@@ -92,9 +97,10 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
     }
 
     return {
-        async fetch(request, env) {
+        async fetch(request, env, ctx) {
             const url = new URL(request.url);
             const security = { 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'" };
+            if (url.pathname === '/instagram' || url.pathname.startsWith('/instagram/')) return instagram.fetch(request, env, ctx);
 
             // La foto: pública, para la web y el panel.
             const file = /^\/f\/([^/]+)$/.exec(url.pathname)?.[1];
@@ -173,6 +179,9 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 if (error instanceof HttpError) return reply(error.status, { error: error.code });
                 return reply(500, { error: 'interno' });
             }
+        },
+        scheduled(event, env, ctx) {
+            ctx.waitUntil(instagram.scheduled(env));
         }
     };
 }

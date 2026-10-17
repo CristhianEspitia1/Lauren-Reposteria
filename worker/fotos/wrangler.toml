@@ -1,6 +1,8 @@
 # Cloudflare Worker que guarda y sirve las fotos subidas desde el centro de control.
 # Se publica solo con cada cambio en worker/fotos (Cloudflare Workers Builds conectado al repositorio).
-# Guía en docs/13-centro-de-control.md («Subir fotos nuevas»). No necesita llaves ni secretos.
+# Guía en docs/13-centro-de-control.md («Subir fotos nuevas» y «Conectar Instagram»). Las fotos no necesitan llaves ni
+# secretos. Lo último de Instagram usa un secreto opcional, INSTAGRAM_TOKEN, que se pone en Cloudflare (Settings →
+# Variables and Secrets) y nunca en el repositorio; sin él, la portada deja sus cuatro fotos.
 name = "lauren-reposteria"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
@@ -15,3 +17,7 @@ FIREBASE_PROJECT = "lauren-reposteria"
 ALLOWED_ORIGINS = "https://laurenreposteria.com,https://www.laurenreposteria.com,http://localhost:5173"
 # Opcional: correos que pueden subir fotos, separados por comas. Vacío = cualquier administrador con doble factor.
 ADMIN_EMAILS = ""
+
+# Cada día: renueva la llave de Instagram cuando toca (cada semana) y trae lo último publicado.
+[triggers]
+crons = ["23 9 * * *"]

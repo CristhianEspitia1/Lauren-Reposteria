@@ -32,7 +32,7 @@ Reglas que conviene saber:
 | Reglas del borrador | `js/admin-model.js` | Plantillas, identificadores, precios en pesos y validación. Probado en `tests/admin.test.mjs` |
 | Lectura en vivo | `js/catalog-live.js` | La web pinta con `js/catalog-data.js` y, en paralelo, lee lo publicado; si cambió, vuelve a pintar tarjetas, precios y pedido |
 | Seguridad de datos | `firestore.rules` | Lectura pública de `catalogo/actual`; escritura solo con sesión y doble factor |
-| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-reposteria`, <https://lauren-reposteria.crizczi22.workers.dev>) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB, las guarda en Workers KV (`FOTOS`) y las sirve en `/f/<nombre>`. Sin llaves ni secretos. Probado en `tests/fotos-worker.test.mjs` |
+| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-reposteria`, <https://lauren-reposteria.crizczi22.workers.dev>) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB, las guarda en Workers KV (`FOTOS`) y las sirve en `/f/<nombre>`. Sin llaves ni secretos. Además trae lo último de Instagram para la portada (`src/instagram.js`, ver «Conectar Instagram»). Probado en `tests/fotos-worker.test.mjs` y `tests/instagram-worker.test.mjs` |
 | Proyecto | `js/firebase-config.js`, `firebase.json`, `.firebaserc` | Proyecto `lauren-reposteria`, Firestore en `us-east1` |
 
 - Lo publicado vive en el documento `catalogo/actual` (`json`, `updatedAt`, `updatedBy`). Publicar es una transacción: si alguien publicó mientras editabas, se detiene y pide recargar.
@@ -63,6 +63,31 @@ Panel (/admin/) ──foto + miniatura + token de Firebase──▶ Worker laure
 - Orígenes permitidos: `laurenreposteria.com` y `localhost:5173` (`ALLOWED_ORIGINS` en `worker/fotos/wrangler.toml`). `ADMIN_EMAILS` puede limitar la subida a ciertos correos.
 - Publicación: Cloudflare Workers Builds está conectado al repositorio y publica el worker solo cuando cambia `worker/fotos`. La primera publicación creó el almacén KV sola.
 - Plan gratuito de Cloudflare: 100.000 vistas de fotos y 500 fotos nuevas al día, y 1 GB de espacio (unas 4.500 fotos con su miniatura). La cuenta es `crizczi22@gmail.com`.
+
+## Conectar Instagram
+
+«Un poquito más de Lauren», al final de la portada, muestra las cuatro publicaciones más nuevas de @laurenreposteria22. Los videos se reproducen solos, sin sonido, y al terminar cada casilla pasa a otro video que no esté en otra. Mientras no haya llave, o si Instagram no responde, la portada deja sus cuatro fotos.
+
+```text
+Instagram (API con inicio de sesión de Instagram) ──llave INSTAGRAM_TOKEN──▶ Worker lauren-reposteria
+                                                                              │ lee las últimas 24 publicaciones cada hora
+                                                                              │ guarda la lista en KV y renueva la llave cada semana
+                                                                              ▼
+La portada pide /instagram y muestra /instagram/foto/<id> y /instagram/video/<id>, siempre desde el worker
+```
+
+Para conectarla, una sola vez:
+
+1. **Cuenta profesional.** En la app de Instagram: Configuración → Tipo de cuenta y herramientas → Cambiar a cuenta profesional (Creador o Empresa). Si ya lo es, no hay que hacer nada.
+2. **App en Meta.** En <https://developers.facebook.com/apps>, «Crear app» con el caso de uso «Administrar mensajes y contenido en Instagram». No hace falta publicarla ni pasar la revisión de Meta: solo lee la cuenta de Lauren.
+3. **La llave.** En la app: «Configuración de la API con inicio de sesión de Instagram» → «Generar tokens de acceso» → «Agregar cuenta», entrar con @laurenreposteria22 y aceptar. Luego «Generar token» y copiarla. Si Meta pide agregar la cuenta como evaluadora (Roles de la app → Evaluadores de Instagram), se acepta la invitación en Instagram: Configuración → Apps y sitios web → Invitaciones de evaluador.
+4. **Guardarla en Cloudflare.** En <https://dash.cloudflare.com>: Workers y Pages → `lauren-reposteria` → Configuración → Variables y secretos → Agregar. Tipo «Secreto», nombre `INSTAGRAM_TOKEN`, valor la llave, y «Implementar». Nunca va en el repositorio ni en un mensaje.
+5. **Comprobar.** <https://lauren-reposteria.crizczi22.workers.dev/instagram> debe listar las publicaciones. La portada las muestra en menos de 10 minutos.
+
+- La llave dura 60 días. El cron diario del worker (`[triggers]` en `wrangler.toml`) la renueva cada semana y guarda la nueva en KV (`instagram-llave`). Solo hay que repetir los pasos 3 y 4 si Meta la revoca (por ejemplo, al cambiar la contraseña de Instagram) o si el worker pasó 60 días sin renovarla. Al poner un secreto nuevo, el worker deja la llave guardada y usa la nueva.
+- Instagram no entrega el video de los reels con música de su biblioteca: esos se ven con su portada fija y, al tocarlos, se abren en Instagram.
+- El worker solo pide a Instagram archivos de publicaciones que ya leyó, nunca direcciones que le lleguen de afuera, y la web nunca ve las direcciones de Instagram, que vencen.
+- Cada foto o trozo de video cuenta como una visita del worker en el plan gratuito (100.000 al día).
 
 ## Mantenimiento
 

@@ -7,6 +7,14 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Lo último de Instagram en la portada]
+
+- «Un poquito más de Lauren» muestra las cuatro publicaciones más nuevas de @laurenreposteria22, y cada casilla abre la suya en Instagram. Los videos se reproducen solos, sin sonido, y al terminar esa casilla pasa a otro video que no esté en otra (si no queda otro, repite el suyo). Se pausan fuera de pantalla, con la pestaña oculta y con «Pausar videos», al centro debajo; con movimiento reducido o «ahorro de datos» queda la portada.
+- Las cuatro casillas quedan alineadas (antes, la segunda y la cuarta bajaban 32 px), en 4:5 como las galerías, con esquina casi recta y fondo durazno mientras cargan. Sale la esquina de 80 px de la tercera en móvil, que no estaba en el manual.
+- Worker de fotos: `GET /instagram`, `/instagram/foto/<id>` y `/instagram/video/<id>` (`worker/fotos/src/instagram.js`), con la lista guardada una hora en KV y un cron diario que renueva la llave cada semana. Sin la llave `INSTAGRAM_TOKEN`, la portada deja sus cuatro fotos. Pasos para conectarla en el centro de control («Conectar Instagram»).
+- Manual de marca 2.3: «Lo último de Instagram», segunda excepción a la reproducción automática y proporción 4:5 de sus casillas.
+- 7 pruebas nuevas del worker (`tests/instagram-worker.test.mjs`).
+
 ## [2026-10-17 — Pedir tu torta, paso a paso, y revisión del móvil]
 
 - «Pedir tu torta es así de sencillo»: cuatro pasos pensados para tortas (Elige tu torta, Escoge porciones y sabor, Dale tu toque, La confirmamos contigo), en cuatro columnas en escritorio, dos en tableta y una en móvil.

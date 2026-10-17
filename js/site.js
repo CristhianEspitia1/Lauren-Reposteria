@@ -245,4 +245,86 @@
         reduced.addEventListener('change', schedule);
         new IntersectionObserver(entries => { onScreen = entries[entries.length - 1].isIntersecting; schedule(); }).observe(frame);
     });
+
+    /*
+     * Lo último de Instagram (`data-instagram`): «Un poquito más de Lauren» muestra las cuatro publicaciones más nuevas
+     * que trae el worker de fotos (worker/fotos/src/instagram.js). Los videos se reproducen solos y sin sonido; al
+     * terminar, esa casilla pasa a otro video que no esté en otra casilla (si no queda otro, repite el suyo). Se pausan
+     * fuera de pantalla, con la pestaña oculta y con «Pausar videos»; con movimiento reducido o «ahorro de datos» queda
+     * su portada. Si el worker no responde o hay menos de cuatro publicaciones, quedan las fotos de la web.
+     */
+    document.querySelectorAll('[data-instagram]').forEach(async grid => {
+        const api = grid.dataset.instagram;
+        let posts = null;
+        try {
+            const response = await fetch(api, { signal: AbortSignal.timeout(8000) });
+            if (response.ok) posts = (await response.json()).publicaciones;
+        } catch { return; }
+        posts = Array.isArray(posts) ? posts.filter(p => /^\d{1,40}$/.test(p?.id) && /^https:\/\/www\.instagram\.com\/[\w/.-]+$/.test(p.enlace)) : [];
+        if (posts.length < 4) return;
+        const videos = posts.filter(p => p.video);
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+        const allowed = () => !reduced.matches && !navigator.connection?.saveData;
+        let onScreen = false, stopped = false, toggle = null;
+        const running = () => allowed() && onScreen && !stopped && !document.hidden;
+
+        function fill(tile, post) {
+            const label = post.texto || 'Publicación de Lauren en Instagram';
+            tile.post = post;
+            tile.link.href = post.enlace;
+            tile.link.setAttribute('aria-label', `Ver en Instagram: ${label}`);
+            tile.image.src = `${api}/foto/${post.id}`;
+            tile.image.alt = label;
+            tile.video.classList.remove('is-playing');
+            tile.video.removeAttribute('src');
+            tile.video.load();
+        }
+        const tiles = posts.slice(0, 4).map(post => {
+            const link = Object.assign(document.createElement('a'), { target: '_blank', rel: 'noopener noreferrer' });
+            const image = Object.assign(document.createElement('img'), { width: 720, height: 900, loading: 'lazy', decoding: 'async' });
+            image.setAttribute('fetchpriority', 'low');
+            const video = Object.assign(document.createElement('video'), { muted: true, defaultMuted: true, playsInline: true, preload: 'none', disablePictureInPicture: true, tabIndex: -1 });
+            ['muted', 'playsinline'].forEach(name => video.setAttribute(name, ''));
+            video.setAttribute('aria-hidden', 'true');
+            link.append(image, video);
+            const tile = { link, image, video, post };
+            fill(tile, post);
+            video.addEventListener('playing', () => video.classList.add('is-playing'));
+            video.addEventListener('error', () => { if (video.getAttribute('src')) { tile.failed = tile.post.id; video.classList.remove('is-playing'); } });
+            video.addEventListener('ended', () => {
+                const showing = new Set(tiles.map(t => t.post.id));
+                const start = videos.indexOf(tile.post);
+                const next = [...videos.slice(start + 1), ...videos.slice(0, Math.max(start, 0))].find(p => !showing.has(p.id));
+                if (next) fill(tile, next);
+                sync();
+            });
+            return tile;
+        });
+
+        function sync() {
+            tiles.forEach(tile => {
+                const { video, post } = tile;
+                if (!post.video || tile.failed === post.id || !allowed()) { video.pause(); video.classList.remove('is-playing'); return; }
+                if (!running()) { video.pause(); return; }
+                if (!video.getAttribute('src')) video.src = `${api}/video/${post.id}`;
+                video.play().catch(() => video.classList.remove('is-playing'));
+            });
+            if (!toggle) return;
+            toggle.hidden = !allowed() || !tiles.some(t => t.post.video && t.failed !== t.post.id);
+            toggle.innerHTML = stopped ? `Ver videos ${icon('play')}` : `Pausar videos ${icon('pause')}`;
+        }
+        grid.replaceChildren(...tiles.map(tile => tile.link));
+        if (videos.length) {
+            const actions = document.createElement('div');
+            actions.className = 'social-actions';
+            toggle = Object.assign(document.createElement('button'), { type: 'button', className: 'text-link' });
+            toggle.addEventListener('click', () => { stopped = !stopped; sync(); });
+            actions.append(toggle);
+            grid.after(actions);
+        }
+        document.addEventListener('visibilitychange', sync);
+        reduced.addEventListener('change', sync);
+        new IntersectionObserver(entries => { onScreen = entries[entries.length - 1].isIntersecting; sync(); }, { threshold: 0.25 }).observe(grid);
+        sync();
+    });
 })();

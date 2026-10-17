@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 2.2 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 2.3 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -156,6 +156,7 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Tortas de la portada | `.featured-cakes` | Fondo lila 45 % + crema, sección compacta (64 px arriba y abajo; 48 en móvil). Fila de título con «Una torta tan única *como tu celebración.*», sin frase, y a la derecha el botón principal «Encuentra tu estilo», alineado con la última línea del titular (en móvil, debajo del titular). Debajo, cuatro tarjetas de torta (`.product-grid.four-columns`, compactas). Las tortas se eligen en el centro de control con «Portada»; si hay menos de cuatro marcadas, se completan con las siguientes del catálogo |
 | Pasos para pedir | `.steps` | «Pedir tu torta es así de *sencillo.*», en la portada después de «Tú pones el motivo…»: cuatro pasos de torta (Elige tu torta, Escoge porciones y sabor, Dale tu toque, La confirmamos contigo), cada uno con número en itálica, icono de 40 px a trazo 1,2, título Playfair y texto en tinta suave. Cuatro columnas en escritorio, dos hasta 800 px y una en móvil |
 | Foto que cambia | `[data-photo-cycle]` | Solo la foto de Tortas en «Tú pones el motivo…»: recorre en orden aleatorio las fotos de las tortas visibles del catálogo (también las que se suben desde el centro de control), una cada 4 s con un fundido de 800 ms. La siguiente se carga antes de mostrarse. Con movimiento reducido o «ahorro de datos» en el teléfono, queda fija |
+| Lo último de Instagram | `.social-grid[data-instagram]` | «Un poquito más de *Lauren.*», al final de la portada: cuatro casillas 4:5 alineadas (dos por fila en el teléfono), separadas 14 px (12 en móvil), con esquina casi recta (`--radius-sm`) y fondo durazno mientras cargan. Muestran las últimas publicaciones de @laurenreposteria22, que el worker de fotos trae de Instagram; cada casilla abre su publicación. Si es video, se reproduce solo, sin sonido, y al terminar esa casilla pasa a otro video que no esté en otra casilla (si no queda otro, repite el suyo). Las fotos y portadas se quedan fijas. Debajo, al centro, «Pausar videos» (`pause`) o «Ver videos» (`play`) como enlace de texto, solo si hay videos. Mientras Instagram no responda, quedan cuatro fotos de la web |
 | Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía; «Cotiza por WhatsApp» si aún no tiene precio |
 | Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
 | Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
@@ -181,12 +182,12 @@ En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para 
 ## 10. Fotografía
 
 - Mesa de lino marfil, pared crema lisa, luz suave de ventana. Producto, decoración y empaque protagonistas.
-- Proporciones: 4:5 en tarjetas, galerías y fichas; 3:2 en sabores; 1:1 en rellenos; video 16:9 con `object-fit: contain`.
+- Proporciones: 4:5 en tarjetas, galerías, fichas y publicaciones de Instagram; 3:2 en sabores; 1:1 en rellenos; video 16:9 con `object-fit: contain`.
 - Al ampliar se ve la foto completa con miniaturas debajo. Mientras carga, el espacio se ve durazno.
 - Ficha de producto: la foto principal grande y, debajo, la fila de fotos (`.photo-strip`) con las demás fotos de la misma referencia. Se cambia de foto con las flechas, tocando una miniatura o deslizando el dedo sobre la foto. Las flechas van en la fila, sobre las miniaturas, nunca encima de la foto grande.
 - Cada foto vive en un solo producto: una referencia con varias fotos es un producto con su fila de fotos, no varios productos parecidos.
 - Fotos subidas desde el centro de control: se guardan en WebP de 1440 px como máximo. Mejor verticales, en 4:5, como las de la web.
-- Solo fotos reales de Lauren: ni de banco, ni generadas con IA, ni con filtros que cambien el color. Nada encima de la foto salvo los sellos y, sobre las miniaturas de la fila de fotos, sus flechas.
+- Solo fotos reales de Lauren (también las de su Instagram): ni de banco, ni generadas con IA, ni con filtros que cambien el color. Nada encima de la foto salvo los sellos y, sobre las miniaturas de la fila de fotos, sus flechas.
 - Inventario: `assets/propuestas-fotograficas/manifest.json`.
 
 ## 11. Movimiento y acceso
@@ -199,9 +200,10 @@ En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para 
 | Diálogos | Aparecen subiendo 10 px, 260 ms |
 | Fotos de producto | Se acercan levemente al pasar el cursor, 600 ms |
 | Foto de Tortas en la portada | Cambia cada 4 s con un fundido de 800 ms |
+| Videos de Instagram en la portada | Se reproducen solos, sin sonido; al terminar, la casilla pasa a otro video |
 
 - Todo el contenido visible desde el inicio: sin apariciones en cascada, máscaras ni desvanecimientos al bajar.
-- Sin reproducción automática ni scroll forzado. Única excepción: la foto de Tortas en «Tú pones el motivo…», que cambia sola, sin sonido ni texto, y se detiene con el cursor o el foco encima, fuera de pantalla y con la pestaña oculta. `prefers-reduced-motion` apaga las animaciones y deja esa foto fija.
+- Sin reproducción automática ni scroll forzado. Dos excepciones: la foto de Tortas en «Tú pones el motivo…», que cambia sola, sin sonido ni texto, y se detiene con el cursor o el foco encima, fuera de pantalla y con la pestaña oculta; y los videos de «Un poquito más de Lauren», sin sonido, que se pausan fuera de pantalla, con la pestaña oculta o con «Pausar videos». `prefers-reduced-motion` apaga las animaciones y deja esa foto fija; con movimiento reducido o «ahorro de datos», los videos muestran su portada fija.
 - Foco visible: contorno ciruela de 2 px. Áreas táctiles de 44 px. Ajustes responsive junto a cada componente.
 - En pantallas táctiles, lo pequeño se toca en 44 px de alto sin cambiar cómo se ve: enlaces del pie, la ruta («Inicio / Tortas»), el nombre de cada producto y la barra del video.
 - En el teléfono ningún texto de lectura baja de 11 px: la etiqueta (`.eyebrow`) y la franja de valores van a 11 px. Solo el contador del pedido, la píldora «Desde» y el tiempo del video son más pequeños, por ser marcas y no texto para leer.
