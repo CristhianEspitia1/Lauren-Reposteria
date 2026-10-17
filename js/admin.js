@@ -325,7 +325,13 @@ $('newProduct').addEventListener('click', () => {
     openEditor(M.template(category, products), true);
 });
 
+// Productos que se unen a la ficha abierta desde «Agregar fotos de la web»: se eliminan al guardar.
+// Fotos adicionales de otros productos que se mueven aquí: salen de ellos al guardar (cada foto vive en un solo producto).
+let merges = new Map();
+let moves = new Map();
 function openEditor(product, isNew = false) {
+    merges = new Map();
+    moves = new Map();
     edit = M.clone(product);
     editingId = isNew ? null : product.id;
     pristine = JSON.stringify(edit);
@@ -341,6 +347,8 @@ const field = (label, path, value, { type = 'text', note = '', placeholder = '',
     return `<div class="personal-field"><label for="${id}">${esc(label)}</label>${type === 'money' ? `<div class="admin-money">${control}</div>` : control}${note ? `<p class="field-note">${note}</p>` : ''}</div>`;
 };
 const check = (label, path, checked, disabled = false) => `<label class="toggle-option"><input type="checkbox" data-path="${path}" data-kind="bool" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>${esc(label)}</span></label>`;
+// Listas cortas (torta base, sección, filtro) con las opciones de la ficha (.choice), nunca un desplegable del sistema.
+const choices = (label, path, value, list) => `<fieldset class="personal-field admin-choice-field"><legend>${esc(label)}</legend><div class="choice-list">${list.map(([id, text]) => `<label class="choice"><input type="radio" name="f-${path}" value="${esc(id)}" data-path="${path}" data-kind="text" ${String(value ?? '') === id ? 'checked' : ''}><span>${esc(text)}</span></label>`).join('')}</div></fieldset>`;
 const moneyValue = value => (typeof value === 'number' ? M.formatMoney(value) : value ?? '');
 
 // Precio que verá el cliente en la tarjeta, con lo que hay escrito ahora mismo.
@@ -358,7 +366,7 @@ function pricesHTML(p) {
         const base = products.find(b => b.id === p.basedOn);
         const own = Array.isArray(p.options);
         return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}
-            <div class="personal-field"><label for="f-basedOn">Toma los precios de</label><select id="f-basedOn" data-path="basedOn" data-kind="text">${products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => `<option value="${esc(b.id)}" ${b.id === p.basedOn ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></div>
+            ${choices('Toma los precios de', 'basedOn', p.basedOn, products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => [b.id, b.name]))}
             ${own ? `<p class="field-note">Esta torta tiene precios propios.</p>${groupsHTML(p, true)}<p><button type="button" class="admin-add" data-action="inherit">${icon('arrow')} Volver a los precios de ${esc(base?.name || 'la otra torta')}</button></p>`
         : `<p class="field-note">Usa las porciones, sabores y precios de ${esc(base?.name || 'su torta base')}: si cambias los de esa torta, cambian aquí también.</p><p><button type="button" class="admin-add" data-action="own-prices">${icon('plus')} Ponerle precios propios</button></p>`}
         </fieldset>`;
@@ -438,8 +446,8 @@ function renderEditor() {
     // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
     const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
     const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
-    const section = `<div class="personal-field"><label for="f-category">Sección de la web</label><select id="f-category" data-path="category" data-kind="text">${M.SECTIONS.map(([id, label]) => `<option value="${id}" ${p.category === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>`;
-    const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? `<div class="personal-field"><label for="f-group">Filtro en la página</label><select id="f-group" data-path="group" data-kind="text"><option value="">Ninguno</option>${groups.map(([id, label]) => `<option value="${id}" ${p.group === id ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>` : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
+    const section = choices('Sección de la web', 'category', p.category, M.SECTIONS);
+    const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? choices('Filtro en la página', 'group', p.group, [['', 'Ninguno'], ...groups]) : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
     editor.innerHTML = `<form novalidate>
         <div class="dialog-scroll">
             <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
@@ -597,7 +605,7 @@ editor.addEventListener('submit', event => {
     }
     edit.images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
     edit.mainImage = edit.images[0] || '';
-    const errors = M.validate([edit], products.filter(p => p.id !== editingId)).filter(message => !message.includes('identificador'));
+    const errors = M.validate([edit], products.filter(p => p.id !== editingId && !merges.has(p.id))).filter(message => !message.includes('identificador'));
     if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
@@ -605,9 +613,16 @@ editor.addEventListener('submit', event => {
         const last = products.findLastIndex(p => p.category === saved.category);
         products.splice(last + 1, 0, saved);
     }
+    const joined = products.filter(p => merges.has(p.id)).map(p => p.name);
+    const moved = [...new Set([...moves.values()].flat())].filter(id => !merges.has(id));
+    products = products.map(p => moved.includes(p.id) ? { ...p, images: (p.images || []).filter(src => !moves.has(src) || !moves.get(src).includes(p.id)) } : p);
+    if (joined.length) {
+        products = products.filter(p => !merges.has(p.id));
+        merges.forEach((_, id) => fresh.delete(id));
+    }
     LaurenUI.close(editor);
     render();
-    LaurenUI.toast('Guardado. Toca «Publicar cambios» para que se vea en la web.');
+    LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(' y ')} quedó dentro de «${saved.name}». Toca «Publicar cambios» para que se vea en la web.` : 'Guardado. Toca «Publicar cambios» para que se vea en la web.');
 });
 
 /* ---------- Subir fotos nuevas (worker/fotos: Cloudflare las guarda y las sirve al instante) ---------- */
@@ -728,9 +743,10 @@ async function openPicker() {
         .map(src => ({ proposal: src, name: 'Foto subida', category: others.find(p => M.photos(p).includes(src))?.category }));
     takenMains = M.takenPhotos(others);
     const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
-    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'}</p><div class="admin-photos">${items.map(item => {
+    picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, te preguntamos si quieres unir ese producto a este.</p><div class="admin-photos">${items.map(item => {
         const main = takenMains.get(item.proposal);
-        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} Agregada</span></button></div>`;
+        const holder = main ? null : others.find(p => M.photos(p).includes(item.proposal));
+        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»: se mueve aquí` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} Agregada</span></button></div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     picker.addEventListener('close', () => {
         renderEditor();
@@ -739,22 +755,57 @@ async function openPicker() {
     }, { once: true });
     LaurenUI.open(picker);
 }
-picker.addEventListener('click', event => {
+const pressPhotos = (list, pressed) => list.forEach(src => picker.querySelector(`[data-photo="${CSS.escape(src)}"]`)?.setAttribute('aria-pressed', String(pressed)));
+picker.addEventListener('click', async event => {
     const button = event.target.closest('[data-photo]');
     if (!button) return;
     const src = button.dataset.photo;
     if (button.getAttribute('aria-pressed') === 'true') {
-        edit.images = (edit.images || []).filter(s => s !== src);
-        if (edit.mainImage === src) edit.mainImage = edit.images[0] || '';
-        button.setAttribute('aria-pressed', 'false');
+        // Soltar la foto de la tarjeta de un producto unido deshace la unión y devuelve todas sus fotos.
+        const undo = [...merges].find(([, merge]) => merge.main === src);
+        const drop = undo ? undo[1].photos : [src];
+        if (undo) merges.delete(undo[0]);
+        drop.forEach(s => moves.delete(s));
+        edit.images = (edit.images || []).filter(s => !drop.includes(s));
+        if (drop.includes(edit.mainImage)) edit.mainImage = edit.images[0] || '';
+        pressPhotos(drop, false);
         return;
     }
-    // La principal es única por tarjeta: la de otro producto solo entra como foto adicional.
-    if (!edit.mainImage && takenMains.has(src)) { LaurenUI.toast(`Esa ya es la foto principal de «${takenMains.get(src)}». Para la principal elige otra o sube una nueva; después puedes sumar esta.`); return; }
+    // La foto de la tarjeta de otro producto: se ofrece unir ese producto a este (sus fotos pasan aquí y él se elimina).
+    const owner = takenMains.has(src) ? products.find(p => p.id !== editingId && !merges.has(p.id) && p.mainImage === src) : null;
+    if (owner) {
+        if (products.some(p => p.basedOn === owner.id)) { LaurenUI.toast(`«${owner.name}» no se puede unir: otras tortas toman sus precios.`); return; }
+        const photos = M.photos(owner);
+        const ok = await askConfirm({
+            title: `¿Unir <em>${esc(owner.name)}</em> aquí?`,
+            text: `${photos.length === 1 ? 'Su foto pasa' : `Sus ${photos.length} fotos pasan`} a «${esc(edit.name || 'este producto')}» y «${esc(owner.name)}» se elimina del panel. En la web se verá cuando guardes y publiques los cambios.`,
+            action: 'Unir'
+        });
+        if (!ok) return;
+        merges.set(owner.id, { main: src, photos });
+        edit.images = [...new Set([...(edit.images || []), ...photos])];
+        if (!edit.mainImage) edit.mainImage = src;
+        pressPhotos(photos, true);
+        return;
+    }
+    // Si es una foto adicional de otros productos, se mueve: al guardar sale de ellos.
+    const holders = products.filter(p => p.id !== editingId && !merges.has(p.id) && M.photos(p).includes(src)).map(p => p.id);
+    if (holders.length) moves.set(src, holders);
     edit.images = [...(edit.images || []), src];
     if (!edit.mainImage) edit.mainImage = src;
     button.setAttribute('aria-pressed', 'true');
 });
+
+/* ---------- Confirmación con las piezas de la marca (nunca el aviso del navegador) ---------- */
+const confirmDialog = $('confirmDialog');
+function askConfirm({ title, text, action }) {
+    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">${title}</h2><p class="admin-lead">${text}</p><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">Cancelar</button><button type="submit" class="btn" value="ok">${esc(action)} ${icon('check')}</button></div></form>`;
+    confirmDialog.returnValue = '';
+    confirmDialog.showModal();
+    confirmDialog.querySelector('[value="ok"]').focus();
+    return new Promise(resolve => confirmDialog.addEventListener('close', () => resolve(confirmDialog.returnValue === 'ok'), { once: true }));
+}
+confirmDialog.addEventListener('click', event => { if (event.target === confirmDialog) confirmDialog.close('cancel'); });
 
 if (preview) {
     $('authView').hidden = true; $('appView').hidden = false;

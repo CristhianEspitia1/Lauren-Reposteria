@@ -77,7 +77,7 @@
 .admin-side-sticky > .admin-fieldset:first-child { margin-top: 0; }
 /* En pantallas bajas la columna no se fija, para que «En la web» siempre se alcance. */
 @media (max-height: 720px) { .admin-side-sticky { position: static; } }
-.admin-side-preview legend .admin-tag { letter-spacing: 0; text-transform: none; }
+.admin-side-preview > legend .admin-tag { letter-spacing: 0; text-transform: none; }
 .admin-card-preview { pointer-events: none; max-width: 200px; }
 .admin-card-preview .product-card .text-link { display: none; }
 .admin-card-preview .product-image { cursor: default; }
@@ -88,11 +88,12 @@
 .admin-editor .dialog-scroll, .admin-picker .dialog-scroll { overflow-y: auto; padding: clamp(24px, 4vw, 40px); }
 .admin-editor h2, .admin-picker h2 { font-size: clamp(1.875rem, 4vw, 2.375rem); padding-right: 48px; }
 .admin-fieldset { border: 0; border-top: 1px solid var(--color-border); padding: 24px 0 4px; margin: 24px 0 0; min-width: 0; }
-.admin-fieldset legend { font: 500 .6875rem/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--color-text-soft); padding-right: 12px; }
+.admin-fieldset > legend { font: 500 .6875rem/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--color-text-soft); padding-right: 12px; }
 .admin-fieldset > .field-note:first-of-type { margin-top: 0; margin-bottom: 16px; }
 .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0 20px; }
-.admin-editor select { display: block; width: 100%; min-height: 48px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-white); padding: 10px 12px; color: var(--color-text); font: inherit; font-size: .9375rem; }
-.admin-editor select:focus-visible { outline: 2px solid var(--color-text); outline-offset: 5px; }
+/* Listas cortas con .choice: la leyenda se ve como la etiqueta de cualquier campo. */
+.admin-choice-field { border: 0; padding: 0; min-width: 0; }
+.admin-choice-field legend { padding: 0; margin-bottom: 10px; font-size: .8125rem; font-weight: 500; }
 .admin-toggles { display: flex; flex-wrap: wrap; gap: 8px 28px; }
 .admin-featured-note { margin: 4px 0 16px; }
 .admin-toggles .toggle-option:has(input:disabled) { cursor: not-allowed; opacity: .45; }
@@ -144,13 +145,24 @@
 /* En el panel, las flechas se centran sobre las fotos, no sobre los tres puntos. */
 .admin-photo-strip .photo-strip-arrow { top: 62px; }
 
+/* Confirmación de la marca: diálogo pequeño con titular, qué pasa y las dos acciones. */
+.admin-confirm { width: min(480px, calc(100% - 32px)); }
+.admin-confirm form { display: grid; gap: 12px; padding: clamp(24px, 5vw, 36px); }
+.admin-confirm h2 { font-size: clamp(1.625rem, 4vw, 2rem); }
+.admin-confirm h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
+.admin-confirm .admin-lead { margin-top: 0; }
+.admin-confirm-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 12px; }
+.admin-confirm-actions .btn { min-height: 44px; padding: 10px 18px; gap: 14px; }
+
 @media (max-width: 960px) {
-    .admin-editor-layout { display: flex; flex-direction: column; }
+    .admin-editor-layout { display: flex; flex-direction: column; align-items: stretch; }
     .admin-editor-side, .admin-side-track, .admin-side-sticky { display: contents; }
     .admin-side-preview { order: -2; }
-    .admin-side-sticky > .admin-side-preview { margin-top: 24px; }
+    .admin-side-sticky > .admin-side-preview:first-child { margin-top: 24px; }
     .admin-side-state { order: -1; }
     .admin-side-where { order: 1; }
+    .admin-editor-main { display: contents; }
+    .admin-delete, #editorError { order: 2; }
     .admin-card-preview { max-width: none; }
     .admin-card-preview .product-card { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 4px 16px; align-items: center; }
     .admin-card-preview .product-image { grid-row: span 2; }
@@ -180,7 +192,7 @@
     .admin-gallery { grid-template-columns: minmax(0, 1fr); }
     .admin-editor-actions > div { flex: 1; }
     .admin-editor-actions .btn { flex: 1; }
-    .admin-editor input, .admin-editor select, .admin-editor textarea { font-size: 16px; }
+    .admin-editor input, .admin-editor textarea { font-size: 16px; }
 }
 .admin-form .text-link { background: transparent; margin-top: 12px; }
 #verifyBox .field-note { font-size: .875rem; margin-bottom: 16px; }

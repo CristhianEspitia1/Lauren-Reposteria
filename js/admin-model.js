@@ -34,7 +34,7 @@
     const photos = product => [...new Set([product.mainImage, ...(product.images || [])].filter(Boolean))];
     /**
      * Fotos principales de los demás productos. La principal (la de la tarjeta) es única: así no hay
-     * dos tarjetas iguales. Las demás fotos de la ficha (misma referencia, otros ángulos) sí pueden repetirse.
+     * dos tarjetas iguales. El panel además mueve las demás fotos al agregarlas en otro producto (cada foto vive en uno solo).
      */
     const takenPhotos = (products, except) => new Map(products.filter(p => p !== except && !(except?.id && p.id === except.id) && p.mainImage)
         .map(p => [p.mainImage, p.name?.trim() || 'otro producto']));

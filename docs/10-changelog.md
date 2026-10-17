@@ -4,6 +4,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Agregar fotos de la web mueve y une]
+
+- En «Agregar fotos de la web», cada foto vive en un solo producto. Una foto adicional de otro producto se mueve: sale de allí al guardar. La foto de la tarjeta de otro producto ofrece unirlo, con una confirmación de la marca (`.admin-confirm`): todas sus fotos pasan a la ficha abierta y ese producto se elimina al guardar; en la web se ve al publicar. Las tortas base (Vintage y Sencilla) no se pueden unir porque otras toman sus precios. El selector dice dónde está hoy cada foto.
+- En el celular, la ficha usa todo el ancho y la vista previa ya no se monta sobre el título.
+
+## [2026-10-17 — Sin desplegables genéricos en el panel]
+
+- «Toma los precios de», «Sección de la web» y «Filtro en la página» se eligen con las opciones de la ficha (`.choice`) en lugar de desplegables del sistema. En el celular, «Eliminar producto» queda al final, después de «Dónde aparece». El manual lo deja como regla del centro de control.
+
 ## [2026-10-17 — Ficha con vista previa al lado]
 
 - La ficha de editar y crear del centro de control pasa a dos columnas en escritorio: el formulario a la izquierda y, a la derecha y fija, la tarjeta real de la web que cambia mientras se escribe, con «En la web» (Visible y Portada) y, al final, «Dónde aparece». En el celular, la tarjeta va arriba en pequeño. El panel carga `css/catalog.css` para usar la misma tarjeta. Manual y versión visual actualizados.
