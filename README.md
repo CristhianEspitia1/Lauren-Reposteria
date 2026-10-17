@@ -21,7 +21,7 @@ HTML, CSS y JavaScript sin framework. Hosting configurado para GitHub Pages y do
 | `index.html` | Portada (`/`): colecciones, cómo pedir, historia y preguntas |
 | `tortas/`, `alfajores/`, `brownies-galletas/`, `detalles/` (`index.html`) | Colecciones en URL limpias (`/tortas/`…) |
 | `html/*.html` | Redirecciones de las direcciones anteriores |
-| `scripts/seo.mjs`, `scripts/social-images.mjs` | Metadatos, JSON-LD, `sitemap.xml`, `llms.txt`, imágenes para compartir e iconos; ver [SEO](docs/11-seo.md) |
+| `scripts/seo.mjs`, `scripts/social-images.mjs` | Metadatos, JSON-LD, `sitemap.xml`, `llms.txt`, huellas `?v=` de CSS y JS, imágenes para compartir e iconos; ver [SEO](docs/11-seo.md) |
 | `scripts/pull-catalog.mjs` | Trae al repositorio el catálogo publicado desde el centro de control y regenera el SEO |
 | `.github/workflows/catalogo.yml` | Cada hora ejecuta `pull-catalog.mjs` y, si hubo cambios y pasan las pruebas, hace commit en `main` (antes de trabajar: `git pull`) |
 | `js/catalog-data.js` | Única fuente de productos, importes, opciones y personalización |

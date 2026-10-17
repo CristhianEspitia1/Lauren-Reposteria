@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { PAGES, ORIGIN, faqs } from '../scripts/seo.mjs';
+import { PAGES, ORIGIN, faqs, ASSET_PAGES, assetVersion } from '../scripts/seo.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -19,6 +19,17 @@ const exists = url => {
 
 test('El bloque SEO generado está al día con el catálogo', () => {
     execFileSync(process.execPath, [path.join(root, 'scripts/seo.mjs'), '--check'], { cwd: root, stdio: 'pipe' });
+});
+
+test('Cada página pide sus CSS y JS con la huella de su contenido', () => {
+    for (const file of ASSET_PAGES) {
+        const refs = [...read(file).matchAll(/\s(?:href|src)="\/((?:css|js)\/[^"?]+)(?:\?v=([a-f0-9]+))?"/g)];
+        assert.ok(refs.length >= 4, `${file}: no carga CSS ni JS propios`);
+        for (const [, asset, version] of refs) {
+            assert.ok(fs.existsSync(path.join(root, asset)), `${file}: ${asset} no existe`);
+            assert.equal(version, assetVersion(asset), `${file}: ${asset} ${version ? 'con huella vieja' : 'sin huella'}`);
+        }
+    }
 });
 
 test('Cada página tiene título, descripción, canonical y Open Graph válidos', () => {

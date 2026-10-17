@@ -26,7 +26,7 @@ assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
 assets/optimized/                Video de la historia y su poster
 assets/favicon.svg               Marca vectorial de la pestaña
-scripts/                         Servidor local, copias responsive, SEO e imágenes sociales
+scripts/                         Servidor local, copias responsive, SEO y huellas de CSS/JS, catálogo publicado e imágenes sociales
 admin/ / css/admin.css           Centro de control (/admin/, no se indexa)
 js/admin.js / admin-model.js      Panel: acceso, ficha, fotos y reglas del borrador
 js/firebase-config.js / catalog-live.js  Proyecto de Firebase y lectura en vivo de lo publicado

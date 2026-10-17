@@ -50,6 +50,7 @@ Al añadir una fotografía nueva, nombrarla así antes de copiarla al proyecto.
 
 - `const`/`let`, nunca `var`.
 - Datos de producto centralizados únicamente en `js/catalog-data.js`; las reglas viven en `js/catalog-model.js`.
+- Las páginas piden cada CSS y JS propio con su huella (`?v=…`). Después de cambiar uno, o de añadirlo a una página, ejecutar `node scripts/seo.mjs`; las pruebas fallan si una huella quedó vieja. Ver [SEO](11-seo.md#generadores).
 - Toda inserción de datos dinámicos en el DOM debe escaparse (ver
   `docs/09-seguridad.md`).
 - `JSON.parse` sobre `localStorage` siempre dentro de `try/catch`.

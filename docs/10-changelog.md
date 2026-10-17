@@ -3,8 +3,9 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas; se registra por fecha de
 auditoría/cambio. Cada día que se lleva a producción se marca con una etiqueta de
-Git con su fecha (por ejemplo, `2026-10-17`) y una versión en GitHub con sus notas,
-para tener un punto fijo al que volver.
+Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
+`2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
+que volver.
 
 ## [2026-10-17 — La portada se centra en las tortas]
 
@@ -12,6 +13,10 @@ para tener un punto fijo al que volver.
 - `Catalog.featured()` devuelve solo tortas: primero las marcadas con `featured` y, si faltan, las siguientes del catálogo, hasta 4. `Catalog.featurable()` dice qué puede ir a la portada.
 - Centro de control: casilla «Portada» en la fila de cada torta y filtro «En portada». La casilla de la ficha solo aparece en tortas y el límite de 4 cuenta solo tortas. Los productos de otras secciones que tenían la marca dejan de salir en la portada.
 - Manual de marca 2.1: sección «Tortas de la portada», fila del panel con «Portada» y nuevos lugares de `mano-flor`, `brownie` e `isotipo-circulo`.
+
+## [2026-10-17 — Huella en CSS y JS]
+
+- Las páginas piden cada CSS y JS propio con la huella de su contenido (`?v=` y 10 caracteres de su hash). La pone `scripts/seo.mjs` en todas las páginas, también `404.html` y `admin/index.html`, y la mantiene el workflow del catálogo. Así, después de publicar, nadie recibe una mezcla de archivos viejos y nuevos por la caché de 10 minutos de GitHub Pages. `seo.mjs --check` y una prueba nueva fallan si una huella quedó vieja.
 
 ## [2026-10-17 — Catálogo publicado al día solo]
 

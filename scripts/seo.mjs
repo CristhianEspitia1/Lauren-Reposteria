@@ -4,8 +4,10 @@
  * (JSON-LD), sitemap.xml con imágenes y llms.txt. Uso: node scripts/seo.mjs
  * Ejecutar después de cambiar textos SEO, precios, productos o galerías.
  * Con --check no escribe nada y termina con error si algo está desactualizado.
+ * También pone la huella de su contenido (?v=…) a cada CSS y JS propio de las páginas.
  */
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -281,14 +283,29 @@ ${sections}
 `;
 }
 
+/**
+ * Huella de cada CSS y JS propio (`?v=` y 10 caracteres del hash de su contenido): solo cambia si cambia el archivo.
+ * GitHub Pages guarda los archivos 10 minutos; con la huella, una página nueva pide sus archivos nuevos y no mezcla
+ * versiones viejas y nuevas justo después de publicar.
+ */
+export const ASSET_PAGES = [...PAGES.map(page => page.file), '404.html', 'admin/index.html'];
+const versions = new Map();
+export function assetVersion(asset) {
+    if (!versions.has(asset)) versions.set(asset, createHash('sha256').update(readFileSync(path.join(root, asset))).digest('hex').slice(0, 10));
+    return versions.get(asset);
+}
+export const withAssetVersions = html => html.replace(/(\s(?:href|src)=")\/((?:css|js)\/[a-z0-9/_.-]+\.(?:css|js))(?:\?v=[a-f0-9]*)?"/g,
+    (_, attribute, asset) => `${attribute}/${asset}?v=${assetVersion(asset)}"`);
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const check = process.argv.includes('--check');
     const pages = PAGES.map(page => ({ page, html: withPrices(read(page.file)) }));
     const outputs = new Map();
     for (const { page, html } of pages) {
         if (!existsSync(path.join(root, socialImage(page)))) throw new Error(`Falta ${socialImage(page)}: ejecutar node scripts/social-images.mjs`);
-        outputs.set(page.file, withHead(page, html));
+        outputs.set(page.file, withAssetVersions(withHead(page, html)));
     }
+    for (const file of ASSET_PAGES.filter(file => !outputs.has(file))) outputs.set(file, withAssetVersions(read(file)));
     outputs.set('sitemap.xml', sitemap(pages.map(({ page }) => ({ page, html: outputs.get(page.file) }))));
     outputs.set('llms.txt', llms());
     const stale = [...outputs].filter(([file, content]) => !existsSync(path.join(root, file)) || read(file) !== content).map(([file]) => file);
