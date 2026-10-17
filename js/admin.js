@@ -398,13 +398,15 @@ function groupsHTML(p, pricedOnes) {
 }
 
 // La principal va en la tarjeta; las demás (misma referencia, otros ángulos) se ven en pequeño bajo la foto de la ficha.
+// Bajo cada foto, los tres puntos abren sus opciones: hacerla principal y quitarla.
+const photoMenu = (src, i) => `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="photoMenu${i}" aria-label="Opciones de la ${i ? `foto ${i + 1}` : 'foto principal'}">${icon('more')}</button><div class="admin-photo-menu" id="photoMenu${i}" popover>${i ? `<button type="button" data-action="main-photo" data-src="${esc(src)}">${icon('check')} Hacer principal</button>` : `<button type="button" disabled>${icon('check')} Es la principal</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">${icon('trash')} Quitar</button></div></div>`;
 function photosHTML(p) {
     const images = M.photos(p);
     const more = images.length - 1;
     return `<fieldset class="admin-fieldset"><legend>Fotos</legend>
         <p class="field-note">${images.length ? `La principal se ve en la tarjeta. ${more > 0 ? `Las otras ${more === 1 ? 'una se ve' : `${more} se ven`}` : 'Las que agregues se ven'} debajo, en pequeño, cuando el cliente abre el producto. Suma aquí las fotos de la misma referencia y no tienes que crear un producto por cada una.` : 'Este producto aún no tiene foto. Agrega una para mostrarlo en la web.'}</p>
-        ${images.length ? `<div class="admin-gallery"><div class="admin-photo admin-photo-lead"><img src="${esc(imagePath(images[0]))}" alt="Foto principal" width="160" height="200" loading="lazy"><div class="admin-photo-actions"><span class="admin-photo-main">Principal</span><button type="button" data-action="remove-photo" data-src="${esc(images[0])}">Quitar</button></div></div>
-            ${more > 0 ? `<div class="photo-strip admin-photo-strip">${LaurenUI.stripArrow(-1, 'Ver fotos anteriores')}<div class="photo-strip-track" role="group" aria-label="Más fotos (${more})">${images.slice(1).map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="Foto ${i + 2}" width="96" height="120" loading="lazy"><div class="admin-photo-actions"><button type="button" data-action="main-photo" data-src="${esc(src)}">Hacer principal</button><button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>${LaurenUI.stripArrow(1, 'Ver más fotos')}</div>` : ''}</div>` : ''}
+        ${images.length ? `<div class="admin-gallery"><div class="admin-photo admin-photo-lead"><img src="${esc(imagePath(images[0]))}" alt="Foto principal" width="160" height="200" loading="lazy">${photoMenu(images[0], 0)}</div>
+            ${more > 0 ? `<div class="photo-strip admin-photo-strip">${LaurenUI.stripArrow(-1, 'Ver fotos anteriores')}<div class="photo-strip-track" role="group" aria-label="Más fotos (${more})">${images.slice(1).map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="Foto ${i + 2}" width="96" height="120" loading="lazy">${photoMenu(src, i + 1)}</div>`).join('')}</div>${LaurenUI.stripArrow(1, 'Ver más fotos')}</div>` : ''}</div>` : ''}
         <div class="admin-photo-add"><button type="button" class="admin-add" data-action="upload-photo">${icon('plus')} Subir fotos nuevas</button><button type="button" class="admin-add" data-action="pick-photo">${icon('plus')} Agregar fotos de la web</button></div>
         <input type="file" id="photoUpload" accept="image/*" multiple hidden>
         <p class="field-note" id="uploadStatus" aria-live="polite">${uploading ? esc(uploading) : 'Puedes elegir varias a la vez. Mejor verticales, como las de la web: se ajustan solas para que carguen rápido.'}</p></fieldset>`;
@@ -500,7 +502,29 @@ editor.addEventListener('click', event => {
     const track = arrow.parentElement.querySelector('.photo-strip-track');
     track.scrollBy({ left: Number(arrow.dataset.stripStep) * track.clientWidth * 0.8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
 });
-editor.addEventListener('scroll', event => { if (event.target.classList?.contains('photo-strip-track')) stripEnds(event.target); }, true);
+editor.addEventListener('scroll', event => {
+    editor.querySelector('.admin-photo-menu:popover-open')?.hidePopover();
+    if (event.target.classList?.contains('photo-strip-track')) stripEnds(event.target);
+}, true);
+// El menú de una foto flota en la capa superior (la fila de fotos no lo recorta): se ubica bajo sus tres puntos,
+// alineado a la derecha, o encima si no cabe debajo.
+editor.addEventListener('beforetoggle', event => {
+    const menu = event.target;
+    if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
+    const anchor = editor.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
+    menu.style.top = `${anchor.bottom + 4}px`;
+    menu.style.left = 'auto';
+    menu.style.right = `${Math.max(8, document.documentElement.clientWidth - anchor.right)}px`;
+}, true);
+editor.addEventListener('toggle', event => {
+    const menu = event.target;
+    if (event.newState !== 'open' || !menu.classList?.contains('admin-photo-menu')) return;
+    const anchor = editor.querySelector(`[popovertarget="${menu.id}"]`).getBoundingClientRect();
+    const box = menu.getBoundingClientRect();
+    if (box.left < 8) { menu.style.right = 'auto'; menu.style.left = '8px'; }
+    if (box.bottom > innerHeight - 8) menu.style.top = `${Math.max(8, anchor.top - 4 - box.height)}px`;
+}, true);
+addEventListener('resize', () => editor.querySelector('.admin-photo-menu:popover-open')?.hidePopover());
 function stripEnds(track) {
     const strip = track.closest('.photo-strip');
     strip.querySelector('[data-strip-step="-1"]').disabled = track.scrollLeft <= 2;

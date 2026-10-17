@@ -10,16 +10,20 @@ dialog[open] { animation: dialog-in 260ms ease both; }
 .product-dialog-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: minmax(0, 1fr); max-height: min(90dvh, 900px); }
 .product-visual { background: var(--color-cream); position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .product-visual > img { width: 100%; height: 100%; flex: 1; min-height: 0; object-fit: contain; object-position: center; }
-/* Fila de fotos: una sola línea a lo ancho, flechas translúcidas a los lados (ficha y centro de control). */
-.photo-strip { display: flex; align-items: center; gap: 4px; min-width: 0; }
-.photo-strip-track { position: relative; display: flex; gap: 8px; flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px; }
+/* Fila de fotos: una sola línea a lo ancho; las flechas flotan sobre los extremos de la fila sin quitarle espacio
+   y se ocultan al llegar al final (ficha y centro de control). Círculo de 28 px con área táctil de 44 px. */
+.photo-strip { position: relative; min-width: 0; }
+.photo-strip-track { position: relative; display: flex; gap: 8px; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px; }
 .photo-strip-track::-webkit-scrollbar { display: none; }
 .photo-strip-track > * { flex-shrink: 0; }
-.photo-strip-arrow { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-white) 65%, transparent); color: var(--color-text); transition: background var(--transition-fast), opacity var(--transition-fast); }
-.photo-strip-arrow svg { width: 18px; height: 18px; }
+.photo-strip-arrow { position: absolute; top: 50%; z-index: 1; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: -14px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-white) 90%, transparent); color: var(--color-text); box-shadow: var(--shadow-float); transition: background var(--transition-fast), opacity var(--transition-fast); }
+.photo-strip-arrow::after { content: ''; position: absolute; inset: -9px; }
+.photo-strip-arrow[data-strip-step="-1"] { left: 4px; }
+.photo-strip-arrow[data-strip-step="1"] { right: 4px; }
+.photo-strip-arrow svg { width: 14px; height: 14px; }
 .photo-strip-arrow[data-strip-step="-1"] svg { transform: scaleX(-1); }
 .photo-strip-arrow:hover:not(:disabled) { background: var(--color-peach); }
-.photo-strip-arrow:disabled { opacity: .35; cursor: default; }
+.photo-strip-arrow:disabled { opacity: 0; pointer-events: none; }
 .product-thumbnails { flex-shrink: 0; padding: 10px 8px; border-top: 1px solid var(--color-border); }
 .product-thumbnails [data-image] { width: 52px; height: 65px; padding: 0; border: 2px solid var(--color-white); opacity: .8; background: var(--color-white); border-radius: var(--radius-sm); overflow: hidden; }
 .product-thumbnails [data-image][aria-pressed=true] { opacity: 1; border-color: var(--color-text); }

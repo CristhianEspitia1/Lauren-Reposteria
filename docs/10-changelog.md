@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Menú de tres puntos en las fotos]
+
+- La fila de fotos (ficha de la web y centro de control) tiene ahora las flechas flotando sobre los extremos de las miniaturas: círculo de 28 px con área táctil de 44 px y sombra flotante, centradas en la altura de las fotos, y ocultas al llegar al final. La fila usa todo el ancho. Manual y versión visual actualizados.
+- En la ficha del centro de control, «Principal», «Hacer principal» y «Quitar» pasan a un menú que se abre con los tres puntos bajo cada foto. Nuevo icono `more` y nuevo componente «Menú de foto» (`.admin-photo-menu`) en el manual de marca y en su versión visual.
+
 ## [2026-10-17 — La sesión del panel se cierra sola]
 
 - El centro de control cierra la sesión tras 30 minutos sin actividad, también al volver otro día con la sesión guardada. Los cambios sin publicar y la ficha abierta se conservan para el mismo usuario hasta que vuelva a entrar en esa pestaña.

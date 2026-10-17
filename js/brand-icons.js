@@ -31,6 +31,7 @@
         plus: '<path d="M12 5v14M5 12h14"/>',
         minus: '<path d="M5 12h14"/>',
         menu: '<path d="M4 7h16M4 12h16M4 17h11"/>',
+        more: '<circle cx="5.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
         check: '<path d="m4.5 12.5 4.8 4.8L19.5 6.7"/>',
         search: '<circle cx="10.5" cy="10.5" r="6.75"/><path d="m15.5 15.5 5 5"/>',
         zoom: '<circle cx="10.5" cy="10.5" r="6.75"/><path d="m15.5 15.5 5 5M7.5 10.5h6M10.5 7.5v6"/>',

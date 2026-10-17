@@ -96,9 +96,15 @@
 .admin-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; margin-bottom: 12px; }
 .admin-photo { display: grid; gap: 6px; }
 .admin-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }
-.admin-photo-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 8px; font-size: .75rem; }
-.admin-photo-actions button { background: transparent; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; font-size: .75rem; }
-.admin-photo-main { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+/* Opciones de una foto: los tres puntos, bajo la foto a la derecha, abren el menú flotante (capa superior). */
+.admin-photo-actions { display: flex; justify-content: flex-end; margin-top: -6px; }
+.admin-photo-actions .icon-button svg { width: 20px; height: 20px; }
+.admin-photo-actions .icon-button:hover, .admin-photo-actions .icon-button:has(+ :popover-open) { background: var(--color-peach); }
+.admin-photo-menu { position: fixed; inset: auto; margin: 0; min-width: 184px; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-white); color: var(--color-text); box-shadow: var(--shadow-float); overflow: visible; }
+.admin-photo-menu button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 12px; border-radius: var(--radius-sm); background: transparent; font-size: .8125rem; font-weight: 500; text-align: left; white-space: nowrap; }
+.admin-photo-menu button:not(:disabled):hover { background: var(--color-peach); }
+.admin-photo-menu button:disabled { color: var(--color-text-soft); cursor: default; }
+.admin-photo-menu svg { width: 18px; height: 18px; flex-shrink: 0; }
 .admin-delete { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--color-border); }
 .admin-editor-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px clamp(24px, 4vw, 40px); border-top: 1px solid var(--color-border); background: var(--color-white); }
 .admin-editor-actions > div { display: flex; gap: 10px; }
@@ -114,10 +120,10 @@
 .admin-photo-add { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 /* Fotos del producto: la principal grande y, al lado (debajo en el celular), la fila de las demás. */
 .admin-gallery { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: end; gap: 16px; margin-bottom: 12px; }
-.admin-photo-lead img { width: 160px; }
+.admin-photo-lead { width: 160px; }
 .admin-photo-strip .admin-photo { width: 96px; }
-.admin-photo-strip .photo-strip-arrow { align-self: flex-start; margin-top: 38px; }
-.admin-photo-strip .admin-photo-actions { flex-direction: column; align-items: flex-start; }
+/* En el panel, las flechas se centran sobre las fotos, no sobre los tres puntos. */
+.admin-photo-strip .photo-strip-arrow { top: 62px; }
 
 @media (max-width: 800px) {
     .admin-header-inner { min-height: 75px; }
