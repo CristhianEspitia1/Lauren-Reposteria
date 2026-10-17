@@ -6,6 +6,7 @@
         constructor() {
             this.dialog = document.getElementById('productDialog');
             LaurenUI.dialogEvents(this.dialog);
+            addEventListener('resize', () => { if (this.dialog.open) this.fitThumbnails(); });
             this.dialog.addEventListener('close', () => {
                 if (this.editIndex !== null) {
                     this.editIndex = null;
@@ -24,6 +25,14 @@
             this.quantity = config.quantity || Catalog.minimum(product);
             this.render();
             LaurenUI.open(this.dialog);
+            this.fitThumbnails();
+        }
+        /** Con la ficha ya visible: flechas solo si las miniaturas no caben, y la elegida en su sitio sin animación. */
+        fitThumbnails() {
+            const strip = this.dialog.querySelector('.product-thumbnails');
+            if (!strip) return;
+            LaurenUI.fitStrip(strip);
+            LaurenUI.centerInStrip(strip.querySelector('[aria-pressed="true"]'), true);
         }
         render() {
             const p = this.product;
@@ -67,6 +76,7 @@
                 thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === index)));
                 this.dialog.querySelector('[data-strip-step="-1"]').disabled = index === 0;
                 this.dialog.querySelector('[data-strip-step="1"]').disabled = index === images.length - 1;
+                LaurenUI.fitStrip(this.dialog.querySelector('.product-thumbnails'));
                 LaurenUI.centerInStrip(thumbs[index]);
             };
             this.imageIndex = 0;

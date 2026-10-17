@@ -4,6 +4,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
 auditoría/cambio.
 
+## [2026-10-17 — Reauditoría y limpieza]
+
+- Panel sin avisos del navegador: salir con cambios, descartar, publicar con errores, salir de la ficha sin guardar, quitar un grupo y eliminar un producto usan la confirmación de la marca (`.admin-confirm`), con el foco en la opción segura; sin «Cancelar» es un aviso de un botón.
+- «Agregar fotos de la web»: si el selector se cierra sin confirmar (cierre forzado o sesión vencida), lo que se unía o se movía se deshace; Esc pasa por el resumen; soltar cualquier foto de un producto unido deshace la unión; al guardar solo se une o se mueve lo que sigue en la ficha; un segundo toque mientras carga no abre otro selector; una foto elegida no se puede borrar.
+- La ficha también trata Esc con su confirmación, y al cambiar una opción con el teclado el foco se queda en ella.
+- Avisos (`.toast`) en la capa superior: se ven encima de los diálogos, también en la web.
+- Ficha de la web: las flechas de la fila de fotos solo aparecen si las miniaturas no caben y nunca tapan la primera ni la última.
+- Worker de fotos: comprueba que una foto existe sin descargarla antes de borrarla.
+- Catálogo: `node scripts/pull-catalog.mjs` trae al repositorio lo publicado en el panel y regenera el SEO (`--check` avisa si quedó atrás). Se trajo lo publicado hoy (4 tortas unidas a Torta Vintage) y las pruebas eligen sus ejemplos del catálogo en lugar de productos fijos.
+- Limpieza: reglas CSS sin uso o repetidas, nombre de la torta base escapado en las notas de la ficha, y metadatos de macOS y objetos duplicados dentro de `.git` (causaban los avisos `non-monotonic index`).
+
 ## [2026-10-17 — Borrar fotos subidas sin usar]
 
 - Las fotos subidas se guardan en el worker de fotos y «Quitar» solo las saca del producto, por eso seguían en «Agregar fotos de la web». Ahora las que ningún producto usa se marcan «Foto subida, sin usar» y sus tres puntos tienen «Borrar para siempre», con la confirmación de la marca. El worker suma `DELETE /fotos/<nombre>` (borra la foto y su miniatura, solo con sesión de administrador), con su prueba en `tests/fotos-worker.test.mjs`.

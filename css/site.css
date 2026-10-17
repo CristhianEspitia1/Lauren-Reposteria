@@ -198,7 +198,7 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .footer-bottom a { padding-block: 8px; }
 .contact-fab { position: fixed; right: 24px; bottom: 24px; display: flex; justify-content: center; align-items: center; gap: 10px; width: 52px; height: 52px; border-radius: 50%; color: var(--color-text); background: var(--color-apricot); border: 1px solid var(--color-white); box-shadow: var(--shadow-float); z-index: 15; transition: transform var(--transition-fast); }
 .contact-fab:hover { transform: translateY(-3px); }
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 40px); display: flex; align-items: center; gap: 24px; padding: 16px 20px; border-radius: var(--radius-md); background: var(--color-lilac); color: var(--color-text); box-shadow: var(--shadow-float); font-size: .8125rem; z-index: var(--z-toast); }
+.toast { position: fixed; inset: auto auto 24px 50%; margin: 0; border: 0; overflow: visible; transform: translateX(-50%); width: max-content; max-width: calc(100% - 40px); display: flex; align-items: center; gap: 24px; padding: 16px 20px; border-radius: var(--radius-md); background: var(--color-lilac); color: var(--color-text); box-shadow: var(--shadow-float); font-size: .8125rem; z-index: var(--z-toast); }
 .toast button { background: transparent; color: inherit; text-decoration: underline; white-space: nowrap; padding: 8px; font-size: .8125rem; }
 .collection-label h3 { display: flex; gap: 8px; align-items: center; }
 .collection-label h3 .icon { width: 23px; height: 23px; }

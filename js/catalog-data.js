@@ -25,7 +25,11 @@ window.catalogData = {
         "price": null,
         "mainImage": "/assets/propuestas-fotograficas/torta-vintage.webp",
         "images": [
-            "/assets/propuestas-fotograficas/torta-vintage.webp"
+            "/assets/propuestas-fotograficas/torta-vintage.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-05.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-33.webp"
         ],
         "options": [
             {
@@ -242,17 +246,6 @@ window.catalogData = {
             "required": false
         }
     },
-    "galeria-tortas-05": {
-        "id": "galeria-tortas-05",
-        "name": "Torta corazón lila",
-        "category": "tortas",
-        "visible": true,
-        "basedOn": "torta-vintage",
-        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-05.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galeria-tortas-05.webp"
-        ]
-    },
     "galeria-tortas-01": {
         "id": "galeria-tortas-01",
         "name": "Torta Vintage · 2",
@@ -295,17 +288,6 @@ window.catalogData = {
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-08.webp",
         "images": [
             "/assets/propuestas-fotograficas/galeria-tortas-08.webp"
-        ]
-    },
-    "galeria-tortas-09": {
-        "id": "galeria-tortas-09",
-        "name": "Torta vintage azul",
-        "category": "tortas",
-        "visible": true,
-        "basedOn": "torta-vintage",
-        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galeria-tortas-09.webp"
         ]
     },
     "galeria-tortas-10": {
@@ -732,17 +714,6 @@ window.catalogData = {
             "/assets/propuestas-fotograficas/galeria-tortas-32.webp"
         ]
     },
-    "galeria-tortas-33": {
-        "id": "galeria-tortas-33",
-        "name": "Corazón rojo · Hello 24",
-        "category": "tortas",
-        "visible": true,
-        "basedOn": "torta-vintage",
-        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galeria-tortas-33.webp"
-        ]
-    },
     "galeria-tortas-34": {
         "id": "galeria-tortas-34",
         "name": "Torta Mi Grado",
@@ -909,17 +880,6 @@ window.catalogData = {
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-41.webp",
         "images": [
             "/assets/propuestas-fotograficas/galeria-tortas-41.webp"
-        ]
-    },
-    "galeria-tortas-03": {
-        "id": "galeria-tortas-03",
-        "name": "Torta Sencilla · 2",
-        "category": "tortas",
-        "visible": true,
-        "basedOn": "torta-sencilla",
-        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galeria-tortas-03.webp"
         ]
     },
     "galeria-tortas-04": {

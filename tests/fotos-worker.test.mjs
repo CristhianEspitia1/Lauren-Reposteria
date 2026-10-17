@@ -26,7 +26,7 @@ function fakeWorker(vars = {}) {
     const kv = {
         async get(key, options) { return store.has(key) ? store.get(key).value.buffer.slice(0) : null; },
         async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata }); },
-        async list() { return { keys: [...store.keys()].map(name => ({ name })), list_complete: true }; },
+        async list({ prefix = '', limit = 1000 } = {}) { return { keys: [...store.keys()].filter(name => name.startsWith(prefix)).sort().slice(0, limit).map(name => ({ name })), list_complete: true }; },
         async delete(key) { store.delete(key); }
     };
     const env = { FIREBASE_PROJECT: PROJECT, ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '', FOTOS: kv, ...vars };

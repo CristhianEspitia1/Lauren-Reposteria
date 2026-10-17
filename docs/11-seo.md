@@ -22,6 +22,7 @@ Estado: octubre de 2026. Objetivo: que Lauren Repostería aparezca en búsquedas
 ```bash
 node scripts/seo.mjs            # metadatos, JSON-LD, sitemap.xml y llms.txt
 node scripts/seo.mjs --check    # falla si algo quedó desactualizado
+node scripts/pull-catalog.mjs   # trae lo publicado en el centro de control y ejecuta seo.mjs
 node scripts/social-images.mjs  # imágenes 1200 × 630 e iconos (Chrome + sips, macOS)
 node --test tests/*.test.mjs    # incluye tests/seo.test.mjs
 ```

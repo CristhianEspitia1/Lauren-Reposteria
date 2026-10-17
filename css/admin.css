@@ -2,7 +2,7 @@
    (.btn, .text-link, .choice, .toggle-option, campos de la ficha, .toast). Sección 9 del manual. */
 .admin { min-height: 100dvh; padding-bottom: 120px; }
 .admin h1 { font-size: clamp(2.5rem, 5vw, 3.75rem); }
-.admin h1 em, .admin-editor h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
+.admin h1 em, .admin-picker h2 em, .admin-confirm h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
 .admin-header { border-bottom: 1px solid var(--color-border); background: var(--color-cream); }
 .admin-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 92px; padding-block: 8px; }
 .admin-session { display: flex; align-items: center; gap: 20px; font-size: .8125rem; color: var(--color-text-soft); min-width: 0; }
@@ -113,7 +113,6 @@
 .admin-money input::placeholder { color: var(--color-text-soft); font-size: .75rem; }
 .admin-add { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; background: transparent; font-size: .8125rem; font-weight: 500; border-bottom: 1px solid var(--color-text); }
 .admin-add svg { width: 18px; height: 18px; }
-.admin-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; margin-bottom: 12px; }
 .admin-photo { display: grid; gap: 6px; }
 .admin-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }
 /* Opciones de una foto: los tres puntos, bajo la foto a la derecha, abren el menú flotante (capa superior). */
@@ -129,7 +128,9 @@
 .admin-editor-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px clamp(24px, 4vw, 40px); border-top: 1px solid var(--color-border); background: var(--color-white); }
 .admin-editor-actions > div { display: flex; gap: 10px; }
 .admin-danger { background: transparent; color: var(--color-error); font-size: .8125rem; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; }
-.admin-picker .admin-photos { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); margin-top: 24px; }
+.admin-picker .admin-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin: 24px 0 12px; }
+/* Una foto elegida no se puede borrar: sus tres puntos se esconden mientras está marcada. */
+.admin-picker .admin-photo:has(> button[aria-pressed=true]) .admin-photo-actions { visibility: hidden; }
 .admin-picker .admin-photo > button { padding: 0; background: transparent; text-align: left; font-size: .6875rem; color: var(--color-text-soft); display: grid; gap: 6px; }
 .admin-picker .admin-photo > button:hover img { outline: 2px solid var(--color-lilac); }
 .admin-picker .admin-photo > button[aria-pressed=true] img { outline: 2px solid var(--color-text); outline-offset: 2px; }
@@ -149,9 +150,9 @@
 .admin-confirm { width: min(480px, calc(100% - 32px)); }
 .admin-confirm form { display: grid; gap: 12px; padding: clamp(24px, 5vw, 36px); }
 .admin-confirm h2 { font-size: clamp(1.625rem, 4vw, 2rem); }
-.admin-confirm h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
 .admin-confirm-body { display: grid; gap: 12px; color: var(--color-text-soft); font-size: .9375rem; }
 .admin-confirm-body .field-note { margin: 0; }
+.admin-confirm-notes { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--color-text); }
 .admin-confirm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-height: min(40dvh, 320px); overflow-y: auto; }
 .admin-confirm-list li { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-cream); }
 .admin-confirm-list img { width: 40px; height: 50px; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }

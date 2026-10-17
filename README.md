@@ -22,6 +22,7 @@ HTML, CSS y JavaScript sin framework. Hosting configurado para GitHub Pages y do
 | `tortas/`, `alfajores/`, `brownies-galletas/`, `detalles/` (`index.html`) | Colecciones en URL limpias (`/tortas/`…) |
 | `html/*.html` | Redirecciones de las direcciones anteriores |
 | `scripts/seo.mjs`, `scripts/social-images.mjs` | Metadatos, JSON-LD, `sitemap.xml`, `llms.txt`, imágenes para compartir e iconos; ver [SEO](docs/11-seo.md) |
+| `scripts/pull-catalog.mjs` | Trae al repositorio el catálogo publicado desde el centro de control y regenera el SEO |
 | `js/catalog-data.js` | Única fuente de productos, importes, opciones y personalización |
 | `js/catalog-model.js` | Reglas de precio, dependencias y validación |
 | `js/quick-view-modal.js` | Elegir y editar un producto |
@@ -46,6 +47,7 @@ El [manual de marca](docs/06-guia-de-estilos.md) es obligatorio para todo cambio
 ```bash
 node --test tests/*.test.mjs
 node scripts/seo.mjs --check
+node scripts/pull-catalog.mjs --check
 git diff --check
 ```
 

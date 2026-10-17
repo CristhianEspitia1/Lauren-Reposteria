@@ -134,7 +134,9 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 if (remove !== undefined && remove !== 'subir') {
                     if (request.method !== 'DELETE') throw new HttpError(405, 'metodo');
                     if (!NAME.test(remove) || THUMB.test(remove)) throw new HttpError(400, 'nombre');
-                    if (!(await env.FOTOS.get(remove, { type: 'arrayBuffer' }))) throw new HttpError(404, 'no-existe');
+                    // Existe si es la primera clave con su nombre: se consulta sin descargar la foto.
+                    const found = await env.FOTOS.list({ prefix: remove, limit: 1 });
+                    if (found.keys[0]?.name !== remove) throw new HttpError(404, 'no-existe');
                     const [base, type] = [remove.replace(/\.\w+$/, ''), remove.split('.').pop()];
                     await env.FOTOS.delete(`${base}-320.${type}`);
                     await env.FOTOS.delete(remove);

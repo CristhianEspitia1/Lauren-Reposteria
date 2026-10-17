@@ -210,10 +210,14 @@ test('Todas las tortas son iguales: ficha con precio y su foto en el mensaje de 
         assert.ok(Catalog.photo(p).startsWith('https://laurenreposteria.com/assets/'), p.id);
         if (p.basedOn === 'torta-vintage' && !Array.isArray(context.catalogData[p.id].options)) for (const choice of vintagePrices) assert.equal(price(p.id, { porciones: choice.value }), choice.price, p.id);
     }
-    assert.equal(price('galeria-tortas-03', { porciones: '25-30' }), 215000, 'Toma los precios de Torta Sencilla');
-    const torta = Catalog.get('galeria-tortas-13');
+    // Los ejemplos salen del catálogo: el centro de control puede unir o eliminar cualquier torta.
+    const own = id => context.catalogData[id];
+    const sencilla = tortas.find(p => own(p.id).basedOn === 'torta-sencilla' && !Array.isArray(own(p.id).options));
+    assert.ok(sencilla, 'Alguna torta toma los precios de Torta Sencilla');
+    assert.equal(price(sencilla.id, { porciones: '25-30' }), 215000, 'Toma los precios de Torta Sencilla');
+    const torta = tortas.find(p => own(p.id).basedOn === 'torta-vintage' && !Array.isArray(own(p.id).options) && own(p.id).description);
     assert.equal(Catalog.priceLabel(torta).text, 'Desde $65.000');
-    assert.ok(!/vintage/i.test(torta.description), 'Una torta propia no se describe como vintage');
+    assert.notEqual(torta.description, Catalog.get('torta-vintage').description, 'Una torta con descripción propia no muestra la de Torta Vintage');
     cart.clearCart(); assert.equal(cart.addItem(item(torta.id, { porciones: '12-15' })), true);
     assert.equal(cart.getTotalPrice(), 150000);
     assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(`Foto de referencia: https://laurenreposteria.com${torta.mainImage}`));

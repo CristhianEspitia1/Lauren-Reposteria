@@ -29,6 +29,22 @@ const preview = ['localhost', '127.0.0.1'].includes(location.hostname) && new UR
 const PHOTOS_API = 'https://lauren-reposteria.crizczi22.workers.dev/fotos';
 const photosReady = Boolean(PHOTOS_API);
 
+/* ---------- Confirmaciones y avisos con las piezas de la marca (nunca los del navegador) ---------- */
+const confirmDialog = $('confirmDialog');
+/**
+ * Abre el diálogo de la marca (#confirmDialog) y resuelve true si se toca la acción; sin `cancel` es un aviso de un
+ * solo botón. El foco empieza en la opción segura, para que Enter nunca borre ni una nada por accidente.
+ */
+function askConfirm({ title, body, action, cancel = 'Cancelar' }) {
+    if (confirmDialog.open) return Promise.resolve(false);
+    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">${title}</h2><div class="admin-confirm-body">${body}</div><div class="admin-confirm-actions">${cancel ? `<button type="submit" class="btn btn-secondary" value="cancel">${esc(cancel)}</button>` : ''}<button type="submit" class="btn" value="ok">${esc(action)} ${icon('check')}</button></div></form>`;
+    confirmDialog.returnValue = '';
+    confirmDialog.showModal();
+    confirmDialog.querySelector(cancel ? '[value="cancel"]' : '[value="ok"]').focus();
+    return new Promise(resolve => confirmDialog.addEventListener('close', () => resolve(confirmDialog.returnValue === 'ok'), { once: true }));
+}
+confirmDialog.addEventListener('click', event => { if (event.target === confirmDialog) confirmDialog.close('cancel'); });
+
 /* ---------- Acceso ---------- */
 let resolver = null;
 let enrollment = null;
@@ -154,7 +170,12 @@ views.enroll.addEventListener('submit', async event => {
 });
 
 $('signOut').addEventListener('click', async () => {
-    if (hasChanges() && !confirm('Tienes cambios sin publicar. ¿Quieres salir de todos modos?')) return;
+    if (hasChanges() && !(await askConfirm({
+        title: '¿Salir con <em>cambios sin publicar</em>?',
+        body: '<p>Si sales ahora, esos cambios se pierden y la web sigue como está. Para conservarlos, toca «Publicar cambios» antes de salir.</p>',
+        action: 'Salir',
+        cancel: 'Seguir aquí'
+    }))) return;
     signedIn = '';
     await signOut(auth);
 });
@@ -271,8 +292,14 @@ $('list').addEventListener('click', event => {
     const button = event.target.closest('[data-edit]');
     if (button) openEditor(products.find(p => p.id === button.dataset.edit));
 });
-$('discard').addEventListener('click', () => {
-    if (!confirm('¿Descartar todos los cambios sin publicar?')) return;
+$('discard').addEventListener('click', async () => {
+    const { total } = M.changes(original, products);
+    if (!(await askConfirm({
+        title: '¿Descartar <em>tus cambios</em>?',
+        body: `<p>${total === 1 ? 'El cambio sin publicar se pierde' : `Los ${total} cambios sin publicar se pierden`} y el panel vuelve a lo que hoy se ve en la web.</p>`,
+        action: 'Descartar',
+        cancel: 'Conservarlos'
+    }))) return;
     products = Object.values(M.clone(original)); fresh.clear(); render();
 });
 window.addEventListener('beforeunload', event => { if (hasChanges()) event.preventDefault(); });
@@ -281,7 +308,15 @@ window.addEventListener('beforeunload', event => { if (hasChanges()) event.preve
 $('publish').addEventListener('click', async () => {
     if (preview) { LaurenUI.toast('Vista previa: aquí no se publica.'); return; }
     const errors = M.validate(products);
-    if (errors.length) { alert(`Antes de publicar, revisa:\n\n• ${errors.slice(0, 8).join('\n• ')}`); return; }
+    if (errors.length) {
+        await askConfirm({
+            title: 'Antes de publicar, <em>revisa esto</em>',
+            body: `<ul class="admin-confirm-notes">${errors.slice(0, 8).map(error => `<li>${esc(error)}</li>`).join('')}</ul>${errors.length > 8 ? `<p>Y ${errors.length - 8} más.</p>` : ''}<p class="field-note">Corrígelo en la ficha de cada producto y vuelve a publicar.</p>`,
+            action: 'Entendido',
+            cancel: null
+        });
+        return;
+    }
     if (loadedJson === undefined) { LaurenUI.toast('No pudimos leer lo publicado. Recarga la página antes de publicar.'); return; }
     const button = $('publish'); button.disabled = true;
     try {
@@ -311,14 +346,24 @@ LaurenUI.dialogEvents(editor);
 let edit = null;
 let editingId = null;
 let pristine = '';
-// Cerrar la ficha con cambios sin guardar pide confirmación (botón cerrar, Cancelar, fondo o Esc).
-const leaveEditor = () => JSON.stringify(edit) === pristine || confirm('Tienes cambios sin guardar en este producto. ¿Salir sin guardarlos?');
+// Cerrar la ficha (X, «Cancelar», fondo o Esc): con cambios sin guardar, primero la confirmación de la marca.
+async function leaveEditor() {
+    if (JSON.stringify(edit) !== pristine && !(await askConfirm({
+        title: '¿Salir sin <em>guardar</em>?',
+        body: '<p>Los cambios de esta ficha se pierden. Para conservarlos, toca «Guardar».</p>',
+        action: 'Salir sin guardar',
+        cancel: 'Seguir editando'
+    }))) return;
+    LaurenUI.close(editor);
+}
 editor.addEventListener('click', event => {
     const bounds = editor.getBoundingClientRect();
     const outside = event.target === editor && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
-    if ((outside || event.target.closest('[data-close-dialog]')) && !leaveEditor()) event.stopImmediatePropagation();
+    if (!outside && !event.target.closest('[data-close-dialog]')) return;
+    event.stopImmediatePropagation();
+    leaveEditor();
 }, true);
-editor.addEventListener('cancel', event => { if (!leaveEditor()) event.preventDefault(); });
+editor.addEventListener('cancel', event => { event.preventDefault(); leaveEditor(); });
 
 $('newProduct').addEventListener('click', () => {
     const category = M.SECTIONS.some(([id]) => id === filter) ? filter : 'tortas';
@@ -436,7 +481,7 @@ const previewTitle = p => `Así se verá en la web${p.visible === false ? ' <spa
 function renderEditor() {
     const p = edit;
     const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
-    const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${base.name}.` : '';
+    const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${esc(base.name)}.` : '';
     const groups = M.GROUPS[p.category];
     // La portada tiene cuatro lugares: si ya están ocupados por otros, la casilla no se puede marcar.
     const max = window.Catalog.FEATURED;
@@ -523,6 +568,8 @@ editor.addEventListener('input', event => {
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
         renderEditor();
         editor.querySelector('.dialog-scroll').scrollTop = scroll;
+        // El foco vuelve a la opción elegida: con el teclado, las flechas siguen cambiando de opción.
+        editor.querySelector(`[data-path="${path}"]${input.type === 'radio' ? ':checked' : ''}`)?.focus({ preventScroll: true });
     }
 });
 
@@ -565,14 +612,22 @@ function stripEnds(track) {
     strip.querySelector('[data-strip-step="1"]').disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
 }
 
-editor.addEventListener('click', event => {
+editor.addEventListener('click', async event => {
     const button = event.target.closest('[data-action]');
     if (!button) return;
     const action = button.dataset.action;
     const option = edit.options?.[Number(button.dataset.option)];
     if (action === 'add-choice') option.choices.push(M.priced(option) ? { value: '', label: '', price: null } : { value: '', label: '' });
     if (action === 'remove-choice') option.choices.splice(Number(button.dataset.choice), 1);
-    if (action === 'remove-option' && confirm(`¿Quitar el grupo «${option.label}»?`)) edit.options.splice(Number(button.dataset.option), 1);
+    if (action === 'remove-option') {
+        if (!(await askConfirm({
+            title: `¿Quitar el grupo <em>${esc(option.label || 'sin título')}</em>?`,
+            body: '<p>Se quitan todas sus opciones de este producto. Hasta que toques «Guardar», puedes volver atrás con «Cancelar».</p>',
+            action: 'Quitar grupo',
+            cancel: 'Conservarlo'
+        }))) return;
+        edit.options.splice(Number(button.dataset.option), 1);
+    }
     if (action === 'add-option') {
         edit.options = edit.options || [];
         edit.options.push({ id: '', label: button.dataset.priced ? 'Tamaño' : 'Sabor', type: 'radio', required: true, choices: [button.dataset.priced ? { value: '', label: '', price: null } : { value: '', label: '' }] });
@@ -584,8 +639,14 @@ editor.addEventListener('click', event => {
     if (action === 'pick-photo') { openPicker(); return; }
     if (action === 'upload-photo') { if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#photoUpload').click(); return; }
     if (action === 'delete') {
-        if (!confirm(`¿Eliminar «${edit.name}» del catálogo? Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible».`)) return;
+        if (!(await askConfirm({
+            title: `¿Eliminar <em>${esc(edit.name || 'este producto')}</em>?`,
+            body: '<p>Sale del catálogo y deja de verse en la web cuando publiques los cambios. Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p>',
+            action: 'Eliminar',
+            cancel: 'Conservarlo'
+        }))) return;
         products = products.filter(p => p.id !== editingId);
+        fresh.delete(editingId);
         LaurenUI.close(editor); render(); return;
     }
     const scroll = editor.querySelector('.dialog-scroll').scrollTop;
@@ -608,6 +669,10 @@ editor.addEventListener('submit', event => {
     }
     edit.images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
     edit.mainImage = edit.images[0] || '';
+    // Solo se une o se mueve lo que sigue en la ficha: si se quitó esa foto, el otro producto queda como estaba.
+    const staying = new Set(M.photos(edit));
+    merges.forEach((merge, id) => { if (!staying.has(merge.main)) merges.delete(id); });
+    moves.forEach((_, src) => { if (!staying.has(src)) moves.delete(src); });
     const errors = M.validate([edit], products.filter(p => p.id !== editingId && !merges.has(p.id))).filter(message => !message.includes('identificador'));
     if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     const saved = M.clone(edit);
@@ -734,7 +799,16 @@ const picker = $('picker');
 LaurenUI.dialogEvents(picker);
 let manifest = null;
 let takenMains = new Map();
+// Un segundo toque mientras el selector carga no abre otro.
+let pickerOpening = false;
 async function openPicker() {
+    if (pickerOpening || picker.open) return;
+    pickerOpening = true;
+    try { await showPicker(); } finally { pickerOpening = false; }
+}
+// Cómo estaba la ficha al abrir el selector: si se cierra sin confirmar lo que se une o se mueve, vuelve así.
+let pickerStart = null;
+async function showPicker() {
     if (!manifest) {
         try { manifest = (await (await fetch('/assets/propuestas-fotograficas/manifest.json')).json()).items.filter(item => M.IMAGE.test(item.proposal)); }
         catch { LaurenUI.toast('No pudimos cargar las fotos. Inténtalo de nuevo.'); return; }
@@ -755,10 +829,18 @@ async function openPicker() {
         const holder = main ? null : others.find(p => M.photos(p).includes(item.proposal));
         return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : spare(item.proposal) ? 'Foto subida, sin usar' : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button>${spare(item.proposal) ? `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="spareMenu${i}" aria-label="Opciones de esta foto subida">${icon('more')}</button><div class="admin-photo-menu" id="spareMenu${i}" popover><button type="button" data-delete-upload="${esc(item.proposal)}">${icon('trash')} Borrar para siempre</button></div></div>` : ''}</div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
+    pickerStart = { images: edit.images ? [...edit.images] : undefined, mainImage: edit.mainImage, merges: new Map(merges), moves: new Map(moves) };
     picker.addEventListener('close', () => {
+        // Cerrado sin confirmar lo que se une o se mueve (cierre forzado del navegador o sesión vencida): esa tanda se deshace.
+        if (pending.merges.size || pending.moves.size) {
+            ({ merges, moves } = pickerStart);
+            if (pickerStart.images) edit.images = pickerStart.images; else delete edit.images;
+            edit.mainImage = pickerStart.mainImage;
+            pending = { merges: new Set(), moves: new Set() };
+        }
         renderEditor();
         if (!editor.open && !$('appView').hidden) LaurenUI.open(editor);
-        editor.querySelector('.admin-photos')?.scrollIntoView({ block: 'center' });
+        editor.querySelector('.admin-gallery, .admin-photo-add')?.scrollIntoView({ block: 'center' });
     }, { once: true });
     LaurenUI.open(picker);
 }
@@ -770,8 +852,8 @@ picker.addEventListener('click', event => {
     if (!button) return;
     const src = button.dataset.photo;
     if (button.getAttribute('aria-pressed') === 'true') {
-        // Soltar la foto de la tarjeta de un producto unido deshace la unión y devuelve todas sus fotos.
-        const undo = [...merges].find(([, merge]) => merge.main === src);
+        // Soltar cualquier foto de un producto unido deshace toda la unión: sus fotos vuelven a él.
+        const undo = [...merges].find(([, merge]) => merge.photos.includes(src));
         const drop = undo ? undo[1].photos : [src];
         if (undo) { merges.delete(undo[0]); pending.merges.delete(undo[0]); }
         drop.forEach(s => { moves.delete(s); pending.moves.delete(s); });
@@ -808,6 +890,10 @@ picker.addEventListener('click', async event => {
     if (!remove) return;
     const src = remove.dataset.deleteUpload;
     remove.closest('[popover]')?.hidePopover();
+    if (M.photos(edit).includes(src)) {
+        await askConfirm({ title: 'Esta foto <em>está elegida</em>', body: '<p>Primero tócala para soltarla de este producto; después podrás borrarla.</p>', action: 'Entendido', cancel: null });
+        return;
+    }
     const ok = await askConfirm({
         title: '¿Borrar <em>esta foto</em> para siempre?',
         body: `<ul class="admin-confirm-list"><li><img src="${esc(imagePath(src))}" alt="" width="40" height="50"><span>Foto subida</span><small>sin usar</small></li></ul>
@@ -838,7 +924,7 @@ async function finishPicker() {
         title: joined.length ? `¿Unir ${joined.length === 1 ? `<em>${esc(joined[0].name)}</em>` : `<em>${joined.length} ${many}</em>`} a ${here}?` : `¿Mover <em>${moved.length === 1 ? 'una foto' : `${moved.length} fotos`}</em> aquí?`,
         body: `${joined.length ? `<p>${joined.length === 1 ? `Esta ${one} pasa` : `Estas ${many} pasan`} a ${here} con todas sus fotos y ${joined.length === 1 ? 'se elimina' : 'se eliminan'} del panel:</p>
             <ul class="admin-confirm-list">${joined.map(p => `<li><img src="${esc(imagePath(p.mainImage))}" alt="" width="40" height="50"><span>${esc(p.name)}</span><small>${count(M.photos(p).length)}</small></li>`).join('')}</ul>` : ''}
-            ${moved.length ? `<p>${joined.length ? 'Además, ' : ''}${moved.length === 1 ? 'una foto sale' : `${moved.length} fotos salen`} de ${listNames(from)} y ${moved.length === 1 ? 'queda' : 'quedan'} solo aquí.</p>` : ''}
+            ${moved.length ? `<p>${joined.length ? 'Además, ' : ''}${moved.length === 1 ? `${joined.length ? 'u' : 'U'}na foto sale` : `${moved.length} fotos salen`} de ${listNames(from)} y ${moved.length === 1 ? 'queda' : 'quedan'} solo aquí.</p>` : ''}
             <p class="field-note">En la web se verá cuando guardes la ficha y publiques los cambios.</p>`,
         action: joined.length ? 'Unir y seguir' : 'Mover y seguir',
         cancel: 'Volver'
@@ -855,17 +941,14 @@ picker.addEventListener('click', event => {
     finishPicker();
 }, true);
 picker.addEventListener('cancel', event => { event.preventDefault(); finishPicker(); });
+// Esc lo decide la página, porque el navegador fuerza el cierre si se repite: un menú abierto y la confirmación se cierran
+// solos; el selector pasa por su resumen y la ficha, por su confirmación.
+document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || confirmDialog.open || document.querySelector('.admin-photo-menu:popover-open')) return;
+    if (picker.open) { event.preventDefault(); finishPicker(); }
+    else if (editor.open) { event.preventDefault(); leaveEditor(); }
+}, true);
 
-/* ---------- Confirmación con las piezas de la marca (nunca el aviso del navegador) ---------- */
-const confirmDialog = $('confirmDialog');
-function askConfirm({ title, body, action, cancel = 'Cancelar' }) {
-    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">${title}</h2><div class="admin-confirm-body">${body}</div><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">${esc(cancel)}</button><button type="submit" class="btn" value="ok">${esc(action)} ${icon('check')}</button></div></form>`;
-    confirmDialog.returnValue = '';
-    confirmDialog.showModal();
-    confirmDialog.querySelector('[value="ok"]').focus();
-    return new Promise(resolve => confirmDialog.addEventListener('close', () => resolve(confirmDialog.returnValue === 'ok'), { once: true }));
-}
-confirmDialog.addEventListener('click', event => { if (event.target === confirmDialog) confirmDialog.close('cancel'); });
 
 if (preview) {
     $('authView').hidden = true; $('appView').hidden = false;

@@ -28,11 +28,26 @@
      * flecha translúcida a cada lado. Las flechas usan el icono `arrow` (la de atrás, en espejo).
      */
     const stripArrow = (step, label) => `<button type="button" class="photo-strip-arrow" data-strip-step="${step}" aria-label="${escape(label)}">${icon('arrow')}</button>`;
-    function centerInStrip(item) {
+    // La elegida se centra; la primera y la última quedan pegadas a su borde, sin el espacio que la fila deja bajo
+    // cada flecha. Cerca de un extremo, la fila se queda en ese borde: la flecha cae sobre su espacio y no tapa nada.
+    function centerInStrip(item, instant = false) {
         const track = item?.closest('.photo-strip-track');
         if (!track) return;
         const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        track.scrollTo({ left: item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2, behavior: reduced ? 'instant' : 'smooth' });
+        const gap = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        const max = track.scrollWidth - track.clientWidth;
+        let left = item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2;
+        if (item === track.firstElementChild) left = item.offsetLeft - 2;
+        else if (item === track.lastElementChild) left = item.offsetLeft + item.offsetWidth + 2 - track.clientWidth;
+        else if (gap > 8) left = left < gap ? 0 : left > max - gap ? max : left;
+        track.scrollTo({ left, behavior: reduced || instant ? 'instant' : 'smooth' });
+    }
+    /** Las flechas solo hacen falta si las miniaturas no caben: si caben, se ocultan y la fila no reserva su espacio. */
+    function fitStrip(strip) {
+        if (!strip) return;
+        strip.classList.remove('is-scrollable');
+        const track = strip.querySelector('.photo-strip-track');
+        strip.classList.toggle('is-scrollable', track.scrollWidth > track.clientWidth + 1);
     }
     const wa = text => `https://wa.me/573104442796?text=${encodeURIComponent(text)}`;
     const openers = new WeakMap();
@@ -63,9 +78,12 @@
             }
         });
     }
+    // El aviso entra en la capa superior (popover) para verse también encima de un diálogo abierto.
     function toast(message, action) {
         const notice = document.getElementById('toast');
         if (!notice) return;
+        const layered = 'showPopover' in notice;
+        const hide = () => { if (layered && notice.matches(':popover-open')) notice.hidePopover(); notice.hidden = true; };
         clearTimeout(toastTimer);
         notice.replaceChildren();
         const text = document.createElement('span');
@@ -74,11 +92,16 @@
         if (action) {
             const button = document.createElement('button');
             button.type = 'button'; button.textContent = action.label;
-            button.addEventListener('click', () => { action.run(); notice.hidden = true; });
+            button.addEventListener('click', () => { action.run(); hide(); });
             notice.append(button);
         }
         notice.hidden = false;
-        toastTimer = setTimeout(() => { if (!notice.contains(document.activeElement)) notice.hidden = true; }, 6500);
+        if (layered) {
+            notice.popover = 'manual';
+            if (notice.matches(':popover-open')) notice.hidePopover();
+            notice.showPopover();
+        }
+        toastTimer = setTimeout(() => { if (!notice.contains(document.activeElement)) hide(); }, 6500);
     }
-    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, stripArrow, centerInStrip, wa, open, close, dialogEvents, toast };
+    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, stripArrow, centerInStrip, fitStrip, wa, open, close, dialogEvents, toast };
 })();

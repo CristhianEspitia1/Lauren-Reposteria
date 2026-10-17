@@ -55,7 +55,11 @@ Si el producto se oculta o queda sin precio, el texto dice «precio a consultar�
 
 ## Después de cambiar el catálogo
 
+Si el cambio se publicó desde el centro de control, primero se trae al repositorio (también regenera el SEO):
+
 ```bash
-node scripts/seo.mjs
+node scripts/pull-catalog.mjs
 node --test tests/*.test.mjs
 ```
+
+Si se editó `js/catalog-data.js` a mano, basta con `node scripts/seo.mjs` y las pruebas.
