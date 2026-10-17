@@ -26,8 +26,7 @@ fillIcons(document);
 // Vista previa para revisar el diseño en el computador de desarrollo: sin sesión y sin publicar.
 const preview = ['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).has('vista-previa');
 // Worker que guarda las fotos subidas en el repositorio (worker/fotos). Su origen también va en connect-src de admin/index.html.
-// Vacío mientras el worker no esté desplegado: el panel avisa que la subida aún no está lista.
-const PHOTOS_API = '';
+const PHOTOS_API = 'https://lauren-reposteria.crizczi22.workers.dev/fotos';
 const photosReady = Boolean(PHOTOS_API);
 
 /* ---------- Acceso ---------- */

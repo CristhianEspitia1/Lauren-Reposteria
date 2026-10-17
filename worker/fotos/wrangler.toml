@@ -2,7 +2,7 @@
 # Guía en docs/13-centro-de-control.md («Subir fotos nuevas»). El secreto GITHUB_TOKEN se pone con
 #   npx wrangler secret put GITHUB_TOKEN
 # y nunca se escribe en este archivo.
-name = "lauren-fotos"
+name = "lauren-reposteria"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
 workers_dev = true

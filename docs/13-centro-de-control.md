@@ -32,7 +32,7 @@ Reglas que conviene saber:
 | Reglas del borrador | `js/admin-model.js` | Plantillas, identificadores, precios en pesos y validación. Probado en `tests/admin.test.mjs` |
 | Lectura en vivo | `js/catalog-live.js` | La web pinta con `js/catalog-data.js` y, en paralelo, lee lo publicado; si cambió, vuelve a pintar tarjetas, precios y pedido |
 | Seguridad de datos | `firestore.rules` | Lectura pública de `catalogo/actual`; escritura solo con sesión y doble factor |
-| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-fotos`) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB y las guarda en `assets/subidas/` con un commit por tanda. La llave de GitHub vive solo ahí, como secreto. Probado en `tests/fotos-worker.test.mjs` |
+| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-reposteria`, <https://lauren-reposteria.crizczi22.workers.dev>) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB y las guarda en `assets/subidas/` con un commit por tanda. La llave de GitHub vive solo ahí, como secreto. Probado en `tests/fotos-worker.test.mjs` |
 | Proyecto | `js/firebase-config.js`, `firebase.json`, `.firebaserc` | Proyecto `lauren-reposteria`, Firestore en `us-east1` |
 
 - Lo publicado vive en el documento `catalogo/actual` (`json`, `updatedAt`, `updatedBy`). Publicar es una transacción: si alguien publicó mientras editabas, se detiene y pide recargar.
@@ -47,7 +47,7 @@ Reglas que conviene saber:
 ## Subir fotos nuevas: cómo funciona y cómo se activa
 
 ```text
-Panel (/admin/) ──foto + token de Firebase──▶ Worker lauren-fotos (Cloudflare, gratis)
+Panel (/admin/) ──foto + token de Firebase──▶ Worker lauren-reposteria (Cloudflare, gratis)
                                                │ verifica clave + código (doble factor)
                                                │ revisa que sea una foto
                                                ▼

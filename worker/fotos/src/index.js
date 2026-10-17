@@ -1,5 +1,5 @@
 /**
- * Fotos del centro de control de Lauren Repostería (Cloudflare Worker «lauren-fotos»).
+ * Fotos del centro de control de Lauren Repostería (Cloudflare Worker «lauren-reposteria», en lauren-reposteria.crizczi22.workers.dev).
  *
  * El panel (/admin/) sube aquí las fotos nuevas y este worker las guarda en el repositorio de la web,
  * en assets/subidas/, con un solo commit por tanda. GitHub Pages las publica en uno o dos minutos.
