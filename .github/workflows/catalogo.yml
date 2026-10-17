@@ -80,8 +80,10 @@ jobs:
           git commit -q -m 'Catálogo al día con lo publicado en el centro de control' -m "$(cat "$RUNNER_TEMP/resumen.txt")"
           git push origin "HEAD:$GITHUB_REF_NAME"
           echo "publicado=true" >> "$GITHUB_OUTPUT"
+      # El push ya dispara la publicación; esto es un respaldo y no marca la ejecución como fallida.
       - name: Pedir la publicación de GitHub Pages
         if: steps.commit.outputs.publicado == 'true' && github.ref_name == 'main'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --silent
