@@ -1,8 +1,10 @@
 # Changelog
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
-Este proyecto no usa versiones semánticas publicadas; se registra por fecha de
-auditoría/cambio.
+Este proyecto no usa versiones semánticas; se registra por fecha de
+auditoría/cambio. Cada día que se lleva a producción se marca con una etiqueta de
+Git con su fecha (por ejemplo, `2026-10-17`) y una versión en GitHub con sus notas,
+para tener un punto fijo al que volver.
 
 ## [2026-10-17 — Catálogo publicado al día solo]
 
