@@ -19,7 +19,7 @@ Reglas que conviene saber:
 - **Una torta, muchas fotos.** Cada producto tiene su foto principal (la de la tarjeta) y puede llevar todas las fotos que quieras de la misma referencia: en la web se ven en una fila debajo de la foto grande, con flechas para pasar de una a otra. Así no hace falta crear un producto, con su descripción, por cada foto parecida. En el panel, la principal va grande y las demás en una fila con flechas; «Hacer principal» cambia la de la tarjeta y «Quitar» la saca del producto.
 - **La foto principal es única.** Dos tarjetas no pueden tener la misma foto principal. Las demás fotos sí pueden repetirse en varias tortas. El panel no publica un producto visible sin foto.
 - **Agregar fotos de la web:** abre todas las fotos de la web y las ya subidas, primero las de la sección del producto. Se tocan todas las que quieras (quedan marcadas «Agregada») y luego «Listo».
-- **Subir fotos nuevas:** desde el celular o el computador, varias a la vez (hasta 20 por tanda). El panel las ajusta a 1440 px en WebP y las guarda en el código de la web (`assets/subidas/`), en un solo cambio por tanda. En el panel se ven al instante; en la web, uno o dos minutos después, lo que tarda GitHub Pages en publicar. Sin costo y sin tarjeta. Una foto subida no se borra al quitarla del producto: queda disponible en «Agregar fotos de la web».
+- **Subir fotos nuevas:** desde el celular o el computador, varias a la vez (hasta 20 por tanda). El panel las ajusta a 1440 px en WebP, con una miniatura de 320 px para las filas de fotos, y el worker de fotos de Cloudflare las guarda y las sirve al instante. Sin costo, sin tarjeta y sin llaves que venzan. Una foto subida no se borra al quitarla del producto: queda disponible en «Agregar fotos de la web».
 - Los adicionales de torta no llevan fotos: el panel y la web los muestran con su icono.
 - **Historial:** cada publicación guarda una copia en Firestore (`historial`), para recuperar una versión anterior si hace falta.
 
@@ -32,7 +32,7 @@ Reglas que conviene saber:
 | Reglas del borrador | `js/admin-model.js` | Plantillas, identificadores, precios en pesos y validación. Probado en `tests/admin.test.mjs` |
 | Lectura en vivo | `js/catalog-live.js` | La web pinta con `js/catalog-data.js` y, en paralelo, lee lo publicado; si cambió, vuelve a pintar tarjetas, precios y pedido |
 | Seguridad de datos | `firestore.rules` | Lectura pública de `catalogo/actual`; escritura solo con sesión y doble factor |
-| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-reposteria`, <https://lauren-reposteria.crizczi22.workers.dev>) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB y las guarda en `assets/subidas/` con un commit por tanda. La llave de GitHub vive solo ahí, como secreto. Probado en `tests/fotos-worker.test.mjs` |
+| Fotos subidas | `worker/fotos/` (Cloudflare Worker `lauren-reposteria`, <https://lauren-reposteria.crizczi22.workers.dev>) | Recibe las fotos del panel, verifica la sesión de Firebase con doble factor, revisa que sean WebP o JPG de menos de 3 MB, las guarda en Workers KV (`FOTOS`) y las sirve en `/f/<nombre>`. Sin llaves ni secretos. Probado en `tests/fotos-worker.test.mjs` |
 | Proyecto | `js/firebase-config.js`, `firebase.json`, `.firebaserc` | Proyecto `lauren-reposteria`, Firestore en `us-east1` |
 
 - Lo publicado vive en el documento `catalogo/actual` (`json`, `updatedAt`, `updatedBy`). Publicar es una transacción: si alguien publicó mientras editabas, se detiene y pide recargar.
@@ -44,41 +44,28 @@ Reglas que conviene saber:
 - **Copia de la web y SEO:** `js/catalog-data.js`, el JSON-LD, el sitemap y `llms.txt` se generan desde el catálogo del repositorio. Hasta automatizarlo, después de publicar cambios grandes se trae lo publicado al repositorio y se ejecuta `node scripts/seo.mjs`.
 - **Ventana de temporada:** se diseña primero en el manual de marca.
 
-## Subir fotos nuevas: cómo funciona y cómo se activa
+## Subir fotos nuevas: cómo funciona
 
 ```text
-Panel (/admin/) ──foto + token de Firebase──▶ Worker lauren-reposteria (Cloudflare, gratis)
-                                               │ verifica clave + código (doble factor)
-                                               │ revisa que sea una foto
-                                               ▼
-                         GitHub: assets/subidas/<nombre>.webp (1 commit por tanda)
-                                               ▼
-                         GitHub Pages publica la web (1–2 minutos)
+Panel (/admin/) ──foto + miniatura + token de Firebase──▶ Worker lauren-reposteria (Cloudflare, gratis)
+                                                           │ verifica clave + código (doble factor)
+                                                           │ revisa que sea una foto
+                                                           ▼
+                                      Workers KV «FOTOS»: <nombre>.webp y <nombre>-320.webp
+                                                           ▼
+                     La web la muestra desde https://lauren-reposteria.crizczi22.workers.dev/f/<nombre>.webp
 ```
 
-- `GET /fotos` lista las subidas; `POST /fotos/subir` recibe una foto (una por petición, para caber en el plan gratuito) y devuelve su nombre firmado; `POST /fotos/publicar` hace el commit con toda la tanda. Solo se publican fotos firmadas por el worker, con el nombre que él eligió.
+- `GET /f/<nombre>` sirve la foto (pública, caché de un año: el nombre nunca cambia). `GET /fotos` lista las subidas y `POST /fotos/subir` recibe una foto con su miniatura; ambas exigen la sesión del panel con doble factor.
+- La web usa la miniatura de 320 px en las filas de fotos y la foto completa en la ficha (`srcset` en `LaurenUI.imageAttributes`).
 - Orígenes permitidos: `laurenreposteria.com` y `localhost:5173` (`ALLOWED_ORIGINS` en `worker/fotos/wrangler.toml`). `ADMIN_EMAILS` puede limitar la subida a ciertos correos.
-- Como el panel escribe en `main`, **antes de cambiar el código en el computador hay que traer esos cambios**: `git pull`.
-
-Activación (una sola vez):
-
-1. **Cuenta de Cloudflare** gratuita en <https://dash.cloudflare.com/sign-up>. Al entrar a *Workers & Pages* se elige el subdominio `*.workers.dev`.
-2. **Llave de GitHub** en *Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token*: solo el repositorio `Lauren-Reposteria`, permiso *Contents: Read and write*, la duración más larga disponible. Se copia una sola vez.
-3. En una terminal, dentro de `worker/fotos`:
-   ```bash
-   npx wrangler login
-   npx wrangler secret put GITHUB_TOKEN
-   npx wrangler deploy
-   ```
-   El segundo comando pide pegar la llave; el tercero muestra la dirección del worker.
-4. Esa dirección va en `PHOTOS_API` (`js/admin.js`) y en `connect-src` de `admin/index.html`.
-
-Cuando la llave venza, se crea otra (paso 2) y se repite `npx wrangler secret put GITHUB_TOKEN`.
+- Publicación: Cloudflare Workers Builds está conectado al repositorio y publica el worker solo cuando cambia `worker/fotos`. La primera publicación creó el almacén KV sola.
+- Plan gratuito de Cloudflare: 100.000 vistas de fotos y 500 fotos nuevas al día, y 1 GB de espacio (unas 4.500 fotos con su miniatura). La cuenta es `crizczi22@gmail.com`.
 
 ## Mantenimiento
 
 ```bash
 firebase deploy --only firestore:rules --project lauren-reposteria
-cd worker/fotos && npx wrangler deploy
 node --test tests/*.test.mjs
+# El worker de fotos se publica solo al subir cambios de worker/fotos a main.
 ```

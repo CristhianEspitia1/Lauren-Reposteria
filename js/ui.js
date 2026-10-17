@@ -3,10 +3,12 @@
     'use strict';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const icon = name => window.LaurenIcons(name);
-    // Fotos de la web: las del inventario, el video y las subidas desde el centro de control (assets/subidas). Igual que AdminModel.IMAGE.
-    const imagePath = value => typeof value === 'string' && /^\/assets\/(?:(?:optimized|propuestas-fotograficas|subidas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) && !value.includes('..') ? value : '/assets/brand/lauren-isotipo.svg';
+    // Fotos subidas desde el centro de control: las guarda y sirve el worker de fotos (worker/fotos), con su miniatura de 320 px. Igual que AdminModel.IMAGE.
+    const uploaded = /^https:\/\/lauren-reposteria\.crizczi22\.workers\.dev\/f\/[a-z0-9-]{1,80}\.(?:webp|jpg)$/;
+    const imagePath = value => typeof value === 'string' && (/^\/assets\/(?:(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|brand\/lauren-(?:logo|isotipo|sello|wordmark)(?:-light)?\.svg)$/.test(value) || uploaded.test(value)) && !value.includes('..') ? value : '/assets/brand/lauren-isotipo.svg';
     function imageSources(value, sizes) {
         const src = imagePath(value);
+        if (uploaded.test(src)) return { sizes, srcset: `${src.replace(/\.(webp|jpg)$/, '-320.$1')} 320w, ${src} 1440w`, src };
         const width = window.LaurenImageWidths?.[src];
         if (!width) return { src };
         const name = src.split('/').pop().replace(/\.webp$/, '');

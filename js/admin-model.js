@@ -11,9 +11,9 @@
     };
     // Secciones que se piden por cantidad: solo en ellas el panel muestra cantidad mínima y su nombre.
     const QUANTITY = ['alfajores', 'brownies', 'galletas', 'detalles'];
-    // Fotos de la web: las del inventario y las subidas desde el panel, que quedan en assets/subidas (worker/fotos). Igual que LaurenUI.imagePath.
-    const UPLOADED = '/assets/subidas/';
-    const IMAGE = /^\/assets\/(?:optimized|propuestas-fotograficas|subidas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)$/;
+    // Fotos de la web: las del inventario y las subidas desde el panel, que guarda y sirve el worker de fotos (worker/fotos). Igual que LaurenUI.imagePath.
+    const UPLOADED = 'https://lauren-reposteria.crizczi22.workers.dev/f/';
+    const IMAGE = /^(?:\/assets\/(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|https:\/\/lauren-reposteria\.crizczi22\.workers\.dev\/f\/[a-z0-9-]{1,80}\.(?:webp|jpg))$/;
     const clone = value => JSON.parse(JSON.stringify(value));
     const slug = text => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
         .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);

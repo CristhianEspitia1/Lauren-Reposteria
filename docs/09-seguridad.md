@@ -5,11 +5,11 @@ Catálogo público, sin pasarela de pago. El catálogo publicado vive en Firesto
 ## Controles implementados
 
 - `LaurenUI.escape` protege todo texto dinámico en producto, pedido, galería. Los mensajes escritos se muestran como texto, no como HTML.
-- Las imágenes dinámicas se limitan, mediante `imagePath`, a rutas locales de `assets/` (incluidas las subidas desde el panel en `assets/subidas/`).
-- Fotos subidas: el worker `worker/fotos` verifica la firma, el proyecto, la vigencia y el doble factor TOTP del token de Firebase; solo responde a los orígenes permitidos; acepta WebP o JPG (por su contenido) de menos de 3 MB y elige él mismo el nombre del archivo. La llave de GitHub (fine-grained, solo este repositorio y solo *Contents*) es un secreto del worker y nunca llega al navegador; los commits no publican correos.
+- Las imágenes dinámicas se limitan, mediante `imagePath`, a rutas locales de `assets/` y a fotos del worker de fotos del proyecto (`https://lauren-reposteria.crizczi22.workers.dev/f/<nombre>.webp|jpg`).
+- Fotos subidas: el worker `worker/fotos` verifica la firma, el proyecto, la vigencia y el doble factor TOTP del token de Firebase; solo responde a los orígenes permitidos; acepta WebP o JPG (por su contenido) de menos de 3 MB y elige él mismo el nombre del archivo. Sirve las fotos con `nosniff` y `Content-Security-Policy: default-src 'none'`. No guarda llaves ni secretos.
 - Al leer localStorage se valida estructura, opciones, campos y cantidades. Identidad y precios se derivan del catálogo vigente; un precio almacenado no es una fuente de verdad.
 - El mensaje de WhatsApp se codifica con `encodeURIComponent`. Los enlaces externos usan `noopener noreferrer`.
-- Política CSP en las páginas: scripts locales, estilos locales/Google Fonts, fuentes del proveedor, imágenes locales/data y video local. El centro de control además conecta con Firebase y con el worker de fotos. Sin objetos embebidos ni formularios enviados a un servidor.
+- Política CSP en las páginas: scripts locales, estilos locales/Google Fonts, fuentes del proveedor, imágenes locales/data y del worker de fotos, y video local. El centro de control además conecta con Firebase y con el worker de fotos. Sin objetos embebidos ni formularios enviados a un servidor.
 - Servidor local ligado a loopback, métodos GET/HEAD, MIME explícitos, `nosniff`, rechazo de rutas ocultas/fuera del proyecto y rangos inválidos. No usarlo como servidor público.
 
 ## Verificación y límites

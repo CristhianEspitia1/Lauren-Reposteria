@@ -22,7 +22,7 @@ auditoría/cambio.
 
 - Ficha de producto: la foto principal grande y, debajo, la fila de fotos (`.photo-strip`) en una sola línea, con flechas translúcidas a los lados, la elegida centrada y cambio de foto deslizando el dedo. Nuevo componente en el manual de marca.
 - Centro de control: la principal grande y las demás en una fila con flechas; «Agregar fotos de la web» deja tocar varias a la vez. La regla «cada foto va en un solo producto» pasa a «la foto principal es única»: las demás fotos pueden repetirse entre tortas.
-- «Subir fotos nuevas»: el panel comprime las fotos y el worker de Cloudflare `worker/fotos` las guarda en `assets/subidas/` del repositorio, con un commit por tanda (sin costo; no usa Firebase Storage). Pruebas en `tests/fotos-worker.test.mjs`.
+- «Subir fotos nuevas»: el panel comprime cada foto (1440 px y miniatura de 320 px) y el worker de Cloudflare `worker/fotos` (`lauren-reposteria.crizczi22.workers.dev`) las guarda en Workers KV y las sirve al instante. Sin costo, sin tarjeta y sin llaves; no usa Firebase Storage ni GitHub. Pruebas en `tests/fotos-worker.test.mjs`.
 
 ## [2026-10-16 — Una foto por producto y editor según el tipo]
 

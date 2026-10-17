@@ -5,7 +5,7 @@ import { createHandler, verifyIdToken, photoType, slug } from '../worker/fotos/s
 const PROJECT = 'lauren-reposteria';
 const NOW = 1_800_000_000;
 const ORIGIN = 'https://laurenreposteria.com';
-const env = { FIREBASE_PROJECT: PROJECT, GITHUB_REPO: 'lauren/web', GITHUB_BRANCH: 'main', GITHUB_TOKEN: 'secreto-de-prueba', ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '' };
+const WORKER = 'https://lauren-reposteria.crizczi22.workers.dev';
 
 const b64url = data => Buffer.from(data).toString('base64url');
 const pair = await crypto.subtle.generateKey({ name: 'RSASSA-PKCS1-v1_5', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['sign', 'verify']);
@@ -16,40 +16,35 @@ async function idToken(changes = {}, { kid = 'llave-1', key = pair.privateKey } 
     const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(head));
     return `${head}.${b64url(new Uint8Array(signature))}`;
 }
-const WEBP = new Uint8Array([...Buffer.from('RIFF'), 1, 0, 0, 0, ...Buffer.from('WEBPVP8 '), 0, 0]);
+const WEBP = new Uint8Array([...Buffer.from('RIFF'), 1, 0, 0, 0, ...Buffer.from('WEBPVP8 '), 0, 0, 7]);
+const WEBP_MINI = new Uint8Array([...Buffer.from('RIFF'), 1, 0, 0, 0, ...Buffer.from('WEBPVP8 '), 0, 0, 3]);
 const JPG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 16]);
 
-/** GitHub y las llaves de Google simulados: registra cada llamada. */
-function fakeServices({ refConflicts = 0, folder = [] } = {}) {
-    const calls = [];
-    let conflicts = refConflicts;
-    const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), { status, headers });
-    const fetchImpl = async (url, options = {}) => {
-        const method = options.method || 'GET';
-        const body = options.body ? JSON.parse(options.body) : null;
-        calls.push({ url: String(url), method, body, auth: options.headers?.Authorization });
-        if (String(url).includes('googleapis.com')) return json({ keys: [jwk] }, 200, { 'Cache-Control': 'public, max-age=20000' });
-        const path = String(url).replace('https://api.github.com/repos/lauren/web', '');
-        if (path === '/git/blobs') return json({ sha: 'b'.repeat(40) }, 201);
-        if (path === '/git/ref/heads/main') return json({ object: { sha: 'c'.repeat(40) } });
-        if (path.startsWith('/git/commits/')) return json({ tree: { sha: 't'.repeat(40) } });
-        if (path === '/git/trees') return json({ sha: 'n'.repeat(40) }, 201);
-        if (path === '/git/commits') return json({ sha: 'd'.repeat(40) }, 201);
-        if (path === '/git/refs/heads/main') return conflicts-- > 0 ? json({ message: 'not fast forward' }, 422) : json({ object: { sha: 'd'.repeat(40) } });
-        if (path.startsWith('/contents/assets/subidas')) return folder ? json(folder) : json({ message: 'Not Found' }, 404);
-        return json({ message: 'inesperado' }, 500);
+/** Workers KV y las llaves de Google simulados. */
+function fakeWorker(vars = {}) {
+    const store = new Map();
+    const kv = {
+        async get(key, options) { return store.has(key) ? store.get(key).value.buffer.slice(0) : null; },
+        async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata }); },
+        async list() { return { keys: [...store.keys()].map(name => ({ name })), list_complete: true }; }
     };
-    return { calls, handler: createHandler({ fetchImpl, now: () => NOW }) };
+    const env = { FIREBASE_PROJECT: PROJECT, ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '', FOTOS: kv, ...vars };
+    let googleCalls = 0;
+    const fetchImpl = async url => {
+        assert.ok(String(url).includes('googleapis.com'), 'el worker solo consulta las llaves de Google');
+        googleCalls++;
+        return new Response(JSON.stringify({ keys: [jwk] }), { headers: { 'Cache-Control': 'public, max-age=20000' } });
+    };
+    const handler = createHandler({ fetchImpl, now: () => NOW });
+    return { store, env, handler, googleCalls: () => googleCalls, call: request => handler.fetch(request, env) };
 }
-async function upload(handler, bytes, { token, name = 'Torta Corazón Lila', origin = ORIGIN } = {}) {
+async function upload(worker, { photo = WEBP, thumb = WEBP_MINI, token, name = 'Torta Corazón Lila', origin = ORIGIN } = {}) {
     const form = new FormData();
-    form.append('foto', new File([bytes], 'foto.webp'));
+    if (photo) form.append('foto', new File([photo], 'foto.webp'));
+    if (thumb) form.append('miniatura', new File([thumb], 'mini.webp'));
     form.append('nombre', name);
-    return handler.fetch(new Request('https://lauren-fotos.example.workers.dev/fotos/subir', { method: 'POST', body: form, headers: { Authorization: `Bearer ${token ?? await idToken()}`, Origin: origin } }), env);
+    return worker.call(new Request(`${WORKER}/fotos/subir`, { method: 'POST', body: form, headers: { Authorization: `Bearer ${token ?? await idToken()}`, Origin: origin } }));
 }
-const publish = async (handler, fotos, token) => handler.fetch(new Request('https://lauren-fotos.example.workers.dev/fotos/publicar', {
-    method: 'POST', body: JSON.stringify({ fotos }), headers: { Authorization: `Bearer ${token ?? await idToken()}`, Origin: ORIGIN, 'Content-Type': 'application/json' }
-}), env);
 
 test('Solo acepta tokens de Firebase del proyecto, vigentes y con doble factor', async () => {
     const opts = { projectId: PROJECT, keys: [jwk], now: NOW };
@@ -75,67 +70,53 @@ test('Reconoce WebP y JPG por su contenido y nombra las fotos sin tildes', () =>
     assert.equal(slug('Torta Corazón Lila · ñ'), 'torta-corazon-lila-n');
 });
 
-test('Sube una foto: la guarda en GitHub sin publicar y devuelve su nombre firmado', async () => {
-    const { calls, handler } = fakeServices();
-    const response = await upload(handler, WEBP);
+test('Sube una foto con su miniatura y la sirve al instante, con caché larga', async () => {
+    const worker = fakeWorker();
+    const response = await upload(worker);
     assert.equal(response.status, 201);
     assert.equal(response.headers.get('Access-Control-Allow-Origin'), ORIGIN);
-    const data = await response.json();
-    assert.match(data.nombre, /^torta-corazon-lila-[a-z0-9]+\.webp$/);
-    assert.match(data.firma, /^[0-9a-f]{64}$/);
-    const blob = calls.find(c => c.url.endsWith('/git/blobs'));
-    assert.equal(blob.auth, 'Bearer secreto-de-prueba');
-    assert.deepEqual(Buffer.from(blob.body.content, 'base64'), Buffer.from(WEBP));
-    assert.ok(!calls.some(c => c.url.includes('/git/refs/')), 'subir no publica');
+    const { foto } = await response.json();
+    assert.match(foto, /^https:\/\/lauren-reposteria\.crizczi22\.workers\.dev\/f\/torta-corazon-lila-[a-z0-9]+\.webp$/);
+    const name = foto.split('/').pop();
+    assert.deepEqual([...worker.store.keys()].sort(), [name, name.replace('.webp', '-320.webp')].sort());
+
+    const image = await worker.call(new Request(foto));
+    assert.equal(image.status, 200);
+    assert.equal(image.headers.get('Content-Type'), 'image/webp');
+    assert.match(image.headers.get('Cache-Control'), /immutable/);
+    assert.equal(image.headers.get('X-Content-Type-Options'), 'nosniff');
+    assert.deepEqual(new Uint8Array(await image.arrayBuffer()), WEBP);
+    const mini = await worker.call(new Request(foto.replace('.webp', '-320.webp')));
+    assert.deepEqual(new Uint8Array(await mini.arrayBuffer()), WEBP_MINI);
+    assert.equal((await worker.call(new Request(`${WORKER}/f/no-existe.webp`))).status, 404);
+    assert.equal((await worker.call(new Request(`${WORKER}/f/..%2Fsecreto.webp`))).status, 404);
+    assert.equal((await worker.call(new Request(foto, { method: 'DELETE' }))).status, 405);
 });
 
-test('Publica la tanda en un solo commit dentro de assets/subidas, y reintenta si otro cambio llegó a la vez', async () => {
-    const { calls, handler } = fakeServices({ refConflicts: 1 });
-    const first = await (await upload(handler, WEBP)).json();
-    const second = await (await upload(handler, JPG, { name: 'Torta Corazón Lila' })).json();
-    const response = await publish(handler, [first, second]);
-    assert.equal(response.status, 201);
-    assert.deepEqual((await response.json()).fotos, [`/assets/subidas/${first.nombre}`, `/assets/subidas/${second.nombre}`]);
-    const trees = calls.filter(c => c.url.endsWith('/git/trees'));
-    assert.equal(trees.length, 2, 'un intento fallido y uno bueno');
-    assert.deepEqual(trees[1].body.tree.map(t => t.path), [`assets/subidas/${first.nombre}`, `assets/subidas/${second.nombre}`]);
-    assert.equal(calls.filter(c => c.url.endsWith('/git/refs/heads/main')).at(-1).body.force, false);
-    assert.equal(calls.filter(c => c.url.endsWith('/git/commits') && c.method === 'POST').length, 2);
-});
-
-test('No publica fotos con el nombre o la firma cambiados', async () => {
-    const { calls, handler } = fakeServices();
-    const photo = await (await upload(handler, WEBP)).json();
-    for (const fake of [{ ...photo, nombre: 'index.html' }, { ...photo, nombre: 'otra-foto.webp' }, { ...photo, blob: 'e'.repeat(40) }, { ...photo, firma: '0'.repeat(64) }, { ...photo, nombre: '../../index.html' }]) {
-        const response = await publish(handler, [fake]);
-        assert.equal(response.status, 400, JSON.stringify(fake));
-    }
-    assert.ok(!calls.some(c => c.url.endsWith('/git/trees')));
+test('Lista solo las fotos subidas, sin sus miniaturas', async () => {
+    const worker = fakeWorker();
+    const { foto } = await (await upload(worker)).json();
+    const response = await worker.call(new Request(`${WORKER}/fotos`, { headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }));
+    assert.deepEqual((await response.json()).fotos, [foto]);
+    assert.equal(worker.googleCalls(), 1, 'las llaves de Google se guardan en memoria');
 });
 
 test('Rechaza otros archivos, otros sitios, sesiones sin doble factor y correos fuera de la lista', async () => {
-    const { calls, handler } = fakeServices();
-    assert.equal((await upload(handler, new TextEncoder().encode('<svg onload=alert(1)>'))).status, 415);
-    assert.equal((await upload(handler, new Uint8Array(3 * 1024 * 1024 + 1).fill(255))).status, 413);
-    assert.equal((await upload(handler, WEBP, { origin: 'https://otro-sitio.com' })).status, 403);
-    assert.equal((await upload(handler, WEBP, { token: 'x.y.z' })).status, 401);
-    assert.equal((await upload(handler, WEBP, { token: await idToken({ firebase: {} }) })).status, 403);
-    const strict = { ...env, ADMIN_EMAILS: 'lauren@lauren.co, otra@lauren.co' };
-    const form = new FormData(); form.append('foto', new File([WEBP], 'a.webp'));
-    const denied = await handler.fetch(new Request('https://x.workers.dev/fotos/subir', { method: 'POST', body: form, headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }), strict);
-    assert.equal(denied.status, 403);
-    assert.ok(!calls.some(c => c.url.includes('api.github.com')), 'nada llega a GitHub');
-    const preflight = await handler.fetch(new Request('https://x.workers.dev/fotos/subir', { method: 'OPTIONS', headers: { Origin: 'http://localhost:5173' } }), env);
+    const worker = fakeWorker();
+    assert.equal((await upload(worker, { photo: new TextEncoder().encode('<svg onload=alert(1)>') })).status, 415);
+    assert.equal((await upload(worker, { photo: new Uint8Array(3 * 1024 * 1024 + 1).fill(255) })).status, 413);
+    assert.equal((await upload(worker, { thumb: null })).status, 400);
+    assert.equal((await upload(worker, { thumb: JPG })).status, 415);
+    assert.equal((await upload(worker, { origin: 'https://otro-sitio.com' })).status, 403);
+    assert.equal((await upload(worker, { token: 'x.y.z' })).status, 401);
+    assert.equal((await upload(worker, { token: await idToken({ firebase: {} }) })).status, 403);
+    const strict = fakeWorker({ ADMIN_EMAILS: 'lauren@lauren.co, otra@lauren.co' });
+    assert.equal((await upload(strict)).status, 403);
+    assert.equal((await upload(fakeWorker({ ADMIN_EMAILS: 'Admin@Lauren.co' }))).status, 201);
+    assert.equal(worker.store.size, 0, 'nada se guardó');
+    const preflight = await worker.call(new Request(`${WORKER}/fotos/subir`, { method: 'OPTIONS', headers: { Origin: 'http://localhost:5173' } }));
     assert.equal(preflight.status, 204);
     assert.match(preflight.headers.get('Access-Control-Allow-Headers'), /Authorization/);
-});
-
-test('Lista las fotos ya subidas (y ninguna si la carpeta aún no existe)', async () => {
-    const list = async folder => {
-        const { handler } = fakeServices({ folder });
-        const response = await handler.fetch(new Request('https://x.workers.dev/fotos', { headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }), env);
-        return (await response.json()).fotos;
-    };
-    assert.deepEqual(await list([{ type: 'file', name: 'torta-a-1.webp' }, { type: 'file', name: 'LEEME.md' }, { type: 'dir', name: 'x' }]), ['/assets/subidas/torta-a-1.webp']);
-    assert.deepEqual(await list(null), []);
+    const missing = fakeWorker({ FOTOS: undefined });
+    assert.equal((await upload(missing)).status, 500);
 });

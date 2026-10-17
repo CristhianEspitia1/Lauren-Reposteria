@@ -1,25 +1,22 @@
 /**
- * Fotos del centro de control de Lauren Repostería (Cloudflare Worker «lauren-reposteria», en lauren-reposteria.crizczi22.workers.dev).
+ * Fotos del centro de control de Lauren Repostería (Cloudflare Worker «lauren-reposteria»,
+ * en https://lauren-reposteria.crizczi22.workers.dev).
  *
- * El panel (/admin/) sube aquí las fotos nuevas y este worker las guarda en el repositorio de la web,
- * en assets/subidas/, con un solo commit por tanda. GitHub Pages las publica en uno o dos minutos.
- * La llave de GitHub vive aquí como secreto (GITHUB_TOKEN), nunca en el navegador.
+ * El panel (/admin/) sube aquí las fotos nuevas y este worker las guarda en Workers KV (binding FOTOS,
+ * plan gratuito, sin tarjeta) y las sirve a la web. No usa llaves ni secretos: solo atiende a quien
+ * entró al panel con clave y código, verificando el token de Firebase con las llaves públicas de
+ * Google (doble factor por app, TOTP).
  *
- * Solo atiende a quien entró al panel con clave y código: cada petición trae el token de Firebase,
- * que se verifica con las llaves públicas de Google y debe tener doble factor por app (TOTP).
- *
- *   GET  /fotos          Fotos ya subidas: { fotos: ['/assets/subidas/…'] }
- *   POST /fotos/subir    Una foto (multipart: foto, nombre). Se guarda en GitHub sin publicar y
- *                        devuelve { blob, nombre, firma }. Una por petición: así cada una cabe en
- *                        los límites del plan gratuito.
- *   POST /fotos/publicar { fotos: [{ blob, nombre, firma }] } → un commit con todas: { fotos: [rutas] }.
- *                        La firma (HMAC) garantiza que solo se publican fotos revisadas aquí, con el
- *                        nombre que puso este worker.
+ *   GET  /f/<nombre>   La foto, pública y con caché larga (el nombre no cambia nunca).
+ *   GET  /fotos        Fotos ya subidas: { fotos: [url] } (solo administradores).
+ *   POST /fotos/subir  Una foto (multipart: foto, su miniatura de 320 px y nombre) → { foto: url }. La web
+ *                      usa la miniatura (<nombre>-320.webp) en las filas de fotos.
  */
-const FOLDER = 'assets/subidas';
 const NAME = /^[a-z0-9-]{1,80}\.(?:webp|jpg)$/;
+const THUMB = /-320\.(?:webp|jpg)$/;
 const MAX_BYTES = 3 * 1024 * 1024;
-const MAX_BATCH = 20;
+const MAX_THUMB = 400 * 1024;
+const TYPES = { webp: 'image/webp', jpg: 'image/jpeg' };
 const GOOGLE_KEYS = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
 const encoder = new TextEncoder();
 
@@ -35,11 +32,6 @@ function fromBase64Url(text) {
     const base64 = text.replace(/-/g, '+').replace(/_/g, '/');
     const binary = atob(base64 + '='.repeat((4 - base64.length % 4) % 4));
     return Uint8Array.from(binary, c => c.charCodeAt(0));
-}
-function toBase64(bytes) {
-    let binary = '';
-    for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    return btoa(binary);
 }
 const toHex = buffer => [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2, '0')).join('');
 
@@ -75,47 +67,13 @@ export function photoType(bytes) {
     return null;
 }
 
-async function sign(secret, blob, name) {
-    const key = await crypto.subtle.importKey('raw', encoder.encode(`lauren-fotos:${secret}`), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-    return toHex(await crypto.subtle.sign('HMAC', key, encoder.encode(`${blob}:${name}`)));
-}
-
-/** Llama a la API de GitHub del repositorio de la web. */
-function github(env, fetchImpl) {
-    return async (method, path, body) => {
-        const response = await fetchImpl(`https://api.github.com/repos/${env.GITHUB_REPO}${path}`, {
-            method,
-            headers: {
-                Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-                'User-Agent': 'lauren-fotos',
-                'X-GitHub-Api-Version': '2022-11-28',
-                ...(body ? { 'Content-Type': 'application/json' } : {})
-            },
-            body: body ? JSON.stringify(body) : undefined
-        });
-        if (!response.ok) throw Object.assign(new HttpError(502, 'github'), { github: response.status });
-        return response.json();
-    };
-}
-
-/** Un commit con todas las fotos de la tanda sobre la rama de la web. Si otro cambio llegó a la vez, reintenta. */
-export async function commitPhotos(env, fetchImpl, photos) {
-    const api = github(env, fetchImpl);
-    const branch = env.GITHUB_BRANCH || 'main';
-    const message = `Fotos subidas desde el centro de control (${photos.length})`;
-    for (let attempt = 1; ; attempt++) {
-        const parent = (await api('GET', `/git/ref/heads/${branch}`)).object.sha;
-        const base = (await api('GET', `/git/commits/${parent}`)).tree.sha;
-        const tree = await api('POST', '/git/trees', { base_tree: base, tree: photos.map(p => ({ path: `${FOLDER}/${p.nombre}`, mode: '100644', type: 'blob', sha: p.blob })) });
-        const commit = await api('POST', '/git/commits', { message, tree: tree.sha, parents: [parent] });
-        try {
-            await api('PATCH', `/git/refs/heads/${branch}`, { sha: commit.sha, force: false });
-            return commit.sha;
-        } catch (error) {
-            if (error.github !== 422 || attempt >= 3) throw error;
-        }
-    }
+async function readPhoto(file, max) {
+    if (!file || typeof file === 'string') return null;
+    if (file.size > max) throw new HttpError(413, 'muy-grande');
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const type = photoType(bytes);
+    if (!type) throw new HttpError(415, 'formato');
+    return { bytes, type };
 }
 
 export function createHandler({ fetchImpl = (...args) => fetch(...args), now = () => Date.now() / 1000 } = {}) {
@@ -133,6 +91,20 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
 
     return {
         async fetch(request, env) {
+            const url = new URL(request.url);
+            const security = { 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'" };
+
+            // La foto: pública, para la web y el panel.
+            const file = /^\/f\/([^/]+)$/.exec(url.pathname)?.[1];
+            if (file !== undefined) {
+                if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, { status: 405, headers: security });
+                const stored = NAME.test(file) && env.FOTOS ? await env.FOTOS.get(file, { type: 'arrayBuffer', cacheTtl: 86400 }) : null;
+                if (!stored) return new Response('No existe.', { status: 404, headers: { ...security, 'Cache-Control': 'no-store' } });
+                return new Response(request.method === 'HEAD' ? null : stored, {
+                    headers: { ...security, 'Content-Type': TYPES[file.split('.').pop()], 'Content-Length': String(stored.byteLength), 'Cache-Control': 'public, max-age=31536000, immutable', 'Access-Control-Allow-Origin': '*' }
+                });
+            }
+
             const origin = request.headers.get('Origin') || '';
             const allowed = String(env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
             const cors = allowed.includes(origin) ? {
@@ -143,57 +115,45 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
             } : {};
             const reply = (status, data) => new Response(JSON.stringify(data), {
                 status,
-                headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', Vary: 'Origin', ...cors }
+                headers: { ...security, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', Vary: 'Origin', ...cors }
             });
-            const { pathname } = new URL(request.url);
-            if (!['/fotos', '/fotos/subir', '/fotos/publicar'].includes(pathname)) return reply(404, { error: 'no-existe' });
+            if (!['/fotos', '/fotos/subir'].includes(url.pathname)) return reply(404, { error: 'no-existe' });
             if (!cors['Access-Control-Allow-Origin']) return reply(403, { error: 'origen' });
             if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...cors, Vary: 'Origin' } });
             try {
-                if (!env.GITHUB_TOKEN || !env.GITHUB_REPO || !env.FIREBASE_PROJECT) throw new HttpError(500, 'configuracion');
+                if (!env.FOTOS || !env.FIREBASE_PROJECT) throw new HttpError(500, 'configuracion');
                 const token = (request.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
                 const user = await verifyIdToken(token, { projectId: env.FIREBASE_PROJECT, keys: await googleKeys(), now: now() });
                 const admins = String(env.ADMIN_EMAILS || '').toLowerCase().split(',').map(e => e.trim()).filter(Boolean);
                 if (admins.length && !admins.includes(String(user.email || '').toLowerCase())) throw new HttpError(403, 'permiso');
-                const api = github(env, fetchImpl);
+                const link = name => `${url.origin}/f/${name}`;
 
-                if (pathname === '/fotos') {
+                if (url.pathname === '/fotos') {
                     if (request.method !== 'GET') throw new HttpError(405, 'metodo');
-                    let items = [];
-                    try { items = await api('GET', `/contents/${FOLDER}?ref=${encodeURIComponent(env.GITHUB_BRANCH || 'main')}`); }
-                    catch (error) { if (error.github !== 404) throw error; }
-                    return reply(200, { fotos: items.filter(item => item.type === 'file' && NAME.test(item.name)).map(item => `/${FOLDER}/${item.name}`) });
+                    const names = [];
+                    let cursor;
+                    do {
+                        const page = await env.FOTOS.list({ cursor, limit: 1000 });
+                        names.push(...page.keys.map(k => k.name).filter(n => NAME.test(n) && !THUMB.test(n)));
+                        cursor = page.list_complete ? null : page.cursor;
+                    } while (cursor);
+                    return reply(200, { fotos: names.map(link) });
                 }
+
                 if (request.method !== 'POST') throw new HttpError(405, 'metodo');
-
-                if (pathname === '/fotos/subir') {
-                    let form;
-                    try { form = await request.formData(); } catch { throw new HttpError(400, 'formulario'); }
-                    const file = form.get('foto');
-                    if (!file || typeof file === 'string') throw new HttpError(400, 'sin-foto');
-                    if (file.size > MAX_BYTES) throw new HttpError(413, 'muy-grande');
-                    const bytes = new Uint8Array(await file.arrayBuffer());
-                    const type = photoType(bytes);
-                    if (!type) throw new HttpError(415, 'formato');
-                    const random = toHex(crypto.getRandomValues(new Uint8Array(3)));
-                    const nombre = `${slug(form.get('nombre')).slice(0, 50) || 'foto'}-${Date.now().toString(36)}${random}.${type}`;
-                    const blob = (await api('POST', '/git/blobs', { content: toBase64(bytes), encoding: 'base64' })).sha;
-                    return reply(201, { blob, nombre, firma: await sign(env.GITHUB_TOKEN, blob, nombre) });
-                }
-
-                let body;
-                try { body = await request.json(); } catch { throw new HttpError(400, 'formulario'); }
-                const photos = Array.isArray(body?.fotos) ? body.fotos : [];
-                if (!photos.length) throw new HttpError(400, 'sin-foto');
-                if (photos.length > MAX_BATCH) throw new HttpError(413, 'demasiadas');
-                for (const photo of photos) {
-                    const ok = photo && /^[0-9a-f]{40}$/.test(photo.blob) && NAME.test(photo.nombre)
-                        && typeof photo.firma === 'string' && photo.firma === await sign(env.GITHUB_TOKEN, photo.blob, photo.nombre);
-                    if (!ok) throw new HttpError(400, 'firma');
-                }
-                const unique = [...new Map(photos.map(p => [p.nombre, { blob: p.blob, nombre: p.nombre }])).values()];
-                await commitPhotos(env, fetchImpl, unique);
-                return reply(201, { fotos: unique.map(p => `/${FOLDER}/${p.nombre}`) });
+                let form;
+                try { form = await request.formData(); } catch { throw new HttpError(400, 'formulario'); }
+                const photo = await readPhoto(form.get('foto'), MAX_BYTES);
+                if (!photo) throw new HttpError(400, 'sin-foto');
+                const thumb = await readPhoto(form.get('miniatura'), MAX_THUMB);
+                if (!thumb) throw new HttpError(400, 'sin-miniatura');
+                if (thumb.type !== photo.type) throw new HttpError(415, 'formato');
+                const base = `${slug(form.get('nombre')).slice(0, 50) || 'foto'}-${Date.now().toString(36)}${toHex(crypto.getRandomValues(new Uint8Array(3)))}`;
+                const name = `${base}.${photo.type}`;
+                const metadata = { subida: new Date(now() * 1000).toISOString() };
+                await env.FOTOS.put(`${base}-320.${thumb.type}`, thumb.bytes, { metadata: { ...metadata, de: name } });
+                await env.FOTOS.put(name, photo.bytes, { metadata });
+                return reply(201, { foto: link(name) });
             } catch (error) {
                 if (error instanceof HttpError) return reply(error.status, { error: error.code });
                 return reply(500, { error: 'interno' });

@@ -95,7 +95,7 @@ export const PAGES = [
     }
 ];
 
-const abs = src => ORIGIN + src;
+const abs = src => src.startsWith('https://') ? src : ORIGIN + src;
 const escAttr = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const plain = html => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 const socialImage = page => `/assets/social/${page.social || page.key}.jpg`;

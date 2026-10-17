@@ -25,7 +25,7 @@ const fillIcons = root => root.querySelectorAll('[data-icon]').forEach(el => { e
 fillIcons(document);
 // Vista previa para revisar el diseño en el computador de desarrollo: sin sesión y sin publicar.
 const preview = ['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).has('vista-previa');
-// Worker que guarda las fotos subidas en el repositorio (worker/fotos). Su origen también va en connect-src de admin/index.html.
+// Worker de fotos (worker/fotos): guarda las subidas en Cloudflare y las sirve en /f/<nombre>. Su origen va en el CSP de cada página.
 const PHOTOS_API = 'https://lauren-reposteria.crizczi22.workers.dev/fotos';
 const photosReady = Boolean(PHOTOS_API);
 
@@ -152,9 +152,6 @@ let loadedJson = null;
 let products = [];
 const fresh = new Set();
 let filter = 'all';
-// Fotos recién subidas: se ven con la copia del navegador mientras GitHub Pages las publica.
-const previews = new Map();
-const photoSrc = src => previews.get(src) || imagePath(src);
 const sectionName = id => M.SECTIONS.find(([key]) => key === id)?.[1] || 'Sin sección';
 const hasChanges = () => M.changes(original, products).total > 0;
 // El modelo del catálogo lee window.catalogData: se apunta al borrador para calcular precios y herencias.
@@ -213,7 +210,7 @@ function render() {
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
-        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(photoSrc(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label><button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
     }).join('') || `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`;
     const total = M.changes(original, products).total;
     $('saveBar').hidden = total === 0;
@@ -364,8 +361,8 @@ function photosHTML(p) {
     const more = images.length - 1;
     return `<fieldset class="admin-fieldset"><legend>Fotos</legend>
         <p class="field-note">${images.length ? `La principal se ve en la tarjeta. ${more > 0 ? `Las otras ${more === 1 ? 'una se ve' : `${more} se ven`}` : 'Las que agregues se ven'} debajo, en pequeño, cuando el cliente abre el producto. Suma aquí las fotos de la misma referencia y no tienes que crear un producto por cada una.` : 'Este producto aún no tiene foto. Agrega una para mostrarlo en la web.'}</p>
-        ${images.length ? `<div class="admin-gallery"><div class="admin-photo admin-photo-lead"><img src="${esc(photoSrc(images[0]))}" alt="Foto principal" width="160" height="200" loading="lazy"><div class="admin-photo-actions"><span class="admin-photo-main">Principal</span><button type="button" data-action="remove-photo" data-src="${esc(images[0])}">Quitar</button></div></div>
-            ${more > 0 ? `<div class="photo-strip admin-photo-strip">${LaurenUI.stripArrow(-1, 'Ver fotos anteriores')}<div class="photo-strip-track" role="group" aria-label="Más fotos (${more})">${images.slice(1).map((src, i) => `<div class="admin-photo"><img src="${esc(photoSrc(src))}" alt="Foto ${i + 2}" width="96" height="120" loading="lazy"><div class="admin-photo-actions"><button type="button" data-action="main-photo" data-src="${esc(src)}">Hacer principal</button><button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>${LaurenUI.stripArrow(1, 'Ver más fotos')}</div>` : ''}</div>` : ''}
+        ${images.length ? `<div class="admin-gallery"><div class="admin-photo admin-photo-lead"><img src="${esc(imagePath(images[0]))}" alt="Foto principal" width="160" height="200" loading="lazy"><div class="admin-photo-actions"><span class="admin-photo-main">Principal</span><button type="button" data-action="remove-photo" data-src="${esc(images[0])}">Quitar</button></div></div>
+            ${more > 0 ? `<div class="photo-strip admin-photo-strip">${LaurenUI.stripArrow(-1, 'Ver fotos anteriores')}<div class="photo-strip-track" role="group" aria-label="Más fotos (${more})">${images.slice(1).map((src, i) => `<div class="admin-photo"><img src="${esc(imagePath(src))}" alt="Foto ${i + 2}" width="96" height="120" loading="lazy"><div class="admin-photo-actions"><button type="button" data-action="main-photo" data-src="${esc(src)}">Hacer principal</button><button type="button" data-action="remove-photo" data-src="${esc(src)}">Quitar</button></div></div>`).join('')}</div>${LaurenUI.stripArrow(1, 'Ver más fotos')}</div>` : ''}</div>` : ''}
         <div class="admin-photo-add"><button type="button" class="admin-add" data-action="upload-photo">${icon('plus')} Subir fotos nuevas</button><button type="button" class="admin-add" data-action="pick-photo">${icon('plus')} Agregar fotos de la web</button></div>
         <input type="file" id="photoUpload" accept="image/*" multiple hidden>
         <p class="field-note" id="uploadStatus" aria-live="polite">${uploading ? esc(uploading) : 'Puedes elegir varias a la vez. Mejor verticales, como las de la web: se ajustan solas para que carguen rápido.'}</p></fieldset>`;
@@ -524,11 +521,14 @@ editor.addEventListener('submit', event => {
     LaurenUI.toast('Guardado. Toca «Publicar cambios» para que se vea en la web.');
 });
 
-/* ---------- Subir fotos nuevas (worker/fotos: Cloudflare guarda cada tanda en assets/subidas del repositorio) ---------- */
+/* ---------- Subir fotos nuevas (worker/fotos: Cloudflare las guarda y las sirve al instante) ---------- */
 let uploading = '';
 let uploadedList = null;
 const showUpload = text => { uploading = text; const status = editor.querySelector('#uploadStatus'); if (status && text) status.textContent = text; };
-/** Abre la foto del celular o del computador (con su orientación) y la deja en 1440 px como máximo, en WebP (o JPG si el navegador no hace WebP). */
+/**
+ * Abre la foto del celular o del computador (con su orientación) y prepara dos copias del mismo formato:
+ * la foto de 1440 px como máximo y su miniatura de 320 px para las filas de fotos. WebP, o JPG si el navegador no hace WebP.
+ */
 async function compress(file) {
     let source;
     try { source = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
@@ -538,16 +538,21 @@ async function compress(file) {
     }
     const width = source.width, height = source.height;
     if (!width || !height) throw new Error('foto');
-    const scale = Math.min(1, 1440 / Math.max(width, height));
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
-    canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+    const draw = async (max, type) => {
+        const scale = Math.min(1, max / Math.max(width, height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
+        canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+        const encode = (as, quality) => new Promise(resolve => canvas.toBlob(resolve, as, quality));
+        if (type) return encode(type, type === 'image/webp' ? 0.8 : 0.82);
+        const webp = await encode('image/webp', 0.82);
+        return webp?.type === 'image/webp' ? webp : encode('image/jpeg', 0.85);
+    };
+    const photo = await draw(1440);
+    const thumb = photo && await draw(320, photo.type);
     source.close?.();
-    const encode = (type, quality) => new Promise(resolve => canvas.toBlob(resolve, type, quality));
-    let blob = await encode('image/webp', 0.82);
-    if (!blob || blob.type !== 'image/webp') blob = await encode('image/jpeg', 0.85);
-    if (!blob || blob.size > 3 * 1024 * 1024) throw new Error('foto');
-    return blob;
+    if (!photo || photo.size > 3 * 1024 * 1024 || !thumb || thumb.type !== photo.type || thumb.size > 400 * 1024) throw new Error('foto');
+    return { photo, thumb };
 }
 /** Petición al worker de fotos con el token de la sesión (lleva el doble factor). */
 async function photosApi(path, options = {}) {
@@ -564,8 +569,7 @@ const UPLOAD_ERRORS = {
     'muy-grande': 'Una de las fotos es muy pesada. Prueba con otra.',
     formato: 'Uno de los archivos no es una foto JPG o WebP.',
     foto: 'No pudimos abrir una de las fotos. Prueba con una foto JPG o PNG.',
-    configuracion: 'La subida de fotos aún no está lista: falta configurarla (ver la guía del centro de control).',
-    github: 'GitHub no recibió las fotos. Inténtalo de nuevo en unos minutos.'
+    configuracion: 'La subida de fotos aún no está lista. Inténtalo de nuevo en unos minutos.'
 };
 const uploadError = error => UPLOAD_ERRORS[error.code || error.message] || 'No pudimos subir las fotos. Revisa tu conexión e inténtalo de nuevo.';
 async function uploadPhotos(files) {
@@ -574,33 +578,26 @@ async function uploadPhotos(files) {
     if (!photosReady) { LaurenUI.toast(UPLOAD_ERRORS.configuracion); return; }
     const target = edit;
     const list = files.slice(0, 20);
-    const ready = [];
-    let problem = '';
-    // Una petición por foto (cabe en el plan gratuito) y un solo commit al final con todas.
+    let done = 0, problem = '';
     for (const [i, file] of list.entries()) {
         showUpload(list.length === 1 ? 'Subiendo la foto…' : `Subiendo la foto ${i + 1} de ${list.length}…`);
         try {
-            const blob = await compress(file);
+            const { photo, thumb } = await compress(file);
+            const ext = photo.type === 'image/webp' ? 'webp' : 'jpg';
             const form = new FormData();
-            form.append('foto', blob, blob.type === 'image/webp' ? 'foto.webp' : 'foto.jpg');
+            form.append('foto', photo, `foto.${ext}`);
+            form.append('miniatura', thumb, `miniatura.${ext}`);
             form.append('nombre', target.name || 'foto');
-            ready.push({ ...(await photosApi('/subir', { method: 'POST', body: form })), preview: URL.createObjectURL(blob) });
+            const { foto } = await photosApi('/subir', { method: 'POST', body: form });
+            if (!M.IMAGE.test(foto)) throw new Error('error');
+            target.images = [...(target.images || []), foto];
+            if (!target.mainImage) target.mainImage = foto;
+            if (uploadedList) uploadedList.push(foto);
+            done++;
         } catch (error) {
             problem ||= uploadError(error);
             if (['sesion', 'doble-factor', 'permiso', 'configuracion'].includes(error.code)) break;
         }
-    }
-    let done = 0;
-    if (ready.length) {
-        showUpload(ready.length === 1 ? 'Guardando la foto en la web…' : `Guardando ${ready.length} fotos en la web…`);
-        try {
-            const { fotos } = await photosApi('/publicar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fotos: ready.map(({ blob, nombre, firma }) => ({ blob, nombre, firma })) }) });
-            fotos.forEach((src, i) => { if (M.IMAGE.test(src)) previews.set(src, ready[i].preview); });
-            target.images = [...(target.images || []), ...fotos.filter(src => M.IMAGE.test(src))];
-            if (!target.mainImage) target.mainImage = target.images[0] || '';
-            uploadedList = uploadedList && [...new Set([...uploadedList, ...fotos])];
-            done = fotos.length;
-        } catch (error) { problem = uploadError(error); done = 0; }
     }
     showUpload('');
     if (edit === target && editor.open) {
@@ -608,9 +605,8 @@ async function uploadPhotos(files) {
         renderEditor();
         editor.querySelector('.dialog-scroll').scrollTop = scroll;
     }
-    const next = 'Toca «Guardar» y luego «Publicar cambios». En la web aparecen en uno o dos minutos.';
     if (problem) LaurenUI.toast(done ? `Subimos ${done} de ${list.length}. ${problem}` : problem);
-    else LaurenUI.toast(`${done === 1 ? 'Foto lista' : `${done} fotos listas`}. ${next}`);
+    else LaurenUI.toast(`${done === 1 ? 'Foto lista' : `${done} fotos listas`}. Toca «Guardar» y luego «Publicar cambios».`);
     if (files.length > list.length) LaurenUI.toast(`Subimos las primeras ${list.length}. Elige las demás en otra tanda.`);
 }
 /** Fotos ya subidas (aunque ningún producto las use todavía), para ofrecerlas en «Agregar fotos de la web». */
@@ -645,7 +641,7 @@ async function openPicker() {
     const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
     picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'}</p><div class="admin-photos">${items.map(item => {
         const main = takenMains.get(item.proposal);
-        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(photoSrc(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} Agregada</span></button></div>`;
+        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} Agregada</span></button></div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     picker.addEventListener('close', () => {
         renderEditor();
