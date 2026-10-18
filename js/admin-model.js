@@ -5,9 +5,7 @@
         ['tortas', 'Tortas'], ['extras', 'Adicionales de torta'], ['alfajores', 'Alfajores'],
         ['brownies', 'Brownies'], ['galletas', 'Galletas'], ['detalles', 'Detalles']
     ];
-    // Subgrupos de cada página (los botones de filtro de tortas/, alfajores/ y detalles/). Los decide el negocio.
     const GROUPS = {
-        tortas: [['cumpleanos', 'Cumpleaños'], ['corazon', 'De corazón'], ['flores', 'Flores y frutos'], ['infantiles', 'Infantiles'], ['tematicas', 'Temáticas'], ['grados', 'Grados y comuniones']],
         alfajores: [['cajas', 'Cajas y minis'], ['especiales', 'Especiales']],
         detalles: [['osos', 'Con ositos'], ['mix', 'Mix y mensajes'], ['golden', 'Golden y tortas']]
     };
@@ -53,12 +51,12 @@
     const photoName = src => src.split('/').pop().replace(/\.\w+$/, '');
     /**
      * Producto nuevo con la estructura del primero de su sección (opciones, porciones, campos de
-     * mensaje), sin nombre, sin fotos, sin subgrupo y con todos los precios vacíos. Empieza oculto.
+     * mensaje), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
      */
     function template(category, products) {
         const base = products.find(p => p.category === category && !p.basedOn);
         const product = base ? clone(base) : { category, options: [], personalization: null };
-        for (const key of ['basedOn', 'featured', 'summary', 'priceMax', 'group']) delete product[key];
+        for (const key of ['basedOn', 'featured', 'summary', 'priceMax']) delete product[key];
         Object.assign(product, { id: '', name: '', category, visible: false, description: '', mainImage: '', images: [] });
         product.price = null;
         if (category === 'extras') product.priceMax = null;
@@ -84,7 +82,6 @@
                 if (Array.isArray(product[key]) && !product[key].length) delete product[key];
             }
             if (product.category === 'extras') { delete product.mainImage; delete product.images; }
-            if (!GROUPS[product.category]) delete product.group;
             if (product.images) product.images = [...new Set(product.images.filter(Boolean))];
             if (!product.mainImage && product.images?.length) product.mainImage = product.images[0];
             if (!QUANTITY.includes(product.category) || product.basedOn) { delete product.minimum; delete product.quantityLabel; }
@@ -120,10 +117,6 @@
             if (p.id && ids.has(p.id)) errors.push(`${name}: el identificador «${p.id}» está repetido.`);
             if (p.id) ids.add(p.id);
             if (!sections.has(p.category)) errors.push(`${name}: elige una sección.`);
-            // En las páginas con subgrupos, cada producto visible va en uno de los de su página.
-            const groups = GROUPS[p.category];
-            if (groups && p.group && !groups.some(([id]) => id === p.group)) errors.push(`${name}: elige otra vez su filtro en «Dónde aparece».`);
-            else if (groups && !p.group && p.visible !== false) errors.push(`${name}: elige su filtro en «Dónde aparece» para que salga en su grupo de la página.`);
             if (p.basedOn && !all.some(base => base.id === p.basedOn && !base.basedOn)) errors.push(`${name}: la torta base ya no existe.`);
             money(p.price, name);
             money(p.priceMax, `${name} (precio máximo)`);

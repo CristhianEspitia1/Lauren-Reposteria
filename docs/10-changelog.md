@@ -7,6 +7,13 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Tortas sin subgrupos]
+
+- Salen los filtros y el buscador de Tortas que llegaron en la versión anterior, a pedido del negocio: las tortas no se agrupan con botones, sino que cada torta reúne en su ficha las fotos de su estilo y precio (Torta Vintage, Torta Sencilla…). Esos grupos se arman en el centro de control uniendo fotos («Agregar fotos de la web» → «Se une a este»).
+- El panel deja de pedir subgrupo en Tortas, y Alfajores y Detalles vuelven a como estaban: un producto nuevo toma el filtro del primero de su sección.
+- El catálogo publicado deja de guardar subgrupos en las tortas.
+- Manual de marca 2.5: «Filtros de colección» describe solo Alfajores y Detalles.
+
 ## [2026-10-17 — Subgrupos en Tortas]
 
 - La página de Tortas tiene los mismos filtros que Alfajores y Detalles, con buscador: Cumpleaños (13), De corazón (8), Flores y frutos (6), Infantiles (8), Temáticas (6) y Grados y comuniones (4). Los eligió el negocio; cada torta va en uno.
