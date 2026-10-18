@@ -330,7 +330,7 @@ $('discard').addEventListener('click', async () => {
         action: 'Descartar',
         cancel: 'Conservarlos'
     }))) return;
-    products = Object.values(M.clone(original)); fresh.clear(); render();
+    products = Object.values(M.clone(original)); fresh.clear(); pendingDeletes.clear(); render();
 });
 window.addEventListener('beforeunload', event => { if (hasChanges()) event.preventDefault(); });
 
@@ -363,7 +363,8 @@ $('publish').addEventListener('click', async () => {
         original = data; loadedJson = json; products = Object.values(M.clone(data)); fresh.clear();
         if (filter === 'changed') filter = 'all';
         render();
-        LaurenUI.toast('Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
+        const erased = await erasePending();
+        LaurenUI.toast(erased ? `Listo. La web ya muestra tus cambios y borramos ${erased === 1 ? 'la foto que sacaste' : `las ${erased} fotos que sacaste`}.` : 'Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
     } catch (error) {
         if (error.code === 'conflict') LaurenUI.toast('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
         else if (error.code === 'permission-denied') { LaurenUI.toast('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
@@ -405,9 +406,14 @@ $('newProduct').addEventListener('click', () => {
 // Fotos adicionales de otros productos que se mueven aquí: salen de ellos al guardar (cada foto vive en un solo producto).
 let merges = new Map();
 let moves = new Map();
+// Fotos subidas que se sacan de un producto con «Borrarla»: se borran después de publicar, si ningún producto las usa.
+// En la ficha abierta, lo que se decide de cada foto (borrar o guardar) solo cuenta al tocar «Guardar».
+const pendingDeletes = new Set();
+let photoFates = new Map();
 function openEditor(product, isNew = false) {
     merges = new Map();
     moves = new Map();
+    photoFates = new Map();
     edit = M.clone(product);
     editingId = isNew ? null : product.id;
     pristine = JSON.stringify(edit);
@@ -483,8 +489,9 @@ function groupsHTML(p, pricedOnes) {
 }
 
 // La principal va en la tarjeta; las demás (misma referencia, otros ángulos) se ven en pequeño bajo la foto de la ficha.
-// Bajo cada foto, los tres puntos abren sus opciones: hacerla principal y quitarla.
-const photoMenu = (src, i) => `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="photoMenu${i}" aria-label="Opciones de la ${i ? `foto ${i + 1}` : 'foto principal'}">${icon('more')}</button><div class="admin-photo-menu" id="photoMenu${i}" popover>${i ? `<button type="button" data-action="main-photo" data-src="${esc(src)}">${icon('check')} Hacer principal</button>` : `<button type="button" disabled>${icon('check')} Es la principal</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">${icon('trash')} Quitar</button></div></div>`;
+// Bajo cada foto, los tres puntos abren sus opciones: hacerla principal y sacarla de este producto.
+const takeOut = () => edit?.category === 'tortas' ? 'Sacar de esta torta' : 'Sacar de este producto';
+const photoMenu = (src, i) => `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="photoMenu${i}" aria-label="Opciones de la ${i ? `foto ${i + 1}` : 'foto principal'}">${icon('more')}</button><div class="admin-photo-menu" id="photoMenu${i}" popover>${i ? `<button type="button" data-action="main-photo" data-src="${esc(src)}">${icon('check')} Hacer principal</button>` : `<button type="button" disabled>${icon('check')} Es la principal</button>`}<button type="button" data-action="remove-photo" data-src="${esc(src)}">${icon('minus')} ${takeOut()}</button></div></div>`;
 function photosHTML(p) {
     const images = M.photos(p);
     const more = images.length - 1;
@@ -679,7 +686,26 @@ editor.addEventListener('click', async event => {
     if (action === 'own-prices') edit.options = M.clone(products.find(b => b.id === edit.basedOn)?.options || []);
     if (action === 'inherit') delete edit.options;
     if (action === 'main-photo') { const src = button.dataset.src; edit.images = [src, ...(edit.images || []).filter(s => s !== src)]; edit.mainImage = src; }
-    if (action === 'remove-photo') { const src = button.dataset.src; edit.images = (edit.images || []).filter(s => s !== src); if (edit.mainImage === src) edit.mainImage = edit.images[0] || ''; }
+    if (action === 'remove-photo') {
+        // Sacar una foto nunca la pierde: una de la web vuelve al selector; con una subida se elige guardarla o borrarla.
+        const src = button.dataset.src;
+        button.closest('[popover]')?.hidePopover();
+        const where = `«${edit.name?.trim() || 'este producto'}»`;
+        const other = edit.category === 'tortas' ? 'otra torta' : 'otro producto';
+        const uploaded = src.startsWith(M.UPLOADED);
+        const erase = uploaded && await askConfirm({
+            title: '¿Qué hacemos con <em>esta foto</em>?',
+            body: `<ul class="admin-confirm-list"><li><img src="${esc(imagePath(src))}" alt="" width="40" height="50"><span>Foto subida</span><small>sale de ${esc(where)}</small></li></ul>
+                <p>Puedes guardarla en tus fotos subidas para ponerla en ${other}, o borrarla. Si la borras, se borra cuando publiques los cambios.</p>`,
+            action: 'Borrarla',
+            cancel: 'Guardarla en mis fotos'
+        });
+        edit.images = (edit.images || []).filter(s => s !== src);
+        if (edit.mainImage === src) edit.mainImage = edit.images[0] || '';
+        if (uploaded) photoFates.set(src, erase ? 'borrar' : 'guardar');
+        LaurenUI.toast(!uploaded ? `Salió de ${where}. La encuentras en «Agregar fotos de la web» para ponerla en ${other}.`
+            : erase ? `Salió de ${where}. Se borra cuando publiques los cambios.` : `Salió de ${where}. Queda en tus fotos subidas, en «Agregar fotos de la web».`);
+    }
     if (action === 'pick-photo') { openPicker(); return; }
     if (action === 'upload-photo') { if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#photoUpload').click(); return; }
     if (action === 'delete') {
@@ -725,6 +751,7 @@ editor.addEventListener('submit', event => {
         const last = products.findLastIndex(p => p.category === saved.category);
         products.splice(last + 1, 0, saved);
     }
+    photoFates.forEach((fate, src) => { if (fate === 'borrar') pendingDeletes.add(src); else pendingDeletes.delete(src); });
     const joined = products.filter(p => merges.has(p.id)).map(p => p.name);
     const moved = [...new Set([...moves.values()].flat())].filter(id => !merges.has(id));
     products = products.map(p => moved.includes(p.id) ? { ...p, images: (p.images || []).filter(src => !moves.has(src) || !moves.get(src).includes(p.id)) } : p);
@@ -790,6 +817,27 @@ const UPLOAD_ERRORS = {
     configuracion: 'La subida de fotos aún no está lista. Inténtalo de nuevo en unos minutos.'
 };
 const uploadError = error => UPLOAD_ERRORS[error.code || error.message] || 'No pudimos subir las fotos. Revisa tu conexión e inténtalo de nuevo.';
+const deleteError = error => ({
+    sesion: UPLOAD_ERRORS.sesion,
+    'doble-factor': 'Para borrar fotos hay que entrar con el código de la app. Sal y entra de nuevo.',
+    permiso: 'Tu usuario no tiene permiso para borrar fotos.',
+    configuracion: 'El borrado de fotos aún no está listo. Inténtalo de nuevo en unos minutos.'
+}[error.code] || 'No pudimos borrar la foto. Revisa tu conexión e inténtalo de nuevo.');
+/** Borra una foto subida del worker de fotos. Si ya no estaba, también cuenta como borrada. */
+async function erasePhoto(src) {
+    try { await photosApi(`/${src.split('/').pop()}`, { method: 'DELETE' }); }
+    catch (error) { if (error.code !== 'no-existe') throw error; }
+    uploadedList = uploadedList?.filter(s => s !== src) || null;
+    pendingDeletes.delete(src);
+}
+/** Después de publicar: borra las fotos que se sacaron con «Borrarla» y que ningún producto publicado usa. */
+async function erasePending() {
+    let erased = 0;
+    for (const src of M.unusedUploads(pendingDeletes, products)) {
+        try { await erasePhoto(src); erased++; } catch { /* queda pendiente para la próxima publicación */ }
+    }
+    return erased;
+}
 async function uploadPhotos(files) {
     if (!files.length) return;
     if (preview) { LaurenUI.toast('Vista previa: aquí no se suben fotos.'); return; }
@@ -869,11 +917,13 @@ async function showPicker() {
     // Una foto subida que no usa ningún producto (ni en el borrador ni en lo publicado) se puede borrar para siempre.
     const used = new Set([...products, ...Object.values(original), edit].flatMap(M.photos));
     const spare = src => src.startsWith(M.UPLOADED) && !used.has(src);
+    // Una foto subida que se sacó con «Borrarla» espera a la publicación.
+    const doomed = src => pendingDeletes.has(src) || photoFates.get(src) === 'borrar';
     const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).sort((a, b) => (b.category === edit.category) - (a.category === edit.category));
     picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, ese producto se une a este. Al tocar «Listo» te mostramos el resumen antes de hacerlo.</p><div class="admin-photos">${items.map((item, i) => {
         const main = takenMains.get(item.proposal);
         const holder = main ? null : others.find(p => M.photos(p).includes(item.proposal));
-        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : spare(item.proposal) ? 'Foto subida, sin usar' : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button>${spare(item.proposal) ? `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="spareMenu${i}" aria-label="Opciones de esta foto subida">${icon('more')}</button><div class="admin-photo-menu" id="spareMenu${i}" popover><button type="button" data-delete-upload="${esc(item.proposal)}">${icon('trash')} Borrar para siempre</button></div></div>` : ''}</div>`;
+        return `<div class="admin-photo"><button type="button" data-photo="${esc(item.proposal)}" aria-pressed="false"><img src="${esc(imagePath(item.proposal))}" alt="" width="120" height="150" loading="lazy"><span>${main ? `En la tarjeta de «${esc(main)}»` : holder ? `En «${esc(holder.name)}»` : doomed(item.proposal) ? 'Se borra al publicar' : spare(item.proposal) ? 'Foto subida, sin usar' : esc(item.name)}</span><span class="admin-photo-added">${icon('check')} ${main ? 'Se une a este' : holder ? 'Se mueve aquí' : 'Agregada'}</span></button>${spare(item.proposal) ? `<div class="admin-photo-actions"><button type="button" class="icon-button" popovertarget="spareMenu${i}" aria-label="Opciones de esta foto subida">${icon('more')}</button><div class="admin-photo-menu" id="spareMenu${i}" popover><button type="button" data-delete-upload="${esc(item.proposal)}">${icon('trash')} Borrar para siempre</button></div></div>` : ''}</div>`;
     }).join('')}</div></div><div class="admin-editor-actions"><div><button type="button" class="btn" data-close-dialog>Listo ${icon('check')}</button></div></div></div>`;
     pickerStart = { images: edit.images ? [...edit.images] : undefined, mainImage: edit.mainImage, merges: new Map(merges), moves: new Map(moves) };
     picker.addEventListener('close', () => {
@@ -891,6 +941,8 @@ async function showPicker() {
     LaurenUI.open(picker);
 }
 const pressPhotos = (list, pressed) => list.forEach(src => picker.querySelector(`[data-photo="${CSS.escape(src)}"]`)?.setAttribute('aria-pressed', String(pressed)));
+// Elegir otra vez una foto que se iba a borrar la conserva.
+const keep = src => { photoFates.delete(src); pendingDeletes.delete(src); };
 // Lo que se une o se mueve mientras el selector está abierto: se confirma todo junto al tocar «Listo».
 let pending = { merges: new Set(), moves: new Set() };
 picker.addEventListener('click', event => {
@@ -917,12 +969,14 @@ picker.addEventListener('click', event => {
         pending.merges.add(owner.id);
         edit.images = [...new Set([...(edit.images || []), ...photos])];
         if (!edit.mainImage) edit.mainImage = src;
+        photos.forEach(keep);
         pressPhotos(photos, true);
         return;
     }
     // Si es una foto adicional de otros productos, se mueve: al guardar sale de ellos.
     const holders = products.filter(p => p.id !== editingId && !merges.has(p.id) && M.photos(p).includes(src)).map(p => p.id);
     if (holders.length) { moves.set(src, holders); pending.moves.add(src); }
+    keep(src);
     edit.images = [...(edit.images || []), src];
     if (!edit.mainImage) edit.mainImage = src;
     button.setAttribute('aria-pressed', 'true');
@@ -949,11 +1003,11 @@ picker.addEventListener('click', async event => {
     });
     if (!ok) return;
     try {
-        await photosApi(`/${src.split('/').pop()}`, { method: 'DELETE' });
-        uploadedList = uploadedList?.filter(s => s !== src) || null;
+        await erasePhoto(src);
+        photoFates.delete(src);
         remove.closest('.admin-photo').remove();
-        LaurenUI.toast('Listo, borramos la foto.');
-    } catch (error) { LaurenUI.toast(error.code === 'no-existe' ? 'Esa foto ya estaba borrada.' : uploadError(error)); }
+        LaurenUI.toast('Listo, borramos la foto. Ya no aparece en tus fotos.');
+    } catch (error) { LaurenUI.toast(deleteError(error)); }
 });
 
 // «Listo», cerrar, Esc o tocar fuera: si algo se une o se mueve, primero el resumen; «Volver» deja seguir eligiendo.

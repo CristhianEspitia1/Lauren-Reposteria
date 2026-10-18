@@ -58,6 +58,14 @@ test('Un producto nuevo toma la estructura de su sección, sin precios, sin foto
     const oso = M.template('detalles', products());
     assert.equal(oso.price, null);
 });
+test('Al publicar se borran solo las fotos subidas que se sacaron con «Borrarla» y que ya nadie usa', () => {
+    const list = products();
+    const subida = name => `${M.UPLOADED}${name}.webp`;
+    list[0].images = [...(list[0].images || []), subida('sigue-en-uso')];
+    const pending = new Set([subida('sacada'), subida('sigue-en-uso'), '/assets/propuestas-fotograficas/torta-vintage.webp']);
+    assert.deepEqual([...M.unusedUploads(pending, list)], [subida('sacada')], 'ni las que otro producto usa ni las fotos de la web');
+    assert.equal(M.unusedUploads(new Set(), list).length, 0);
+});
 test('Un producto nuevo con precios vacíos se cotiza y aparece en su sección al publicar', () => {
     const list = products();
     const nuevo = M.template('tortas', list);

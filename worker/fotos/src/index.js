@@ -14,6 +14,8 @@
  *   DELETE /fotos/<nombre>  Borra una foto subida y su miniatura (solo administradores). El panel solo lo
  *                      ofrece para fotos que ningún producto usa. No se pierden de inmediato: pasan 30 días a la
  *                      papelera (claves «papelera/…», que nadie ve), por si fue un error o alguien entró sin permiso.
+ *                      Queda marcada en «fotos-borradas», así GET /fotos no la vuelve a mostrar aunque la lista de
+ *                      KV tarde en ponerse al día. Borrar una foto que ya no estaba responde igual (yaNoEstaba).
  *   POST /fotos/recuperar/<nombre>  Devuelve desde la papelera una foto borrada y su miniatura (solo administradores).
  *   GET  /instagram…   Lo último de Instagram para la portada (ver instagram.js). Es lo único que usa un secreto:
  *                      INSTAGRAM_TOKEN, opcional.
@@ -27,6 +29,7 @@ const MAX_THUMB = 400 * 1024;
 const TYPES = { webp: 'image/webp', jpg: 'image/jpeg' };
 const TRASH = 'papelera/';
 const TRASH_TTL = 30 * 86400;
+const DELETED = 'fotos-borradas';
 const GOOGLE_KEYS = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
 const encoder = new TextEncoder();
 
@@ -151,36 +154,48 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                     return true;
                 }
 
+                // La lista de claves de KV tarda en ponerse al día (puede seguir mostrando una foto recién borrada):
+                // cada borrado deja una marca, y la lista de fotos subidas nunca muestra las marcadas.
+                const marks = async () => (await env.FOTOS.get(DELETED, { type: 'json' })) || {};
+                async function mark(name, deleted) {
+                    const all = await marks();
+                    if (deleted) all[name] = new Date(now() * 1000).toISOString(); else delete all[name];
+                    // A los 30 días la lista ya está al día y la papelera se vació sola: la marca sobra.
+                    for (const [key, date] of Object.entries(all)) if (now() - Date.parse(date) / 1000 > TRASH_TTL) delete all[key];
+                    await env.FOTOS.put(DELETED, JSON.stringify(all));
+                }
+
                 if (restore !== undefined) {
                     if (request.method !== 'POST') throw new HttpError(405, 'metodo');
                     if (!NAME.test(restore) || THUMB.test(restore)) throw new HttpError(400, 'nombre');
                     const back = { change: ({ borrada, por, ...data }) => data };
                     if (!(await move(`${TRASH}${restore}`, restore, back))) throw new HttpError(404, 'no-existe');
                     await move(`${TRASH}${thumbOf(restore)}`, thumbOf(restore), back);
+                    await mark(restore, false);
                     return reply(200, { recuperada: link(restore) });
                 }
 
                 if (remove !== undefined && remove !== 'subir') {
                     if (request.method !== 'DELETE') throw new HttpError(405, 'metodo');
                     if (!NAME.test(remove) || THUMB.test(remove)) throw new HttpError(400, 'nombre');
-                    // Existe si es la primera clave con su nombre: se consulta sin descargar la foto.
-                    const found = await env.FOTOS.list({ prefix: remove, limit: 1 });
-                    if (found.keys[0]?.name !== remove) throw new HttpError(404, 'no-existe');
-                    // A la papelera por 30 días (KV la borra sola al vencer): primero la miniatura, luego la foto.
+                    // A la papelera por 30 días (KV la borra sola al vencer): primero la miniatura, luego la foto. Si ya no
+                    // estaba, igual queda marcada: el panel deja de mostrarla y borrar dos veces no es un error.
                     const deleted = { borrada: new Date(now() * 1000).toISOString(), por: String(user.email || user.sub) };
                     const trash = { expirationTtl: TRASH_TTL, change: data => ({ ...data, ...deleted }) };
                     await move(thumbOf(remove), `${TRASH}${thumbOf(remove)}`, trash);
-                    await move(remove, `${TRASH}${remove}`, trash);
-                    return reply(200, { borrada: remove, recuperableHasta: new Date((now() + TRASH_TTL) * 1000).toISOString() });
+                    const existed = await move(remove, `${TRASH}${remove}`, trash);
+                    await mark(remove, true);
+                    return reply(200, existed ? { borrada: remove, recuperableHasta: new Date((now() + TRASH_TTL) * 1000).toISOString() } : { borrada: remove, yaNoEstaba: true });
                 }
 
                 if (url.pathname === '/fotos') {
                     if (request.method !== 'GET') throw new HttpError(405, 'metodo');
+                    const gone = await marks();
                     const names = [];
                     let cursor;
                     do {
                         const page = await env.FOTOS.list({ cursor, limit: 1000 });
-                        names.push(...page.keys.map(k => k.name).filter(n => NAME.test(n) && !THUMB.test(n)));
+                        names.push(...page.keys.map(k => k.name).filter(n => NAME.test(n) && !THUMB.test(n) && !gone[n]));
                         cursor = page.list_complete ? null : page.cursor;
                     } while (cursor);
                     return reply(200, { fotos: names.map(link) });

@@ -7,6 +7,14 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Borrar fotos de verdad y sacarlas de un producto]
+
+- «Borrar para siempre» ya borra de verdad: la foto sale de la lista en el acto y no vuelve al recargar. Antes, la lista de fotos subidas venía de Cloudflare, que tarda en ponerse al día después de borrar, y si Cloudflare decía que la foto no existía, el panel la dejaba a la vista con «Esa foto ya estaba borrada». Ahora el worker marca cada foto borrada y nunca la vuelve a listar, y borrar dos veces no es un error.
+- Si algo falla al borrar, el aviso lo dice (antes decía «No pudimos subir las fotos»).
+- En los tres puntos de cada foto, «Quitar» pasa a «Sacar de esta torta» («Sacar de este producto» fuera de Tortas), y el aviso dice a dónde va la foto: una de la web vuelve a «Agregar fotos de la web»; con una subida, el panel pregunta «Guardarla en mis fotos» o «Borrarla», y la borrada se borra al publicar (en el selector dice «Se borra al publicar»).
+- Manual de marca 2.6: el menú de foto con «Sacar de esta torta» y la nueva confirmación.
+- 2 pruebas nuevas: una foto borrada no vuelve aunque la lista de KV siga atrasada, y al publicar solo se borran las fotos sacadas que nadie usa.
+
 ## [2026-10-17 — Tortas sin subgrupos]
 
 - Salen los filtros y el buscador de Tortas que llegaron en la versión anterior, a pedido del negocio: las tortas no se agrupan con botones, sino que cada torta reúne en su ficha las fotos de su estilo y precio (Torta Vintage, Torta Sencilla…). Esos grupos se arman en el centro de control uniendo fotos («Agregar fotos de la web» → «Se une a este»).

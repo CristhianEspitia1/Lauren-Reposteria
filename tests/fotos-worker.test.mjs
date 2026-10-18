@@ -20,16 +20,32 @@ const WEBP = new Uint8Array([...Buffer.from('RIFF'), 1, 0, 0, 0, ...Buffer.from(
 const WEBP_MINI = new Uint8Array([...Buffer.from('RIFF'), 1, 0, 0, 0, ...Buffer.from('WEBPVP8 '), 0, 0, 3]);
 const JPG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 16]);
 
-/** Workers KV y las llaves de Google simulados. */
-function fakeWorker(vars = {}) {
+/**
+ * Workers KV y las llaves de Google simulados. Con `staleList`, la lista de claves se comporta como la de KV real
+ * cuando aún no se pone al día: sigue mostrando las claves borradas y todavía no muestra las nuevas.
+ */
+function fakeWorker(vars = {}, { staleList = false } = {}) {
     const store = new Map();
+    const listed = new Set();
     const kv = {
-        async get(key, options) { return store.has(key) ? store.get(key).value.buffer.slice(0) : null; },
+        async get(key, options) {
+            if (!store.has(key)) return null;
+            const value = store.get(key).value;
+            return (typeof options === 'object' ? options.type : options) === 'json' ? JSON.parse(new TextDecoder().decode(value)) : value.buffer.slice(0);
+        },
         async getWithMetadata(key, options) { return store.has(key) ? { value: store.get(key).value.buffer.slice(0), metadata: store.get(key).metadata ?? null } : { value: null, metadata: null }; },
-        async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata, ttl: options?.expirationTtl }); },
-        async list({ prefix = '', limit = 1000 } = {}) { return { keys: [...store.keys()].filter(name => name.startsWith(prefix)).sort().slice(0, limit).map(name => ({ name })), list_complete: true }; },
+        async put(key, value, options) {
+            store.set(key, { value: typeof value === 'string' ? new TextEncoder().encode(value) : new Uint8Array(value), metadata: options?.metadata, ttl: options?.expirationTtl });
+            if (!staleList) listed.add(key);
+        },
+        async list({ prefix = '', limit = 1000 } = {}) {
+            const keys = staleList ? [...listed] : [...store.keys()];
+            return { keys: keys.filter(name => name.startsWith(prefix)).sort().slice(0, limit).map(name => ({ name })), list_complete: true };
+        },
         async delete(key) { store.delete(key); }
     };
+    // Lo que había antes de que la lista quedara atrasada: se sigue listando aunque se borre.
+    kv.listNow = () => store.forEach((_, key) => listed.add(key));
     const env = { FIREBASE_PROJECT: PROJECT, ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '', FOTOS: kv, ...vars };
     let googleCalls = 0;
     const fetchImpl = async url => {
@@ -116,12 +132,14 @@ test('Borra una foto subida y su miniatura, solo con sesión de administrador, y
     const response = await remove(name);
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { borrada: name, recuperableHasta: new Date((NOW + 30 * 86400) * 1000).toISOString() });
-    assert.deepEqual([...worker.store.keys()].sort(), [`papelera/${name}`, `papelera/${thumb}`].sort(), 'la foto y su miniatura pasan a la papelera');
+    assert.deepEqual([...worker.store.keys()].filter(k => k !== 'fotos-borradas').sort(), [`papelera/${name}`, `papelera/${thumb}`].sort(), 'la foto y su miniatura pasan a la papelera');
     for (const key of [`papelera/${name}`, `papelera/${thumb}`]) {
         assert.equal(worker.store.get(key).ttl, 30 * 86400, 'la papelera se vacía sola a los 30 días');
         assert.equal(worker.store.get(key).metadata.por, 'admin@lauren.co');
     }
-    assert.equal((await remove(name)).status, 404);
+    const again = await remove(name);
+    assert.equal(again.status, 200, 'borrar dos veces no es un error');
+    assert.deepEqual(await again.json(), { borrada: name, yaNoEstaba: true });
     assert.equal((await worker.call(new Request(foto))).status, 404, 'la web ya no la muestra');
     assert.equal((await worker.call(new Request(`${WORKER}/f/papelera%2F${name}`))).status, 404, 'la papelera no se sirve');
     const list = await worker.call(new Request(`${WORKER}/fotos`, { headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }));
@@ -145,7 +163,9 @@ test('Recupera una foto borrada desde la papelera, solo con sesión de administr
     const response = await restore(name);
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { recuperada: foto });
-    assert.deepEqual([...worker.store.keys()].sort(), [name, name.replace('.webp', '-320.webp')].sort(), 'vuelven la foto y su miniatura');
+    assert.deepEqual([...worker.store.keys()].filter(k => k !== 'fotos-borradas').sort(), [name, name.replace('.webp', '-320.webp')].sort(), 'vuelven la foto y su miniatura');
+    const listed = await worker.call(new Request(`${WORKER}/fotos`, { headers: await headers() }));
+    assert.deepEqual((await listed.json()).fotos, [foto], 'vuelve a la lista de fotos subidas');
     assert.equal(worker.store.get(name).ttl, undefined, 'recuperada, ya no vence');
     assert.equal(worker.store.get(name).metadata.borrada, undefined);
     assert.deepEqual(new Uint8Array(await (await worker.call(new Request(foto))).arrayBuffer()), WEBP, 'la web la muestra otra vez');
@@ -170,4 +190,22 @@ test('Rechaza otros archivos, otros sitios, sesiones sin doble factor y correos 
     assert.match(preflight.headers.get('Access-Control-Allow-Headers'), /Authorization/);
     const missing = fakeWorker({ FOTOS: undefined });
     assert.equal((await upload(missing)).status, 500);
+});
+
+test('Una foto borrada no vuelve a la lista aunque la lista de KV siga atrasada', async () => {
+    const worker = fakeWorker({}, { staleList: true });
+    const auth = { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN };
+    const { foto } = await (await upload(worker)).json();
+    const otra = (await (await upload(worker, { name: 'Otra torta' })).json()).foto;
+    worker.env.FOTOS.listNow();
+    const list = async () => (await (await worker.call(new Request(`${WORKER}/fotos`, { headers: auth }))).json()).fotos.sort();
+    assert.deepEqual(await list(), [foto, otra].sort());
+    const response = await worker.call(new Request(`${WORKER}/fotos/${foto.split('/').pop()}`, { method: 'DELETE', headers: auth }));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await list(), [otra], 'la borrada no vuelve aunque KV la siga listando');
+    const reciente = (await (await upload(worker, { name: 'Recién subida' })).json()).foto;
+    const quick = await worker.call(new Request(`${WORKER}/fotos/${reciente.split('/').pop()}`, { method: 'DELETE', headers: auth }));
+    assert.equal(quick.status, 200, 'una foto recién subida se borra aunque la lista aún no la muestre');
+    assert.ok(!(await quick.json()).yaNoEstaba);
+    assert.equal((await worker.call(new Request(reciente))).status, 404);
 });

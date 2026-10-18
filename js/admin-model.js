@@ -100,6 +100,11 @@
         });
     }
     const toCatalog = products => Object.fromEntries(products.map(p => [p.id, p]));
+    /** Fotos subidas que se pidió borrar y que ya ningún producto usa: el panel las borra después de publicar. */
+    function unusedUploads(pending, products) {
+        const used = new Set(products.flatMap(photos));
+        return [...pending].filter(src => typeof src === 'string' && src.startsWith(UPLOADED) && !used.has(src));
+    }
     /** Errores que impiden publicar, en palabras de la persona que edita. */
     function validate(products, all = products) {
         const errors = [];
@@ -154,5 +159,5 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, validate, changes };
+    window.AdminModel = { SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
 })();
