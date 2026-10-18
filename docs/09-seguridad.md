@@ -40,13 +40,15 @@ Recorrido completo del centro de control (vista previa) y de la web, más prueba
 
 ### Pendiente fuera del código (lo hace quien tenga las cuentas)
 
-Hecho: las cuentas (el Gmail dueño de Firebase y Cloudflare, GitHub y Hostinger) tienen verificación en dos pasos, según el negocio el 17 de octubre de 2026. Es la protección más importante: quien entre a esas cuentas controla la web.
+Hecho:
+
+- Las cuentas (el Gmail dueño de Firebase y Cloudflare, GitHub y Hostinger) tienen verificación en dos pasos, según el negocio el 17 de octubre de 2026. Es la protección más importante: quien entre a esas cuentas controla la web.
+- La llave de Firebase del navegador («Browser key (auto created by Firebase)») solo funciona desde `https://laurenreposteria.com/*`, `https://lauren-reposteria.firebaseapp.com/*`, `https://lauren-reposteria.web.app/*` y `http://localhost:5173/*` (18 de octubre de 2026). Comprobado: desde la web y desde Firebase responde; desde otro sitio o sin origen, Google la bloquea. Si algún día se publica la web en otra dirección, hay que agregarla allí (Google Cloud → Credenciales).
+- DNS de `laurenreposteria.com` en Hostinger: `TXT @ "v=spf1 -all"` y `TXT _dmarc "v=DMARC1; p=reject; adkim=s; aspf=s"` (18 de octubre de 2026). El dominio no envía correos, así que nadie puede mandar correos falsos a nombre de Lauren. Si algún día se crea un correo @laurenreposteria.com, hay que cambiar esos dos registros por los del servicio de correo.
 
 Falta (revisado el 17 de octubre de 2026):
 
 - GitHub → Settings → Code security: activar «Secret scanning» y «Push protection» (gratis en repositorios públicos), para que GitHub bloquee una llave subida por error.
-- Google Cloud → Credenciales → «Browser key (auto created by Firebase)»: restringirla a los sitios `https://laurenreposteria.com/*`, `https://lauren-reposteria.firebaseapp.com/*` y `http://localhost:5173/*`.
-- Hostinger → DNS de `laurenreposteria.com`: el dominio no envía correos, así que conviene publicar `TXT @ "v=spf1 -all"` y `TXT _dmarc "v=DMARC1; p=reject"` para que nadie pueda mandar correos falsos a nombre de Lauren.
 - Opcional en Firebase Auth: pedir claves de al menos 12 caracteres (política de contraseñas) y aceptar el código de la app solo en su minuto (hoy se aceptan ±2,5 minutos).
 
 El centro de control no tiene «¿Olvidaste tu clave?» a propósito: el negocio lo considera un riesgo. Una clave olvidada se cambia en la consola de Firebase (Authentication → Usuarios).
