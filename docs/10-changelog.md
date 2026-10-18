@@ -7,6 +7,15 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Nada se mueve al elegir]
+
+- En la ficha de producto, marcar una opción (porciones, bizcocho, relleno…) ya no ensancha el botón: el punto de la elegida tiene su sitio reservado en todas, así que las filas no se reacomodan al tocar. Pasa igual en las opciones del centro de control.
+- En «Agregar fotos de la web», la línea «Agregada», «Se mueve aquí» o «Se une a este» tiene su espacio reservado bajo cada foto: marcar una ya no empuja hacia abajo las fotos siguientes.
+- Total de la ficha: las unidades («12 unidades») van en su propia línea y, en los productos que las suman, el desglose guarda siempre sus dos líneas. Antes, en el teléfono, elegir 12 galletas o la bolsa de brownies partía el desglose en dos y el pie crecía.
+- Los enlaces de texto ya no empujan lo que tienen al lado al pasar el cursor: la flecha avanza dentro de un margen reservado (antes, «Ver todas las preguntas» movía a «Te ayudamos por WhatsApp», y «Cómo hacer tu pedido» se corría a la izquierda). «Pausar videos» y «Ver videos» ocupan el mismo sitio.
+- Centro de control: «Oculto» en «Así se verá en la web» tiene su sitio reservado (marcar «Visible» bajaba 2 px la tarjeta y las casillas), y al cambiar la sección o la torta base la opción tocada se queda bajo el dedo aunque la ficha cambie de partes.
+- Manual de marca 2.4: el punto de `.choice` y su sitio reservado, la regla «Nada salta al elegir» y el punto 9 de «Antes de publicar».
+
 ## [2026-10-17 — Lo último de Instagram en la portada]
 
 - «Un poquito más de Lauren» muestra las cuatro publicaciones más nuevas de @laurenreposteria22, y cada casilla abre la suya en Instagram. Los videos se reproducen solos, sin sonido, y al terminar esa casilla pasa a otro video que no esté en otra (si no queda otro, repite el suyo). Se pausan fuera de pantalla, con la pestaña oculta y con «Pausar videos», al centro debajo; con movimiento reducido o «ahorro de datos» queda la portada.

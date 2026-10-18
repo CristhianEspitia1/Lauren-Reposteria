@@ -46,12 +46,14 @@ dialog[open] { animation: dialog-in 260ms ease both; }
 .choice-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .choice { position: relative; display: flex; }
 .choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.choice span { display: flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px; font-size: .75rem; line-height: 1.5; cursor: pointer; transition: background var(--transition-fast), border-color var(--transition-fast); }
+.choice span { display: flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px 10px 10px; font-size: .75rem; line-height: 1.5; cursor: pointer; transition: background var(--transition-fast), border-color var(--transition-fast); }
 .choice:hover span { border-color: var(--color-lilac); }
 .choice input:checked + span { background: color-mix(in srgb, var(--color-lilac) 45%, var(--color-white)); border-color: var(--color-text); }
 .choice input:focus-visible + span { outline: 2px solid var(--color-text); outline-offset: 3px; }
 .choice input:disabled + span { opacity: .4; cursor: not-allowed; }
-.choice input:checked + span::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--color-text); flex-shrink: 0; }
+/* El punto de la opción elegida tiene su sitio reservado siempre: marcar no cambia el ancho ni mueve las demás opciones. */
+.choice span::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: transparent; flex-shrink: 0; transition: background var(--transition-fast); }
+.choice input:checked + span::before { background: var(--color-text); }
 .toggle-option { position: relative; display: flex; gap: 12px; align-items: center; min-height: 44px; cursor: pointer; font-size: .8125rem; }
 .toggle-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .toggle-mark { display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--color-border); border-radius: 3px 9px 3px 9px; flex-shrink: 0; transition: border-radius 420ms var(--ease-ribbon), background var(--transition-fast); }
@@ -80,7 +82,10 @@ dialog[open] { animation: dialog-in 260ms ease both; }
 .order-total { text-align: right; }
 .order-total span { font-size: .625rem; color: var(--color-text-soft); display: block; }
 .order-total strong { font-size: 1.4375rem; font-weight: 400; }
-.order-total small { display: block; font-size: .6875rem; color: var(--color-text-soft); min-height: 1em; }
+.order-total small { display: block; font-size: .6875rem; line-height: 1.5; color: var(--color-text-soft); min-height: 1.5em; }
+.order-total small span { display: block; }
+/* Si alguna presentación suma unidades, el desglose guarda sus dos líneas siempre. */
+.order-total[data-units] small { min-height: 3em; }
 .product-order .btn { width: 100%; justify-content: space-between; }
 .product-order > .field-note { text-align: center; }
 /* Pedido lateral */

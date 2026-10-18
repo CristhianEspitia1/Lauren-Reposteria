@@ -311,7 +311,8 @@
             });
             if (!toggle) return;
             toggle.hidden = !allowed() || !tiles.some(t => t.post.video && t.failed !== t.post.id);
-            toggle.innerHTML = stopped ? `Ver videos ${icon('play')}` : `Pausar videos ${icon('pause')}`;
+            // Las dos etiquetas ocupan el mismo sitio: cambiar de una a otra no mueve el botón.
+            toggle.innerHTML = `<span class="swap-label"><span${stopped ? '' : ' data-off'}>Ver videos</span><span${stopped ? ' data-off' : ''}>Pausar videos</span></span>${icon(stopped ? 'play' : 'pause')}`;
         }
         grid.replaceChildren(...tiles.map(tile => tile.link));
         if (videos.length) {

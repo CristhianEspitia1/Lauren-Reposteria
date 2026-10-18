@@ -55,7 +55,7 @@
                             ${(p.notes || []).map(note => `<p class="field-note">${esc(note)}</p>`).join('')}
                         </div>
                         <div class="product-order">
-                            ${!quoteOnly ? `<div class="quantity-price" data-order-priced><div><label class="quantity-label" for="productQuantity">${esc(p.quantityLabel || 'Cantidad de esta presentación')}</label><div class="quantity-control"><button type="button" class="icon-button" data-quantity="-1" aria-label="Reducir cantidad">${icon('minus')}</button><input id="productQuantity" type="number" inputmode="numeric" min="${Catalog.minimum(p)}" max="${Catalog.maximum}" step="1" value="${this.quantity}" aria-describedby="quantityError"><button type="button" class="icon-button" data-quantity="1" aria-label="Aumentar cantidad">${icon('plus')}</button></div></div><div class="order-total" aria-live="polite" aria-atomic="true"><span>Total · COP</span><strong id="productTotal"></strong><small id="productBreakdown"></small></div></div>` : ''}
+                            ${!quoteOnly ? `<div class="quantity-price" data-order-priced><div><label class="quantity-label" for="productQuantity">${esc(p.quantityLabel || 'Cantidad de esta presentación')}</label><div class="quantity-control"><button type="button" class="icon-button" data-quantity="-1" aria-label="Reducir cantidad">${icon('minus')}</button><input id="productQuantity" type="number" inputmode="numeric" min="${Catalog.minimum(p)}" max="${Catalog.maximum}" step="1" value="${this.quantity}" aria-describedby="quantityError"><button type="button" class="icon-button" data-quantity="1" aria-label="Aumentar cantidad">${icon('plus')}</button></div></div><div class="order-total" aria-live="polite" aria-atomic="true"${Catalog.options(p).some(o => o.id === 'cantidad') ? ' data-units' : ''}><span>Total · COP</span><strong id="productTotal"></strong><small id="productBreakdown"></small></div></div>` : ''}
                             <p class="field-note" data-order-quote hidden>${quoteOnly ? 'Confirma el diseño y su valor con nuestro equipo.' : 'Esta elección se cotiza por WhatsApp: te contamos el valor y la disponibilidad.'}</p>
                             <p id="quantityError" class="field-error" hidden></p>
                             <p id="productError" class="field-error" role="alert" hidden></p>
@@ -180,8 +180,9 @@
             output.textContent = known ? Catalog.money(unit * this.quantity) : '—';
             // Desglose visible: cuántas presentaciones, a qué precio y cuántas unidades suman.
             const pack = Catalog.choices(this.product, this.selection).some(o => o.id === 'cantidad') && Number(this.selection.cantidad);
-            const units = pack ? ` · ${pack * this.quantity} unidades` : '';
-            this.dialog.querySelector('#productBreakdown').textContent = known && (this.quantity > 1 || units) ? `${this.quantity} × ${Catalog.money(unit)}${units}` : '';
+            // Las unidades van en su propia línea: así el pie no cambia de alto al elegir otra presentación.
+            const units = pack ? `<span>${pack * this.quantity} unidades</span>` : '';
+            this.dialog.querySelector('#productBreakdown').innerHTML = known && (this.quantity > 1 || units) ? `${this.quantity} × ${esc(Catalog.money(unit))}${units}` : '';
             const error = this.dialog.querySelector('#quantityError');
             error.hidden = valid;
             error.textContent = `Elige una cantidad entre ${Catalog.minimum(this.product)} y ${Catalog.maximum}.`;

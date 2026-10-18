@@ -500,7 +500,7 @@ function cardPreview(p) {
     const src = M.photos(p)[0];
     return `<article class="product-card"><div class="product-image">${src ? `<img src="${esc(imagePath(src))}" alt="" width="600" height="680">` : '<span class="admin-card-empty">Sin foto</span>'}<span class="product-open">${icon('diagonal')}</span></div><div class="product-meta"><h3 class="product-name">${esc(p.name || 'Sin nombre')}</h3><p class="product-price">${quoted ? 'A tu medida' : price}</p></div><p class="product-description">${esc(r.summary || r.description || '')}</p><span class="text-link">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</span></article>`;
 }
-const previewTitle = p => `Así se verá en la web${p.visible === false ? ' <span class="admin-tag">Oculto</span>' : ''}`;
+const previewTitle = p => `Así se verá en la web <span class="admin-tag"${p.visible === false ? '' : ' data-off'}>Oculto</span>`;
 
 function renderEditor() {
     const p = edit;
@@ -591,10 +591,21 @@ editor.addEventListener('input', event => {
     if (path === 'category' || path === 'basedOn' || path === 'featured') {
         if (path === 'category') delete edit.group;
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
+        const top = input.closest('label').getBoundingClientRect().top;
         renderEditor();
         editor.querySelector('.dialog-scroll').scrollTop = scroll;
+        // La ficha se vuelve a dibujar con otras partes (precios, «Portada»…): la opción tocada se queda bajo el dedo.
+        const chosen = editor.querySelector(`[data-path="${path}"]${input.type === 'radio' ? ':checked' : ''}`);
+        // Si la ficha quedó más corta, se deja aire al final para poder mantenerla en su sitio (se va al volver a dibujarla).
+        if (chosen) {
+            const scroller = editor.querySelector('.dialog-scroll');
+            const target = scroller.scrollTop + chosen.closest('label').getBoundingClientRect().top - top;
+            const lack = target - (scroller.scrollHeight - scroller.clientHeight);
+            if (lack > 0) scroller.style.paddingBottom = `${parseFloat(getComputedStyle(scroller).paddingBottom) + lack}px`;
+            scroller.scrollTop = target;
+        }
         // El foco vuelve a la opción elegida: con el teclado, las flechas siguen cambiando de opción.
-        editor.querySelector(`[data-path="${path}"]${input.type === 'radio' ? ':checked' : ''}`)?.focus({ preventScroll: true });
+        chosen?.focus({ preventScroll: true });
     }
 });
 

@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 2.3 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 2.4 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -152,14 +152,14 @@ Antes de crear un componente nuevo se reutiliza uno existente.
 | Botón principal | `.btn` | Albaricoque, flecha, esquina de cinta; hover lila con esquinas invertidas. Uno por bloque |
 | Botón secundario | `.btn-secondary` | Borde lila, fondo transparente; hover durazno |
 | Botón claro | `.btn-light` | Crema sobre lila; hover albaricoque |
-| Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página |
+| Enlace de texto | `.text-link` | Subrayado ciruela; flecha `arrow` para avanzar, `diagonal` para otra página. Al pasar el cursor la flecha avanza 8 px dentro de un margen ya reservado: el enlace no empuja lo que tiene al lado. Si su texto cambia (como «Pausar videos» y «Ver videos»), las dos etiquetas ocupan el mismo sitio |
 | Tortas de la portada | `.featured-cakes` | Fondo lila 45 % + crema, sección compacta (64 px arriba y abajo; 48 en móvil). Fila de título con «Una torta tan única *como tu celebración.*», sin frase, y a la derecha el botón principal «Encuentra tu estilo», alineado con la última línea del titular (en móvil, debajo del titular). Debajo, cuatro tarjetas de torta (`.product-grid.four-columns`, compactas). Las tortas se eligen en el centro de control con «Portada»; si hay menos de cuatro marcadas, se completan con las siguientes del catálogo |
 | Pasos para pedir | `.steps` | «Pedir tu torta es así de *sencillo.*», en la portada después de «Tú pones el motivo…»: cuatro pasos de torta (Elige tu torta, Escoge porciones y sabor, Dale tu toque, La confirmamos contigo), cada uno con número en itálica, icono de 40 px a trazo 1,2, título Playfair y texto en tinta suave. Cuatro columnas en escritorio, dos hasta 800 px y una en móvil |
 | Foto que cambia | `[data-photo-cycle]` | Solo la foto de Tortas en «Tú pones el motivo…»: recorre en orden aleatorio las fotos de las tortas visibles del catálogo (también las que se suben desde el centro de control), una cada 4 s con un fundido de 800 ms. La siguiente se carga antes de mostrarse. Con movimiento reducido o «ahorro de datos» en el teléfono, queda fija |
 | Lo último de Instagram | `.social-grid[data-instagram]` | «Un poquito más de *Lauren.*», al final de la portada: cuatro casillas 4:5 alineadas (dos por fila en el teléfono), separadas 14 px (12 en móvil), con esquina casi recta (`--radius-sm`) y fondo durazno mientras cargan. Muestran las últimas publicaciones de @laurenreposteria22, que el worker de fotos trae de Instagram; cada casilla abre su publicación. Si es video, se reproduce solo, sin sonido, y al terminar esa casilla pasa a otro video que no esté en otra casilla (si no queda otro, repite el suyo). Las fotos y portadas se quedan fijas. Debajo, al centro, «Pausar videos» (`pause`) o «Ver videos» (`play`) como enlace de texto, solo si hay videos. Mientras Instagram no responda, quedan cuatro fotos de la web |
 | Tarjeta de producto | `.product-card` | Foto 4:5, nombre Playfair 20 px, precio, «Elegir detalles»; «Desde» en píldora durazno si el precio varía; «Cotiza por WhatsApp» si aún no tiene precio |
 | Qué incluye | `.product-includes` | Siempre visible, sin desplegar |
-| Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela |
+| Opciones | `.choice` | Borde 4 px; elegida en lila 45 % con borde ciruela y punto ciruela de 5 px antes del texto. El sitio del punto está reservado en todas: marcar o desmarcar nunca cambia el ancho ni mueve las demás opciones |
 | Casillas | `.toggle-option` | Check y esquina de cinta 3/9 px; marcada en lila |
 | Cantidad | `.quantity-control` | Píldora con botones de 44 px |
 | Contador del pedido | `.cart-count` | Círculo de 22 px junto a la bolsa |
@@ -203,6 +203,7 @@ En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para 
 | Videos de Instagram en la portada | Se reproducen solos, sin sonido; al terminar, la casilla pasa a otro video |
 
 - Todo el contenido visible desde el inicio: sin apariciones en cascada, máscaras ni desvanecimientos al bajar.
+- Nada salta al elegir: marcar una opción, pasar el cursor o cambiar un texto nunca cambia el tamaño de un control ni mueve lo que está a su lado o encima. Lo que aparece al elegir (el punto de la opción, «Oculto», «Agregada», las unidades del total) tiene su sitio reservado desde el principio, y si la ficha del centro de control se vuelve a dibujar, la opción tocada se queda bajo el dedo.
 - Sin reproducción automática ni scroll forzado. Dos excepciones: la foto de Tortas en «Tú pones el motivo…», que cambia sola, sin sonido ni texto, y se detiene con el cursor o el foco encima, fuera de pantalla y con la pestaña oculta; y los videos de «Un poquito más de Lauren», sin sonido, que se pausan fuera de pantalla, con la pestaña oculta o con «Pausar videos». `prefers-reduced-motion` apaga las animaciones y deja esa foto fija; con movimiento reducido o «ahorro de datos», los videos muestran su portada fija.
 - Foco visible: contorno ciruela de 2 px. Áreas táctiles de 44 px. Ajustes responsive junto a cada componente.
 - En pantallas táctiles, lo pequeño se toca en 44 px de alto sin cambiar cómo se ve: enlaces del pie, la ruta («Inicio / Tortas»), el nombre de cada producto y la barra del video.
@@ -218,5 +219,5 @@ En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para 
 6. Textos cercanos, amigables, cariñosos y atentos.
 7. Precios, contactos y condiciones confirmados por Lauren.
 8. Fotos reales en sus proporciones.
-9. Foco visible, 44 px y movimiento reducido.
+9. Foco visible, 44 px, movimiento reducido y nada que salte al elegir.
 10. Revisado en móvil y en escritorio.
