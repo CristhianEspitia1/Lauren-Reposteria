@@ -47,6 +47,25 @@
 .product-image .product-open { position: absolute; bottom: 16px; right: 16px; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--color-cream); color: var(--color-text); transition: background var(--transition-base); }
 .product-image:hover .product-open { background: var(--color-lilac-light); }
 .product-image .product-open svg { width: 18px; height: 18px; }
+/* Miniaturas asomadas: hasta tres fotos más del producto y cuántos diseños quedan, abajo a la izquierda de la foto.
+   En tarjetas angostas (por debajo de 270 px) asoman dos y la píldora solo dice el número. */
+.product-card { container-type: inline-size; }
+.product-more { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; pointer-events: none; }
+.product-more img { flex: none; width: 34px; height: 42px; margin-right: -8px; object-fit: cover; border: 2px solid var(--color-cream); border-radius: var(--radius-sm); background: var(--color-peach); box-shadow: var(--shadow-float); }
+.product-more-count { display: inline-flex; align-items: center; height: 26px; margin-left: 16px; padding: 0 10px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-white) 92%, transparent); box-shadow: var(--shadow-float); font: 500 .6875rem/1 var(--font-sans); color: var(--color-text); white-space: nowrap; }
+.product-more-short, .product-more-count.is-short-only { display: none; }
+@container (max-width: 270px) {
+    .product-more { left: 12px; bottom: 12px; }
+    .product-more img { width: 28px; height: 35px; margin-right: -7px; }
+    .product-more img:nth-of-type(3), .product-more-wide { display: none; }
+    .product-more-short { display: inline; }
+    .product-more-count, .product-more-count.is-short-only { display: inline-flex; height: 24px; margin-left: 13px; padding: 0 8px; }
+}
+@container (max-width: 190px) {
+    .product-more { left: 10px; bottom: 10px; }
+    .product-more img { width: 24px; height: 30px; margin-right: -6px; border-width: 1.5px; }
+    .product-more-count, .product-more-count.is-short-only { height: 22px; margin-left: 11px; padding: 0 7px; }
+}
 .product-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-top: 16px; }
 .product-name { background: transparent; padding: 0; text-align: left; font: 1.25rem/1.35 var(--font-display); }
 .product-name:hover { text-decoration: underline 2px var(--color-apricot); text-underline-offset: 5px; }

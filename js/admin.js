@@ -515,8 +515,8 @@ function cardPreview(p) {
     try { const label = window.Catalog.priceLabel(r); if (!badPrices(p)) price = label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text); } catch { /* precios a medio escribir */ }
     if (p.category === 'extras') return `<article class="extra"><span class="extra-symbol">${icon(p.icon || 'gift')}</span><h3>${esc(p.name || 'Sin nombre')}</h3><p>${price}</p><span class="text-link">Consultar ${icon('diagonal')}</span></article>`;
     const quoted = window.Catalog.quoteOnly(r);
-    const src = M.photos(p)[0];
-    return `<article class="product-card"><div class="product-image">${src ? `<img src="${esc(imagePath(src))}" alt="" width="600" height="680">` : '<span class="admin-card-empty">Sin foto</span>'}<span class="product-open">${icon('diagonal')}</span></div><div class="product-meta"><h3 class="product-name">${esc(p.name || 'Sin nombre')}</h3><p class="product-price">${quoted ? 'A tu medida' : price}</p></div><p class="product-description">${esc(r.summary || r.description || '')}</p><span class="text-link">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</span></article>`;
+    const photos = M.photos(p), src = photos[0];
+    return `<article class="product-card"><div class="product-image">${src ? `<img src="${esc(imagePath(src))}" alt="" width="600" height="680">${LaurenUI.moreDesigns(photos)}` : '<span class="admin-card-empty">Sin foto</span>'}<span class="product-open">${icon('diagonal')}</span></div><div class="product-meta"><h3 class="product-name">${esc(p.name || 'Sin nombre')}</h3><p class="product-price">${quoted ? 'A tu medida' : price}</p></div><p class="product-description">${esc(r.summary || r.description || '')}</p><span class="text-link">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</span></article>`;
 }
 const previewTitle = p => `Así se verá en la web <span class="admin-tag"${p.visible === false ? '' : ' data-off'}>Oculto</span>`;
 

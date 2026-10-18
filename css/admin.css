@@ -178,7 +178,7 @@
     .admin-card-preview { max-width: none; }
     .admin-card-preview .product-card { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 4px 16px; align-items: center; }
     .admin-card-preview .product-image { grid-row: span 2; }
-    .admin-card-preview .product-open, .admin-card-preview .product-description, .admin-card-preview .product-card .text-link { display: none; }
+    .admin-card-preview .product-open, .admin-card-preview .product-more, .admin-card-preview .product-description, .admin-card-preview .product-card .text-link { display: none; }
     .admin-card-preview .product-meta { flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 0; }
     .admin-card-preview .extra { flex-direction: row; align-items: center; gap: 16px; }
     .admin-card-preview .extra-symbol { margin: 0; }

@@ -45,6 +45,17 @@
         const track = strip.querySelector('.photo-strip-track');
         strip.classList.toggle('is-scrollable', track.scrollWidth > track.clientWidth + 1);
     }
+    /**
+     * Miniaturas asomadas: abajo a la izquierda de la foto de una tarjeta asoman hasta tres fotos más del producto y una
+     * píldora con cuántos diseños quedan («+12 diseños»). En tarjetas angostas asoman dos y la píldora dice solo «+13».
+     */
+    function moreDesigns(images) {
+        const others = images.slice(1);
+        if (!others.length) return '';
+        const wide = others.length - 3, short = others.length - 2;
+        const count = short > 0 ? `<span class="product-more-count${wide > 0 ? '' : ' is-short-only'}">${wide > 0 ? `<span class="product-more-wide">+${wide} ${wide === 1 ? 'diseño' : 'diseños'}</span>` : ''}<span class="product-more-short">+${short}</span></span>` : '';
+        return `<span class="product-more" aria-hidden="true">${others.slice(0, 3).map(src => `<img ${imageAttributes(src, '40px')} alt="" width="34" height="42" loading="lazy" decoding="async">`).join('')}${count}</span>`;
+    }
     const wa = text => `https://wa.me/573104442796?text=${encodeURIComponent(text)}`;
     const openers = new WeakMap();
     let toastTimer;
@@ -99,5 +110,5 @@
         }
         toastTimer = setTimeout(() => { if (!notice.contains(document.activeElement)) hide(); }, 6500);
     }
-    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, stripArrow, centerInStrip, fitStrip, wa, open, close, dialogEvents, toast };
+    window.LaurenUI = { escape, icon, imagePath, imageAttributes, setImageSource, stripArrow, centerInStrip, fitStrip, moreDesigns, wa, open, close, dialogEvents, toast };
 })();
