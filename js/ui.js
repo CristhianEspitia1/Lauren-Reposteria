@@ -28,18 +28,14 @@
      * flecha translúcida a cada lado. Las flechas usan el icono `arrow` (la de atrás, en espejo).
      */
     const stripArrow = (step, label) => `<button type="button" class="photo-strip-arrow" data-strip-step="${step}" aria-label="${escape(label)}">${icon('arrow')}</button>`;
-    // La elegida se centra; la primera y la última quedan pegadas a su borde, sin el espacio que la fila deja bajo
-    // cada flecha. Cerca de un extremo, la fila se queda en ese borde: la flecha cae sobre su espacio y no tapa nada.
+    // La elegida se centra en la fila; cerca de un extremo, la fila llega a su borde y se queda ahí. Bajo cada flecha
+    // queda su espacio reservado, así que nunca tapa una miniatura, y la fila siempre avanza hacia donde se va.
     function centerInStrip(item, instant = false) {
         const track = item?.closest('.photo-strip-track');
         if (!track) return;
         const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const gap = parseFloat(getComputedStyle(track).paddingLeft) || 0;
         const max = track.scrollWidth - track.clientWidth;
-        let left = item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2;
-        if (item === track.firstElementChild) left = item.offsetLeft - 2;
-        else if (item === track.lastElementChild) left = item.offsetLeft + item.offsetWidth + 2 - track.clientWidth;
-        else if (gap > 8) left = left < gap ? 0 : left > max - gap ? max : left;
+        const left = Math.min(max, Math.max(0, item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2));
         track.scrollTo({ left, behavior: reduced || instant ? 'instant' : 'smooth' });
     }
     /** Las flechas solo hacen falta si las miniaturas no caben: si caben, se ocultan y la fila no reserva su espacio. */

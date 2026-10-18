@@ -1,7 +1,7 @@
 /** Ficha de producto accesible, con opciones y precios del catálogo compartido. */
 (() => {
     'use strict';
-    const { escape: esc, icon, imageAttributes, setImageSource, wa } = LaurenUI;
+    const { escape: esc, icon, imageAttributes, wa } = LaurenUI;
     class QuickViewModal {
         constructor() {
             this.dialog = document.getElementById('productDialog');
@@ -27,8 +27,10 @@
             LaurenUI.open(this.dialog);
             this.fitThumbnails();
         }
-        /** Con la ficha ya visible: flechas solo si las miniaturas no caben, y la elegida en su sitio sin animación. */
+        /** Con la ficha ya visible (o al cambiar el tamaño): la foto elegida en su sitio, flechas solo si las miniaturas no caben, sin animación. */
         fitThumbnails() {
+            const slides = this.dialog.querySelector('.product-slides');
+            if (slides) slides.scrollTo({ left: Math.max(0, this.imageIndex) * slides.getBoundingClientRect().width, behavior: 'instant' });
             const strip = this.dialog.querySelector('.product-thumbnails');
             if (!strip) return;
             LaurenUI.fitStrip(strip);
@@ -42,7 +44,7 @@
                 <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar producto">${icon('close')}</button>
                 <div class="product-dialog-layout">
                     <div class="product-visual">
-                        <img id="productMainImage" ${imageAttributes(images[0], '(max-width: 760px) 90vw, 490px')} alt="${esc(p.name)}" width="720" height="900">
+                        <div class="product-slides">${images.map((src, i) => `<img${i ? '' : ' id="productMainImage"'} ${imageAttributes(src, '(max-width: 760px) 90vw, 490px')} alt="${esc(i ? `${p.name}, foto ${i + 1}` : p.name)}" width="720" height="900"${i ? ' loading="lazy"' : ''}>`).join('')}</div>
                         ${images.length > 1 ? `<div class="photo-strip product-thumbnails">${LaurenUI.stripArrow(-1, 'Foto anterior')}<div class="photo-strip-track" role="group" aria-label="Fotos de ${esc(p.name)}">${images.map((src, i) => `<button type="button" data-image="${i}" aria-label="Ver foto ${i + 1} de ${images.length}" aria-pressed="${i === 0}"><img ${imageAttributes(src, '52px')} alt="" width="52" height="65" loading="lazy"></button>`).join('')}</div>${LaurenUI.stripArrow(1, 'Foto siguiente')}</div>` : ''}
                     </div>
                     <form class="product-form" novalidate>
@@ -64,35 +66,53 @@
                         </div>
                     </form>
                 </div>`;
-            // Galería: la foto grande y, debajo, una fila de miniaturas. Las flechas y el deslizar pasan de foto;
-            // la miniatura elegida se centra en la fila cuando se puede (la primera empieza a la izquierda).
-            const image = this.dialog.querySelector('#productMainImage');
-            const show = index => {
-                if (index < 0 || index >= images.length) return;
+            // Galería: las fotos grandes van en una fila que se desliza (con el dedo, el trackpad, las flechas o las
+            // miniaturas) y se detiene en cada foto. Debajo, la fila de miniaturas sigue a la elegida sin saltos.
+            const slides = this.dialog.querySelector('.product-slides');
+            const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let target = null, settle;
+            const mark = index => {
+                if (index === this.imageIndex) return;
                 this.imageIndex = index;
-                setImageSource(image, images[index]);
-                image.alt = index ? `${p.name}, foto ${index + 1}` : p.name;
+                if (images.length < 2) return;
+                // La siguiente y la anterior se cargan antes de llegar a ellas.
+                [index - 1, index + 1].forEach(i => slides.children[i]?.setAttribute('loading', 'eager'));
                 const thumbs = [...this.dialog.querySelectorAll('[data-image]')];
                 thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === index)));
                 this.dialog.querySelector('[data-strip-step="-1"]').disabled = index === 0;
                 this.dialog.querySelector('[data-strip-step="1"]').disabled = index === images.length - 1;
-                LaurenUI.fitStrip(this.dialog.querySelector('.product-thumbnails'));
                 LaurenUI.centerInStrip(thumbs[index]);
             };
-            this.imageIndex = 0;
+            // A la foto de al lado se llega deslizando; a una lejana, con un fundido corto, sin pasar por las de en medio.
+            const show = index => {
+                if (index < 0 || index >= images.length) return;
+                const width = slides.getBoundingClientRect().width;
+                const left = index * width, far = Math.abs(slides.scrollLeft - left) > width * 1.5;
+                target = Math.abs(slides.scrollLeft - left) > 1 ? index : null;
+                mark(index);
+                if (reduced()) return slides.scrollTo({ left, behavior: 'instant' });
+                if (!far) return slides.scrollTo({ left, behavior: 'smooth' });
+                slides.getAnimations().forEach(animation => animation.cancel());
+                slides.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-out' }).finished.then(() => {
+                    slides.scrollTo({ left, behavior: 'instant' });
+                    slides.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: 'ease-in' });
+                }, () => {});
+            };
+            this.imageIndex = -1;
             if (images.length > 1) {
                 this.dialog.querySelectorAll('[data-image]').forEach(button => button.addEventListener('click', () => show(Number(button.dataset.image))));
                 this.dialog.querySelectorAll('[data-strip-step]').forEach(button => button.addEventListener('click', () => show(this.imageIndex + Number(button.dataset.stripStep))));
-                let startX = null, startY = 0;
-                image.addEventListener('touchstart', event => { startX = event.touches[0].clientX; startY = event.touches[0].clientY; }, { passive: true });
-                image.addEventListener('touchend', event => {
-                    if (startX === null) return;
-                    const dx = event.changedTouches[0].clientX - startX, dy = event.changedTouches[0].clientY - startY;
-                    startX = null;
-                    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(this.imageIndex + (dx < 0 ? 1 : -1));
+                // Al deslizar con el dedo, la miniatura cambia en cuanto la foto pasa la mitad. Mientras va a una foto
+                // elegida, las que cruza por el camino no se marcan.
+                slides.addEventListener('scroll', () => {
+                    clearTimeout(settle);
+                    settle = setTimeout(() => { target = null; }, 140);
+                    const index = Math.round(slides.scrollLeft / slides.getBoundingClientRect().width);
+                    if (target !== null) { if (index === target) target = null; return; }
+                    mark(Math.min(images.length - 1, Math.max(0, index)));
                 }, { passive: true });
-                show(0);
             }
+            mark(0);
             this.dialog.querySelectorAll('[data-option-input]').forEach(input => input.addEventListener('change', () => this.optionChange(input)));
             this.bindPersonal();
             this.dialog.querySelectorAll('[data-quantity]').forEach(button => button.addEventListener('click', () => {
