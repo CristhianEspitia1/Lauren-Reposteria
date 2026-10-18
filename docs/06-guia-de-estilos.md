@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 2.7 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 2.8 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -122,26 +122,26 @@ Dibujos de línea de `assets/brand/sistema/`, usados como `mask` CSS y coloreado
 
 | Gráfico | Lugar |
 | --- | --- |
-| `corazon` | Separador de la franja de valores; final de titulares de portada, historia, pie, colecciones y sabores |
-| `porcion-torta` | «Tú pones el motivo…», inspiración de Tortas, titular de redes |
-| `brownie` | Inspiración de Brownies y galletas, titular de redes |
-| `mano-flor` | Lila, 96 px, centrada bajo la tarjeta de Tortas de «Tú pones el motivo…» (y del mismo bloque en la 404), a 48 px de su texto, en el hueco antes de «Pedir tu torta…». En escritorio esa sección reserva el hueco abajo (`.collections-section`: tres `--space-3xl`, 192 px) y «Pedir tu torta…» empieza a 32 px (`--space-xl`), para que ambas secciones se vean juntas. Solo escritorio: en el teléfono la tarjeta ocupa todo el ancho y no queda hueco |
+| `corazon` | Separador de la franja de valores; final de titulares de portada, historia, pie, colecciones y sabores; y repartidos por el pie, en blanco y albaricoque |
+| `porcion-torta` | «Tú pones el motivo…», inspiración de Tortas, titular de redes, pie |
+| `brownie` | Inspiración de Brownies y galletas, titular de redes, pie |
+| `mano-flor` | Lila, 96 px, centrada bajo la tarjeta de Tortas de «Tú pones el motivo…» (y del mismo bloque en la 404), a 48 px de su texto, en el hueco antes de «Pedir tu torta…». En escritorio esa sección reserva el hueco abajo (`.collections-section`: tres `--space-3xl`, 192 px) y «Pedir tu torta…» empieza a 32 px (`--space-xl`), para que ambas secciones se vean juntas. Solo escritorio: en el teléfono la tarjeta ocupa todo el ancho y no queda hueco. En el pie, en blanco |
 | `isotipo-circulo` | Complementos de Tortas («Los detalles hacen la diferencia»: entre el título y la frase; en móvil, al final de la frase), catálogos, fotos de cabecera, botón del pie |
-| `mucho-encanto` | «Pedir tu torta es así de sencillo» y sabores |
-| `sanadora-de-alma` | Bajo el video de la historia, inspiración de Alfajores |
-| `para-ti` | Inspiración de Detalles |
-| `reposteria` | Firma de «Las cosas bonitas se hacen con amor» |
-| `grateful` | Sobre «Un poquito más de Lauren» |
-| `rama` | Preguntas frecuentes y foto de cabecera de colección |
-| `sello-ovalado` | Preguntas frecuentes, solo escritorio |
-| `dosis-de-encanto` | Firma de la franja inferior del pie, solo escritorio |
-| `grito-de-victoria` | Banner de invitación de cada colección |
+| `mucho-encanto` | «Pedir tu torta es así de sencillo», sabores, inspiración de Alfajores y pie |
+| `para-ti` | Inspiración de Detalles, banner de invitación de cada colección y pie |
+| `reposteria` | Firma de «Las cosas bonitas se hacen con amor» y pie |
+| `grateful` | Sobre «Un poquito más de Lauren» y pie |
+| `rama` | Preguntas frecuentes, foto de cabecera de colección y pie |
+| `sello-ovalado` | Preguntas frecuentes (solo escritorio) y pie |
+| `dosis-de-encanto` | Firma de la franja inferior del pie (solo escritorio) y bajo el video de la historia |
 
 Los gráficos fijos viven en CSS; el resto los coloca `js/brand-decor.js` por sección (variantes con `data-page` en `<body>`). Reglas:
 
-- Completos, dentro del ancho del contenido y sin tocar textos, fotos ni controles; si no caben, prueban su alternativa y si tampoco, no se muestran.
+- Completos, dentro del ancho del contenido (salvo en el pie) y sin tocar textos, fotos ni controles; si no caben, prueban su alternativa y si tampoco, no se muestran.
 - Nunca dos en la misma esquina; ningún adorno junto a un botón o enlace (las tarjetas de colección, que son un enlace entero, cuentan como ocupadas); ninguno sobre fotos salvo los sellos.
 - En móvil solo quedan los marcados con `m: 1`, más pequeños.
+- El pie es la sección decorada (diseño «Confeti suave»): todos los dibujos de línea en blanco y en pequeño (isotipo, «Mucho encanto», porción de torta, brownie, dos ramas, mano con flor, sello ovalado, «Para ti», «Repostería» y «Grateful», más la firma «Dosis de encanto») y unos veinte corazones blancos y albaricoque de 9 a 14 px, dispersos por todo el pie sin seguir líneas ni patrones, con giros leves. Cada uno tiene su punto en el pie (puede salir del ancho del contenido hacia los márgenes) y, si ahí toca un texto, un enlace, un botón o una línea, se corre al hueco libre más cercano; si no hay, no se muestra. En el teléfono quedan los marcados con `m: 1`, más pequeños.
+- «Sanadora de alma» y «Grito de victoria» ya no se usan.
 
 ## 9. Componentes
 

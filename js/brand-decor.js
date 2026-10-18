@@ -9,12 +9,13 @@
 (() => {
     'use strict';
     const ratios = {
-        rama: 41.5 / 61.1, corazon: 6.3 / 7.2, 'isotipo-circulo': 1, 'grito-de-victoria': 1, 'mucho-encanto': 69.7 / 12.2,
-        'porcion-torta': 47.6 / 42.8, 'mano-flor': 40 / 80.2, brownie: 40.6 / 31.2, 'para-ti': 65.8 / 16.4, 'sanadora-de-alma': 39.2 / 16.5
+        rama: 41.5 / 61.1, corazon: 6.3 / 7.2, 'isotipo-circulo': 1, 'mucho-encanto': 69.7 / 12.2,
+        'porcion-torta': 47.6 / 42.8, 'mano-flor': 40 / 80.2, brownie: 40.6 / 31.2, 'para-ti': 65.8 / 16.4,
+        'dosis-de-encanto': 73.7 / 27, grateful: 40.5 / 29.6, reposteria: 53.3 / 19, 'sello-ovalado': 52 / 59.5
     };
     const colors = { lilac: 'var(--color-lilac)', white: 'var(--color-white)', apricot: 'var(--color-apricot)' };
     const page = document.body.dataset.page;
-    const inspiration = { alfajores: ['sanadora-de-alma', 156], 'brownies-galletas': ['brownie', 116], detalles: ['para-ti', 172] }[page] || ['porcion-torta', 100];
+    const inspiration = { alfajores: ['mucho-encanto', 196], 'brownies-galletas': ['brownie', 116], detalles: ['para-ti', 172] }[page] || ['porcion-torta', 100];
     // Fila del título: el gráfico se alinea abajo a la derecha de la fila; si choca, sigue al final del título.
     const row = (w, extra = {}) => ({ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5], w, alt: { to: '.section-heading h2', end: 1, d: [.9, -.35] }, ...extra });
     /*
@@ -22,7 +23,8 @@
      * end: el final de su última línea; between: [a, b] centra el gráfico en el hueco entre dos elementos de una fila.
      * at: punto de esa caja en fracciones [x, y]. d: desplazamiento del centro del gráfico, en tamaños del gráfico.
      * w: ancho en escritorio; desk: esa posición solo se usa en escritorio; r: giro; flip: espejo; c: color; m: también en móvil; stamp: sello con disco de ese color
-     * sobre una foto; alt: posiciones alternativas.
+     * sobre una foto; free: puede salir del ancho del contenido hacia los márgenes de la sección; reach: cuánto puede correrse
+     * buscando hueco (px); to: 'self' ancla a la propia sección; alt: posiciones alternativas.
      * Criterio: cada sección reparte sus gráficos (nunca dos juntos), ningún adorno junto a un botón o enlace, y los
      * corazones solo al final de títulos donde suman sentido.
      */
@@ -46,7 +48,7 @@
         ],
         '.story-section': [
             ['corazon', { to: 'h2', end: 1, d: [1.2, -.1], w: 18, c: 'apricot', m: 1 }],
-            ['sanadora-de-alma', { to: '.story-media', box: 1, at: [1, 1], d: [-.5, .9], w: 164, m: 1 }]
+            ['dosis-de-encanto', { to: '.story-media', box: 1, at: [1, 1], d: [-.5, .9], w: 150, m: 1 }]
         ],
         '.faq-section': [
             // El sello va abajo a la izquierda (css/site.css); la rama, en diagonal, apoyada sobre la primera línea de las preguntas.
@@ -56,9 +58,23 @@
             ['porcion-torta', { to: '.social-heading h2', at: [0, .5], d: [-.78, 0], w: 120, r: -8 }],
             ['brownie', { to: '.social-heading h2', at: [1, .5], d: [.78, 0], w: 116, r: 8 }]
         ],
+        // El pie es la sección decorada (diseño «Confeti suave»): todos los dibujos de línea en pequeño y muchos
+        // corazones, dispersos por todo el pie sin seguir líneas. Cada uno tiene su punto en fracciones del pie y,
+        // si ahí toca un texto, un enlace o una línea, se corre al hueco libre más cercano.
         '.site-footer': [
             ['corazon', { to: '.footer-top h2', end: 1, d: [1.2, -.1], w: 18, c: 'white', m: 1 }],
-            ['isotipo-circulo', { to: '.footer-top .btn', box: 1, at: [.5, 0], d: [0, -.85], w: 72, c: 'white' }]
+            ...[
+                ['isotipo-circulo', .855, .16, 60, 0], ['mucho-encanto', .66, .09, 120, -5], ['porcion-torta', .045, .2, 74, -10, 1],
+                ['brownie', .962, .13, 70, 8, 1], ['rama', .47, .06, 40, -28], ['mano-flor', .958, .56, 38, 12, 1],
+                ['sello-ovalado', .035, .63, 56, -6, 1], ['para-ti', .4, .6, 108, -4, 1], ['reposteria', .53, .82, 92, 6, 1],
+                ['grateful', .92, .8, 58, -8, 1], ['rama', .07, .9, 34, 40, 1]
+            ].map(([g, x, y, w, r, m]) => [g, { to: 'self', box: 1, at: [x, y], d: [0, 0], w, r, c: 'white', free: 1, reach: 140, m }]),
+            ...[
+                [.02, .05, 11, -12, 'apricot'], [.12, .07, 9, 10], [.3, .05, 13, -8], [.6, .27, 10, 14, 'apricot'], [.76, .05, 12, -6],
+                [.99, .33, 10, 12], [.93, .43, 14, -14, 'apricot'], [.06, .41, 10, 8], [.46, .44, 12, -10, 'apricot'], [.61, .56, 10, 12],
+                [.37, .88, 11, -6], [.5, .95, 13, 10, 'apricot'], [.97, .93, 10, -10], [.15, .56, 9, 18, 'apricot'], [.67, .4, 11, -16],
+                [.84, .96, 12, 8, 'apricot'], [.25, .7, 10, -12], [.44, .27, 9, 14], [.88, .63, 11, 10], [.21, .03, 10, -4, 'apricot']
+            ].map(([x, y, w, r, c = 'white']) => ['corazon', { to: 'self', box: 1, at: [x, y], d: [0, 0], w, r, c, free: 1, reach: 70, m: 1 }])
         ],
         '.category-hero': [
             ['corazon', { to: 'h1', end: 1, d: [1.1, -.5], w: 18, c: 'apricot', m: 1 }],
@@ -68,7 +84,7 @@
             ['isotipo-circulo', { between: ['.section-heading h2', '.section-heading > p'], d: [0, 0], w: 80, m: 1, alt: [{ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5] }] }]
         ],
         '.category-banner': [
-            ['grito-de-victoria', { between: ['.container > div', '.btn'], d: [0, 0], w: 100 }]
+            ['para-ti', { between: ['.container > div', '.btn'], d: [0, 0], w: 150 }]
         ],
         '.flavor-section': [
             // Tortas: a la derecha de «Y en el corazón…»; Brownies y galletas: en la fila del título.
@@ -179,14 +195,15 @@
 
     // Busca, cerca de la posición diseñada, el primer sitio libre para un gráfico de bw × bh.
     function findSpot(section, origin, spot, size, obstacles, placed, item) {
-        const target = section.querySelector(spot.to || (spot.between && spot.between[1]));
+        const target = spot.to === 'self' ? section : section.querySelector(spot.to || (spot.between && spot.between[1]));
         if (!target || !target.getClientRects().length || (spot.between && !spot.between.every(selector => section.querySelector(selector)?.getClientRects().length))) return null;
         const frame = (section.querySelector('.container') || section).getBoundingClientRect();
-        const minX = item.stamp ? INSET : Math.max(INSET, frame.left - origin.left), maxX = item.stamp ? origin.width - INSET : Math.min(origin.width - INSET, frame.right - origin.left);
+        const free = item.stamp || spot.free;
+        const minX = free ? INSET : Math.max(INSET, frame.left - origin.left), maxX = free ? origin.width - INSET : Math.min(origin.width - INSET, frame.right - origin.left);
         const [px, py] = anchorOf(target, spot, origin, section);
         const { bw, bh } = size;
         const cx = px + spot.d[0] * bw, cy = py + spot.d[1] * bh;
-        const reach = item.small ? 48 : item.stamp ? 24 : 96;
+        const reach = item.reach || (item.small ? 48 : item.stamp ? 24 : 96);
         const blocking = obstacles.filter(o => (!item.stamp || o[4] === 'text' || o[4] === 'hard')
             && hits(o, [cx - reach - bw, cy - reach - bh, cx + reach + bw, cy + reach + bh], 0));
         let best = null;
