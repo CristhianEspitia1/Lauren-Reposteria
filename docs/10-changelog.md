@@ -7,6 +7,10 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Las fotos que ya tienen producto, tapadas]
+
+- En «Agregar fotos de la web», las fotos que ya están en otro producto se ven borrosas y van al final de su sección, para que las libres se encuentren de un vistazo. Se aclaran al pasar por encima o al tocarlas, y se pueden seguir moviendo o uniendo como antes.
+
 ## [2026-10-17 — La lista de fotos subidas, siempre al día]
 
 - Las fotos de prueba seguían apareciendo después de borrarlas: la lista de fotos subidas salía de Cloudflare, que no garantiza estar al día después de borrar, y al borrar varias seguidas podía perder alguna marca de borrado. Ahora la lista vive en Firestore (`fotos/subidas`, solo administradores): el panel anota cada foto al subirla y la quita al borrarla, así que una foto borrada desaparece en el acto y en todos los dispositivos. Cloudflare sigue guardando los archivos.

@@ -136,6 +136,9 @@
 .admin-picker .admin-photo > button { padding: 0; background: transparent; text-align: left; font-size: .6875rem; color: var(--color-text-soft); display: grid; gap: 6px; }
 .admin-picker .admin-photo > button:hover img { outline: 2px solid var(--color-lilac); }
 .admin-picker .admin-photo > button[aria-pressed=true] img { outline: 2px solid var(--color-text); outline-offset: 2px; }
+/* Ya están en otro producto: borrosas y tenues hasta que se pasa por encima o se eligen. */
+.admin-picker .admin-photo > button[data-taken] img { filter: blur(6px); opacity: .45; transition: filter var(--transition-fast), opacity var(--transition-fast); }
+.admin-picker .admin-photo > button[data-taken]:is(:hover, :focus-visible, [aria-pressed=true]) img { filter: none; opacity: 1; }
 .admin-photo-added { display: inline-flex; visibility: hidden; align-items: center; gap: 6px; color: var(--color-text); font-weight: 500; }
 .admin-photo-added svg { width: 14px; height: 14px; }
 .admin-picker .admin-photo > button[aria-pressed=true] .admin-photo-added { visibility: visible; }
