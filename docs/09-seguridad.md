@@ -40,8 +40,13 @@ Recorrido completo del centro de control (vista previa) y de la web, más prueba
 
 ### Pendiente fuera del código (lo hace quien tenga las cuentas)
 
-- Verificación en dos pasos o llave de acceso en el Gmail dueño del proyecto de Firebase y de Cloudflare, en GitHub y en Hostinger (dominio). Es la protección más importante: quien entre a esas cuentas controla la web.
+Hecho: las cuentas (el Gmail dueño de Firebase y Cloudflare, GitHub y Hostinger) tienen verificación en dos pasos, según el negocio el 17 de octubre de 2026. Es la protección más importante: quien entre a esas cuentas controla la web.
+
+Falta (revisado el 17 de octubre de 2026):
+
 - GitHub → Settings → Code security: activar «Secret scanning» y «Push protection» (gratis en repositorios públicos), para que GitHub bloquee una llave subida por error.
 - Google Cloud → Credenciales → «Browser key (auto created by Firebase)»: restringirla a los sitios `https://laurenreposteria.com/*`, `https://lauren-reposteria.firebaseapp.com/*` y `http://localhost:5173/*`.
 - Hostinger → DNS de `laurenreposteria.com`: el dominio no envía correos, así que conviene publicar `TXT @ "v=spf1 -all"` y `TXT _dmarc "v=DMARC1; p=reject"` para que nadie pueda mandar correos falsos a nombre de Lauren.
 - Opcional en Firebase Auth: pedir claves de al menos 12 caracteres (política de contraseñas) y aceptar el código de la app solo en su minuto (hoy se aceptan ±2,5 minutos).
+
+El centro de control no tiene «¿Olvidaste tu clave?» a propósito: el negocio lo considera un riesgo. Una clave olvidada se cambia en la consola de Firebase (Authentication → Usuarios).
