@@ -7,6 +7,12 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — La lista de fotos subidas, siempre al día]
+
+- Las fotos de prueba seguían apareciendo después de borrarlas: la lista de fotos subidas salía de Cloudflare, que no garantiza estar al día después de borrar, y al borrar varias seguidas podía perder alguna marca de borrado. Ahora la lista vive en Firestore (`fotos/subidas`, solo administradores): el panel anota cada foto al subirla y la quita al borrarla, así que una foto borrada desaparece en el acto y en todos los dispositivos. Cloudflare sigue guardando los archivos.
+- Las fotos subidas antes de este cambio que ningún producto usa (las de prueba) ya no aparecen en «Agregar fotos de la web».
+- Reglas de Firestore para `fotos/subidas`, probadas en el emulador (32 casos).
+
 ## [2026-10-17 — Borrar fotos de verdad y sacarlas de un producto]
 
 - «Borrar para siempre» ya borra de verdad: la foto sale de la lista en el acto y no vuelve al recargar. Antes, la lista de fotos subidas venía de Cloudflare, que tarda en ponerse al día después de borrar, y si Cloudflare decía que la foto no existía, el panel la dejaba a la vista con «Esa foto ya estaba borrada». Ahora el worker marca cada foto borrada y nunca la vuelve a listar, y borrar dos veces no es un error.

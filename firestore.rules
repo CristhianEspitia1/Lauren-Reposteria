@@ -6,6 +6,7 @@ rules_version = '2';
 //   No guarda el correo de quien publica, porque es de lectura pública (si llega, debe ser el suyo).
 // - historial: copia de cada versión guardada, con el correo de quien la publicó, para poder deshacer.
 //   Solo administradores; nadie la cambia ni la borra.
+// - fotos/subidas: los nombres de las fotos subidas desde el panel. Solo administradores.
 // - Todo lo demás está cerrado.
 // No hay registro público: los administradores se crean en la consola de Firebase.
 service cloud.firestore {
@@ -33,6 +34,17 @@ service cloud.firestore {
     match /historial/{id} {
       allow read: if admin();
       allow create: if admin() && version() && 'updatedBy' in request.resource.data;
+    }
+
+    // Fotos subidas desde el panel (los archivos los guarda el worker de fotos): la lista que muestra
+    // «Agregar fotos de la web». Siempre al día, a diferencia de la lista de claves de Cloudflare.
+    match /fotos/subidas {
+      allow read: if admin();
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['nombres', 'updatedAt'])
+        && request.resource.data.nombres is list
+        && request.resource.data.nombres.size() <= 5000
+        && request.resource.data.updatedAt == request.time;
     }
 
     match /{document=**} {

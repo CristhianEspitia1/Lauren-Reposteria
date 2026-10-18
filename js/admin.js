@@ -27,6 +27,9 @@ const db = getFirestore(app);
 // Copia de la web (catalog-data.js) por si aún no se ha publicado nada desde el panel.
 const snapshot = M.clone(window.catalogData);
 const catalogRef = doc(db, 'catalogo', 'actual');
+// La lista de fotos subidas («Agregar fotos de la web») vive en Firestore, siempre al día: el panel la anota al subir
+// y la quita al borrar. La lista de claves de Cloudflare tarda en ponerse al día y mostraba fotos ya borradas.
+const uploadsRef = doc(db, 'fotos', 'subidas');
 const fillIcons = root => root.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); });
 fillIcons(document);
 // Vista previa para revisar el diseño en el computador de desarrollo: sin sesión y sin publicar.
@@ -703,6 +706,8 @@ editor.addEventListener('click', async event => {
         edit.images = (edit.images || []).filter(s => s !== src);
         if (edit.mainImage === src) edit.mainImage = edit.images[0] || '';
         if (uploaded) photoFates.set(src, erase ? 'borrar' : 'guardar');
+        // Guardada en tus fotos: queda anotada en la lista de fotos subidas para usarla en otro producto.
+        if (uploaded && !erase && !preview) changeUploads({ add: [src] }).catch(() => {});
         LaurenUI.toast(!uploaded ? `Salió de ${where}. La encuentras en «Agregar fotos de la web» para ponerla en ${other}.`
             : erase ? `Salió de ${where}. Se borra cuando publiques los cambios.` : `Salió de ${where}. Queda en tus fotos subidas, en «Agregar fotos de la web».`);
     }
@@ -827,7 +832,7 @@ const deleteError = error => ({
 async function erasePhoto(src) {
     try { await photosApi(`/${src.split('/').pop()}`, { method: 'DELETE' }); }
     catch (error) { if (error.code !== 'no-existe') throw error; }
-    uploadedList = uploadedList?.filter(s => s !== src) || null;
+    await changeUploads({ remove: [src] });
     pendingDeletes.delete(src);
 }
 /** Después de publicar: borra las fotos que se sacaron con «Borrarla» y que ningún producto publicado usa. */
@@ -845,6 +850,7 @@ async function uploadPhotos(files) {
     const target = edit;
     const list = files.slice(0, 20);
     let done = 0, problem = '';
+    const added = [];
     for (const [i, file] of list.entries()) {
         showUpload(list.length === 1 ? 'Subiendo la foto…' : `Subiendo la foto ${i + 1} de ${list.length}…`);
         try {
@@ -858,7 +864,7 @@ async function uploadPhotos(files) {
             if (!M.IMAGE.test(foto)) throw new Error('error');
             target.images = [...(target.images || []), foto];
             if (!target.mainImage) target.mainImage = foto;
-            if (uploadedList) uploadedList.push(foto);
+            added.push(foto);
             done++;
         } catch (error) {
             problem ||= uploadError(error);
@@ -866,6 +872,8 @@ async function uploadPhotos(files) {
         }
     }
     showUpload('');
+    // Si no se pudo anotar, la foto igual queda en el producto; al sacarla y guardarla se anota.
+    if (added.length) await changeUploads({ add: added }).catch(() => {});
     if (edit === target && editor.open) {
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
         renderEditor();
@@ -878,9 +886,23 @@ async function uploadPhotos(files) {
 /** Fotos ya subidas (aunque ningún producto las use todavía), para ofrecerlas en «Agregar fotos de la web». */
 async function uploadedPhotos() {
     if (preview || !photosReady) return [];
-    try { uploadedList ||= (await photosApi('')).fotos.filter(src => M.IMAGE.test(src)); }
-    catch { return []; }
+    try {
+        const saved = await getDoc(uploadsRef);
+        uploadedList ||= (saved.exists() ? saved.data().nombres || [] : []).map(name => `${M.UPLOADED}${name}`).filter(src => M.IMAGE.test(src));
+    } catch { return []; }
     return uploadedList;
+}
+/** Anota o quita fotos de la lista de fotos subidas (una transacción: dos personas a la vez no se pisan). */
+async function changeUploads({ add = [], remove = [] }) {
+    const name = src => src.split('/').pop();
+    await runTransaction(db, async transaction => {
+        const saved = await transaction.get(uploadsRef);
+        const names = new Set(saved.exists() ? saved.data().nombres || [] : []);
+        add.forEach(src => names.add(name(src)));
+        remove.forEach(src => names.delete(name(src)));
+        transaction.set(uploadsRef, { nombres: [...names], updatedAt: serverTimestamp() });
+    });
+    if (uploadedList) uploadedList = [...new Set([...uploadedList.filter(src => !remove.includes(src)), ...add])];
 }
 editor.addEventListener('change', event => {
     if (event.target.id !== 'photoUpload') return;
