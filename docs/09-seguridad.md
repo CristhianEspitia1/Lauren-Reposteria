@@ -14,7 +14,7 @@ Catálogo público, sin pasarela de pago. El catálogo publicado vive en Firesto
 - Al leer localStorage se valida estructura, opciones, campos y cantidades. Identidad y precios se derivan del catálogo vigente; un precio almacenado no es una fuente de verdad. Un precio de $0 cuenta como sin precio (se cotiza) y el panel no deja publicarlo.
 - El mensaje de WhatsApp se codifica con `encodeURIComponent`. Los enlaces externos usan `noopener noreferrer`.
 - Política CSP en las páginas: scripts locales, estilos locales/Google Fonts, fuentes del proveedor, imágenes locales/data y del worker de fotos, y video local. La portada además pide al worker la lista de Instagram (`connect-src`) y sus videos (`media-src`). El centro de control además conecta con Firebase y con el worker de fotos, y solo carga scripts externos de `https://www.gstatic.com/firebasejs/13.0.0/`. Sin scripts en línea, objetos embebidos ni formularios enviados a un servidor.
-- El centro de control no funciona dentro de otra página (GitHub Pages no permite la cabecera `frame-ancestors`): si lo enmarcan, se oculta y no arranca. Es `noindex` y no envía `Referer`.
+- El centro de control no funciona dentro de otra página (GitHub Pages no permite la cabecera `frame-ancestors`): si lo enmarcan, se oculta y no arranca. Es `noindex` y solo envía el origen (`strict-origin`: «https://laurenreposteria.com/», sin la ruta), para que Google acepte la llave de Firebase limitada a la web.
 - GitHub Pages no publica la documentación, las herramientas ni la configuración de Firebase (`_config.yml`).
 - Servidor local ligado a loopback, métodos GET/HEAD, MIME explícitos, `nosniff`, rechazo de rutas ocultas/fuera del proyecto y rangos inválidos. No usarlo como servidor público.
 
