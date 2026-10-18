@@ -10,6 +10,12 @@ import {
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
 import { getFirestore, doc, collection, getDoc, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore-lite.js';
 
+// El panel no funciona dentro de otra página: GitHub Pages no deja prohibirlo con cabeceras, y así ningún sitio
+// ajeno puede mostrarlo escondido para que alguien toque «Publicar» o «Eliminar» sin darse cuenta.
+if (window.top !== window.self) {
+    document.documentElement.hidden = true;
+    throw new Error('El centro de control no se abre dentro de otra página.');
+}
 await new Promise(resolve => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', resolve, { once: true }) : resolve());
 const { escape: esc, icon, imagePath } = LaurenUI;
 const M = window.AdminModel;
@@ -349,9 +355,10 @@ $('publish').addEventListener('click', async () => {
         await runTransaction(db, async transaction => {
             const current = await transaction.get(catalogRef);
             if ((current.exists() ? current.data().json : null) !== loadedJson) throw Object.assign(new Error('conflict'), { code: 'conflict' });
-            const version = { json, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email };
-            transaction.set(catalogRef, version);
-            transaction.set(doc(collection(db, 'historial')), version);
+            // Lo publicado es de lectura pública: no lleva el correo de quien publica. El historial, que solo leen
+            // los administradores, sí lo guarda.
+            transaction.set(catalogRef, { json, updatedAt: serverTimestamp() });
+            transaction.set(doc(collection(db, 'historial')), { json, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
         });
         original = data; loadedJson = json; products = Object.values(M.clone(data)); fresh.clear();
         if (filter === 'changed') filter = 'all';
@@ -420,11 +427,12 @@ const check = (label, path, checked, disabled = false) => `<label class="toggle-
 const choices = (label, path, value, list) => `<fieldset class="personal-field admin-choice-field"><legend>${esc(label)}</legend><div class="choice-list">${list.map(([id, text]) => `<label class="choice"><input type="radio" name="f-${path}" value="${esc(id)}" data-path="${path}" data-kind="text" ${String(value ?? '') === id ? 'checked' : ''}><span>${esc(text)}</span></label>`).join('')}</div></fieldset>`;
 const moneyValue = value => (typeof value === 'number' ? M.formatMoney(value) : value ?? '');
 
+// Un precio a medio escribir con letras (NaN) no se muestra en la vista previa como si fuera otro precio.
+const badPrices = product => JSON.stringify(product, (key, value) => typeof value === 'number' && Number.isNaN(value) ? 'NaN' : value).includes('"NaN"');
 // Precio que verá el cliente en la tarjeta, con lo que hay escrito ahora mismo.
 function pricePreview() {
     try {
-        const values = JSON.stringify(edit, (key, value) => typeof value === 'number' && Number.isNaN(value) ? 'NaN' : value);
-        if (values.includes('"NaN"')) return 'Revisa los precios: escríbelos solo con números.';
+        if (badPrices(edit)) return 'Revisa los precios: escríbelos solo con números.';
         return `En la tarjeta se verá: <strong>${esc(window.Catalog.priceLabel(window.Catalog.resolve(M.clone(edit))).text)}</strong>`;
     } catch { return ''; }
 }
@@ -493,8 +501,8 @@ function photosHTML(p) {
 function cardPreview(p) {
     let r = p;
     try { r = window.Catalog.resolve(M.clone(p)); } catch { /* precios a medio escribir: se usa el borrador tal cual */ }
-    let price = '';
-    try { const label = window.Catalog.priceLabel(r); price = label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text); } catch { price = 'Revisa los precios'; }
+    let price = 'Revisa los precios';
+    try { const label = window.Catalog.priceLabel(r); if (!badPrices(p)) price = label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text); } catch { /* precios a medio escribir */ }
     if (p.category === 'extras') return `<article class="extra"><span class="extra-symbol">${icon(p.icon || 'gift')}</span><h3>${esc(p.name || 'Sin nombre')}</h3><p>${price}</p><span class="text-link">Consultar ${icon('diagonal')}</span></article>`;
     const quoted = window.Catalog.quoteOnly(r);
     const src = M.photos(p)[0];
@@ -726,7 +734,9 @@ editor.addEventListener('submit', event => {
     }
     LaurenUI.close(editor);
     render();
-    LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(', ').replace(/, ([^,]*)$/, ' y $1')} ${joined.length === 1 ? 'quedó' : 'quedaron'} dentro de «${saved.name}». Toca «Publicar cambios» para que se vea en la web.` : 'Guardado. Toca «Publicar cambios» para que se vea en la web.');
+    // Un producto oculto (como todo producto nuevo) no sale en la web al publicar: el aviso lo recuerda.
+    const next = saved.visible === false ? 'Está oculto: marca «Visible» y publica para que se vea en la web.' : 'Toca «Publicar cambios» para que se vea en la web.';
+    LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(', ').replace(/, ([^,]*)$/, ' y $1')} ${joined.length === 1 ? 'quedó' : 'quedaron'} dentro de «${saved.name}». ${next}` : `Guardado. ${next}`);
 });
 
 /* ---------- Subir fotos nuevas (worker/fotos: Cloudflare las guarda y las sirve al instante) ---------- */
@@ -953,12 +963,12 @@ async function finishPicker() {
     const moved = [...pending.moves].filter(src => moves.has(src));
     if (!joined.length && !moved.length) { picker.close(); return; }
     const from = [...new Set(moved.flatMap(src => moves.get(src)))].map(id => products.find(p => p.id === id)?.name).filter(Boolean);
-    const [one, many] = joined.every(p => p.category === 'tortas') ? ['torta', 'tortas'] : ['producto', 'productos'];
+    const [one, many, thisOne, these] = joined.every(p => p.category === 'tortas') ? ['torta', 'tortas', 'Esta', 'Estas'] : ['producto', 'productos', 'Este', 'Estos'];
     const here = `«${esc(edit.name || 'este producto')}»`;
     const count = n => `${n} ${n === 1 ? 'foto' : 'fotos'}`;
     const ok = await askConfirm({
         title: joined.length ? `¿Unir ${joined.length === 1 ? `<em>${esc(joined[0].name)}</em>` : `<em>${joined.length} ${many}</em>`} a ${here}?` : `¿Mover <em>${moved.length === 1 ? 'una foto' : `${moved.length} fotos`}</em> aquí?`,
-        body: `${joined.length ? `<p>${joined.length === 1 ? `Esta ${one} pasa` : `Estas ${many} pasan`} a ${here} con todas sus fotos y ${joined.length === 1 ? 'se elimina' : 'se eliminan'} del panel:</p>
+        body: `${joined.length ? `<p>${joined.length === 1 ? `${thisOne} ${one} pasa` : `${these} ${many} pasan`} a ${here} con todas sus fotos y ${joined.length === 1 ? 'se elimina' : 'se eliminan'} del panel:</p>
             <ul class="admin-confirm-list">${joined.map(p => `<li><img src="${esc(imagePath(p.mainImage))}" alt="" width="40" height="50"><span>${esc(p.name)}</span><small>${count(M.photos(p).length)}</small></li>`).join('')}</ul>` : ''}
             ${moved.length ? `<p>${joined.length ? 'Además, ' : ''}${moved.length === 1 ? `${joined.length ? 'u' : 'U'}na foto sale` : `${moved.length} fotos salen`} de ${listNames(from)} y ${moved.length === 1 ? 'queda' : 'quedan'} solo aquí.</p>` : ''}
             <p class="field-note">En la web se verá cuando guardes la ficha y publiques los cambios.</p>`,

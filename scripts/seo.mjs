@@ -99,6 +99,7 @@ export const PAGES = [
 
 const abs = src => src.startsWith('https://') ? src : ORIGIN + src;
 const escAttr = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const escXml = value => escAttr(value).replace(/>/g, '&gt;').replace(/'/g, '&apos;');
 const plain = html => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 const socialImage = page => `/assets/social/${page.social || page.key}.jpg`;
 
@@ -251,7 +252,7 @@ export function pageImages(page, html) {
 
 function sitemap(pages) {
     const urls = pages.map(({ page, html }) => {
-        const images = pageImages(page, html).map(src => `\n    <image:image><image:loc>${abs(src)}</image:loc></image:image>`).join('');
+        const images = pageImages(page, html).map(src => `\n    <image:image><image:loc>${escXml(abs(src))}</image:loc></image:image>`).join('');
         const date = lastmod([page.file, 'js/catalog-data.js', 'js/gallery-data.js']);
         return `  <url>\n    <loc>${ORIGIN}${page.path}</loc>\n    <lastmod>${date}</lastmod>${images}\n  </url>`;
     }).join('\n');

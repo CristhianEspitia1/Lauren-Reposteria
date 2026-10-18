@@ -9,4 +9,6 @@ exclude:
   - scripts/
   - tests/
   - worker/
+  - firebase.json
+  - firestore.rules
   - "*.ai"

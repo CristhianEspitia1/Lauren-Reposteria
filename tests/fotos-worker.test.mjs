@@ -25,7 +25,8 @@ function fakeWorker(vars = {}) {
     const store = new Map();
     const kv = {
         async get(key, options) { return store.has(key) ? store.get(key).value.buffer.slice(0) : null; },
-        async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata }); },
+        async getWithMetadata(key, options) { return store.has(key) ? { value: store.get(key).value.buffer.slice(0), metadata: store.get(key).metadata ?? null } : { value: null, metadata: null }; },
+        async put(key, value, options) { store.set(key, { value: new Uint8Array(value), metadata: options?.metadata, ttl: options?.expirationTtl }); },
         async list({ prefix = '', limit = 1000 } = {}) { return { keys: [...store.keys()].filter(name => name.startsWith(prefix)).sort().slice(0, limit).map(name => ({ name })), list_complete: true }; },
         async delete(key) { store.delete(key); }
     };
@@ -102,23 +103,53 @@ test('Lista solo las fotos subidas, sin sus miniaturas', async () => {
     assert.equal(worker.googleCalls(), 1, 'las llaves de Google se guardan en memoria');
 });
 
-test('Borra una foto subida y su miniatura, solo con sesión de administrador', async () => {
+test('Borra una foto subida y su miniatura, solo con sesión de administrador, y la guarda 30 días en la papelera', async () => {
     const worker = fakeWorker();
     const { foto } = await (await upload(worker)).json();
     const name = foto.split('/').pop();
+    const thumb = name.replace('.webp', '-320.webp');
     const remove = async (target, token) => worker.call(new Request(`${WORKER}/fotos/${target}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token ?? await idToken()}`, Origin: ORIGIN } }));
     assert.equal((await remove(name, 'x.y.z')).status, 401);
-    assert.equal((await remove(name.replace('.webp', '-320.webp'))).status, 400, 'la miniatura no se borra sola');
+    assert.equal((await remove(thumb)).status, 400, 'la miniatura no se borra sola');
     assert.equal((await remove('..%2Fsecreto.webp')).status, 400);
-    assert.equal(worker.store.size, 2, 'nada se borró aún');
+    assert.deepEqual([...worker.store.keys()].sort(), [name, thumb].sort(), 'nada se borró aún');
     const response = await remove(name);
     assert.equal(response.status, 200);
-    assert.deepEqual(await response.json(), { borrada: name });
-    assert.equal(worker.store.size, 0, 'se borran la foto y su miniatura');
+    assert.deepEqual(await response.json(), { borrada: name, recuperableHasta: new Date((NOW + 30 * 86400) * 1000).toISOString() });
+    assert.deepEqual([...worker.store.keys()].sort(), [`papelera/${name}`, `papelera/${thumb}`].sort(), 'la foto y su miniatura pasan a la papelera');
+    for (const key of [`papelera/${name}`, `papelera/${thumb}`]) {
+        assert.equal(worker.store.get(key).ttl, 30 * 86400, 'la papelera se vacía sola a los 30 días');
+        assert.equal(worker.store.get(key).metadata.por, 'admin@lauren.co');
+    }
     assert.equal((await remove(name)).status, 404);
-    assert.equal((await worker.call(new Request(foto))).status, 404);
+    assert.equal((await worker.call(new Request(foto))).status, 404, 'la web ya no la muestra');
+    assert.equal((await worker.call(new Request(`${WORKER}/f/papelera%2F${name}`))).status, 404, 'la papelera no se sirve');
+    const list = await worker.call(new Request(`${WORKER}/fotos`, { headers: { Authorization: `Bearer ${await idToken()}`, Origin: ORIGIN } }));
+    assert.deepEqual((await list.json()).fotos, [], 'la papelera no aparece entre las fotos subidas');
     const preflight = await worker.call(new Request(`${WORKER}/fotos/${name}`, { method: 'OPTIONS', headers: { Origin: ORIGIN } }));
     assert.match(preflight.headers.get('Access-Control-Allow-Methods'), /DELETE/);
+});
+
+test('Recupera una foto borrada desde la papelera, solo con sesión de administrador', async () => {
+    const worker = fakeWorker();
+    const { foto } = await (await upload(worker)).json();
+    const name = foto.split('/').pop();
+    const headers = async (token) => ({ Authorization: `Bearer ${token ?? await idToken()}`, Origin: ORIGIN });
+    await worker.call(new Request(`${WORKER}/fotos/${name}`, { method: 'DELETE', headers: await headers() }));
+    const restore = async (target, token, method = 'POST') => worker.call(new Request(`${WORKER}/fotos/recuperar/${target}`, { method, headers: await headers(token) }));
+    assert.equal((await restore(name, 'x.y.z')).status, 401);
+    assert.equal((await restore(name, await idToken({ firebase: {} }))).status, 403);
+    assert.equal((await restore(name, undefined, 'GET')).status, 405);
+    assert.equal((await restore('no-existe.webp')).status, 404);
+    assert.equal((await restore('..%2Fsecreto.webp')).status, 400);
+    const response = await restore(name);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { recuperada: foto });
+    assert.deepEqual([...worker.store.keys()].sort(), [name, name.replace('.webp', '-320.webp')].sort(), 'vuelven la foto y su miniatura');
+    assert.equal(worker.store.get(name).ttl, undefined, 'recuperada, ya no vence');
+    assert.equal(worker.store.get(name).metadata.borrada, undefined);
+    assert.deepEqual(new Uint8Array(await (await worker.call(new Request(foto))).arrayBuffer()), WEBP, 'la web la muestra otra vez');
+    assert.equal((await restore(name)).status, 404, 'ya no está en la papelera');
 });
 
 test('Rechaza otros archivos, otros sitios, sesiones sin doble factor y correos fuera de la lista', async () => {

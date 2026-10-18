@@ -43,6 +43,12 @@
         const filters = Array.from(scope.querySelectorAll('[data-filter]'));
         let filter = 'all';
         function render() {
+            // Un subgrupo sin productos no se muestra; si era el elegido, se vuelve a «Todos».
+            filters.forEach(button => { button.hidden = button.dataset.filter !== 'all' && !products.some(p => p.group === button.dataset.filter); });
+            if (filters.some(button => button.hidden && button.dataset.filter === filter)) {
+                filter = 'all';
+                filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === 'all')));
+            }
             const searchText = normalize(search?.value.trim() || '');
             const visible = products.filter(p => (filter === 'all' || p.group === filter) && normalize([p.name, p.description, p.category].join(' ')).includes(searchText));
             const sizes = grid.classList.contains('two-columns') ? '(max-width: 600px) 90vw, (max-width: 1280px) 45vw, 584px' : grid.classList.contains('four-columns') ? '(max-width: 800px) 45vw, (max-width: 1280px) 22vw, 280px' : '(max-width: 800px) 45vw, (max-width: 1280px) 30vw, 384px';

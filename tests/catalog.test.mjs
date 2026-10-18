@@ -146,7 +146,7 @@ test('Persistencia, datos corruptos, migración anterior y almacenamiento bloque
     cart.storage = previous;
 });
 test('Cada tarjeta muestra el precio mínimo real y dice «Desde» cuando hay varios precios', () => {
-    const expected = { 'torta-vintage': 'Desde $65.000', 'torta-sencilla': 'Desde $58.000', 'caja-x6': '$22.000', 'alfajor-personalizado': '$60.000 la caja', 'alfajor-individual': 'Desde $2.000 c/u', brownies: 'Desde $24.000', 'galleta-chips': 'Desde $24.000', 'galleta-pistachos': 'Desde $30.000', 'galletas-caja-surtida': '$46.000', 'oso-grande': 'Desde $49.000', 'detalle-golden-1': 'Desde $88.000', 'detalle-torta': '$105.000', 'extra-perlas': '$5.000 - $10.000', 'extra-coronas': 'Precio en asesoría' };
+    const expected = { 'torta-vintage': 'Desde $65.000', 'torta-sencilla': 'Desde $58.000', 'caja-x6': '$22.000', 'alfajor-personalizado': '$60.000 la caja', 'alfajor-individual': 'Desde $2.000 c/u', brownies: 'Desde $24.000', 'galleta-chips': 'Desde $24.000', 'galleta-pistachos': 'Desde $30.000', 'galletas-caja-surtida': '$46.000', 'oso-grande': 'Desde $49.000', 'detalle-golden-1': 'Desde $88.000', 'detalle-torta': '$105.000', 'extra-perlas': '$5.000 - $10.000', 'extra-coronas': 'Cotiza por WhatsApp' };
     for (const [id, text] of Object.entries(expected)) assert.equal(Catalog.priceLabel(Catalog.get(id)).text, text, id);
     for (const p of Catalog.all().filter(p => !Catalog.quoteOnly(p))) {
         const { min, max } = Catalog.range(p);
@@ -174,6 +174,21 @@ test('Un precio vacío se cotiza por WhatsApp y no entra al pedido', () => {
         assert.equal(Catalog.range(caja), null);
         assert.equal(Catalog.priceRefText('caja-x6'), 'precio a consultar');
     } finally { caja.price = 22000; }
+});
+
+test('Un precio de $0 se cotiza igual en la tarjeta y en la ficha, y un adicional sin precio dice «Cotiza por WhatsApp»', () => {
+    const caja = Catalog.get('caja-x6');
+    caja.price = 0;
+    try {
+        assert.equal(Catalog.priceLabel(caja).text, 'Cotiza por WhatsApp');
+        assert.equal(Catalog.price(caja, selected('caja-x6')), null, 'la ficha no muestra $0');
+        assert.equal(Catalog.quote(caja, selected('caja-x6')), true);
+    } finally { caja.price = 22000; }
+    const extra = Catalog.all().find(p => p.category === 'extras');
+    const [price, max] = [extra.price, extra.priceMax];
+    extra.price = null;
+    try { assert.equal(Catalog.priceLabel(extra).text, 'Cotiza por WhatsApp', 'igual que el manual de marca y el aviso del panel'); }
+    finally { extra.price = price; extra.priceMax = max; }
 });
 test('Un producto oculto no se muestra, no se pide y no se cotiza en los textos', () => {
     const data = context.catalogData['oso-pequeno'];

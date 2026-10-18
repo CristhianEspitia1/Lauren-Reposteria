@@ -23,6 +23,28 @@ test('Los precios se escriben como en Colombia y vacío es «Cotiza por WhatsApp
     assert.ok(Number.isNaN(M.parseMoney('-5000')));
     assert.equal(M.formatMoney(65000), '65.000');
 });
+
+test('Un precio copiado con centavos no se multiplica por cien', () => {
+    assert.equal(M.parseMoney('65.000,00'), 65000, 'antes se leía 6.500.000');
+    assert.equal(M.parseMoney('$ 65.000,00'), 65000);
+    assert.equal(M.parseMoney('65000.00'), 65000);
+    assert.equal(M.parseMoney('1.250.000'), 1250000);
+    assert.ok(Number.isNaN(M.parseMoney('65.000,50')), 'los pesos van sin centavos');
+    assert.ok(Number.isNaN(M.parseMoney('65,5')));
+});
+
+test('No deja publicar precios de $0 ni un «Precio hasta» menor que el «Precio desde»', () => {
+    const list = products();
+    const caja = list.find(p => p.id === 'caja-x6');
+    caja.price = 0;
+    const extra = list.find(p => p.category === 'extras' && typeof p.priceMax === 'number');
+    extra.priceMax = extra.price - 1000;
+    const errors = M.validate(list);
+    assert.ok(errors.some(e => e.startsWith(`${caja.name}: el precio no puede ser $0`)));
+    assert.ok(errors.some(e => e === `${extra.name}: el «Precio hasta» debe ser mayor que el «Precio desde».`));
+    extra.price = null;
+    assert.ok(M.validate(list).some(e => e === `${extra.name}: escribe también el «Precio desde».`));
+});
 test('Un producto nuevo toma la estructura de su sección, sin precios, sin fotos y oculto', () => {
     const torta = M.template('tortas', products());
     assert.equal(torta.visible, false);
@@ -35,6 +57,32 @@ test('Un producto nuevo toma la estructura de su sección, sin precios, sin foto
     assert.equal(extra.price, null); assert.equal(extra.priceMax, null);
     const oso = M.template('detalles', products());
     assert.equal(oso.price, null);
+    assert.ok(!('group' in torta) && !('group' in oso), 'el subgrupo lo elige quien crea el producto');
+});
+
+test('Cada página con subgrupos tiene un botón por subgrupo y cada producto visible va en uno', () => {
+    for (const [category, page] of [['tortas', 'tortas'], ['alfajores', 'alfajores'], ['detalles', 'detalles']]) {
+        const html = fs.readFileSync(new URL(`../${page}/index.html`, import.meta.url), 'utf8');
+        const buttons = [...html.matchAll(/data-filter="([^"]+)"[^>]*>([^<]+)</g)].map(([, id, label]) => [id, label]).filter(([id]) => id !== 'all');
+        assert.equal(JSON.stringify(buttons), JSON.stringify(M.GROUPS[category]), `${page}: botones y subgrupos del panel`);
+        for (const p of products().filter(p => p.category === category && p.visible !== false)) assert.ok(M.GROUPS[category].some(([id]) => id === p.group), `${p.name} no tiene subgrupo`);
+    }
+    const counts = Object.fromEntries(M.GROUPS.tortas.map(([id]) => [id, products().filter(p => p.group === id).length]));
+    assert.deepEqual(counts, { cumpleanos: 13, corazon: 8, flores: 6, infantiles: 8, tematicas: 6, grados: 4 });
+});
+
+test('Un producto visible necesita su subgrupo, y uno de otra página no se publica', () => {
+    const list = products();
+    const torta = list.find(p => p.id === 'galeria-tortas-13');
+    delete torta.group;
+    assert.ok(M.validate(list).includes(`${torta.name}: elige su filtro en «Dónde aparece» para que salga en su grupo de la página.`));
+    torta.visible = false;
+    assert.equal(M.validate(list).length, 0, 'oculto puede esperar su subgrupo');
+    torta.visible = true; torta.group = 'osos';
+    assert.ok(M.validate(list).includes(`${torta.name}: elige otra vez su filtro en «Dónde aparece».`));
+    const brownie = list.find(p => p.category === 'brownies');
+    brownie.group = 'cajas';
+    assert.ok(!('group' in M.normalize([brownie])[0]), 'las secciones sin subgrupos no guardan uno');
 });
 test('Un producto nuevo con precios vacíos se cotiza y aparece en su sección al publicar', () => {
     const list = products();

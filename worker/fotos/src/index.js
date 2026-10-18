@@ -12,7 +12,9 @@
  *   POST /fotos/subir  Una foto (multipart: foto, su miniatura de 320 px y nombre) → { foto: url }. La web
  *                      usa la miniatura (<nombre>-320.webp) en las filas de fotos.
  *   DELETE /fotos/<nombre>  Borra una foto subida y su miniatura (solo administradores). El panel solo lo
- *                      ofrece para fotos que ningún producto usa.
+ *                      ofrece para fotos que ningún producto usa. No se pierden de inmediato: pasan 30 días a la
+ *                      papelera (claves «papelera/…», que nadie ve), por si fue un error o alguien entró sin permiso.
+ *   POST /fotos/recuperar/<nombre>  Devuelve desde la papelera una foto borrada y su miniatura (solo administradores).
  *   GET  /instagram…   Lo último de Instagram para la portada (ver instagram.js). Es lo único que usa un secreto:
  *                      INSTAGRAM_TOKEN, opcional.
  */
@@ -23,6 +25,8 @@ const THUMB = /-320\.(?:webp|jpg)$/;
 const MAX_BYTES = 3 * 1024 * 1024;
 const MAX_THUMB = 400 * 1024;
 const TYPES = { webp: 'image/webp', jpg: 'image/jpeg' };
+const TRASH = 'papelera/';
+const TRASH_TTL = 30 * 86400;
 const GOOGLE_KEYS = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
 const encoder = new TextEncoder();
 
@@ -126,7 +130,8 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 headers: { ...security, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', Vary: 'Origin', ...cors }
             });
             const remove = /^\/fotos\/([^/]+)$/.exec(url.pathname)?.[1];
-            if (!['/fotos', '/fotos/subir'].includes(url.pathname) && remove === undefined) return reply(404, { error: 'no-existe' });
+            const restore = /^\/fotos\/recuperar\/([^/]+)$/.exec(url.pathname)?.[1];
+            if (!['/fotos', '/fotos/subir'].includes(url.pathname) && remove === undefined && restore === undefined) return reply(404, { error: 'no-existe' });
             if (!cors['Access-Control-Allow-Origin']) return reply(403, { error: 'origen' });
             if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...cors, Vary: 'Origin' } });
             try {
@@ -136,6 +141,24 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 const admins = String(env.ADMIN_EMAILS || '').toLowerCase().split(',').map(e => e.trim()).filter(Boolean);
                 if (admins.length && !admins.includes(String(user.email || '').toLowerCase())) throw new HttpError(403, 'permiso');
                 const link = name => `${url.origin}/f/${name}`;
+                const thumbOf = name => name.replace(/\.(\w+)$/, '-320.$1');
+                // Pasa un archivo de una clave a otra (con sus datos, que `change` puede ajustar) y borra el de origen.
+                async function move(from, to, { expirationTtl, change = data => data } = {}) {
+                    const { value, metadata } = await env.FOTOS.getWithMetadata(from, { type: 'arrayBuffer' });
+                    if (!value) return false;
+                    await env.FOTOS.put(to, value, { ...(expirationTtl ? { expirationTtl } : {}), metadata: change(metadata || {}) });
+                    await env.FOTOS.delete(from);
+                    return true;
+                }
+
+                if (restore !== undefined) {
+                    if (request.method !== 'POST') throw new HttpError(405, 'metodo');
+                    if (!NAME.test(restore) || THUMB.test(restore)) throw new HttpError(400, 'nombre');
+                    const back = { change: ({ borrada, por, ...data }) => data };
+                    if (!(await move(`${TRASH}${restore}`, restore, back))) throw new HttpError(404, 'no-existe');
+                    await move(`${TRASH}${thumbOf(restore)}`, thumbOf(restore), back);
+                    return reply(200, { recuperada: link(restore) });
+                }
 
                 if (remove !== undefined && remove !== 'subir') {
                     if (request.method !== 'DELETE') throw new HttpError(405, 'metodo');
@@ -143,10 +166,12 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                     // Existe si es la primera clave con su nombre: se consulta sin descargar la foto.
                     const found = await env.FOTOS.list({ prefix: remove, limit: 1 });
                     if (found.keys[0]?.name !== remove) throw new HttpError(404, 'no-existe');
-                    const [base, type] = [remove.replace(/\.\w+$/, ''), remove.split('.').pop()];
-                    await env.FOTOS.delete(`${base}-320.${type}`);
-                    await env.FOTOS.delete(remove);
-                    return reply(200, { borrada: remove });
+                    // A la papelera por 30 días (KV la borra sola al vencer): primero la miniatura, luego la foto.
+                    const deleted = { borrada: new Date(now() * 1000).toISOString(), por: String(user.email || user.sub) };
+                    const trash = { expirationTtl: TRASH_TTL, change: data => ({ ...data, ...deleted }) };
+                    await move(thumbOf(remove), `${TRASH}${thumbOf(remove)}`, trash);
+                    await move(remove, `${TRASH}${remove}`, trash);
+                    return reply(200, { borrada: remove, recuperableHasta: new Date((now() + TRASH_TTL) * 1000).toISOString() });
                 }
 
                 if (url.pathname === '/fotos') {

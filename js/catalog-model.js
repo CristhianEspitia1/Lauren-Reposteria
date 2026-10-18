@@ -46,8 +46,10 @@
      * hasta que otra posterior lo fije; `multiplier` multiplica por la cantidad elegida; los
      * interruptores suman `priceModifier`. Devuelve null si no hay precio y NaN si la selección es inválida.
      */
+    // Un importe de $0 cuenta como sin precio, igual que en la tarjeta: se cotiza por WhatsApp.
+    const amount = value => typeof value === 'number' && value > 0 ? value : null;
     function price(product, selection) {
-        let result = typeof product.price === 'number' ? product.price : null;
+        let result = amount(product.price);
         for (const option of choices(product, selection)) {
             if (option.type === 'toggle') continue;
             if (option.multiplier) {
@@ -55,7 +57,7 @@
                 continue;
             }
             const selected = option.choices?.find(choice => choice.value === selection[option.id]);
-            if (selected && Object.hasOwn(selected, 'price')) result = typeof selected.price === 'number' ? selected.price : null;
+            if (selected && Object.hasOwn(selected, 'price')) result = amount(selected.price);
         }
         if (result === null) return null;
         for (const option of choices(product, selection)) {
@@ -84,7 +86,7 @@
     function priceLabel(product) {
         const suffix = product.priceSuffix ? ` ${product.priceSuffix}` : '';
         if (quoteOnly(product)) {
-            if (typeof product.price !== 'number' || product.price <= 0) return { from: false, amount: 'Precio en asesoría', text: 'Precio en asesoría' };
+            if (typeof product.price !== 'number' || product.price <= 0) return { from: false, amount: 'Cotiza por WhatsApp', text: 'Cotiza por WhatsApp' };
             const amount = typeof product.priceMax === 'number' && product.priceMax > product.price ? `${money(product.price)} - ${money(product.priceMax)}` : money(product.price);
             return { from: false, amount, text: amount };
         }

@@ -9,7 +9,7 @@
 | `id` | Sí | Identificador estable en kebab-case. No cambiarlo: lo usan los pedidos guardados |
 | `name` | Sí | Nombre en la tarjeta y la ficha |
 | `category` | Sí | `tortas`, `alfajores`, `brownies`, `galletas`, `detalles` o `extras`. Decide en qué página aparece |
-| `group` | No | Filtro dentro de la página: `cajas`, `especiales` (Alfajores); `osos`, `mix`, `golden` (Detalles) |
+| `group` | En Tortas, Alfajores y Detalles | Subgrupo (filtro) dentro de su página: `cumpleanos`, `corazon`, `flores`, `infantiles`, `tematicas`, `grados` (Tortas); `cajas`, `especiales` (Alfajores); `osos`, `mix`, `golden` (Detalles). Cada producto visible de esas páginas va en uno; se elige en el centro de control y la lista vive en `AdminModel.GROUPS` y en los botones de cada página |
 | `visible` | Sí | `false` oculta el producto: no se muestra, no se pide y no entra al SEO |
 | `featured` | No | Solo tortas: `true` la muestra en «Una torta tan única como tu celebración» de la portada (cuatro como máximo; si faltan, se completan con las siguientes tortas). En otras secciones no tiene efecto |
 | `summary` | No | Frase corta de la tarjeta; sin ella se usa `description` |

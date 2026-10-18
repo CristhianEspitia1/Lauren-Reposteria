@@ -5,7 +5,9 @@
         ['tortas', 'Tortas'], ['extras', 'Adicionales de torta'], ['alfajores', 'Alfajores'],
         ['brownies', 'Brownies'], ['galletas', 'Galletas'], ['detalles', 'Detalles']
     ];
+    // Subgrupos de cada página (los botones de filtro de tortas/, alfajores/ y detalles/). Los decide el negocio.
     const GROUPS = {
+        tortas: [['cumpleanos', 'Cumpleaños'], ['corazon', 'De corazón'], ['flores', 'Flores y frutos'], ['infantiles', 'Infantiles'], ['tematicas', 'Temáticas'], ['grados', 'Grados y comuniones']],
         alfajores: [['cajas', 'Cajas y minis'], ['especiales', 'Especiales']],
         detalles: [['osos', 'Con ositos'], ['mix', 'Mix y mensajes'], ['golden', 'Golden y tortas']]
     };
@@ -23,10 +25,19 @@
         for (let n = 2; taken.has(id); n++) id = `${start}-${n}`;
         return id;
     }
-    /** «65.000», «$ 65000» → 65000; vacío → null (Cotiza por WhatsApp); otra cosa → NaN. */
+    /**
+     * «65.000», «$ 65000» → 65000; vacío → null (Cotiza por WhatsApp); otra cosa → NaN. Los pesos van sin
+     * centavos: «65.000,00» se lee 65000 y «65.000,50» no se acepta (antes se leía 6.500.050).
+     */
     function parseMoney(text) {
-        const clean = String(text ?? '').replace(/[$\s.,]/g, '');
+        let clean = String(text ?? '').replace(/[$\s]/g, '');
         if (!clean) return null;
+        const cents = /[.,](\d{1,2})$/.exec(clean);
+        if (cents) {
+            if (!/^0+$/.test(cents[1])) return NaN;
+            clean = clean.slice(0, cents.index);
+        }
+        clean = clean.replace(/[.,]/g, '');
         return /^\d{1,9}$/.test(clean) ? Number(clean) : NaN;
     }
     const formatMoney = value => typeof value === 'number' && Number.isFinite(value) ? new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value) : '';
@@ -42,12 +53,12 @@
     const photoName = src => src.split('/').pop().replace(/\.\w+$/, '');
     /**
      * Producto nuevo con la estructura del primero de su sección (opciones, porciones, campos de
-     * mensaje), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
+     * mensaje), sin nombre, sin fotos, sin subgrupo y con todos los precios vacíos. Empieza oculto.
      */
     function template(category, products) {
         const base = products.find(p => p.category === category && !p.basedOn);
         const product = base ? clone(base) : { category, options: [], personalization: null };
-        for (const key of ['basedOn', 'featured', 'summary', 'priceMax']) delete product[key];
+        for (const key of ['basedOn', 'featured', 'summary', 'priceMax', 'group']) delete product[key];
         Object.assign(product, { id: '', name: '', category, visible: false, description: '', mainImage: '', images: [] });
         product.price = null;
         if (category === 'extras') product.priceMax = null;
@@ -73,6 +84,7 @@
                 if (Array.isArray(product[key]) && !product[key].length) delete product[key];
             }
             if (product.category === 'extras') { delete product.mainImage; delete product.images; }
+            if (!GROUPS[product.category]) delete product.group;
             if (product.images) product.images = [...new Set(product.images.filter(Boolean))];
             if (!product.mainImage && product.images?.length) product.mainImage = product.images[0];
             if (!QUANTITY.includes(product.category) || product.basedOn) { delete product.minimum; delete product.quantityLabel; }
@@ -96,8 +108,11 @@
         const errors = [];
         const ids = new Set();
         const sections = new Set(SECTIONS.map(([id]) => id));
-        const money = (value, where) => {
-            if (value !== null && value !== undefined && !(Number.isSafeInteger(value) && value >= 0)) errors.push(`${where}: escribe el precio solo con números (o déjalo vacío).`);
+        // Un precio de $0 se vería «Cotiza por WhatsApp» en la tarjeta y $0 en la ficha: se pide dejarlo vacío.
+        const money = (value, where, empty = '«Cotiza por WhatsApp»') => {
+            if (value === null || value === undefined) return;
+            if (value === 0) errors.push(`${where}: el precio no puede ser $0. Déjalo vacío para ${empty}.`);
+            else if (!(Number.isSafeInteger(value) && value > 0)) errors.push(`${where}: escribe el precio solo con números (o déjalo vacío).`);
         };
         for (const p of products) {
             const name = p.name?.trim() || 'Producto sin nombre';
@@ -105,9 +120,15 @@
             if (p.id && ids.has(p.id)) errors.push(`${name}: el identificador «${p.id}» está repetido.`);
             if (p.id) ids.add(p.id);
             if (!sections.has(p.category)) errors.push(`${name}: elige una sección.`);
+            // En las páginas con subgrupos, cada producto visible va en uno de los de su página.
+            const groups = GROUPS[p.category];
+            if (groups && p.group && !groups.some(([id]) => id === p.group)) errors.push(`${name}: elige otra vez su filtro en «Dónde aparece».`);
+            else if (groups && !p.group && p.visible !== false) errors.push(`${name}: elige su filtro en «Dónde aparece» para que salga en su grupo de la página.`);
             if (p.basedOn && !all.some(base => base.id === p.basedOn && !base.basedOn)) errors.push(`${name}: la torta base ya no existe.`);
             money(p.price, name);
             money(p.priceMax, `${name} (precio máximo)`);
+            if (typeof p.priceMax === 'number' && p.priceMax > 0 && !(typeof p.price === 'number' && p.price > 0)) errors.push(`${name}: escribe también el «Precio desde».`);
+            else if (typeof p.priceMax === 'number' && p.priceMax > 0 && p.priceMax <= p.price) errors.push(`${name}: el «Precio hasta» debe ser mayor que el «Precio desde».`);
             if (p.minimum !== undefined && p.minimum !== null && !(Number.isInteger(p.minimum) && p.minimum >= 1 && p.minimum <= 99)) errors.push(`${name}: la cantidad mínima va de 1 a 99.`);
             for (const src of [p.mainImage, ...(p.images || [])].filter(Boolean)) if (!IMAGE.test(src) || src.includes('..')) errors.push(`${name}: hay una foto que no es de la web.`);
             if (p.category !== 'extras' && p.visible !== false && !photos(p).length) errors.push(`${name}: elige al menos una foto para mostrarlo en la web.`);
@@ -116,7 +137,7 @@
             if (main && taken.has(main)) errors.push(`${name}: la foto principal «${photoName(main)}» ya es la principal de «${taken.get(main)}». Pon primero otra foto: cada tarjeta lleva su propia foto.`);
             for (const option of p.options || []) {
                 if (!String(option.label || '').trim()) errors.push(`${name}: hay un grupo de opciones sin título.`);
-                if (option.type === 'toggle') { money(option.priceModifier, `${name} · ${option.label}`); continue; }
+                if (option.type === 'toggle') { money(option.priceModifier, `${name} · ${option.label}`, '«Sin costo»'); continue; }
                 if (!option.choices?.length) errors.push(`${name} · ${option.label || 'opciones'}: agrega al menos una opción.`);
                 for (const choice of option.choices || []) {
                     if (!String(choice.label || '').trim()) errors.push(`${name} · ${option.label}: hay una opción sin nombre.`);

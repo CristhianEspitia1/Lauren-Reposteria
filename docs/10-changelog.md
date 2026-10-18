@@ -7,6 +7,28 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-17 — Subgrupos en Tortas]
+
+- La página de Tortas tiene los mismos filtros que Alfajores y Detalles, con buscador: Cumpleaños (13), De corazón (8), Flores y frutos (6), Infantiles (8), Temáticas (6) y Grados y comuniones (4). Los eligió el negocio; cada torta va en uno.
+- En el centro de control, cada torta tiene «Filtro en la página» en «Dónde aparece». Un producto nuevo empieza sin subgrupo y no se publica visible hasta elegirlo (en Tortas, Alfajores y Detalles).
+- Un subgrupo sin productos no se muestra en la web, y si era el elegido vuelve a «Todos».
+- Manual de marca 2.5: «Filtros de colección» (`.catalog-toolbar`), que ya se usaba en Alfajores y Detalles sin estar en el manual.
+- 2 pruebas nuevas: los botones de cada página coinciden con los subgrupos del panel y ningún producto visible queda sin subgrupo.
+
+## [2026-10-17 — Auditoría de seguridad y del centro de control]
+
+- Fotos subidas: «Borrar para siempre» ya no las borra al instante. Pasan 30 días a una papelera del worker que nadie ve y se pueden recuperar (`POST /fotos/recuperar/<nombre>`); así ni un error ni una sesión robada causan una pérdida irreversible.
+- Lo publicado (`catalogo/actual`, de lectura pública) deja de guardar el correo de quien publica; el historial, que solo leen los administradores, lo conserva. Las reglas aceptan las dos formas mientras llega el panel nuevo. El resumen de los commits del catálogo tampoco lleva correos.
+- El workflow del catálogo revisa lo publicado con las reglas del panel antes de traerlo: un catálogo dañado o escrito sin pasar por el panel no llega al repositorio. La web en vivo tampoco cambia a un catálogo que no puede dibujar.
+- El centro de control no arranca dentro de otra página (protección contra clics engañosos) y solo carga scripts de la versión fija de Firebase.
+- Precios: «65.000,00» se lee $65.000 (antes, $6.500.000); no se publica un precio de $0, que se veía «Cotiza por WhatsApp» en la tarjeta y $0 en la ficha; en los adicionales, el «Precio hasta» debe ser mayor que el «Precio desde». La tarjeta de «Así se verá en la web» dice «Revisa los precios» mientras haya uno con letras.
+- Un adicional sin precio dice «Cotiza por WhatsApp», como pide el manual y como avisaba el panel (antes, «Precio en asesoría»).
+- Panel: «Este producto pasa a…» en el resumen de unir (decía «Esta producto»), y al guardar un producto oculto el aviso recuerda marcar «Visible».
+- Foco con teclado al abrir una ficha: contorno ciruela en lugar del del navegador. La cabecera usa el crema del manual en vez de un color suelto.
+- GitHub Pages deja de publicar `firebase.json` y `firestore.rules`; el sitemap escapa las direcciones de las fotos.
+- [Seguridad](09-seguridad.md): resultados de la auditoría, riesgos que quedan y lo pendiente en las cuentas externas.
+- 6 pruebas nuevas (precios, papelera y revisión del catálogo publicado).
+
 ## [2026-10-17 — Nada se mueve al elegir]
 
 - En la ficha de producto, marcar una opción (porciones, bizcocho, relleno…) ya no ensancha el botón: el punto de la elegida tiene su sitio reservado en todas, así que las filas no se reacomodan al tocar. Pasa igual en las opciones del centro de control.
