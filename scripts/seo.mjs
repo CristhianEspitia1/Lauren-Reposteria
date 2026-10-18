@@ -69,7 +69,7 @@ export const PAGES = [
         title: 'Alfajores artesanales en Medellín | Lauren Repostería',
         description: () => `Alfajores de maicena con arequipe hechos a mano en Medellín, desde ${money(lowest(['alfajores']))}: cajas x6 y x12, mini alfajores, torta de alfajor y alfajores personalizados.`,
         imageAlt: 'Torta de alfajor de tres capas con arequipe de Lauren Repostería',
-        categories: ['alfajores'], gallery: 'alfajores'
+        categories: ['alfajores'], gallery: null
     },
     {
         key: 'brownies-galletas', file: 'brownies-galletas/index.html', path: '/brownies-galletas/', type: 'CollectionPage', name: 'Brownies y galletas',
@@ -77,7 +77,7 @@ export const PAGES = [
         title: 'Brownies y galletas en Medellín | Lauren Repostería',
         description: () => `Brownies con chocolate al 70 % y galletas artesanales de seis sabores en Medellín. Elige presentación, relleno y toppings, desde ${money(lowest(['brownies', 'galletas']))}.`,
         imageAlt: 'Cajas de brownies con toppings de Lauren Repostería',
-        categories: ['brownies', 'galletas'], gallery: 'horneados'
+        categories: ['brownies', 'galletas'], gallery: null
     },
     {
         key: 'detalles', file: 'detalles/index.html', path: '/detalles/', type: 'CollectionPage', name: 'Detalles',
@@ -85,7 +85,7 @@ export const PAGES = [
         title: 'Detalles y regalos en Medellín | Lauren Repostería',
         description: () => `Detalles y regalos dulces en Medellín desde ${money(lowest(['detalles']))}: cajas con tortas, alfajores, brownies, galletas y ositos de chocolate personalizables.`,
         imageAlt: 'Detalle Golden de Lauren Repostería: caja de regalo con torta vasca y dulces',
-        categories: ['detalles'], gallery: 'detalles'
+        categories: ['detalles'], gallery: null
     },
     {
         key: 'preguntas', file: 'preguntas/index.html', path: '/preguntas/', type: 'WebPage', name: 'Preguntas frecuentes',

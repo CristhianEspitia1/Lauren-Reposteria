@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 2.9 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 3.0 · octubre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -123,19 +123,19 @@ Dibujos de línea de `assets/brand/sistema/`, usados como `mask` CSS y coloreado
 | Gráfico | Lugar |
 | --- | --- |
 | `corazon` | Separador de la franja de valores; final de titulares de portada, historia, pie, colecciones y sabores; y repartidos por el pie, en blanco y albaricoque |
-| `porcion-torta` | «Tú pones el motivo…», inspiración de Tortas, titular de redes, pie |
-| `brownie` | Inspiración de Brownies y galletas, titular de redes, pie |
+| `porcion-torta` | «Tú pones el motivo…», catálogo de Tortas, titular de redes, pie |
+| `brownie` | Titular de redes y pie |
 | `mano-flor` | Lila, 96 px, centrada bajo la tarjeta de Tortas de «Tú pones el motivo…» (y del mismo bloque en la 404), a 48 px de su texto, en el hueco antes de «Pedir tu torta…». En escritorio esa sección reserva el hueco abajo (`.collections-section`: tres `--space-3xl`, 192 px) y «Pedir tu torta…» empieza a 32 px (`--space-xl`), para que ambas secciones se vean juntas. Solo escritorio: en el teléfono la tarjeta ocupa todo el ancho y no queda hueco. En el pie, en blanco |
 | `isotipo-circulo` | Complementos de Tortas («Los detalles hacen la diferencia»: entre el título y la frase; en móvil, al final de la frase), catálogos, fotos de cabecera, botón del pie |
-| `mucho-encanto` | «Pedir tu torta es así de sencillo», sabores, inspiración de Alfajores y pie |
-| `para-ti` | Inspiración de Detalles, banner de invitación de cada colección y pie |
+| `mucho-encanto` | «Pedir tu torta es así de sencillo», sabores de Tortas y pie |
+| `para-ti` | Banner de invitación de cada colección y pie |
 | `reposteria` | Firma de «Las cosas bonitas se hacen con amor» y pie |
 | `grateful` | Sobre «Un poquito más de Lauren» y pie |
 | `rama` | Preguntas frecuentes, foto de cabecera de colección y pie |
 | `sello-ovalado` | Preguntas frecuentes (solo escritorio) y pie |
 | `dosis-de-encanto` | Firma de la franja inferior del pie (solo escritorio) y bajo el video de la historia |
 
-Los gráficos fijos viven en CSS; el resto los coloca `js/brand-decor.js` por sección (variantes con `data-page` en `<body>`). Reglas:
+Los gráficos fijos viven en CSS; el resto los coloca `js/brand-decor.js` por sección. Reglas:
 
 - Completos, dentro del ancho del contenido (salvo en el pie) y sin tocar textos, fotos ni controles; si no caben, prueban su alternativa y si tampoco, no se muestran.
 - Nunca dos en la misma esquina; ningún adorno junto a un botón o enlace (las tarjetas de colección, que son un enlace entero, cuentan como ocupadas); ninguno sobre fotos salvo los sellos.
@@ -186,7 +186,7 @@ En el teléfono, el pie va en dos columnas (una sola por debajo de 380 px, para 
 - Proporciones: 4:5 en tarjetas, galerías, fichas y publicaciones de Instagram; 3:2 en sabores; 1:1 en rellenos; video 16:9 con `object-fit: contain`.
 - Al ampliar se ve la foto completa con miniaturas debajo. Mientras carga, el espacio se ve durazno.
 - Ficha de producto: la foto principal grande y, debajo, la fila de fotos (`.photo-strip`) con las demás fotos de la misma referencia. Las fotos grandes van en una fila (`.product-slides`) que sigue al dedo o al trackpad y se detiene en cada foto; con las flechas o una miniatura vecina se desliza a la siguiente, y a una miniatura lejana se llega con un fundido corto, sin pasar por las de en medio. La siguiente y la anterior se cargan antes de llegar. Las flechas van en la fila, sobre las miniaturas, nunca encima de la foto grande.
-- Cada foto vive en un solo producto: una referencia con varias fotos es un producto con su fila de fotos, no varios productos parecidos.
+- Cada foto vive en un solo producto: una referencia con varias fotos es un producto con su fila de fotos, no varios productos parecidos. Las páginas de colección no repiten esas fotos en galerías aparte: Alfajores, Brownies y galletas y Detalles tienen solo su catálogo (y, en Alfajores y Detalles, el banner de invitación).
 - Fotos subidas desde el centro de control: se guardan en WebP de 1440 px como máximo. Mejor verticales, en 4:5, como las de la web.
 - Solo fotos reales de Lauren (también las de su Instagram): ni de banco, ni generadas con IA, ni con filtros que cambien el color. Nada encima de la foto salvo los sellos, la flecha y las miniaturas asomadas de las tarjetas y, sobre las miniaturas de la fila de fotos, sus flechas.
 - Inventario: `assets/propuestas-fotograficas/manifest.json`.

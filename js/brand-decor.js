@@ -14,8 +14,6 @@
         'dosis-de-encanto': 73.7 / 27, grateful: 40.5 / 29.6, reposteria: 53.3 / 19, 'sello-ovalado': 52 / 59.5
     };
     const colors = { lilac: 'var(--color-lilac)', white: 'var(--color-white)', apricot: 'var(--color-apricot)' };
-    const page = document.body.dataset.page;
-    const inspiration = { alfajores: ['mucho-encanto', 196], 'brownies-galletas': ['brownie', 116], detalles: ['para-ti', 172] }[page] || ['porcion-torta', 100];
     // Fila del título: el gráfico se alinea abajo a la derecha de la fila; si choca, sigue al final del título.
     const row = (w, extra = {}) => ({ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5], w, alt: { to: '.section-heading h2', end: 1, d: [.9, -.35] }, ...extra });
     /*
@@ -93,7 +91,7 @@
             ['corazon', { to: 'h2', end: 1, d: [1.2, -.1], w: 18, c: 'white', m: 1 }]
         ],
         '#inspiracion': [
-            [inspiration[0], row(inspiration[1], { m: 1, between: ['.section-heading h2', '.section-heading > p'], alt: [{ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5] }, { to: '.section-heading h2', end: 1, d: [.9, -.35] }] })]
+            ['porcion-torta', row(100, { m: 1, between: ['.section-heading h2', '.section-heading > p'], alt: [{ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5] }, { to: '.section-heading h2', end: 1, d: [.9, -.35] }] })]
         ]
     };
     // Bloques que cuentan enteros como ocupados: adornos sin texto y tarjetas que son un enlace completo.
