@@ -45,6 +45,7 @@ Reglas que conviene saber:
 ## Pendientes
 
 - **Ventana de temporada:** se diseña primero en el manual de marca.
+- **Conectar Instagram** (dejado para después el 17 de octubre de 2026): la web y el worker ya están listos en producción desde la versión `2026-10-17-4`, pero falta poner la llave `INSTAGRAM_TOKEN` en Cloudflare. Mientras tanto, «Un poquito más de Lauren» muestra sus cuatro fotos de siempre y no se rompe nada. Pasos en «Conectar Instagram», más abajo.
 
 ## Subir fotos nuevas: cómo funciona
 
@@ -76,13 +77,55 @@ Instagram (API con inicio de sesión de Instagram) ──llave INSTAGRAM_TOKEN�
 La portada pide /instagram y muestra /instagram/foto/<id> y /instagram/video/<id>, siempre desde el worker
 ```
 
-Para conectarla, una sola vez:
+**Estado:** pendiente. Falta la llave; la portada muestra sus cuatro fotos de siempre.
 
-1. **Cuenta profesional.** En la app de Instagram: Configuración → Tipo de cuenta y herramientas → Cambiar a cuenta profesional (Creador o Empresa). Si ya lo es, no hay que hacer nada.
-2. **App en Meta.** En <https://developers.facebook.com/apps>, «Crear app» con el caso de uso «Administrar mensajes y contenido en Instagram». No hace falta publicarla ni pasar la revisión de Meta: solo lee la cuenta de Lauren.
-3. **La llave.** En la app: «Configuración de la API con inicio de sesión de Instagram» → «Generar tokens de acceso» → «Agregar cuenta», entrar con @laurenreposteria22 y aceptar. Luego «Generar token» y copiarla. Si Meta pide agregar la cuenta como evaluadora (Roles de la app → Evaluadores de Instagram), se acepta la invitación en Instagram: Configuración → Apps y sitios web → Invitaciones de evaluador.
-4. **Guardarla en Cloudflare.** En <https://dash.cloudflare.com>: Workers y Pages → `lauren-reposteria` → Configuración → Variables y secretos → Agregar. Tipo «Secreto», nombre `INSTAGRAM_TOKEN`, valor la llave, y «Implementar». Nunca va en el repositorio ni en un mensaje.
-5. **Comprobar.** <https://lauren-reposteria.crizczi22.workers.dev/instagram> debe listar las publicaciones. La portada las muestra en menos de 10 minutos.
+### Para qué sirve cada paso
+
+- **Cuenta profesional:** Instagram solo deja que otras páginas lean las publicaciones de cuentas profesionales, no de cuentas personales.
+- **App en Meta:** es la forma oficial de pedirle permiso a Instagram. Sin ella, Instagram no entrega las publicaciones a ninguna web.
+- **La llave:** es ese permiso. Deja que la web lea la cuenta, y solo leerla: no puede publicar nada.
+- **Guardarla en Cloudflare:** así queda escondida en el worker. Si estuviera en el código de la web, cualquiera podría verla y usarla.
+
+Se hace una sola vez, en unos 15 minutos. Los pasos de Meta y Cloudflare los hace quien tenga esas cuentas, porque piden sus contraseñas.
+
+### Paso a paso
+
+1. **Revisar que la cuenta sea profesional.** En la app de Instagram, con @laurenreposteria22: perfil → menú ☰ → «Tipo de cuenta y herramientas». Si dice «Cambiar a cuenta profesional», tocarlo, elegir una categoría (por ejemplo, Panadería) y luego «Empresa». Si ya es profesional, seguir al paso 2.
+2. **Crear la app en Meta.**
+   1. Entrar a <https://developers.facebook.com/apps> con una cuenta de Facebook. La primera vez pide registrarse como desarrollador: aceptar las condiciones y confirmar el correo o el teléfono.
+   2. «Crear app». Nombre, por ejemplo «Web Lauren», y el correo de contacto.
+   3. Caso de uso: «Administrar mensajes y contenido en Instagram».
+   4. Si pregunta por un portafolio empresarial, elegir no conectarlo por ahora.
+   5. «Crear app». Puede pedir la contraseña de Facebook.
+
+   No hace falta publicar la app ni pasar la revisión de Meta, porque solo lee la cuenta de Lauren.
+3. **Sacar la llave.**
+   1. En la app, entrar al caso de uso de Instagram → «Configuración de la API con inicio de sesión de Instagram».
+   2. En «Generar tokens de acceso», tocar «Agregar cuenta», entrar con @laurenreposteria22 y aceptar los permisos.
+   3. Al lado de la cuenta, «Generar token», y copiar el texto largo que aparece (suele empezar por `IGAA`).
+
+   Si Meta pide agregar la cuenta como evaluadora: en «Roles de la app» → «Evaluadores de Instagram», agregar a @laurenreposteria22; en la app de Instagram, aceptar la invitación en Configuración → Apps y sitios web → Invitaciones de evaluador; y volver a «Generar token».
+
+   La llave es privada: no se manda por chat ni se pega en otro lado que no sea el paso 4.
+4. **Guardarla en Cloudflare.**
+   1. Entrar a <https://dash.cloudflare.com> con `crizczi22@gmail.com`.
+   2. Workers y Pages → `lauren-reposteria` → Configuración → Variables y secretos → Agregar.
+   3. Tipo «Secreto», nombre `INSTAGRAM_TOKEN` (exactamente así) y, como valor, la llave.
+   4. «Implementar».
+
+   Nunca va en el repositorio.
+5. **Comprobar.**
+   1. Abrir <https://lauren-reposteria.crizczi22.workers.dev/instagram>: debe mostrar una lista con las publicaciones. Si sale `{"publicaciones":[]}`, la llave no quedó bien: revisar que el nombre sea exacto y que se copió completa.
+   2. Abrir laurenreposteria.com en una ventana privada y bajar hasta «Un poquito más de Lauren»: deben estar las cuatro publicaciones más nuevas, con los videos reproduciéndose. En una ventana normal puede tardar hasta 10 minutos.
+
+Meta cambia a veces el nombre de los botones; si alguno no coincide, se busca el más parecido.
+
+### Si no se quiere conectar
+
+- No hace falta hacer nada: la sección sigue con sus cuatro fotos.
+- Otra opción, sin Meta: elegir unos reels, bajarlos y subirlos a la web. Se ven igual, con reproducción automática y uno tras otro, pero hay que repetirlo cada vez que se quieran mostrar reels nuevos. Para eso habría que agregar a la web una lista de videos propios; hoy la sección solo lee Instagram.
+
+### Después de conectarla
 
 - La llave dura 60 días. El cron diario del worker (`[triggers]` en `wrangler.toml`) la renueva cada semana y guarda la nueva en KV (`instagram-llave`). Solo hay que repetir los pasos 3 y 4 si Meta la revoca (por ejemplo, al cambiar la contraseña de Instagram) o si el worker pasó 60 días sin renovarla. Al poner un secreto nuevo, el worker deja la llave guardada y usa la nueva.
 - Instagram no entrega el video de los reels con música de su biblioteca: esos se ven con su portada fija y, al tocarlos, se abren en Instagram.
