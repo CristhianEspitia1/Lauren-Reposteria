@@ -113,11 +113,11 @@
 .extras-grid { --m: 5; --g: 24px; --rg: 32px; }
 /* Filas parejas: bizcochos, rellenos y adicionales se acomodan solos al agregar o quitar desde el centro de control.
    Hasta --m por fila, todas del mismo ancho; las filas se reparten parejas (7 = 4 + 3, 6 = 3 + 3) y la última
-   va centrada, nunca una suelta al lado de una fila llena. --n (cuántos hay) lo pone quien pinta la lista. */
+   va centrada, nunca una suelta al lado de una fila llena. --n (cuántos hay) lo pone site.js con el CSSOM (la política de seguridad no deja estilos en el HTML); sin él, filas de --m. */
 .flavor-grid, .filling-grid, .extras-grid { display: flex; flex-wrap: wrap; justify-content: center; column-gap: var(--g); row-gap: var(--rg); margin-inline: auto; }
 .flavor-grid > *, .filling-grid > *, .extras-grid > * { flex: 0 0 calc((100% - (var(--m) - 1) * var(--g)) / var(--m)); min-width: 0; }
 @supports (width: calc(round(up, 1.5, 1) * 1px)) {
-    .flavor-grid, .filling-grid, .extras-grid { --k: round(up, var(--n, 1) / round(up, var(--n, 1) / var(--m), 1), 1); max-width: calc(var(--k) / var(--m) * 100% + (var(--k) - 1 - var(--k) * (var(--m) - 1) / var(--m)) * var(--g)); }
+    .flavor-grid, .filling-grid, .extras-grid { --k: round(up, var(--n, var(--m)) / round(up, var(--n, var(--m)) / var(--m), 1), 1); max-width: calc(var(--k) / var(--m) * 100% + (var(--k) - 1 - var(--k) * (var(--m) - 1) / var(--m)) * var(--g)); }
     .flavor-grid > *, .filling-grid > *, .extras-grid > * { flex-basis: calc((100% - (var(--k) - 1) * var(--g)) / var(--k)); }
 }
 .extra { display: flex; flex-direction: column; align-items: flex-start; }

@@ -300,7 +300,7 @@ test('«Un sabor para recordar» sale de los bizcochos y rellenos del catálogo'
         copy['torta-vintage'].options.find(o => o.id === 'relleno').choices[2].image = 'https://lauren-reposteria.crizczi22.workers.dev/f/vainilla-k3x9a1.webp';
         assert.match(F.html(src => `src="${src}"`, LaurenUI.escape), /vainilla-k3x9a1\.webp"[^>]*><figcaption>Crema de vainilla</, 'con foto subida, sale en la fila de fotos');
         assert.match(html, /<p class="flavor-more"><span>También:<\/span> Crema de vainilla<\/p><\/div>$/, 'sin foto, en la línea de texto');
-        assert.match(html, /class="filling-grid" style="--n: 4"/, 'la cuadrícula sabe cuántos hay para repartir las filas');
+        assert.doesNotMatch(html, /style=/, 'sin estilos en el HTML: la política de seguridad de la web los bloquea');
         assert.equal((html.match(/<figure>/g) || []).length, 4);
     } finally { context.catalogData = data; }
 });

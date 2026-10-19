@@ -7,6 +7,10 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — Filas parejas sin estilos en el HTML]
+
+- En producción, la política de seguridad de la web bloqueaba el `style="--n: …"` que llevaban las filas de bizcochos y rellenos, y se veían angostas. Ahora `site.js` pone `--n` con el CSSOM (permitido) y, sin él, las filas usan su máximo por fila. Prueba: el HTML de «Un sabor para recordar» no lleva estilos.
+
 ## [2026-10-19 — El mensaje de la torta se acuerda en la asesoría]
 
 - La ficha de las tortas ya no tiene campo para escribir el mensaje: dice «El mensaje o las letras de tu torta los acordamos contigo en la asesoría por WhatsApp.». Se quita la casilla de la frase del panel. Los alfajores y detalles personalizados conservan sus campos.

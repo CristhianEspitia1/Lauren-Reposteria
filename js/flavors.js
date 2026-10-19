@@ -69,8 +69,8 @@
         const flavors = sabor.filter(item => item.photo).map(({ choice, photo }) => `<article class="flavor"><img ${image(photo.src, '(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 282px')} alt="${escape(photo.alt)}" width="1536" height="1024" loading="lazy" fetchpriority="low" decoding="async"><h3>${label(choice)}</h3>${photo.text ? `<p>${escape(photo.text)}</p>` : ''}</article>`).join('');
         const fillings = relleno.filter(item => item.photo).map(({ choice, photo }) => `<figure><img ${image(photo.src, '(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px')} alt="${escape(photo.alt)}" width="1254" height="1254" loading="lazy" fetchpriority="low" decoding="async"><figcaption>${label(choice)}</figcaption></figure>`).join('');
         return [
-            sabor.length ? `<h3 class="flavor-label">El bizcocho</h3>${flavors ? `<div class="flavor-grid" style="--n: ${sabor.filter(item => item.photo).length}">${flavors}</div>` : ''}${more(sabor.filter(item => !item.photo))}` : '',
-            relleno.length ? `<div class="filling-list"><h3>El relleno</h3>${fillings ? `<div class="filling-grid" style="--n: ${relleno.filter(item => item.photo).length}">${fillings}</div>` : ''}${more(relleno.filter(item => !item.photo))}</div>` : ''
+            sabor.length ? `<h3 class="flavor-label">El bizcocho</h3>${flavors ? `<div class="flavor-grid">${flavors}</div>` : ''}${more(sabor.filter(item => !item.photo))}` : '',
+            relleno.length ? `<div class="filling-list"><h3>El relleno</h3>${fillings ? `<div class="filling-grid">${fillings}</div>` : ''}${more(relleno.filter(item => !item.photo))}</div>` : ''
         ].join('');
     }
     window.LaurenFlavors = { PHOTOS, groups, withPhotos, intro, html };
