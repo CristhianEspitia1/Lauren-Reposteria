@@ -154,7 +154,6 @@ window.catalogData = {
         "mainImage": "/assets/propuestas-fotograficas/torta-sencilla.webp",
         "images": [
             "/assets/propuestas-fotograficas/torta-sencilla.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-04.webp",
             "/assets/propuestas-fotograficas/torta-chocolate-amor.webp",
             "/assets/propuestas-fotograficas/torta-uno.webp",
             "/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp",
@@ -204,8 +203,8 @@ window.catalogData = {
                         "label": "Chocolate oscuro"
                     },
                     {
-                        "value": "nutella",
-                        "label": "Nutella"
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
                     },
                     {
                         "value": "ganache-de-cafe",
@@ -214,6 +213,10 @@ window.catalogData = {
                     {
                         "value": "mermelada-de-frutos-rojos",
                         "label": "Mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella"
                     }
                 ]
             },
@@ -262,28 +265,129 @@ window.catalogData = {
     },
     "galeria-tortas-01": {
         "id": "galeria-tortas-01",
-        "name": "Torta Vintage",
+        "name": "Torta Vintage Sencilla",
         "category": "tortas",
         "visible": true,
         "basedOn": "torta-vintage",
-        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-01.webp",
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
         "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-01.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-03.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-08.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-10.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-23.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-32.webp",
             "/assets/propuestas-fotograficas/torta-rosas-mariposas.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-02.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-07.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-21.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-24.webp",
             "/assets/propuestas-fotograficas/torta-azul-mami.webp",
             "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "zanahoria",
+                        "label": "Zanahoria con nueces"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café"
+                    },
+                    {
+                        "value": "mermelada-de-frutos-rojos",
+                        "label": "Mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella"
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "4 a 6 porciones",
+                        "price": 80000
+                    },
+                    {
+                        "value": "8-10",
+                        "label": "8 a 10 porciones",
+                        "price": 125000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12 a 15 porciones",
+                        "price": 160000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18 a 20 porciones",
+                        "price": 210000
+                    },
+                    {
+                        "value": "25-30",
+                        "label": "25 a 30 porciones",
+                        "price": 305000
+                    }
+                ]
+            }
+        ],
+        "description": "Torta Vintage sencilla con bordes clásicos en la parte superior e inferir, sutiles detalles en los laterales, frase corta sobre la torta y elección de colores a tu gusto.\n(Cualquier detalle que no este mencionado será adicional y puedes consultarlo en la sección de \"adicionales\" o durante la asesoría)",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno a elección",
+            "Decoración vintage",
+            "Frase corta",
+            "Elección de colores"
         ]
     },
     "galeria-tortas-06": {
@@ -313,6 +417,101 @@ window.catalogData = {
             "/assets/propuestas-fotograficas/galeria-tortas-38.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-41.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-40.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "zanahoria",
+                        "label": "Zanahoria con nueces"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café"
+                    },
+                    {
+                        "value": "mermelada-de-frutos-rojos",
+                        "label": "Mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella"
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "4 a 6 porciones",
+                        "price": 110000
+                    },
+                    {
+                        "value": "8-10",
+                        "label": "8 a 10 porciones",
+                        "price": 155000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12 a 15 porciones",
+                        "price": 215000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18 a 20 porciones",
+                        "price": 265000
+                    },
+                    {
+                        "value": "25-30",
+                        "label": "25 a 30 porciones",
+                        "price": 385000
+                    }
+                ]
+            }
         ]
     },
     "galeria-tortas-18": {
