@@ -55,6 +55,7 @@ export const PAGES = [
     {
         key: 'inicio', file: 'index.html', path: '/', type: 'WebPage', name: 'Inicio',
         title: 'Repostería artesanal en Medellín | Lauren Repostería',
+        shareTitle: 'Lauren Repostería · Un bocado de alegría, hecho a mano',
         description: () => 'Repostería artesanal en Medellín desde 2022: tortas personalizadas, alfajores, brownies, galletas y detalles de regalo. Haz tu pedido por WhatsApp.',
         imageAlt: 'Lauren Repostería: torta vintage con frutos rojos y moño de satén',
         categories: [], gallery: null
@@ -105,6 +106,8 @@ const abs = src => src.startsWith('https://') ? src : ORIGIN + src;
 const escAttr = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const escXml = value => escAttr(value).replace(/>/g, '&gt;').replace(/'/g, '&apos;');
 const plain = html => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+// Al compartir (WhatsApp, redes), el título empieza por la marca; el <title> sigue pensado para Google.
+const shareTitle = page => page.shareTitle || `${BUSINESS.name} · ${page.title.replace(/ \| Lauren Repostería$/, '')}`;
 const socialImage = page => `/assets/social/${page.social || page.key}.jpg`;
 
 /** Preguntas visibles de la página: el JSON-LD repite exactamente el texto publicado. */
@@ -194,7 +197,9 @@ function graph(page, html) {
 function head(page, html) {
     const url = ORIGIN + page.path;
     const description = escAttr(page.description());
-    const image = abs(socialImage(page));
+    // Con la huella de la imagen: WhatsApp y las redes guardan la vista previa por dirección y, si la imagen cambia,
+    // la nueva dirección les hace pedirla otra vez.
+    const image = `${abs(socialImage(page))}?v=${assetVersion(socialImage(page).slice(1))}`;
     const json = JSON.stringify(graph(page, html)).replace(/</g, '\\u003c');
     return `<!-- seo: generado por scripts/seo.mjs; editar allí, no aquí -->
 <title>${escAttr(page.title)}</title>
@@ -211,7 +216,7 @@ function head(page, html) {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${BUSINESS.name}">
 <meta property="og:locale" content="es_CO">
-<meta property="og:title" content="${escAttr(page.title)}">
+<meta property="og:title" content="${escAttr(shareTitle(page))}">
 <meta property="og:description" content="${description}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${image}">
@@ -220,7 +225,7 @@ function head(page, html) {
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${escAttr(page.imageAlt)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${escAttr(page.title)}">
+<meta name="twitter:title" content="${escAttr(shareTitle(page))}">
 <meta name="twitter:description" content="${description}">
 <meta name="twitter:image" content="${image}">
 <meta name="twitter:image:alt" content="${escAttr(page.imageAlt)}">

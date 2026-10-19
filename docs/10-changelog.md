@@ -7,6 +7,12 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — La marca al compartir un enlace]
+
+- Las imágenes que salen al compartir la web (WhatsApp, redes) se rehicieron con el manual: los colores, letras y franja albaricoque de la marca, y la foto en arco con el sello lila, como la portada. Antes usaban rosas que no son de la paleta, Playfair en 500 y un marco lila que el manual no tiene.
+- El título que muestra el chat empieza por la marca: «Lauren Repostería · Tortas personalizadas en Medellín».
+- Manual de marca 3.3: «Imagen para compartir».
+
 ## [2026-10-19 — La sincronización del catálogo vuelve a funcionar]
 
 - El workflow «Catálogo publicado» fallaba en cada corrida desde el 17 de octubre: 4 pruebas fijaban precios y tortas concretas («Desde $65.000», más de 40 tortas, `galeria-tortas-13`…) y el negocio cambió precios y unió tortas desde el panel. Nada de lo publicado llegaba al repositorio (primera pintura de la web, JSON-LD, sitemap, `llms.txt`).

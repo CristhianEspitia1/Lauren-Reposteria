@@ -33,7 +33,8 @@ Ejecutar `seo.mjs` después de cambiar precios, productos, galerías, preguntas 
 
 - `<title>` único (≤ 60 caracteres) y `meta description` única (120–160) con producto + Medellín y el precio mínimo real calculado desde `catalog-data.js`.
 - `canonical`, `hreflang` `es-CO` y `x-default`, `robots` con `max-image-preview:large` (imágenes grandes en Discover y Google Imágenes).
-- Open Graph y Twitter con imagen JPEG 1200 × 630 propia por página (`assets/social/`). WhatsApp e Instagram no muestran de forma fiable vistas previas WebP.
+- Open Graph y Twitter con imagen JPEG 1200 × 630 propia por página (`assets/social/`), con la marca según el manual («Imagen para compartir»). WhatsApp e Instagram no muestran de forma fiable vistas previas WebP.
+- Al compartir, el título (`og:title`, `twitter:title`) empieza por la marca («Lauren Repostería · …», o `shareTitle` en `PAGES`); el `<title>` empieza por lo que se busca en Google. La imagen va con su huella (`inicio.jpg?v=…`): si cambia, WhatsApp y las redes la piden de nuevo en vez de mostrar la vieja.
 - Favicon SVG + `favicon.ico` + `apple-touch-icon` + `site.webmanifest` con iconos 192/512 y maskable.
 - JSON-LD (`@graph`):
   - `Bakery` (`#bakery`): nombre, logo PNG, teléfono, correo, Medellín/Antioquia, horario lunes a sábado 9:00–18:00, rango de precios calculado, redes y `hasMenu`.
