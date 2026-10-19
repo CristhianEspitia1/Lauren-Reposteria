@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://laurenreposteria.com/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galletas.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-26.webp</image:loc></image:image>
@@ -14,11 +14,11 @@
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/detalle-margarita.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/torta-sencilla.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-01.webp</image:loc></image:image>
-    <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-06.webp</image:loc></image:image>
+    <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-39.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://laurenreposteria.com/tortas/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-05.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/sabor-chocolate.webp</image:loc></image:image>
@@ -27,8 +27,8 @@
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/sabor-zanahoria-con-nueces.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-arequipe.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-crema-queso.webp</image:loc></image:image>
-    <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-frutos-rojos.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-chocolate.webp</image:loc></image:image>
+    <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-frutos-rojos.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/relleno-nutella.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-01.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-tortas-06.webp</image:loc></image:image>
@@ -81,7 +81,7 @@
   </url>
   <url>
     <loc>https://laurenreposteria.com/alfajores/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/torta-alfajor.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/caja-x6.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/caja-x12.webp</image:loc></image:image>
@@ -106,7 +106,7 @@
   </url>
   <url>
     <loc>https://laurenreposteria.com/brownies-galletas/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galletas.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/galeria-brownies-02.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/brownies.webp</image:loc></image:image>
@@ -123,7 +123,7 @@
   </url>
   <url>
     <loc>https://laurenreposteria.com/detalles/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/detalle-golden-2.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/detalle-mix-1.webp</image:loc></image:image>
     <image:image><image:loc>https://laurenreposteria.com/assets/propuestas-fotograficas/oso-pequeno.webp</image:loc></image:image>
@@ -140,6 +140,6 @@
   </url>
   <url>
     <loc>https://laurenreposteria.com/preguntas/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
   </url>
 </urlset>

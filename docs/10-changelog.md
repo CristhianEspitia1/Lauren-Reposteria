@@ -7,6 +7,31 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — La sincronización del catálogo vuelve a funcionar]
+
+- El workflow «Catálogo publicado» fallaba en cada corrida desde el 17 de octubre: 4 pruebas fijaban precios y tortas concretas («Desde $65.000», más de 40 tortas, `galeria-tortas-13`…) y el negocio cambió precios y unió tortas desde el panel. Nada de lo publicado llegaba al repositorio (primera pintura de la web, JSON-LD, sitemap, `llms.txt`).
+- Las pruebas de reglas (precios, pedido, panel) usan ahora un catálogo de prueba fijo, `tests/fixtures/catalog-data.js`. El catálogo real se revisa en `tests/catalogo-real.test.mjs` con reglas que valen para cualquier catálogo: se publica idéntico, cada producto muestra su precio y se puede abrir, las tortas tienen torta base, foto y adicionales, y «Un sabor para recordar» se arma.
+- `js/catalog-data.js` al día con lo publicado (36 productos; 5 tortas tras unir fotos), con su SEO.
+
+## [2026-10-19 — «Un sabor para recordar» desde el catálogo]
+
+- La sección de sabores de /tortas/ ya no está escrita a mano: muestra los bizcochos y rellenos del catálogo (los de «Sabores y adicionales»), en su orden y con su nombre, y la frase cuenta los que hay («Cuatro bizcochos, siete rellenos…»). Lo que cuesta más dice «+$10.000».
+- Los que no tienen foto (hoy, Crema de vainilla y Ganache de café) van debajo: «También: Crema de vainilla · Ganache de café».
+- `js/flavors.js` lo pinta en el navegador al llegar lo publicado y `scripts/seo.mjs` lo escribe en el HTML.
+- Manual de marca 3.2: componente «Sabores de Tortas» con la línea «También».
+- 1 prueba nueva.
+
+## [2026-10-19 — Sabores, rellenos premium y adicionales que suman al total]
+
+- «Frase corta de la tarjeta» ya se ve en las tortas (en /tortas/ y en la portada), bajo el nombre. Antes las tarjetas de torta eran compactas y nunca la mostraban, aunque el panel la ofrecía. Sin frase, la tarjeta queda solo con nombre y precio, y «Elegir detalles» queda alineado en toda la fila.
+- Rellenos y bizcochos con costo adicional: cada uno puede llevar un valor fijo («Nutella · +$10.000») que se suma al total de la torta. Nuevo campo `extra` en las elecciones del catálogo.
+- Los adicionales de torta (moños, mariposas, perlas…) se marcan en la ficha de cada torta y suman su precio. Uno sin precio fijo (o con el rango de antes) se puede marcar, pero la torta pasa a «Consultar por WhatsApp». Los pedidos guardados antes siguen funcionando.
+- Centro de control: nueva fila «Sabores y adicionales», arriba de las tortas, para agregar, quitar y poner precio a bizcochos, rellenos y adicionales en un solo lugar, para todas las tortas. Avisa si hoy alguna torta tiene otra lista. Los adicionales ya no van como filas sueltas.
+- Centro de control: casilla «Se puede escribir una frase o letras en la torta» en la ficha de cada torta.
+- /tortas/: «Los detalles hacen la diferencia» ahora invita a elegirlos en los detalles de la torta.
+- Manual de marca 3.1: tarjeta de torta con frase corta, opciones con «+», adicionales en la ficha y el diálogo «Sabores y adicionales».
+- 2 pruebas nuevas: costos adicionales, adicionales y pedidos guardados antes; copia de bizcochos y rellenos en todas las tortas.
+
 ## [2026-10-17 — Las fotos que ya tienen producto, tapadas]
 
 - En «Agregar fotos de la web», las fotos que ya están en otro producto se ven borrosas y van al final de su sección, para que las libres se encuentren de un vistazo. Se aclaran al pasar por encima o al tocarlas, y se pueden seguir moviendo o uniendo como antes.

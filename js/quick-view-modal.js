@@ -131,14 +131,15 @@
         optionHTML(option) {
             const selected = this.selection[option.id];
             const errorId = `option-error-${option.id}`;
-            const note = option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : option.note || '';
+            const note = option.note || (option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : '');
             let controls;
             if (option.type === 'toggle') {
                 controls = `<label class="toggle-option"><input data-option-input="${esc(option.id)}" type="checkbox" ${selected ? 'checked' : ''} aria-describedby="${errorId}"><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Agregar${typeof option.priceModifier === 'number' ? ` · +${Catalog.money(option.priceModifier)}` : ''}</span></label>`;
             } else {
                 controls = `<div class="choice-list">${(option.choices || []).map((choice, index) => {
                     const checked = option.multiple ? selected?.includes(choice.value) : selected === choice.value;
-                    const optionPrice = typeof choice.price === 'number' ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : '';
+                    // Precio de la elección o, si suma al total (relleno premium, adicional), «+$10.000».
+                    const optionPrice = typeof choice.price === 'number' ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : typeof choice.extra === 'number' && choice.extra > 0 ? ` · +${Catalog.money(choice.extra)}` : '';
                     return `<label class="choice"><input type="${option.multiple ? 'checkbox' : 'radio'}" name="option-${esc(option.id)}" value="${esc(choice.value)}" data-option-input="${esc(option.id)}" ${checked ? 'checked' : ''} aria-describedby="${errorId}"><span>${esc(choice.label)}${optionPrice}</span></label>`;
                 }).join('')}</div>`;
             }

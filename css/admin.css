@@ -151,6 +151,14 @@
 /* En el panel, las flechas se centran sobre las fotos, no sobre los tres puntos. */
 .admin-photo-strip .photo-strip-arrow { top: 62px; }
 
+/* «Sabores y adicionales»: una columna, filas como las opciones de la ficha; los adicionales llevan su icono delante. */
+.admin-shared { width: min(760px, calc(100% - 32px)); }
+.admin-shared .admin-lead { margin-top: 8px; }
+.admin-choice.admin-addon { grid-template-columns: 44px minmax(0, 1fr) 150px 44px; }
+.admin-choice.admin-addon > .field-note { grid-column: 2 / -1; margin: -4px 0 4px; }
+.admin-addon-icon { display: grid; place-items: center; width: 44px; height: 44px; color: var(--color-text); }
+.admin-addon-icon svg { width: 32px; height: 32px; stroke-width: var(--icon-stroke-display); }
+
 /* Confirmación de la marca: diálogo pequeño con titular, qué pasa y las dos acciones. */
 .admin-confirm { width: min(480px, calc(100% - 32px)); }
 .admin-confirm form { display: grid; gap: 12px; padding: clamp(24px, 5vw, 36px); }
@@ -201,6 +209,13 @@
     .admin-editor, .admin-picker { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
     .admin-editor form, .admin-picker-body { max-height: 100dvh; height: 100%; }
     .admin-choice { grid-template-columns: minmax(0, 1fr) 118px 44px; }
+    /* En el teléfono, cada adicional en dos líneas: nombre completo arriba y el precio debajo. */
+    .admin-choice.admin-addon { grid-template-columns: 28px minmax(0, 1fr) 44px; gap: 8px; margin-bottom: 16px; }
+    .admin-choice.admin-addon > .admin-money { grid-column: 2; grid-row: 2; max-width: 160px; }
+    .admin-choice.admin-addon > .icon-button { grid-column: 3; grid-row: 1; }
+    .admin-choice.admin-addon.admin-choice-head { display: none; }
+    .admin-addon-icon { width: 28px; }
+    .admin-addon-icon svg { width: 26px; height: 26px; }
     .admin-gallery { grid-template-columns: minmax(0, 1fr); }
     .admin-editor-actions > div { flex: 1; }
     .admin-editor-actions .btn { flex: 1; }

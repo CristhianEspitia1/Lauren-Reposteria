@@ -39,6 +39,8 @@ class CartManager {
             const fields = Catalog.fields(product, selection);
             if (fields.length === 1 && typeof item.personalization === 'string') personal[fields[0].id] = item.personalization;
         }
+        // Opciones nuevas (como los adicionales de torta) toman su valor inicial en pedidos guardados antes.
+        if (selection && typeof selection === 'object' && !Array.isArray(selection)) selection = { ...Catalog.defaults(product), ...selection };
         if (!selection || typeof selection !== 'object' || Array.isArray(selection) || !personal || typeof personal !== 'object' || Array.isArray(personal)) return null;
         if (Object.values(personal).some(value => typeof value !== 'string')) return null;
         if (Catalog.validate(product, selection, personal).length) return null;

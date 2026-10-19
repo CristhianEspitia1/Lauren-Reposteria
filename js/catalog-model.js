@@ -7,12 +7,31 @@
     // `basedOn`: una torta toma de otra (Vintage o Sencilla) lo que no define (opciones, precios, notas, textos).
     // Si cambia el precio de la base, cambia en todos sus diseños.
     const inherited = ['description', 'includes', 'notes', 'price', 'priceSuffix', 'minimum', 'quantityLabel', 'options', 'personalization'];
-    const expanded = new WeakMap();
+    // Los adicionales de torta (productos «extras») se eligen en la ficha de cada torta y suman su precio al total.
+    const ADDONS = 'adicionales';
+    function addOns() {
+        const extras = Object.values(catalogData).filter(p => p.category === 'extras' && shown(p));
+        if (!extras.length) return null;
+        // Un adicional con rango («$2.000 - $3.000») o sin precio se puede marcar, pero la torta pasa a cotizarse.
+        const fixed = p => typeof p.price === 'number' && p.price > 0 && !(typeof p.priceMax === 'number' && p.priceMax > p.price);
+        return {
+            id: ADDONS, label: 'Adicionales', type: 'radio', required: false, multiple: true, maxSelection: extras.length,
+            note: 'Marca los que quieras: se suman al total.',
+            choices: extras.map(p => ({ value: p.id, label: p.name, icon: p.icon || 'gift', extra: fixed(p) ? p.price : null }))
+        };
+    }
+    // Cada versión del catálogo (la local, la publicada o el borrador del panel) guarda sus propias fichas completas.
+    const cache = new WeakMap();
     function expand(product) {
+        if (!cache.has(catalogData)) cache.set(catalogData, new WeakMap());
+        const expanded = cache.get(catalogData);
+        if (expanded.has(product)) return expanded.get(product);
         const base = product.basedOn && Object.hasOwn(catalogData, product.basedOn) ? catalogData[product.basedOn] : null;
-        if (!base || base.basedOn) return product;
-        if (!expanded.has(product)) expanded.set(product, { ...Object.fromEntries(inherited.filter(key => key in base).map(key => [key, base[key]])), ...product });
-        return expanded.get(product);
+        let result = base && !base.basedOn ? { ...Object.fromEntries(inherited.filter(key => key in base).map(key => [key, base[key]])), ...product } : product;
+        const extras = product.category === 'tortas' && !(result.options || []).some(o => o.id === ADDONS) && addOns();
+        if (extras) result = { ...result, options: [...(result.options || []), extras] };
+        expanded.set(product, result);
+        return result;
     }
     const get = id => Object.hasOwn(catalogData, id) && shown(catalogData[id]) ? expand(catalogData[id]) : null;
     const all = () => Object.values(catalogData).filter(shown).map(expand);
@@ -44,7 +63,7 @@
      * Precio unitario de una selección. Recorre las opciones visibles en orden: la última elección con
      * precio fija el valor; una elección sin precio (vacía en el panel) lo deja en «Cotiza por WhatsApp»
      * hasta que otra posterior lo fije; `multiplier` multiplica por la cantidad elegida; los
-     * interruptores suman `priceModifier`. Devuelve null si no hay precio y NaN si la selección es inválida.
+     * interruptores suman `priceModifier` y cada elección elegida suma su `extra`. Devuelve null si no hay precio y NaN si la selección es inválida.
      */
     // Un importe de $0 cuenta como sin precio, igual que en la tarjeta: se cotiza por WhatsApp.
     const amount = value => typeof value === 'number' && value > 0 ? value : null;
@@ -60,6 +79,16 @@
             if (selected && Object.hasOwn(selected, 'price')) result = amount(selected.price);
         }
         if (result === null) return null;
+        // Costo adicional de una elección (relleno premium, adicional de torta). Sin precio, se cotiza por WhatsApp.
+        for (const option of choices(product, selection)) {
+            if (option.type === 'toggle') continue;
+            for (const value of [].concat(selection[option.id] ?? [])) {
+                const choice = option.choices?.find(c => c.value === value);
+                if (!choice || !Object.hasOwn(choice, 'extra')) continue;
+                if (amount(choice.extra) === null) return null;
+                result += choice.extra;
+            }
+        }
         for (const option of choices(product, selection)) {
             if (option.type === 'toggle' && selection[option.id] === true && typeof option.priceModifier === 'number') result += option.priceModifier;
         }
@@ -147,7 +176,7 @@
         return Object.fromEntries(choices(product, selection).filter(option => {
             if (option.id === product.personalization?.dependsOn) return false;
             const value = selection[option.id];
-            return Array.isArray(value) ? value.length : value !== false && value !== '';
+            return Array.isArray(value) ? value.length : value !== false && value !== '' && value !== undefined && value !== null;
         }).map(option => {
             const value = selection[option.id];
             const selected = Array.isArray(value) ? value : [value];
@@ -163,5 +192,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
     const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { ADDONS, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

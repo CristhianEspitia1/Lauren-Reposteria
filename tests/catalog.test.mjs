@@ -7,7 +7,9 @@ context.window = context;
 const saved = new Map();
 context.localStorage = { getItem: key => saved.get(key) ?? null, setItem: (key, value) => saved.set(key, value) };
 vm.createContext(context);
-for (const file of ['catalog-data', 'catalog-model', 'brand-icons', 'ui', 'cart-manager']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
+// Reglas con importes conocidos: catálogo de prueba fijo (el real lo revisa tests/catalogo-real.test.mjs).
+vm.runInContext(fs.readFileSync(new URL('./fixtures/catalog-data.js', import.meta.url), 'utf8'), context);
+for (const file of ['catalog-model', 'brand-icons', 'ui', 'cart-manager']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
 const { Catalog, cartManager: cart, LaurenUI } = context;
 const selected = (id, overrides = {}) => ({ ...Catalog.defaults(Catalog.get(id)), ...overrides });
 const price = (id, overrides) => Catalog.price(Catalog.get(id), selected(id, overrides));
@@ -240,4 +242,56 @@ test('Todas las tortas son iguales: ficha con precio y su foto en el mensaje de 
     assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes('Foto de referencia: https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp'), 'Torta Vintage también manda su foto');
     assert.equal(Catalog.photo(Catalog.get('alfajor-individual')), '', 'Solo las tortas mandan foto');
     cart.clearCart();
+});
+
+test('Rellenos premium y adicionales de torta suman al total', () => {
+    const data = context.catalogData;
+    const copy = JSON.parse(JSON.stringify(data));
+    copy['torta-vintage'].options.find(o => o.id === 'relleno').choices.find(c => c.value === 'nutella').extra = 10000;
+    Object.assign(copy['extra-monos'], { price: 3000 }); delete copy['extra-monos'].priceMax;
+    context.catalogData = copy;
+    try {
+        const torta = Catalog.get('galeria-tortas-01');
+        const addons = torta.options.find(o => o.id === Catalog.ADDONS);
+        assert.ok(addons.multiple && !addons.required, 'los adicionales son opcionales y de varios');
+        assert.equal(addons.choices.length, Object.values(copy).filter(p => p.category === 'extras' && p.visible !== false).length);
+        const base = Catalog.price(torta, { ...Catalog.defaults(torta), porciones: '4-5' });
+        assert.equal(base, 65000);
+        assert.equal(Catalog.price(torta, { ...Catalog.defaults(torta), porciones: '4-5', relleno: 'nutella' }), 75000, 'el relleno premium suma su costo');
+        assert.equal(Catalog.price(torta, { ...Catalog.defaults(torta), porciones: '4-5', adicionales: ['extra-monos'] }), 68000, 'el adicional suma su precio');
+        assert.equal(Catalog.price(torta, { ...Catalog.defaults(torta), adicionales: ['extra-mariposas'] }), null, 'un adicional con rango se cotiza');
+        assert.equal(Catalog.price(torta, { ...Catalog.defaults(torta), adicionales: ['extra-coronas'] }), null, 'un adicional sin precio se cotiza');
+        assert.deepEqual({ ...Catalog.summary(torta, { ...Catalog.defaults(torta), adicionales: ['extra-monos'] }) }.Adicionales, 'Moños (lacitos)');
+        assert.equal(Object.hasOwn(Catalog.summary(torta, Catalog.defaults(torta)), 'Adicionales'), false);
+        assert.equal(Catalog.validate(torta, { ...Catalog.defaults(torta), adicionales: addons.choices.map(c => c.value) }).length, 0, 'se pueden marcar todos');
+        assert.equal(Catalog.priceLabel(torta).text, 'Desde $65.000', 'el «Desde» no cambia por los premium ni los adicionales');
+        assert.equal(Catalog.get('alfajor-individual').options.some(o => o.id === Catalog.ADDONS), false, 'solo las tortas llevan adicionales');
+        // Un pedido guardado antes de los adicionales se sigue leyendo.
+        cart.clearCart();
+        const legacy = { id: 'torta-vintage', quantity: 1, selection: { sabor: 'chocolate', relleno: 'nutella', porciones: '4-5' }, personal: {} };
+        saved.set(cart.cartKey, JSON.stringify([legacy]));
+        assert.equal(cart.loadCart()[0]?.price, 75000);
+    } finally { context.catalogData = data; cart.clearCart(); }
+});
+
+test('«Un sabor para recordar» sale de los bizcochos y rellenos del catálogo', () => {
+    vm.runInContext(fs.readFileSync(new URL('../js/flavors.js', import.meta.url), 'utf8'), context);
+    const { LaurenFlavors: F } = context;
+    const data = context.catalogData;
+    const copy = JSON.parse(JSON.stringify(data));
+    copy['torta-vintage'].options.find(o => o.id === 'relleno').choices = [
+        { value: 'arequipe', label: 'Arequipe' }, { value: 'chocolate', label: 'Chocolate oscuro' },
+        { value: 'crema-de-vainilla', label: 'Crema de vainilla' }, { value: 'mermelada-de-frutos-rojos', label: 'Mermelada de frutos rojos' },
+        { value: 'nutella', label: 'Nutella', extra: 10000 }
+    ];
+    context.catalogData = copy;
+    try {
+        const photos = F.withPhotos('relleno', F.groups().relleno).map(({ choice, photo }) => [choice.label, photo?.key || null]);
+        assert.deepEqual(photos, [['Arequipe', 'arequipe'], ['Chocolate oscuro', 'chocolate'], ['Crema de vainilla', null], ['Mermelada de frutos rojos', 'frutos-rojos'], ['Nutella', 'nutella']]);
+        assert.equal(F.intro(), 'Cuatro bizcochos, cinco rellenos y tu combinación favorita.');
+        const html = F.html(src => `src="${src}"`, LaurenUI.escape);
+        assert.match(html, /<figcaption>Nutella · \+\$10\.000<\/figcaption>/);
+        assert.match(html, /<p class="flavor-more"><span>También:<\/span> Crema de vainilla<\/p><\/div>$/, 'sin foto, en la línea de texto');
+        assert.equal((html.match(/<figure>/g) || []).length, 4);
+    } finally { context.catalogData = data; }
 });

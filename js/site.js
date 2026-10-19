@@ -26,11 +26,12 @@
         const label = Catalog.priceLabel(product);
         return label.from ? `<span class="price-from">Desde</span> ${esc(label.amount)}` : esc(label.text);
     }
+    // Las tarjetas compactas (tortas) solo llevan la frase corta si la tiene; nunca la descripción larga.
     function productCard(product, sizes, compact) {
         const quoted = Catalog.quoteOnly(product);
         const images = [...new Set([product.mainImage, ...(product.images || [])].filter(Boolean))];
         const label = images.length > 1 ? `Ver ${product.name}, ${images.length} diseños` : `Ver ${product.name}`;
-        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="${esc(label)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async">${LaurenUI.moreDesigns(images)}<span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product)}</p></div>${compact ? '' : `<p class="product-description">${esc(product.summary || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
+        return `<article class="product-card"><button type="button" class="product-image" data-product="${esc(product.id)}" aria-label="${esc(label)}"><img ${imageAttributes(product.mainImage, sizes)} alt="${esc(product.name)}" width="600" height="680" loading="lazy" fetchpriority="low" decoding="async">${LaurenUI.moreDesigns(images)}<span class="product-open">${icon('diagonal')}</span></button><div class="product-meta"><h3><button type="button" class="product-name" data-product="${esc(product.id)}">${esc(product.name)}</button></h3><p class="product-price">${quoted ? 'A tu medida' : priceLabel(product)}</p></div>${compact ? (product.summary ? `<p class="product-description">${esc(product.summary)}</p>` : '') : `<p class="product-description">${esc(product.summary || product.description)}</p>`}<button type="button" class="text-link" data-product="${esc(product.id)}">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</button></article>`;
     }
     // Cada sección lista sus categorías (`data-category`); la portada, los destacados (`data-featured`).
     const productsFor = grid => 'featured' in grid.dataset ? Catalog.featured() : Catalog.all().filter(p => grid.dataset.category.split(',').map(c => c.trim()).includes(p.category));
@@ -67,6 +68,13 @@
         });
         render();
         catalogRenders.push(() => { products = productsFor(grid); render(); });
+    });
+    // «Un sabor para recordar» (Tortas): el HTML trae la lista del catálogo del repositorio; si llega otra versión
+    // publicada, se vuelve a pintar con sus bizcochos y rellenos (js/flavors.js).
+    const flavors = document.querySelector('[data-flavors]');
+    if (flavors && window.LaurenFlavors) catalogRenders.push(() => {
+        flavors.innerHTML = LaurenFlavors.html(imageAttributes, esc);
+        document.querySelectorAll('[data-flavor-intro]').forEach(element => { element.textContent = LaurenFlavors.intro(); });
     });
     // Importes dentro de textos («desde $58.000»): salen del catálogo vigente, no del HTML.
     const renderPrices = () => document.querySelectorAll('[data-price]').forEach(element => { element.textContent = Catalog.priceRefText(element.dataset.price); });

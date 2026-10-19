@@ -12,7 +12,7 @@
 | `group` | No | Filtro dentro de la página: `cajas`, `especiales` (Alfajores); `osos`, `mix`, `golden` (Detalles) |
 | `visible` | Sí | `false` oculta el producto: no se muestra, no se pide y no entra al SEO |
 | `featured` | No | Solo tortas: `true` la muestra en «Una torta tan única como tu celebración» de la portada (cuatro como máximo; si faltan, se completan con las siguientes tortas). En otras secciones no tiene efecto |
-| `summary` | No | Frase corta de la tarjeta; sin ella se usa `description` |
+| `summary` | No | Frase corta de la tarjeta; sin ella se usa `description`. En las tarjetas de torta (compactas) solo se muestra si existe, nunca la descripción |
 | `description` | Sí | Texto de la ficha |
 | `includes` | No | Lista «Qué incluye» |
 | `notes` | No | Aclaraciones bajo las opciones de la ficha |
@@ -24,7 +24,7 @@
 | `icon` | No | Solo extras: icono de `LaurenIcons` |
 | `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
-| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva |
+| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración: así se bloquea la frase en una torta |
 | `basedOn` | No | Torta (`torta-vintage`, `torta-sencilla`) de la que toma lo que no define: opciones, precios, notas, textos, mínimo. No se repite en el JSON-LD |
 
 ## Opciones y precios
@@ -37,7 +37,14 @@ Cada opción tiene `id`, `label`, `type` (`radio`, `select` o `toggle`), `requir
 - `multiplier: true` multiplica el precio por el número elegido (galletas individuales × cantidad).
 - `dependsOn` + `showWhen`: la opción solo aparece con esa elección de otra opción.
 - `toggle` con `priceModifier`: suma ese valor al marcarse.
-- `multiple` + `maxSelection`: elección de varios valores (colores), sin precio.
+- `multiple` + `maxSelection`: elección de varios valores (colores).
+- **Costo adicional por elección:** `extra` en una elección suma ese valor al total (rellenos premium). Sin `extra`, no cambia el precio. Vale también en elecciones múltiples: cada valor marcado suma el suyo. `extra: null` = esa elección se cotiza por WhatsApp.
+
+### Bizcochos, rellenos y adicionales de torta
+
+- Las opciones `sabor` y `relleno` son las mismas en todas las tortas: el centro de control las edita una sola vez («Sabores y adicionales») y las copia en Torta Vintage, Torta Sencilla y cada torta con precios propios.
+- «Un sabor para recordar» (/tortas/) sale de esa misma lista: `js/flavors.js` la pinta en el navegador y `scripts/seo.mjs` la escribe en el HTML publicado. Cada bizcocho o relleno usa su foto si la hay (por valor o por nombre: «Mermelada de frutos rojos» usa la de frutos rojos; la lista de fotos está en `PHOTOS`); los que no tienen foto van en «También: …». Para darle foto a uno nuevo, se agrega la foto a `assets/propuestas-fotograficas/` y una línea a `PHOTOS`.
+- Los adicionales (`category: "extras"`) se eligen en la ficha de cada torta: `js/catalog-model.js` añade a toda torta la opción `adicionales` (varios, opcional) con los adicionales visibles. Cada uno suma su `price`. Un adicional sin precio, o con rango (`priceMax`), se puede marcar pero deja la torta en «Consultar por WhatsApp». El «Desde» de la tarjeta no cambia por los adicionales.
 
 La tarjeta calcula sola su precio: «$22.000» si es único, «Desde $65.000» si varía, el rango en los extras y «Cotiza por WhatsApp» si no hay ninguno.
 

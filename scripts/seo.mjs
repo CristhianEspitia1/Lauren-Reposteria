@@ -21,8 +21,8 @@ const read = file => readFileSync(path.join(root, file), 'utf8');
 const context = { console, Intl, URL };
 context.window = context;
 vm.createContext(context);
-for (const file of ['catalog-data', 'catalog-model', 'gallery-data']) vm.runInContext(read(`js/${file}.js`), context);
-const { Catalog, galleryData } = context;
+for (const file of ['catalog-data', 'catalog-model', 'gallery-data', 'image-variants', 'ui', 'flavors']) vm.runInContext(read(`js/${file}.js`), context);
+const { Catalog, galleryData, LaurenUI, LaurenFlavors } = context;
 const money = Catalog.money;
 
 export const BUSINESS = {
@@ -46,6 +46,10 @@ const lowest = categories => Catalog.priceRef('@' + categories.join(','));
 
 /** Importes dentro de los textos (`<span data-price="…">`): se escriben desde el catálogo vigente. */
 export const withPrices = html => html.replace(/(<span data-price="([^"]+)">)[^<]*(<\/span>)/g, (_, open, ref, close) => open + Catalog.priceRefText(ref) + close);
+/** «Un sabor para recordar» (Tortas): bizcochos y rellenos del catálogo vigente (js/flavors.js), igual que en el navegador. */
+export const withFlavors = html => html
+    .replace(/(<p data-flavor-intro>)[^<]*(<\/p>)/, (_, open, close) => open + LaurenUI.escape(LaurenFlavors.intro()) + close)
+    .replace(/(<div data-flavors>\n)[\s\S]*?(<\/div><!-- \/sabores -->)/, (_, open, close) => open + LaurenFlavors.html(LaurenUI.imageAttributes, LaurenUI.escape).replace(/></g, '>\n<') + '\n' + close);
 
 export const PAGES = [
     {
@@ -300,7 +304,7 @@ export const withAssetVersions = html => html.replace(/(\s(?:href|src)=")\/((?:c
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const check = process.argv.includes('--check');
-    const pages = PAGES.map(page => ({ page, html: withPrices(read(page.file)) }));
+    const pages = PAGES.map(page => ({ page, html: withFlavors(withPrices(read(page.file))) }));
     const outputs = new Map();
     for (const { page, html } of pages) {
         if (!existsSync(path.join(root, socialImage(page)))) throw new Error(`Falta ${socialImage(page)}: ejecutar node scripts/social-images.mjs`);

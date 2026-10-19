@@ -93,9 +93,30 @@
                 const values = new Set(option.choices?.filter(c => c.value).map(c => c.value));
                 for (const choice of option.choices || []) {
                     choice.label = String(choice.label || '').trim();
+                    // Costo adicional vacío = sin costo.
+                    if (Object.hasOwn(choice, 'extra') && (choice.extra === null || choice.extra === undefined)) delete choice.extra;
                     if (!choice.value) { choice.value = unique(slug(choice.label) || 'opcion', values); values.add(choice.value); }
                 }
             }
+            return product;
+        });
+    }
+    /**
+     * Bizcochos y rellenos son los mismos en todas las tortas: se toman de la primera torta que fija precios
+     * (Torta Vintage) y el panel los copia en todas las que tienen opciones propias. Cada elección puede
+     * llevar `extra`, lo que suma al total (relleno premium); sin él, no cuesta más.
+     */
+    const SHARED = ['sabor', 'relleno'];
+    function sharedGroups(products) {
+        const source = products.find(p => p.category === 'tortas' && !p.basedOn && p.options?.some(o => SHARED.includes(o.id)));
+        return Object.fromEntries(SHARED.map(id => [id, source?.options.find(o => o.id === id)]).filter(([, option]) => option));
+    }
+    function applyShared(products, groups) {
+        return products.map(source => {
+            if (source.category !== 'tortas' || !Array.isArray(source.options)) return source;
+            const product = clone(source);
+            const missing = SHARED.filter(id => groups[id] && !product.options.some(o => o.id === id)).map(id => clone(groups[id]));
+            product.options = [...missing, ...product.options.map(o => groups[o.id] ? { ...o, label: groups[o.id].label, choices: clone(groups[o.id].choices) } : o)];
             return product;
         });
     }
@@ -140,6 +161,7 @@
                 for (const choice of option.choices || []) {
                     if (!String(choice.label || '').trim()) errors.push(`${name} · ${option.label}: hay una opción sin nombre.`);
                     money(choice.price, `${name} · ${choice.label || option.label}`);
+                    money(choice.extra, `${name} · ${choice.label || option.label} (costo adicional)`, '«Sin costo»');
                 }
             }
         }
@@ -159,5 +181,5 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
+    window.AdminModel = { SHARED, sharedGroups, applyShared, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
 })();

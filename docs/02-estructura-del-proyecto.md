@@ -22,6 +22,7 @@ js/cart-manager.js / cart-ui.js   Estado y presentación del pedido
 js/quick-view-modal.js            Configurador de producto
 js/gallery-data.js / site.js      Fotografías e interacción del sitio
 js/image-variants.js             Anchos de las fotos para srcset (generado)
+js/flavors.js                    «Un sabor para recordar» (Tortas) desde el catálogo
 assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
 assets/optimized/                Video de la historia y su poster
@@ -33,6 +34,8 @@ js/firebase-config.js / catalog-live.js  Proyecto de Firebase y lectura en vivo 
 worker/fotos/                    Cloudflare Worker que guarda y sirve las fotos subidas desde /admin/ (no se publica en Pages)
 .github/workflows/catalogo.yml   Trae cada hora el catálogo publicado y regenera el SEO
 tests/                           Pruebas de lógica y de SEO (Node)
+tests/fixtures/catalog-data.js   Catálogo de prueba fijo para las reglas de precios y del panel
+tests/catalogo-real.test.mjs     Reglas que debe cumplir el catálogo real, sin importes fijos
 docs/ / Guias/                   Documentación y mantenimiento
 ```
 

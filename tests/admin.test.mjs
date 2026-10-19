@@ -5,7 +5,9 @@ import fs from 'node:fs';
 const context = { console, Intl, URL };
 context.window = context;
 vm.createContext(context);
-for (const file of ['catalog-data', 'catalog-model', 'admin-model']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
+// Reglas con datos conocidos: catálogo de prueba fijo (el real lo revisa tests/catalogo-real.test.mjs).
+vm.runInContext(fs.readFileSync(new URL('./fixtures/catalog-data.js', import.meta.url), 'utf8'), context);
+for (const file of ['catalog-model', 'admin-model']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
 const { AdminModel: M, Catalog } = context;
 const products = () => Object.values(M.clone(context.catalogData));
 
@@ -196,4 +198,25 @@ test('Con menos de cuatro tortas marcadas, la portada se completa con las siguie
     const previous = context.catalogData;
     context.catalogData = M.toCatalog(list);
     try { assert.equal(Catalog.featured().map(p => p.id).join(), [tortas[5], ...tortas.slice(0, 3)].map(p => p.id).join()); } finally { context.catalogData = previous; }
+});
+
+test('Bizcochos y rellenos se copian en todas las tortas con opciones propias', () => {
+    const list = products();
+    const groups = M.clone(M.sharedGroups(list));
+    assert.deepEqual(Object.keys(groups), ['sabor', 'relleno']);
+    groups.relleno.choices.push({ value: '', label: 'Pistacho', extra: 12000 });
+    const own = list.find(p => p.basedOn && Array.isArray(p.options));
+    const updated = M.applyShared(list, groups);
+    for (const p of updated.filter(p => p.category === 'tortas' && Array.isArray(p.options))) assert.equal(p.options.find(o => o.id === 'relleno').choices.at(-1).label, 'Pistacho', p.id);
+    if (own) assert.ok(updated.find(p => p.id === own.id).options.some(o => o.id === 'relleno'));
+    assert.equal(updated.filter(p => p.category !== 'tortas').every((p, i) => p === list.filter(x => x.category !== 'tortas')[i]), true, 'los demás productos no cambian');
+    assert.equal(M.validate(updated).length, 0);
+    const normalized = M.normalize(updated).find(p => p.id === 'torta-vintage').options.find(o => o.id === 'relleno').choices.at(-1);
+    assert.equal(normalized.value, 'pistacho');
+    assert.equal(normalized.extra, 12000);
+    // Costo vacío = sin costo; $0 no se acepta.
+    groups.relleno.choices.at(-1).extra = null;
+    assert.equal(Object.hasOwn(M.normalize(M.applyShared(list, groups)).find(p => p.id === 'torta-vintage').options.find(o => o.id === 'relleno').choices.at(-1), 'extra'), false);
+    groups.relleno.choices.at(-1).extra = 0;
+    assert.match(M.validate(M.applyShared(list, groups)).join(), /costo adicional/);
 });
