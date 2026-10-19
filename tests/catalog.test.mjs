@@ -73,12 +73,14 @@ test('El carrito fusiona equivalentes, conserva personalizaciones y permite edit
     assert.equal(cart.addItem(item('caja-x6')), true);
     assert.equal(cart.addItem(item('caja-x6')), true);
     assert.equal(cart.getItems().length, 1); assert.equal(cart.getTotalItems(), 2);
-    assert.equal(cart.addItem(item('torta-vintage', {}, { mensaje: 'Ana' })), true);
-    assert.equal(cart.addItem(item('torta-vintage', {}, { mensaje: 'Luis' })), true);
+    assert.equal(cart.addItem(item('alfajor-personalizado', {}, { tema: 'Ana' })), true);
+    assert.equal(cart.addItem(item('alfajor-personalizado', {}, { tema: 'Luis' })), true);
     assert.equal(cart.getItems().length, 3);
     const edits = item('torta-vintage', { porciones: '8-10' }, { mensaje: 'Ana' });
     assert.equal(cart.addItem(edits, 1), true);
     assert.equal(cart.getItems()[1].price, 105000);
+    assert.deepEqual({ ...cart.getItems()[1].personal }, {}, 'el mensaje de la torta no se escribe en la web: se acuerda en la asesoría');
+    assert.equal(Catalog.fields(Catalog.get('torta-vintage'), selected('torta-vintage')).length, 0);
     assert.equal(cart.getTotalItems(), 4);
     const detached = cart.getItems(); detached[0].quantity = 99;
     assert.equal(cart.getItems()[0].quantity, 2);
@@ -104,8 +106,8 @@ test('No ejecuta texto de personalización ni rutas inyectadas', () => {
     assert.equal(LaurenUI.imagePath('javascript:alert(1)'), '/assets/brand/lauren-isotipo.svg');
     assert.equal(LaurenUI.imagePath('/assets/optimized/../../secret.webp'), '/assets/brand/lauren-isotipo.svg');
     assert.equal(LaurenUI.imagePath('//evil.example/assets/optimized/x.webp'), '/assets/brand/lauren-isotipo.svg');
-    cart.clearCart(); cart.addItem(item('torta-vintage', {}, { mensaje: payload }));
-    assert.equal(cart.getItems()[0].personal.mensaje, payload);
+    cart.clearCart(); cart.addItem(item('alfajor-personalizado', {}, { tema: payload }));
+    assert.equal(cart.getItems()[0].personal.tema, payload);
     assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(payload));
 });
 test('Mensaje incluye selección, cantidades, personalización y subtotal; no confirma una compra', () => {

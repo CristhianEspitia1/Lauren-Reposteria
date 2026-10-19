@@ -148,7 +148,10 @@
         return Number.isSafeInteger(value) && value > 0 ? value : null;
     }
     const priceRefText = ref => { const value = priceRef(ref); return value === null ? 'precio a consultar' : money(value); };
+    // El mensaje o las letras de una torta no se escriben en la web: se acuerdan con Lauren en la asesoría.
+    const TORTA_MESSAGE = 'El mensaje o las letras de tu torta los acordamos contigo en la asesoría por WhatsApp.';
     function fields(product, selection) {
+        if (product.category === 'tortas') return [];
         const config = product.personalization;
         if (!config?.enabled || (config.dependsOn && !selection[config.dependsOn])) return [];
         return config.fields || [{ ...config, id: config.field || 'mensaje' }];
@@ -195,5 +198,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
     const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { ADDONS, sizeOption, extraOf, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { TORTA_MESSAGE, ADDONS, sizeOption, extraOf, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

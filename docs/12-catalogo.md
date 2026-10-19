@@ -25,7 +25,7 @@
 | `icon` | No | Solo extras: icono de `LaurenIcons` |
 | `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
-| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración: así se bloquea la frase en una torta |
+| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración. En las tortas no se usa: el mensaje se acuerda en la asesoría (`Catalog.fields` no devuelve campos para ellas) |
 | `basedOn` | No | Formato anterior: torta de la que tomaba lo que no definía. El centro de control lo copia en cada torta al abrirse (cada grupo es independiente); la web aún lo lee mientras no se publique |
 
 ## Opciones y precios

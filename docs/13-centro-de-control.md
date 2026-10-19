@@ -27,7 +27,7 @@ Reglas que conviene saber:
 - **Vitrina de adicionales:** los productos de «Vitrina de adicionales (Tortas)» se muestran en «Adicionales para tu torta» de /tortas/, con un precio en texto libre («De $2.000 a $5.000 según el tamaño»). Son de muestra: lo que se cobra en cada torta va en sus «Adicionales».
 - **Nada se rompe al agregar o quitar:** bizcochos, rellenos y adicionales se acomodan solos en filas parejas en la web, y los textos largos se parten dentro de su espacio.
 - **Textos de plantilla:** un producto nuevo trae escritos los textos del primero de su sección (descripción, qué incluye, notas, frase); se editan, se completan o se borran.
-- **Frase en la torta:** en la ficha de cada torta, «Lo que elige el cliente» tiene la casilla «Se puede escribir una frase o letras en la torta». Desmarcada, la ficha de la web no ofrece escribir un mensaje en esa torta. Las tortas que toman los precios de otra siguen lo de esa torta hasta que cambies su casilla.
+- **Mensaje de la torta:** no se escribe en la web; la ficha de cada torta dice que se acuerda en la asesoría por WhatsApp. El panel ya no tiene la casilla de la frase.
 - **Frase corta de la tarjeta:** en las tortas aparece bajo el nombre; si la dejas vacía, la tarjeta muestra solo el nombre y el precio (no la descripción larga).
 - Los adicionales de la vitrina no llevan fotos: el panel y la web los muestran con su icono.
 - **Historial:** cada publicación guarda una copia en Firestore (`historial`), con el correo de quien publicó, para recuperar una versión anterior si hace falta. Nadie puede cambiarla ni borrarla, ni siquiera un administrador.

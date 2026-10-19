@@ -64,7 +64,7 @@ export const PAGES = [
         key: 'tortas', file: 'tortas/index.html', path: '/tortas/', type: 'CollectionPage', name: 'Tortas',
         section: 'Tortas personalizadas',
         title: 'Tortas personalizadas en Medellín | Lauren Repostería',
-        description: () => `Tortas personalizadas en Medellín desde ${money(lowest(['tortas']))}: vintage o sencillas, de 4 a 30 porciones. Elige bizcocho, relleno y mensaje; pide por WhatsApp.`,
+        description: () => `Tortas personalizadas en Medellín desde ${money(lowest(['tortas']))}: vintage o sencillas, de 4 a 30 porciones. Elige bizcocho, relleno y adicionales; pide por WhatsApp.`,
         imageAlt: 'Torta de dos pisos con rosas y mariposas doradas de Lauren Repostería',
         categories: ['tortas', 'extras'], gallery: 'tortas'
     },

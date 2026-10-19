@@ -7,6 +7,12 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — El mensaje de la torta se acuerda en la asesoría]
+
+- La ficha de las tortas ya no tiene campo para escribir el mensaje: dice «El mensaje o las letras de tu torta los acordamos contigo en la asesoría por WhatsApp.». Se quita la casilla de la frase del panel. Los alfajores y detalles personalizados conservan sus campos.
+- Textos al día: el paso «Dale tu toque» de la portada, la pregunta «¿Puedo personalizar mi pedido?» de Tortas y la descripción de Tortas para Google y al compartir.
+- Manual de marca 3.6.
+
 ## [2026-10-19 — Avisos y preguntas antes de lo delicado en el centro de control]
 
 - Botón «Avisos» con su número: reúne lo que impide publicar, lo que conviene revisar (un aviso por producto y por tema) y lo que no se permitió o falló mientras se usaba el panel, cada uno con «Ir a arreglarlo». Si algo impide publicar, «Publicar cambios» abre los avisos; un error inesperado del panel también queda anotado.

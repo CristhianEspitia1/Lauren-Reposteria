@@ -149,6 +149,7 @@
             return `<fieldset class="option-group" data-option-group="${esc(option.id)}"><legend>${esc(option.label)}${!option.required ? '<span class="field-optional">Opcional</span>' : ''}</legend>${controls}${note ? `<p class="field-note">${esc(note)}</p>` : ''}<p id="${errorId}" class="field-error" hidden></p></fieldset>`;
         }
         personalHTML() {
+            if (this.product.category === 'tortas') return `<p class="field-note">${esc(Catalog.TORTA_MESSAGE)}</p>`;
             return Catalog.fields(this.product, this.selection).map(field => `<div class="personal-field" data-personal-field="${esc(field.id)}"><label for="personal-${esc(field.id)}">${esc(field.label)}${!field.required ? '<span class="field-optional">Opcional</span>' : ''}</label><input id="personal-${esc(field.id)}" data-personal="${esc(field.id)}" type="text" value="${esc(this.personal[field.id] || '')}" maxlength="${field.maxLength || 100}" placeholder="${esc(field.placeholder || '')}" ${field.required ? 'aria-required="true"' : ''} aria-describedby="personal-error-${esc(field.id)}"><p class="character-count" data-counter="${esc(field.id)}">${String(this.personal[field.id] || '').length} / ${field.maxLength || 100}</p>${field.note ? `<p class="field-note">${esc(field.note)}</p>` : ''}<p id="personal-error-${esc(field.id)}" class="field-error" hidden></p></div>`).join('');
         }
         bindPersonal() {

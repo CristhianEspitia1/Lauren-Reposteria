@@ -543,19 +543,6 @@ function pricesHTML(p) {
 // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
 const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
 
-// Mensaje en la torta: cada torta lo permite o no, y su texto se edita aquí.
-const PHRASE = { enabled: true, field: 'mensaje', label: 'Mensaje personalizado para la torta', placeholder: 'Ej.: Feliz cumpleaños', maxLength: 40, required: false };
-function setPhrase(p, on) {
-    p.personalization = { ...M.clone(p.personalization || PHRASE), enabled: on };
-}
-function phraseHTML(p) {
-    const config = p.personalization;
-    const on = config?.enabled === true;
-    const fields = on ? (config.fields || [config]) : [];
-    return `<div class="admin-option">${check('Se puede escribir una frase o letras en la torta', 'phrase', on)}
-        <p class="field-note">${on ? `En la ficha, el cliente escribe ${fields.map(f => `«${esc(f.label)}» (hasta ${f.maxLength || 100} letras)`).join(', ')}.` : 'La ficha de esta torta no ofrece escribir un mensaje.'}</p></div>`;
-}
-
 // Lo que elige el cliente: sabores, rellenos, colores y adicionales, cada uno con su costo si suma al total
 // (por tamaño cuando el producto tiene porciones o presentaciones). Todo es de este producto y nada se comparte.
 function choicesHTML(p) {
@@ -563,7 +550,7 @@ function choicesHTML(p) {
     const addons = (p.options || []).some(o => o.addons);
     return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
         <p class="field-note">Lo que el cliente puede escoger en este producto. Si algo cuesta más, escribe cuánto suma${M.sizeOf(p) ? ' en cada tamaño' : ''}.</p>
-        ${p.category === 'tortas' ? phraseHTML(p) : ''}
+        ${p.category === 'tortas' ? '<p class="field-note">El mensaje o las letras de la torta no se escriben en la web: se acuerdan con el cliente en la asesoría.</p>' : ''}
         ${groupsHTML(p, false)}
         <p class="admin-add-row"><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button>${addons ? '' : `<button type="button" class="admin-add" data-action="add-addons">${icon('plus')} Agregar adicionales</button>`}</p></fieldset>`;
 }
@@ -737,37 +724,24 @@ editor.addEventListener('input', event => {
     if (!input) return;
     const value = readInput(input);
     const path = input.dataset.path;
-    // Pasar un producto a otra página de la web o quitarle el mensaje: se pregunta antes.
-    if ((path === 'category' && editingId && value !== edit.category) || (path === 'phrase' && !value)) {
+    // Pasar un producto a otra página de la web: se pregunta antes.
+    if (path === 'category' && editingId && value !== edit.category) {
         const before = edit.category;
-        askConfirm(path === 'category' ? {
+        askConfirm({
             title: `¿Pasar <em>${esc(edit.name?.trim() || 'este producto')}</em> a ${esc(sectionName(value))}?`,
             body: `<p>Deja de verse en ${esc(sectionName(before))} y aparece en la página de ${esc(sectionName(value))} cuando guardes y publiques.</p>`,
             action: 'Pasarlo',
             cancel: 'Dejarlo donde está'
-        } : {
-            title: `¿Quitar el mensaje de <em>${esc(edit.name?.trim() || 'esta torta')}</em>?`,
-            body: '<p>El cliente ya no podrá escribir una frase ni letras para esta torta. Puedes volver a marcarlo cuando quieras.</p>',
-            action: 'Quitarlo',
-            cancel: 'Dejarlo'
         }).then(ok => {
             if (ok) return applyInput(path, value, input);
-            if (path === 'category') { const radio = editor.querySelector(`[data-path="category"][value="${CSS.escape(before)}"]`); if (radio) radio.checked = true; }
-            else input.checked = true;
+            const radio = editor.querySelector(`[data-path="category"][value="${CSS.escape(before)}"]`);
+            if (radio) radio.checked = true;
         });
         return;
     }
     applyInput(path, value, input);
 });
 function applyInput(path, value, input) {
-    if (path === 'phrase') {
-        setPhrase(edit, value);
-        const scroll = editor.querySelector('.dialog-scroll').scrollTop;
-        renderEditor();
-        editor.querySelector('.dialog-scroll').scrollTop = scroll;
-        editor.querySelector('[data-path="phrase"]').focus({ preventScroll: true });
-        return;
-    }
     setPath(edit, path, value);
     if (path === 'name') editor.querySelector('#editorTitle').textContent = value || 'Sin nombre';
     const preview = editor.querySelector('#pricePreview');
