@@ -239,3 +239,23 @@ test('Costos por tamaño: vacío es sin costo (en adicionales, cotiza) y solo qu
     assert.deepEqual([...M.validate(list)], []);
     assert.deepEqual([...M.unusedUploads(new Set([relleno.image]), list)], [], 'la foto de un sabor no se borra como «sin usar»');
 });
+
+test('Avisos: lo que impide publicar va a su producto y lo que conviene revisar se dice en palabras sencillas', () => {
+    const list = M.migrate(products());
+    assert.deepEqual([...M.problems(list)], []);
+    const torta = list.find(p => p.id === 'torta-vintage');
+    torta.options.find(o => o.id === 'porciones').choices[0].price = 0;
+    const [problem] = M.problems(list);
+    assert.equal(problem.id, 'torta-vintage');
+    assert.match(problem.text, /no puede ser \$0/);
+    torta.options.find(o => o.id === 'porciones').choices[0].price = null;
+    const sizes = torta.options.find(o => o.id === 'porciones').choices;
+    const addon = torta.options.find(o => o.id === 'adicionales').choices[0];
+    addon.extra = { [sizes[0].value]: 2000 };
+    const warnings = M.warnings(list).filter(w => w.id === 'torta-vintage').map(w => w.text);
+    assert.ok(warnings.some(t => t.includes(`«${sizes[0].label}» no tiene precio; se cotiza por WhatsApp.`)), warnings.join('\n'));
+    assert.ok(warnings.some(t => t.includes(`adicionales sin precio para algún tamaño: «${addon.label}» en ${sizes[1].label}`)), warnings.join('\n'));
+    assert.ok(warnings.length <= 3, 'un aviso por tema, no uno por opción');
+    const vitrina = list.find(p => p.category === 'extras' && p.price === null);
+    assert.ok(M.warnings(list).some(w => w.id === vitrina.id && w.text.includes('Cotiza por WhatsApp')));
+});

@@ -236,7 +236,7 @@ async function loadCatalog() {
         loadedJson = published.exists() ? published.data().json : null;
         original = loadedJson ? JSON.parse(loadedJson) : M.clone(snapshot);
     } catch {
-        LaurenUI.toast('No pudimos leer lo publicado. Revisa tu conexión y recarga la página.');
+        warn('No pudimos leer lo que está publicado. Revisa tu conexión y recarga la página.');
         loadedJson = undefined;
         original = M.clone(snapshot);
     }
@@ -293,24 +293,34 @@ function render() {
     $('saveBar').hidden = total === 0;
     $('saveCount').textContent = total === 1 ? '1 cambio sin publicar.' : `${total} cambios sin publicar.`;
     $('saveHint').textContent = total === 1 ? 'Aún no se ve en la web.' : 'Aún no se ven en la web.';
+    updateNotices();
 }
 $('list').addEventListener('change', event => {
     const homeInput = event.target.closest('[data-home]');
     if (homeInput) return toggleHome(homeInput);
     const input = event.target.closest('[data-visible]');
-    if (!input) return;
+    if (input) setVisible(input);
+});
+// Ocultar un producto pregunta antes: deja de verse en la web, aunque no se borra.
+async function setVisible(input) {
     const index = products.findIndex(p => p.id === input.dataset.visible);
+    if (!input.checked && !(await askConfirm({
+        title: `¿Ocultar <em>${esc(products[index].name || 'este producto')}</em>?`,
+        body: '<p>Cuando publiques, deja de verse en la web, no se puede pedir y sale de Google. No se borra: lo vuelves a mostrar marcando «Visible».</p>',
+        action: 'Ocultarlo',
+        cancel: 'Dejarlo visible'
+    }))) { input.checked = true; return; }
     products[index] = { ...products[index], visible: input.checked };
     render();
     LaurenUI.toast(input.checked ? 'Se verá en la web cuando publiques.' : 'Quedará oculto cuando publiques.');
-});
+}
 // Botón «Portada» de cada torta: hasta cuatro; con la portada llena, avisa cuáles están y no marca una quinta.
 function toggleHome(input) {
     const index = products.findIndex(p => p.id === input.dataset.home);
     const others = products.filter(p => p.id !== input.dataset.home && onHome(p));
     if (input.checked && others.length >= window.Catalog.FEATURED) {
         input.checked = false;
-        LaurenUI.toast(`La portada ya tiene sus ${window.Catalog.FEATURED} tortas. Desmarca una para poner esta.`);
+        warn(`La portada ya tiene sus ${window.Catalog.FEATURED} tortas. Desmarca una para poner esta.`);
         return;
     }
     // La marca vuelve a quedar como estaba publicada (mismo lugar o sin ella), para no contar un cambio que no lo es.
@@ -341,17 +351,22 @@ window.addEventListener('beforeunload', event => { if (hasChanges()) event.preve
 /* ---------- Publicar ---------- */
 $('publish').addEventListener('click', async () => {
     if (preview) { LaurenUI.toast('Vista previa: aquí no se publica.'); return; }
-    const errors = M.validate(products);
-    if (errors.length) {
-        await askConfirm({
-            title: 'Antes de publicar, <em>revisa esto</em>',
-            body: `<ul class="admin-confirm-notes">${errors.slice(0, 8).map(error => `<li>${esc(error)}</li>`).join('')}</ul>${errors.length > 8 ? `<p>Y ${errors.length - 8} más.</p>` : ''}<p class="field-note">Corrígelo en la ficha de cada producto y vuelve a publicar.</p>`,
-            action: 'Entendido',
-            cancel: null
-        });
+    // Si algo impide publicar, se abren los avisos con «Ir a arreglarlo» en cada uno.
+    if (M.validate(products).length) {
+        LaurenUI.toast('Antes de publicar falta arreglar algo. Te lo mostramos en «Avisos».');
+        $('noticesButton').click();
         return;
     }
-    if (loadedJson === undefined) { LaurenUI.toast('No pudimos leer lo publicado. Recarga la página antes de publicar.'); return; }
+    if (loadedJson === undefined) { warn('No pudimos leer lo que está publicado. Recarga la página antes de publicar.'); return; }
+    const { changed, removed, total } = M.changes(original, products);
+    const nameOf = id => products.find(p => p.id === id)?.name || original[id]?.name || id;
+    const pending = M.warnings(products).length;
+    if (!(await askConfirm({
+        title: `¿Publicar <em>${total === 1 ? 'tu cambio' : `tus ${total} cambios`}</em>?`,
+        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
+        action: 'Publicar',
+        cancel: 'Todavía no'
+    }))) return;
     const button = $('publish'); button.disabled = true;
     try {
         const data = M.toCatalog(M.normalize(products));
@@ -370,11 +385,79 @@ $('publish').addEventListener('click', async () => {
         const erased = await erasePending();
         LaurenUI.toast(erased ? `Listo. La web ya muestra tus cambios y borramos ${erased === 1 ? 'la foto que sacaste' : `las ${erased} fotos que sacaste`}.` : 'Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
     } catch (error) {
-        if (error.code === 'conflict') LaurenUI.toast('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
-        else if (error.code === 'permission-denied') { LaurenUI.toast('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
-        else LaurenUI.toast('No pudimos publicar. Revisa tu conexión e inténtalo de nuevo.');
+        if (error.code === 'conflict') warn('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
+        else if (error.code === 'permission-denied') { warn('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
+        else warn('No pudimos publicar. Revisa tu conexión e inténtalo de nuevo.');
     } finally { button.disabled = false; }
 });
+
+/* ---------- Avisos: lo que falta, lo que conviene revisar y lo que no se pudo hacer ---------- */
+// «Avisos» reúne en una lista sencilla lo que impide publicar, lo que conviene revisar y lo que pasó (algo que no se
+// permite o una falla), cada uno con «Ir a arreglarlo» cuando lleva a un producto. El aviso rápido sale igual al momento.
+const noticesDialog = $('notices');
+LaurenUI.dialogEvents(noticesDialog);
+const events = [];
+let unseen = 0;
+/** Algo que no se permite o que falló: aviso rápido y queda anotado en «Avisos». */
+function warn(text, id = null) {
+    LaurenUI.toast(text);
+    events.unshift({ text, id, at: new Date() });
+    events.length = Math.min(events.length, 20);
+    unseen++;
+    updateNotices();
+}
+// Bizcochos y rellenos sin foto en «Un sabor para recordar» (salen de la primera torta visible).
+function flavorWarnings() {
+    const source = products.find(p => p.category === 'tortas' && p.visible !== false && p.options?.some(o => M.FLAVOR_PHOTOS.includes(o.id)));
+    if (!source || !window.LaurenFlavors) return [];
+    const groups = window.LaurenFlavors.groups();
+    const missing = M.FLAVOR_PHOTOS.flatMap(id => window.LaurenFlavors.withPhotos(id, groups[id]).filter(item => !item.photo).map(({ choice }) => `«${choice.label}»`));
+    if (!missing.length) return [];
+    const list = missing.join(', ').replace(/, ([^,]*)$/, ' y $1');
+    return [{ id: source.id, text: `${list} ${missing.length === 1 ? 'no tiene foto' : 'no tienen foto'}: en «Un sabor para recordar» ${missing.length === 1 ? 'sale' : 'salen'} solo en texto. Súbelas en la ficha de ${source.name}.` }];
+}
+function noticeList() {
+    useDraft();
+    return { problems: M.problems(products), warnings: [...M.warnings(products), ...flavorWarnings()] };
+}
+function updateNotices() {
+    const { problems, warnings } = noticeList();
+    const count = problems.length + warnings.length + unseen;
+    $('noticeCount').hidden = count === 0;
+    $('noticeCount').textContent = count;
+    $('noticesButton').setAttribute('aria-label', count ? `Avisos: ${count}` : 'Avisos: todo en orden');
+    if (noticesDialog.open) renderNotices();
+}
+function renderNotices() {
+    const { problems, warnings } = noticeList();
+    const time = at => at.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
+    const item = ({ id, text, at }) => `<li><span>${esc(text)}${at ? ` <small>${time(at)}</small>` : ''}</span>${id && products.some(p => p.id === id) ? `<button type="button" class="text-link" data-fix="${esc(id)}">Ir a arreglarlo ${icon('arrow')}</button>` : ''}</li>`;
+    const group = (title, note, list) => list.length ? `<section><p class="eyebrow">${title} · ${list.length}</p><p class="field-note">${note}</p><ul class="admin-notice-list">${list.map(item).join('')}</ul></section>` : '';
+    const empty = !problems.length && !warnings.length && !events.length;
+    noticesDialog.innerHTML = `<form method="dialog"><h2 id="noticesTitle">${empty ? 'Todo <em>en orden.</em>' : 'Tus <em>avisos.</em>'}</h2><div class="admin-confirm-body">
+        ${empty ? '<p>No hay nada que revisar. Cuando algo falte o no se pueda hacer, te lo contamos aquí.</p>' : ''}
+        ${group('Para poder publicar', 'Arregla esto antes de tocar «Publicar cambios».', problems)}
+        ${group('Para revisar', 'Se puede publicar así, pero quizá quieras completarlo.', warnings)}
+        ${group('Lo que pasó', 'Lo que no se pudo hacer mientras usabas el panel.', events)}
+        </div><div class="admin-confirm-actions"><button type="submit" class="btn" value="ok">Entendido ${icon('check')}</button></div></form>`;
+}
+$('noticesButton').addEventListener('click', () => {
+    unseen = 0;
+    renderNotices();
+    updateNotices();
+    noticesDialog.showModal();
+    noticesDialog.querySelector('[data-fix], [value="ok"]').focus();
+});
+noticesDialog.addEventListener('click', event => {
+    const fix = event.target.closest('[data-fix]');
+    if (!fix) return;
+    noticesDialog.close();
+    const product = products.find(p => p.id === fix.dataset.fix);
+    if (product) openEditor(product);
+});
+// Un error inesperado del panel también se cuenta, en palabras sencillas.
+addEventListener('error', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
+addEventListener('unhandledrejection', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
 
 /* ---------- Editor ---------- */
 const editor = $('editor');
@@ -385,8 +468,8 @@ let pristine = '';
 // Cerrar la ficha (X, «Cancelar», fondo o Esc): con cambios sin guardar, primero la confirmación de la marca.
 async function leaveEditor() {
     if (JSON.stringify(edit) !== pristine && !(await askConfirm({
-        title: '¿Salir sin <em>guardar</em>?',
-        body: '<p>Los cambios de esta ficha se pierden. Para conservarlos, toca «Guardar».</p>',
+        title: `¿Salir sin guardar <em>${esc(edit.name?.trim() || 'este producto')}</em>?`,
+        body: '<p>Lo que cambiaste en esta ficha se pierde. Para conservarlo, toca «Seguir editando» y luego «Guardar».</p>',
         action: 'Salir sin guardar',
         cancel: 'Seguir editando'
     }))) return;
@@ -468,12 +551,9 @@ function setPhrase(p, on) {
 function phraseHTML(p) {
     const config = p.personalization;
     const on = config?.enabled === true;
-    const single = on && !config.fields;
+    const fields = on ? (config.fields || [config]) : [];
     return `<div class="admin-option">${check('Se puede escribir una frase o letras en la torta', 'phrase', on)}
-        ${single ? `${field('Cómo se llama el campo (lo ve el cliente)', 'personalization.label', config.label, { area: true, attrs: 'rows="2" maxlength="80"' })}
-            <div class="admin-grid">${field('Ejemplo dentro del campo', 'personalization.placeholder', config.placeholder)}${field('Máximo de letras', 'personalization.maxLength', config.maxLength ?? 40, { type: 'number', attrs: 'min="1" max="200"' })}</div>
-            ${field('Aclaración bajo el campo', 'personalization.note', config.note, { area: true, attrs: 'rows="2" maxlength="160"', note: 'Opcional.' })}`
-        : `<p class="field-note">${on ? 'El cliente escribe su mensaje en la ficha.' : 'La ficha de esta torta no ofrece escribir un mensaje.'}</p>`}</div>`;
+        <p class="field-note">${on ? `En la ficha, el cliente escribe ${fields.map(f => `«${esc(f.label)}» (hasta ${f.maxLength || 100} letras)`).join(', ')}.` : 'La ficha de esta torta no ofrece escribir un mensaje.'}</p></div>`;
 }
 
 // Lo que elige el cliente: sabores, rellenos, colores y adicionales, cada uno con su costo si suma al total
@@ -482,7 +562,7 @@ function choicesHTML(p) {
     if (p.category === 'extras') return '';
     const addons = (p.options || []).some(o => o.addons);
     return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
-        <p class="field-note">Sabores, rellenos, colores y adicionales de este producto. Lo que cuesta más se suma al total que ve el cliente${M.sizeOf(p) ? ', según el tamaño que elija' : ''}.</p>
+        <p class="field-note">Lo que el cliente puede escoger en este producto. Si algo cuesta más, escribe cuánto suma${M.sizeOf(p) ? ' en cada tamaño' : ''}.</p>
         ${p.category === 'tortas' ? phraseHTML(p) : ''}
         ${groupsHTML(p, false)}
         <p class="admin-add-row"><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button>${addons ? '' : `<button type="button" class="admin-add" data-action="add-addons">${icon('plus')} Agregar adicionales</button>`}</p></fieldset>`;
@@ -526,9 +606,9 @@ function groupsHTML(p, pricedOnes) {
         } else {
             body = (option.choices || []).map((choice, c) => `<div class="admin-choice-card"><div class="admin-choice no-price">${label(c, choice)}${remove(c, choice)}</div>${option.multiple && !option.addons ? '' : extraHTML(p, option, o, choice, c)}${choicePhotoHTML(p, option, o, choice, c)}</div>`).join('');
         }
-        const note = pricedOnes ? '<p class="field-note">Un precio vacío muestra «Cotiza por WhatsApp» para esa opción.</p>'
-            : option.addons ? '<p class="field-note">El cliente marca los que quiera y cada uno suma su precio. Vacío: se puede marcar, pero la torta se consulta por WhatsApp.</p>'
-            : option.multiple ? '' : '<p class="field-note">Si una opción cuesta más (un relleno premium), escribe cuánto se suma. Vacío: no suma.</p>';
+        const note = pricedOnes ? '<p class="field-note">Si dejas un precio vacío, esa opción dice «Cotiza por WhatsApp».</p>'
+            : option.addons ? '<p class="field-note">Detalles que el cliente puede sumar a su torta. Escribe su precio; si lo dejas vacío, se puede marcar, pero esa torta se consulta por WhatsApp.</p>'
+            : option.multiple ? '' : '<p class="field-note">¿Alguna cuesta más, como un relleno premium? Escribe cuánto suma. Si lo dejas vacío, no suma nada.</p>';
         return `<div class="admin-option">${field('Título del grupo (lo ve el cliente)', `${path}.label`, option.label)}${depends}${multiplier}${note}${body}
             <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} ${option.addons ? 'Agregar adicional' : 'Agregar opción'}</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div></div>`;
     }).join('');
@@ -657,6 +737,29 @@ editor.addEventListener('input', event => {
     if (!input) return;
     const value = readInput(input);
     const path = input.dataset.path;
+    // Pasar un producto a otra página de la web o quitarle el mensaje: se pregunta antes.
+    if ((path === 'category' && editingId && value !== edit.category) || (path === 'phrase' && !value)) {
+        const before = edit.category;
+        askConfirm(path === 'category' ? {
+            title: `¿Pasar <em>${esc(edit.name?.trim() || 'este producto')}</em> a ${esc(sectionName(value))}?`,
+            body: `<p>Deja de verse en ${esc(sectionName(before))} y aparece en la página de ${esc(sectionName(value))} cuando guardes y publiques.</p>`,
+            action: 'Pasarlo',
+            cancel: 'Dejarlo donde está'
+        } : {
+            title: `¿Quitar el mensaje de <em>${esc(edit.name?.trim() || 'esta torta')}</em>?`,
+            body: '<p>El cliente ya no podrá escribir una frase ni letras para esta torta. Puedes volver a marcarlo cuando quieras.</p>',
+            action: 'Quitarlo',
+            cancel: 'Dejarlo'
+        }).then(ok => {
+            if (ok) return applyInput(path, value, input);
+            if (path === 'category') { const radio = editor.querySelector(`[data-path="category"][value="${CSS.escape(before)}"]`); if (radio) radio.checked = true; }
+            else input.checked = true;
+        });
+        return;
+    }
+    applyInput(path, value, input);
+});
+function applyInput(path, value, input) {
     if (path === 'phrase') {
         setPhrase(edit, value);
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
@@ -690,7 +793,7 @@ editor.addEventListener('input', event => {
         // El foco vuelve a la opción elegida: con el teclado, las flechas siguen cambiando de opción.
         chosen?.focus({ preventScroll: true });
     }
-});
+}
 
 // Flechas de la fila de fotos del editor: desplazan la fila casi un ancho completo.
 editor.addEventListener('click', event => {
@@ -744,12 +847,37 @@ editor.addEventListener('click', async event => {
         const choice = option.choices[Number(button.dataset.choice)];
         const sizes = M.sizeOf(edit)?.choices.map(c => c.value) || [];
         const first = typeof choice.extra === 'number' ? choice.extra : sizes.map(key => choice.extra?.[key]).find(v => typeof v === 'number');
-        if (first === undefined) { LaurenUI.toast('Escribe primero el valor de un tamaño.'); return; }
+        if (first === undefined) { warn('Para copiar el mismo valor, escribe primero el de un tamaño.', editingId); return; }
+        const others = sizes.map(key => typeof choice.extra === 'object' ? choice.extra?.[key] : choice.extra).filter(v => typeof v === 'number' && v !== first);
+        if (others.length && !(await askConfirm({
+            title: `¿Poner ${esc(window.Catalog.money(first))} en todos los tamaños de <em>${esc(choice.label || 'esta opción')}</em>?`,
+            body: '<p>Se reemplazan los valores que ya tenía en los otros tamaños.</p>',
+            action: 'Poner en todos',
+            cancel: 'Dejarlos como están'
+        }))) return;
         choice.extra = Object.fromEntries(sizes.map(key => [key, first]));
     }
-    if (action === 'choice-photo') { choicePhotoTarget = { o: Number(button.dataset.option), c: Number(button.dataset.choice) }; if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#choicePhotoUpload').click(); return; }
-    if (action === 'choice-photo-remove') delete option.choices[Number(button.dataset.choice)].image;
-    if (action === 'remove-choice') option.choices.splice(Number(button.dataset.choice), 1);
+    if (action === 'choice-photo') { choicePhotoTarget = { o: Number(button.dataset.option), c: Number(button.dataset.choice) }; if (uploading) warn('Espera a que terminen de subir las fotos.'); else editor.querySelector('#choicePhotoUpload').click(); return; }
+    if (action === 'choice-photo-remove') {
+        const choice = option.choices[Number(button.dataset.choice)];
+        if (!(await askConfirm({
+            title: `¿Quitar la foto de <em>${esc(choice.label || 'esta opción')}</em>?`,
+            body: '<p>En «Un sabor para recordar» se verá la foto de la web que le corresponda o, si no hay, solo su nombre. La foto queda en tus fotos subidas.</p>',
+            action: 'Quitar foto',
+            cancel: 'Dejarla'
+        }))) return;
+        delete choice.image;
+    }
+    if (action === 'remove-choice') {
+        const choice = option.choices[Number(button.dataset.choice)];
+        if (choice.label?.trim() && !(await askConfirm({
+            title: `¿Quitar <em>${esc(choice.label)}</em> de ${esc(option.label || 'este grupo')}?`,
+            body: '<p>Sale de este producto con su precio y su foto. Hasta que toques «Guardar», puedes volver atrás con «Cancelar».</p>',
+            action: 'Quitar',
+            cancel: 'Conservarla'
+        }))) return;
+        option.choices.splice(Number(button.dataset.choice), 1);
+    }
     if (action === 'remove-option') {
         if (!(await askConfirm({
             title: `¿Quitar el grupo <em>${esc(option.label || 'sin título')}</em>?`,
@@ -787,7 +915,7 @@ editor.addEventListener('click', async event => {
             : erase ? `Salió de ${where}. Se borra cuando publiques los cambios.` : `Salió de ${where}. Queda en tus fotos subidas, en «Agregar fotos de la web».`);
     }
     if (action === 'pick-photo') { openPicker(); return; }
-    if (action === 'upload-photo') { if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#photoUpload').click(); return; }
+    if (action === 'upload-photo') { if (uploading) warn('Espera a que terminen de subir las fotos.'); else editor.querySelector('#photoUpload').click(); return; }
     if (action === 'delete') {
         if (!(await askConfirm({
             title: `¿Eliminar <em>${esc(edit.name || 'este producto')}</em>?`,
@@ -804,8 +932,16 @@ editor.addEventListener('click', async event => {
     editor.querySelector('.dialog-scroll').scrollTop = scroll;
 });
 
-editor.addEventListener('submit', event => {
+editor.addEventListener('submit', async event => {
     event.preventDefault();
+    // Si a la ficha le falta algo que no impide guardar (un precio vacío), se dice antes de guardar.
+    const pending = M.warnings([edit]).map(w => w.text.replace(/^[^:]*: /, ''));
+    if (edit.name?.trim() && pending.length && !(await askConfirm({
+        title: `¿Guardar <em>${esc(edit.name.trim())}</em> así?`,
+        body: `<ul class="admin-confirm-notes">${pending.slice(0, 6).map(text => `<li>${esc(text)}</li>`).join('')}</ul>${pending.length > 6 ? `<p>Y ${pending.length - 6} más.</p>` : ''}<p class="field-note">Se puede guardar y publicar así; lo verás también en «Avisos».</p>`,
+        action: 'Guardar así',
+        cancel: 'Seguir editando'
+    }))) return;
     if (!edit.name?.trim()) { showError('editorError', 'Ponle un nombre al producto.'); editor.querySelector('#f-name')?.focus(); return; }
     showError('editorError', '');
     if (!editingId) {
@@ -824,7 +960,7 @@ editor.addEventListener('submit', event => {
     merges.forEach((merge, id) => { if (!staying.has(merge.main)) merges.delete(id); });
     moves.forEach((_, src) => { if (!staying.has(src)) moves.delete(src); });
     const errors = M.validate([edit], products.filter(p => p.id !== editingId && !merges.has(p.id))).filter(message => !message.includes('identificador'));
-    if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); warn(`No se guardó: ${errors[0]}`, editingId); return; }
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
     else {
@@ -921,7 +1057,7 @@ async function erasePending() {
 async function uploadPhotos(files) {
     if (!files.length) return;
     if (preview) { LaurenUI.toast('Vista previa: aquí no se suben fotos.'); return; }
-    if (!photosReady) { LaurenUI.toast(UPLOAD_ERRORS.configuracion); return; }
+    if (!photosReady) { warn(UPLOAD_ERRORS.configuracion); return; }
     const target = edit;
     const list = files.slice(0, 20);
     let done = 0, problem = '';
@@ -954,7 +1090,7 @@ async function uploadPhotos(files) {
         renderEditor();
         editor.querySelector('.dialog-scroll').scrollTop = scroll;
     }
-    if (problem) LaurenUI.toast(done ? `Subimos ${done} de ${list.length}. ${problem}` : problem);
+    if (problem) warn(done ? `Subimos ${done} de ${list.length} fotos. ${problem}` : problem, target.id);
     else LaurenUI.toast(`${done === 1 ? 'Foto lista' : `${done} fotos listas`}. Toca «Guardar» y luego «Publicar cambios».`);
     if (files.length > list.length) LaurenUI.toast(`Subimos las primeras ${list.length}. Elige las demás en otra tanda.`);
 }
@@ -999,7 +1135,7 @@ async function uploadChoicePhoto(file) {
         target.image = foto;
         await changeUploads({ add: [foto] }).catch(() => {});
         LaurenUI.toast('Foto lista. Toca «Guardar» y luego «Publicar cambios».');
-    } catch (error) { LaurenUI.toast(uploadError(error)); }
+    } catch (error) { warn(uploadError(error), editingId); }
     finally { showUpload(''); }
     if (editor.open) { const scroll = editor.querySelector('.dialog-scroll').scrollTop; renderEditor(); editor.querySelector('.dialog-scroll').scrollTop = scroll; }
 }
@@ -1027,7 +1163,7 @@ let pickerStart = null;
 async function showPicker() {
     if (!manifest) {
         try { manifest = (await (await fetch('/assets/propuestas-fotograficas/manifest.json')).json()).items.filter(item => M.IMAGE.test(item.proposal)); }
-        catch { LaurenUI.toast('No pudimos cargar las fotos. Inténtalo de nuevo.'); return; }
+        catch { warn('No pudimos cargar las fotos de la web. Inténtalo de nuevo.'); return; }
     }
     // Todas las fotos de la web y las ya subidas, menos las de este producto. Primero las de su sección.
     const own = new Set(M.photos(edit));
@@ -1089,7 +1225,7 @@ picker.addEventListener('click', event => {
     // La foto de la tarjeta de otro producto: ese producto se une a este (sus fotos pasan aquí y él se elimina al guardar).
     const owner = takenMains.has(src) ? products.find(p => p.id !== editingId && !merges.has(p.id) && p.mainImage === src) : null;
     if (owner) {
-        if (products.some(p => p.basedOn === owner.id)) { LaurenUI.toast(`«${owner.name}» no se puede unir: otras tortas toman sus precios.`); return; }
+        if (products.some(p => p.basedOn === owner.id)) { warn(`«${owner.name}» no se puede unir: otras tortas toman sus precios.`); return; }
         const photos = M.photos(owner);
         merges.set(owner.id, { main: src, photos });
         pending.merges.add(owner.id);
@@ -1133,7 +1269,7 @@ picker.addEventListener('click', async event => {
         photoFates.delete(src);
         remove.closest('.admin-photo').remove();
         LaurenUI.toast('Listo, borramos la foto. Ya no aparece en tus fotos.');
-    } catch (error) { LaurenUI.toast(deleteError(error)); }
+    } catch (error) { warn(deleteError(error)); }
 });
 
 // «Listo», cerrar, Esc o tocar fuera: si algo se une o se mueve, primero el resumen; «Volver» deja seguir eligiendo.

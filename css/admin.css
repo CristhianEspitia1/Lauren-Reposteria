@@ -171,6 +171,18 @@
 .admin-choice-photo div .field-note { flex-basis: 100%; }
 .admin-editor textarea { overflow-wrap: anywhere; }
 
+/* Avisos: botón con su cuenta junto a «Nuevo producto» y la lista en el diálogo de la marca. */
+.admin-top-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.admin-notice-count { margin-left: 2px; letter-spacing: 0; }
+.admin-notices { width: min(600px, calc(100% - 32px)); }
+.admin-notices .admin-confirm-body { gap: 20px; max-height: min(60dvh, 560px); overflow-y: auto; }
+.admin-notices section { display: grid; gap: 6px; }
+.admin-notices .eyebrow { color: var(--color-text); }
+.admin-notice-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.admin-notice-list li { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-cream); color: var(--color-text); font-size: .875rem; overflow-wrap: anywhere; }
+.admin-notice-list small { color: var(--color-text-soft); font-size: .75rem; white-space: nowrap; }
+.admin-notice-list .text-link { justify-self: start; min-height: 44px; background: transparent; font-size: .8125rem; }
+
 /* Confirmación de la marca: diálogo pequeño con titular, qué pasa y las dos acciones. */
 .admin-confirm { width: min(480px, calc(100% - 32px)); }
 .admin-confirm form { display: grid; gap: 12px; padding: clamp(24px, 5vw, 36px); }
@@ -212,6 +224,7 @@
     .admin-header .brand { width: 120px; }
     .admin-session span { display: none; }
     .admin-top { flex-direction: column; align-items: stretch; }
+    .admin-top-actions > .btn { flex: 1; }
     .admin-row { grid-template-columns: 48px minmax(0, 1fr); }
     .admin-row img, .admin-row-icon { width: 48px; height: 60px; }
     .admin-row-actions { grid-column: 2; flex-wrap: wrap; gap: 4px 16px; }

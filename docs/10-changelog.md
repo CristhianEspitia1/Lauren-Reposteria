@@ -7,6 +7,13 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — Avisos y preguntas antes de lo delicado en el centro de control]
+
+- Botón «Avisos» con su número: reúne lo que impide publicar, lo que conviene revisar (un aviso por producto y por tema) y lo que no se permitió o falló mientras se usaba el panel, cada uno con «Ir a arreglarlo». Si algo impide publicar, «Publicar cambios» abre los avisos; un error inesperado del panel también queda anotado.
+- El panel pregunta, con el nombre del producto, antes de salir sin guardar, ocultar, pasar a otra sección, publicar (con la lista de lo que cambia), guardar con algo por revisar, quitar una opción, el mensaje de una torta o la foto de un sabor, y poner el mismo valor en todos los tamaños.
+- La frase de la torta vuelve a ser solo la casilla «Se puede escribir una frase o letras en la torta».
+- Textos del panel más sencillos. Manual de marca 3.5.
+
 ## [2026-10-19 — Cada grupo con sus propios sabores, adicionales y precios por tamaño]
 
 - Sale «Sabores y adicionales» compartido de Tortas: cada producto tiene sus propios bizcochos, rellenos, adicionales, porciones, precios y textos, editados en su ficha y todo desplegado. Las tortas que tomaban los precios de otra quedan con su propia copia al publicar desde el panel.

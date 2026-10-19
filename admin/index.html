@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/css/site.css?v=e00b0be750">
 <link rel="stylesheet" href="/css/dialogs.css?v=e13ab20ddf">
 <link rel="stylesheet" href="/css/catalog.css?v=bdaf2637cb">
-<link rel="stylesheet" href="/css/admin.css?v=bb29556d47">
+<link rel="stylesheet" href="/css/admin.css?v=df6892a64f">
 <script src="/js/catalog-data.js?v=16816f5484" defer></script>
 <script src="/js/catalog-model.js?v=15dd7a88db" defer></script>
 <script src="/js/brand-icons.js?v=83da1c0e22" defer></script>
@@ -25,8 +25,8 @@
 <script src="/js/flavors.js?v=08aa99d094" defer></script>
 <script src="/js/firebase-config.js?v=4478ad1ded" defer></script>
 <script src="/js/vendor/qrcode.min.js?v=c8ecfeb828" defer></script>
-<script src="/js/admin-model.js?v=f462f235cd" defer></script>
-<script src="/js/admin.js?v=6dd6d6bfbf" type="module"></script>
+<script src="/js/admin-model.js?v=bef582eabe" defer></script>
+<script src="/js/admin.js?v=5cd2f4a94e" type="module"></script>
 </head>
 <body class="admin">
 <header class="admin-header">
@@ -83,9 +83,12 @@
 <div>
 <p class="eyebrow">Centro de control</p>
 <h1 id="appTitle">Tus <em>productos.</em></h1>
-<p class="admin-lead">Toca un producto para cambiar su precio, sus fotos o sus textos. Cuando termines, «Publicar cambios» actualiza la web al instante.</p>
+<p class="admin-lead">Toca un producto para cambiarlo y guarda su ficha. Cuando termines, toca «Publicar cambios» para que se vea en la web. Si algo falta, te lo decimos en «Avisos».</p>
 </div>
+<div class="admin-top-actions">
+<button type="button" class="btn btn-secondary" id="noticesButton" aria-haspopup="dialog">Avisos <span class="admin-tag admin-tag-change admin-notice-count" id="noticeCount" hidden></span></button>
 <button type="button" class="btn" id="newProduct">Nuevo producto <span data-icon="plus"></span></button>
+</div>
 </div>
 <div class="admin-tools">
 <label class="admin-search"><span data-icon="search"></span><span class="visually-hidden">Buscar producto</span><input id="search" type="search" placeholder="Buscar producto"></label>
@@ -106,6 +109,7 @@
 
 <dialog class="product-dialog admin-editor" id="editor" aria-labelledby="editorTitle"></dialog>
 <dialog class="product-dialog admin-picker" id="picker" aria-labelledby="pickerTitle"></dialog>
+<dialog class="admin-confirm admin-notices" id="notices" aria-labelledby="noticesTitle"></dialog>
 <dialog class="admin-confirm" id="confirmDialog" aria-labelledby="confirmTitle"></dialog>
 <div class="toast" id="toast" role="status" hidden></div>
 </body>

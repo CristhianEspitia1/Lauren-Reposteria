@@ -199,6 +199,46 @@
         if (marked.length > max && products.some(onHome)) errors.push(`En la portada caben ${max} tortas y hay ${marked.length} marcadas. Desmarca «Portada» en alguna.`);
         return [...new Set(errors)];
     }
+    /**
+     * Avisos del centro de control, en palabras sencillas y con el producto al que llevan («Ir a arreglarlo»).
+     * `problems`: lo que impide publicar (las mismas reglas de `validate`). `warnings`: lo que se puede publicar,
+     * pero conviene revisar (precios vacíos que se cotizan, adicionales sin precio para algún tamaño).
+     */
+    function problems(products) {
+        const named = products.map(p => [p.name?.trim() || 'Producto sin nombre', p.id]).sort((a, b) => b[0].length - a[0].length);
+        return validate(products).map(text => ({ id: named.find(([name]) => text.startsWith(`${name}:`) || text.startsWith(`${name} ·`))?.[1] || null, text }));
+    }
+    function warnings(products) {
+        const list = [];
+        const amount = value => typeof value === 'number' && value > 0;
+        const names = labels => labels.map(label => `«${label}»`).join(', ').replace(/, ([^,]*)$/, ' y $1');
+        for (const p of products) {
+            if (p.visible === false) continue;
+            const name = p.name?.trim() || 'Producto sin nombre';
+            const add = text => list.push({ id: p.id || null, text: `${name}: ${text}` });
+            if (p.category === 'extras') {
+                if (!String(p.priceText || '').trim() && !amount(p.price)) add('no tiene precio; en la vitrina dice «Cotiza por WhatsApp».');
+                continue;
+            }
+            // Un aviso por producto y por tema, no uno por cada opción.
+            const pricedOptions = (p.options || []).filter(o => o.type !== 'toggle' && priced(o));
+            if (!pricedOptions.length && !amount(p.price)) add('no tiene precio; en la web dice «Cotiza por WhatsApp».');
+            const empty = pricedOptions.flatMap(o => o.choices.filter(c => !amount(c.price)).map(c => c.label || 'una opción'));
+            if (empty.length) add(`${names(empty)} ${empty.length === 1 ? 'no tiene precio; se cotiza' : 'no tienen precio; se cotizan'} por WhatsApp.`);
+            const size = sizeOf(p);
+            const none = [], partial = [];
+            for (const option of (p.options || []).filter(o => o.addons)) for (const choice of option.choices || []) {
+                const value = key => typeof choice.extra === 'number' ? choice.extra : choice.extra?.[key];
+                const missing = size ? size.choices.filter(sz => !amount(value(sz.value))) : amount(choice.extra) ? [] : [null];
+                if (!missing.length) continue;
+                if (!size || missing.length === size.choices.length) none.push(choice.label || 'un adicional');
+                else partial.push(`«${choice.label}» en ${missing.map(sz => sz.label).join(', ').replace(/, ([^,]*)$/, ' y $1')}`);
+            }
+            if (none.length) add(`${none.length === 1 ? `el adicional ${names(none)} no tiene precio` : `${none.length} adicionales sin precio (${names(none)})`}; si los marcan, la torta se consulta por WhatsApp.`);
+            if (partial.length) add(`adicionales sin precio para algún tamaño: ${partial.join('; ')}. En ese tamaño se consulta por WhatsApp.`);
+        }
+        return list;
+    }
     /** Productos nuevos, cambiados y eliminados respecto de lo publicado. */
     function changes(original, products) {
         const before = new Map(Object.values(original).map(p => [p.id, JSON.stringify(p)]));
@@ -207,5 +247,5 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
+    window.AdminModel = { problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
 })();
