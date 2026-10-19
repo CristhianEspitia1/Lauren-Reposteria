@@ -7,6 +7,16 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — Cada grupo con sus propios sabores, adicionales y precios por tamaño]
+
+- Sale «Sabores y adicionales» compartido de Tortas: cada producto tiene sus propios bizcochos, rellenos, adicionales, porciones, precios y textos, editados en su ficha y todo desplegado. Las tortas que tomaban los precios de otra quedan con su propia copia al publicar desde el panel.
+- Costos por tamaño: un relleno, bizcocho o adicional puede sumar un valor distinto para cada porción («Nutella · +$5.000» en 4 a 6 y «+$25.000» en 25 a 30), con «Mismo valor en todos». La ficha de la web cambia el «+» al elegir otro tamaño y avisa que esas opciones suman al total.
+- Fotos de bizcochos y rellenos desde el panel («Subir foto»), para «Un sabor para recordar»; si alguno sube el precio, la frase de la sección lo dice.
+- La vitrina «Los detalles hacen la diferencia» pasa a «Adicionales para tu torta», con una frase que explica que tienen un valor adicional, y su precio es texto libre.
+- Bizcochos, rellenos y adicionales se acomodan solos en filas parejas al agregar o quitar; los textos largos no se salen de su espacio.
+- Los textos que trae un producto nuevo quedan escritos (no de ejemplo) para editarlos o borrarlos; los de la frase de la torta se editan en la ficha.
+- Manual de marca 3.4.
+
 ## [2026-10-19 — La marca al compartir un enlace]
 
 - Las imágenes que salen al compartir la web (WhatsApp, redes) se rehicieron con el manual: los colores, letras y franja albaricoque de la marca, y la foto en arco con el sello lila, como la portada. Antes usaban rosas que no son de la paleta, Playfair en 500 y un marco lila que el manual no tiene.

@@ -55,6 +55,7 @@ test('Un producto nuevo toma la estructura de su sección, sin precios, sin foto
     assert.equal(torta.options.map(o => o.id).join(), 'sabor,relleno,porciones');
     assert.ok(torta.options.find(o => o.id === 'porciones').choices.every(c => c.price === null));
     assert.ok(!('basedOn' in torta));
+    assert.equal(torta.description, products().find(p => p.id === 'torta-vintage').description, 'los textos de la sección quedan escritos para editarlos');
     const extra = M.template('extras', products());
     assert.equal(extra.price, null); assert.equal(extra.priceMax, null);
     const oso = M.template('detalles', products());
@@ -200,23 +201,41 @@ test('Con menos de cuatro tortas marcadas, la portada se completa con las siguie
     try { assert.equal(Catalog.featured().map(p => p.id).join(), [tortas[5], ...tortas.slice(0, 3)].map(p => p.id).join()); } finally { context.catalogData = previous; }
 });
 
-test('Bizcochos y rellenos se copian en todas las tortas con opciones propias', () => {
+test('Cada grupo es independiente: el panel copia lo que tomaba de su torta base y le da sus propios adicionales', () => {
     const list = products();
-    const groups = M.clone(M.sharedGroups(list));
-    assert.deepEqual(Object.keys(groups), ['sabor', 'relleno']);
-    groups.relleno.choices.push({ value: '', label: 'Pistacho', extra: 12000 });
-    const own = list.find(p => p.basedOn && Array.isArray(p.options));
-    const updated = M.applyShared(list, groups);
-    for (const p of updated.filter(p => p.category === 'tortas' && Array.isArray(p.options))) assert.equal(p.options.find(o => o.id === 'relleno').choices.at(-1).label, 'Pistacho', p.id);
-    if (own) assert.ok(updated.find(p => p.id === own.id).options.some(o => o.id === 'relleno'));
-    assert.equal(updated.filter(p => p.category !== 'tortas').every((p, i) => p === list.filter(x => x.category !== 'tortas')[i]), true, 'los demás productos no cambian');
-    assert.equal(M.validate(updated).length, 0);
-    const normalized = M.normalize(updated).find(p => p.id === 'torta-vintage').options.find(o => o.id === 'relleno').choices.at(-1);
-    assert.equal(normalized.value, 'pistacho');
-    assert.equal(normalized.extra, 12000);
-    // Costo vacío = sin costo; $0 no se acepta.
-    groups.relleno.choices.at(-1).extra = null;
-    assert.equal(Object.hasOwn(M.normalize(M.applyShared(list, groups)).find(p => p.id === 'torta-vintage').options.find(o => o.id === 'relleno').choices.at(-1), 'extra'), false);
-    groups.relleno.choices.at(-1).extra = 0;
-    assert.match(M.validate(M.applyShared(list, groups)).join(), /costo adicional/);
+    const design = list.find(p => p.basedOn === 'torta-vintage' && !Array.isArray(p.options));
+    const vintage = list.find(p => p.id === 'torta-vintage');
+    const migrated = M.migrate(list);
+    const own = migrated.find(p => p.id === design.id);
+    assert.equal('basedOn' in own, false);
+    assert.equal(own.description, design.description || vintage.description, 'conserva su descripción o toma la de su base');
+    assert.deepEqual(own.options.filter(o => o.id !== 'adicionales').map(o => o.id), vintage.options.map(o => o.id));
+    // Sus porciones ya no cambian si cambia la torta base.
+    migrated.find(p => p.id === 'torta-vintage').options.find(o => o.id === 'porciones').choices[0].price = 1000;
+    assert.notEqual(own.options.find(o => o.id === 'porciones').choices[0].price, 1000);
+    // Adicionales propios, copiados de la vitrina; con rango o sin precio, se cotizan.
+    const addons = own.options.find(o => o.id === 'adicionales');
+    assert.ok(addons.addons && addons.multiple && !addons.required);
+    assert.equal(addons.choices.length, list.filter(p => p.category === 'extras' && p.visible !== false).length);
+    assert.ok(addons.choices.every(c => !('extra' in c)));
+    assert.equal(migrated.filter(p => p.category !== 'tortas').every(p => list.includes(p)), true, 'lo demás no cambia');
+    assert.deepEqual([...M.validate(migrated)], []);
+    // Migrar dos veces no cambia nada.
+    assert.equal(JSON.stringify(M.migrate(migrated)), JSON.stringify(migrated));
+});
+test('Costos por tamaño: vacío es sin costo (en adicionales, cotiza) y solo quedan los tamaños que existen', () => {
+    const list = M.migrate(products());
+    const torta = list.find(p => p.id === 'torta-vintage');
+    const relleno = torta.options.find(o => o.id === 'relleno').choices.find(c => c.value === 'nutella');
+    relleno.extra = { '4-5': 5000, '25-30': 20000, viejo: 1000, '8-10': null };
+    const normal = M.normalize(list).find(p => p.id === 'torta-vintage').options.find(o => o.id === 'relleno').choices.find(c => c.value === 'nutella');
+    assert.deepEqual({ ...normal.extra }, { '4-5': 5000, '25-30': 20000 });
+    relleno.extra['12-15'] = 0;
+    assert.match(M.validate(list).join(), /costo adicional.*\$0/);
+    relleno.extra = { '4-5': 5000 };
+    relleno.image = 'https://otro-sitio.com/f/a.webp';
+    assert.match(M.validate(list).join(), /la foto no es de la web/);
+    relleno.image = `${M.UPLOADED}nutella-k3x9a1.webp`;
+    assert.deepEqual([...M.validate(list)], []);
+    assert.deepEqual([...M.unusedUploads(new Set([relleno.image]), list)], [], 'la foto de un sabor no se borra como «sin usar»');
 });

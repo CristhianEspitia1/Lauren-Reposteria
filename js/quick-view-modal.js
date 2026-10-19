@@ -131,7 +131,9 @@
         optionHTML(option) {
             const selected = this.selection[option.id];
             const errorId = `option-error-${option.id}`;
-            const note = option.note || (option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : '');
+            // Si alguna opción sube el precio, se dice debajo para que nadie se confunda.
+            const extras = !option.addons && (option.choices || []).some(choice => (Catalog.extraOf(this.product, choice, this.selection) || 0) > 0);
+            const note = option.note || (option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : extras ? 'Las opciones con «+» tienen un valor adicional que se suma al total.' : '');
             let controls;
             if (option.type === 'toggle') {
                 controls = `<label class="toggle-option"><input data-option-input="${esc(option.id)}" type="checkbox" ${selected ? 'checked' : ''} aria-describedby="${errorId}"><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Agregar${typeof option.priceModifier === 'number' ? ` · +${Catalog.money(option.priceModifier)}` : ''}</span></label>`;
@@ -139,7 +141,8 @@
                 controls = `<div class="choice-list">${(option.choices || []).map((choice, index) => {
                     const checked = option.multiple ? selected?.includes(choice.value) : selected === choice.value;
                     // Precio de la elección o, si suma al total (relleno premium, adicional), «+$10.000».
-                    const optionPrice = typeof choice.price === 'number' ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : typeof choice.extra === 'number' && choice.extra > 0 ? ` · +${Catalog.money(choice.extra)}` : '';
+                    const extra = Catalog.extraOf(this.product, choice, this.selection);
+                    const optionPrice = typeof choice.price === 'number' ? ` · ${Catalog.money(choice.price)}${choice.perUnit ? ' c/u' : ''}` : typeof extra === 'number' && extra > 0 ? ` · +${Catalog.money(extra)}` : '';
                     return `<label class="choice"><input type="${option.multiple ? 'checkbox' : 'radio'}" name="option-${esc(option.id)}" value="${esc(choice.value)}" data-option-input="${esc(option.id)}" ${checked ? 'checked' : ''} aria-describedby="${errorId}"><span>${esc(choice.label)}${optionPrice}</span></label>`;
                 }).join('')}</div>`;
             }
@@ -171,12 +174,21 @@
                 this.selection[option.id] = selected;
             } else this.selection[option.id] = input.value;
             this.dialog.querySelector(`#option-error-${option.id}`).hidden = true;
+            // Otro tamaño: los costos de bizcochos, rellenos y adicionales cambian con él («Nutella · +$12.000»).
+            if (Catalog.sizeOption(this.product)?.id === option.id) this.renderOptions(option.id, input.value);
             this.updateDependencies();
             if (this.product.personalization?.dependsOn === option.id) {
                 this.dialog.querySelector('.personal-fields').innerHTML = this.personalHTML();
                 this.bindPersonal();
             }
             this.updateTotal();
+        }
+        /** Vuelve a pintar las opciones con sus importes y deja el foco en la elección que se tocó. */
+        renderOptions(id, value) {
+            const box = this.dialog.querySelector('.product-options');
+            box.innerHTML = Catalog.options(this.product).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('');
+            box.querySelectorAll('[data-option-input]').forEach(input => input.addEventListener('change', () => this.optionChange(input)));
+            box.querySelector(`[data-option-input="${CSS.escape(id)}"][value="${CSS.escape(value)}"]`)?.focus({ preventScroll: true });
         }
         updateDependencies() {
             this.dialog.querySelectorAll('[data-option-group]').forEach(group => {

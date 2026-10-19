@@ -240,34 +240,26 @@ async function loadCatalog() {
         loadedJson = undefined;
         original = M.clone(snapshot);
     }
-    products = Object.values(M.clone(original));
+    products = M.migrate(Object.values(M.clone(original)));
     fresh.clear();
     render();
+    // Formato anterior (tortas que tomaban precios de otra, adicionales compartidos): cada grupo queda independiente.
+    if (hasChanges()) LaurenUI.toast('Cada grupo quedó con sus propios precios, sabores y adicionales. Revísalos y toca «Publicar cambios».');
 }
 
-// Un filtro por tipo de producto: todas las tortas (y la fila «Sabores y adicionales») en Tortas; brownies y galletas, cada uno en el suyo.
+// Un filtro por tipo de producto: todas las tortas y la vitrina de adicionales en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['home', 'En portada'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
 // La portada muestra hasta cuatro tortas marcadas con «Portada» (Catalog.FEATURED).
 const onHome = p => p.featured === true && window.Catalog.featurable(p);
 // La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
-const groupOf = p => p.category === 'extras' ? 'Adicionales de torta' : sectionName(p.category);
+const groupOf = p => p.category === 'extras' ? 'Vitrina de adicionales (Tortas)' : sectionName(p.category);
 const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0);
-// Los adicionales de torta no van como filas: se editan juntos, con bizcochos y rellenos, en «Sabores y adicionales».
-const listed = () => products.filter(p => p.category !== 'extras');
-const sharedText = () => `sabores y adicionales bizcochos rellenos ${products.filter(p => p.category === 'extras').map(p => p.name).join(' ')}`;
-// La fila «Sabores y adicionales» cuenta como cambiada si cambió un adicional o un bizcocho o relleno.
-function sharedChanged() {
-    const before = Object.values(original);
-    const extras = list => JSON.stringify(list.filter(p => p.category === 'extras'));
-    return extras(before) !== extras(products) || JSON.stringify(M.sharedGroups(before)) !== JSON.stringify(M.sharedGroups(products));
-}
-const sharedIn = id => id === 'all' || id === 'tortas' || (id === 'changed' && sharedChanged());
 const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : PAGES[id][1].includes(p.category));
 function renderFilters() {
     const { changed } = M.changes(original, products);
     $('filters').innerHTML = FILTERS.map(([id, label]) => {
-        const count = listed().filter(p => inFilter(p, id, changed)).length + (id === 'tortas' || (id === 'changed' && sharedChanged()) ? 1 : 0);
+        const count = products.filter(p => inFilter(p, id, changed)).length;
         return (id === 'hidden' || id === 'changed') && !count && filter !== id ? '' : `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)} <span class="admin-filter-count">${count}</span></button>`;
     }).join('');
 }
@@ -284,35 +276,23 @@ function render() {
     renderFilters();
     const { changed } = M.changes(original, products);
     const search = normalizeText($('search').value.trim());
-    const shown = listed().filter(p => inFilter(p, filter, changed) && (!search || normalizeText(`${p.name} ${groupOf(p)}`).includes(search)))
+    const shown = products.filter(p => inFilter(p, filter, changed) && (!search || normalizeText(`${p.name} ${groupOf(p)}`).includes(search)))
         .map((p, i) => [p, i]).sort(([a, i], [b, j]) => order(a) - order(b) || i - j).map(([p]) => p);
-    const withShared = sharedIn(filter) && (!search || normalizeText(sharedText()).includes(search));
-    const found = shown.length + (withShared ? 1 : 0);
-    $('count').textContent = search ? `${found} ${found === 1 ? 'resultado' : 'resultados'}` : '';
+    $('count').textContent = search ? `${shown.length} ${shown.length === 1 ? 'producto encontrado' : 'productos encontrados'}` : '';
     let group = '';
-    $('list').innerHTML = (withShared ? sharedRow() : '') + shown.map(p => {
+    $('list').innerHTML = shown.map(p => {
         const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;
-        const base = p.basedOn && products.find(b => b.id === p.basedOn);
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
         const homeId = `home-${esc(p.id)}`;
         const home = window.Catalog.featurable(p) ? `<label class="toggle-option" for="${homeId}"><input id="${homeId}" type="checkbox" data-home="${esc(p.id)}" ${onHome(p) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Portada</span></label>` : '';
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
-        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}${base ? ` · precios de ${esc(base.name)}` : ''}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
-    }).join('') || (withShared ? '' : `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`);
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+    }).join('') || `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`;
     const total = M.changes(original, products).total;
     $('saveBar').hidden = total === 0;
     $('saveCount').textContent = total === 1 ? '1 cambio sin publicar.' : `${total} cambios sin publicar.`;
     $('saveHint').textContent = total === 1 ? 'Aún no se ve en la web.' : 'Aún no se ven en la web.';
-}
-// Una sola fila, arriba de las tortas, para lo que comparten todas: bizcochos, rellenos y adicionales.
-function sharedRow() {
-    const groups = M.sharedGroups(products);
-    const extras = products.filter(p => p.category === 'extras');
-    const count = (n, one, many) => `${n} ${n === 1 ? one : many}`;
-    const detail = [groups.sabor && count(groups.sabor.choices.length, 'bizcocho', 'bizcochos'), groups.relleno && count(groups.relleno.choices.length, 'relleno', 'rellenos'), count(extras.length, 'adicional', 'adicionales')].filter(Boolean).join(' · ');
-    const tag = sharedChanged() ? '<span class="admin-tag admin-tag-change">Con cambios</span>' : '';
-    return `<li class="admin-group"><p class="eyebrow">Para todas las tortas</p></li><li class="admin-row"><span class="admin-row-icon" aria-hidden="true">${icon('cake')}</span><div><h2><button type="button" class="admin-row-name" data-shared>Sabores y adicionales</button>${tag}</h2><p>${esc(detail)}</p></div><div class="admin-row-actions"><button type="button" class="text-link" data-shared aria-label="Editar sabores y adicionales">Editar ${icon('arrow')}</button></div></li>`;
 }
 $('list').addEventListener('change', event => {
     const homeInput = event.target.closest('[data-home]');
@@ -343,7 +323,6 @@ function toggleHome(input) {
     LaurenUI.toast(!input.checked ? 'Saldrá de la portada cuando publiques.' : product.visible === false ? 'Irá a la portada cuando la hagas visible y publiques.' : 'Irá a la portada cuando publiques.');
 }
 $('list').addEventListener('click', event => {
-    if (event.target.closest('[data-shared]')) return openShared();
     const button = event.target.closest('[data-edit]');
     if (button) openEditor(products.find(p => p.id === button.dataset.edit));
 });
@@ -355,7 +334,7 @@ $('discard').addEventListener('click', async () => {
         action: 'Descartar',
         cancel: 'Conservarlos'
     }))) return;
-    products = Object.values(M.clone(original)); fresh.clear(); pendingDeletes.clear(); render();
+    products = M.migrate(Object.values(M.clone(original))); fresh.clear(); pendingDeletes.clear(); render();
 });
 window.addEventListener('beforeunload', event => { if (hasChanges()) event.preventDefault(); });
 
@@ -385,7 +364,7 @@ $('publish').addEventListener('click', async () => {
             transaction.set(catalogRef, { json, updatedAt: serverTimestamp() });
             transaction.set(doc(collection(db, 'historial')), { json, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
         });
-        original = data; loadedJson = json; products = Object.values(M.clone(data)); fresh.clear();
+        original = data; loadedJson = json; products = M.migrate(Object.values(M.clone(data))); fresh.clear();
         if (filter === 'changed') filter = 'all';
         render();
         const erased = await erasePending();
@@ -470,60 +449,67 @@ function pricePreview() {
 
 function pricesHTML(p) {
     const preview = `<p class="field-note admin-preview" id="pricePreview" aria-live="polite">${pricePreview()}</p>`;
-    if (p.basedOn) {
-        const base = products.find(b => b.id === p.basedOn);
-        const own = Array.isArray(p.options);
-        return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}
-            ${choices('Toma los precios de', 'basedOn', p.basedOn, products.filter(b => b.category === 'tortas' && !b.basedOn).map(b => [b.id, b.name]))}
-            ${own ? `<p class="field-note">Esta torta tiene precios propios.</p>${groupsHTML(p, true)}<p><button type="button" class="admin-add" data-action="inherit">${icon('arrow')} Volver a los precios de ${esc(base?.name || 'la otra torta')}</button></p>`
-        : `<p class="field-note">Usa las porciones, sabores y precios de ${esc(base?.name || 'su torta base')}: si cambias los de esa torta, cambian aquí también.</p><p><button type="button" class="admin-add" data-action="own-prices">${icon('plus')} Ponerle precios propios</button></p>`}
-        </fieldset>`;
-    }
-    const extras = p.category === 'extras';
+    // Vitrina de adicionales (Tortas): el precio se escribe libre, como el negocio lo quiera contar.
+    if (p.category === 'extras') return `<fieldset class="admin-fieldset"><legend>Precio</legend>
+        ${field('Precio en la vitrina (texto libre)', 'priceText', p.priceText ?? Catalog.priceLabel(p).text, { area: true, attrs: `maxlength="160" ${rows(String(p.priceText ?? '').split('\n'), 2)}`, note: 'Escríbelo como quieras, por ejemplo con rangos según el tamaño: «De $2.000 a $5.000 según el tamaño de la torta». Se ve bajo el nombre en «Adicionales para tu torta» (/tortas/) y se acomoda a su espacio. Para cobrarlo en una torta, agrégalo en «Adicionales» de esa torta.' })}</fieldset>`;
     const pricedGroups = (p.options || []).some(M.priced);
-    const basePrice = pricedGroups ? '' : `<div class="admin-grid">${field(extras ? 'Precio desde' : 'Precio', 'price', moneyValue(p.price), { type: 'money', placeholder: 'Cotiza por WhatsApp', note: 'Déjalo vacío para mostrar «Cotiza por WhatsApp».' })}${extras ? field('Precio hasta', 'priceMax', moneyValue(p.priceMax), { type: 'money', placeholder: 'Opcional' }) : field('Texto después del precio', 'priceSuffix', p.priceSuffix, { placeholder: 'Ej.: c/u, la caja', note: 'Opcional.' })}</div>`;
+    const basePrice = pricedGroups ? '' : `<div class="admin-grid">${field('Precio', 'price', moneyValue(p.price), { type: 'money', placeholder: 'Cotiza por WhatsApp', note: 'Déjalo vacío para mostrar «Cotiza por WhatsApp».' })}${field('Texto después del precio', 'priceSuffix', p.priceSuffix, { placeholder: 'Ej.: c/u, la caja', note: 'Opcional.' })}</div>`;
     return `<fieldset class="admin-fieldset"><legend>Precios</legend>${preview}${basePrice}${groupsHTML(p, true)}
-        ${extras ? '' : `<p><button type="button" class="admin-add" data-action="add-option" data-priced="true">${icon('plus')} ${pricedGroups ? 'Agregar otro grupo de precios' : 'Poner un precio por tamaño o porciones'}</button></p>`}</fieldset>`;
+        <p><button type="button" class="admin-add" data-action="add-option" data-priced="true">${icon('plus')} ${pricedGroups ? 'Agregar otro grupo de precios' : 'Poner un precio por tamaño o porciones'}</button></p></fieldset>`;
 }
+// Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
+const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
 
-// Mensaje en la torta: cada torta lo permite o no. Las que toman los precios de otra siguen lo de esa torta
-// hasta que se cambie aquí.
+// Mensaje en la torta: cada torta lo permite o no, y su texto se edita aquí.
 const PHRASE = { enabled: true, field: 'mensaje', label: 'Mensaje personalizado para la torta', placeholder: 'Ej.: Feliz cumpleaños', maxLength: 40, required: false };
-const phraseOf = p => 'personalization' in p ? p.personalization : products.find(b => b.id === p.basedOn)?.personalization;
 function setPhrase(p, on) {
-    const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
-    if (on && base?.personalization?.enabled) delete p.personalization;
-    else if (on) p.personalization = { ...M.clone(phraseOf(p) || base?.personalization || PHRASE), enabled: true };
-    else p.personalization = phraseOf(p) ? { ...M.clone(phraseOf(p)), enabled: false } : null;
+    p.personalization = { ...M.clone(p.personalization || PHRASE), enabled: on };
 }
 function phraseHTML(p) {
-    const config = phraseOf(p);
+    const config = p.personalization;
     const on = config?.enabled === true;
-    const fields = on ? (config.fields || [config]) : [];
+    const single = on && !config.fields;
     return `<div class="admin-option">${check('Se puede escribir una frase o letras en la torta', 'phrase', on)}
-        <p class="field-note">${on ? `En la ficha, el cliente escribe ${fields.map(f => `«${esc(f.label)}» (hasta ${f.maxLength || 100} caracteres)`).join(', ')}.` : 'La ficha de esta torta no ofrece escribir un mensaje.'}</p></div>`;
+        ${single ? `${field('Cómo se llama el campo (lo ve el cliente)', 'personalization.label', config.label, { area: true, attrs: 'rows="2" maxlength="80"' })}
+            <div class="admin-grid">${field('Ejemplo dentro del campo', 'personalization.placeholder', config.placeholder)}${field('Máximo de letras', 'personalization.maxLength', config.maxLength ?? 40, { type: 'number', attrs: 'min="1" max="200"' })}</div>
+            ${field('Aclaración bajo el campo', 'personalization.note', config.note, { area: true, attrs: 'rows="2" maxlength="160"', note: 'Opcional.' })}`
+        : `<p class="field-note">${on ? 'El cliente escribe su mensaje en la ficha.' : 'La ficha de esta torta no ofrece escribir un mensaje.'}</p>`}</div>`;
 }
 
-// Sabores, colores y casillas: lo que el cliente elige sin cambiar el precio (o con un costo fijo).
-// En las tortas, bizcochos, rellenos y adicionales son los mismos en todas: se editan en «Sabores y adicionales».
+// Lo que elige el cliente: sabores, rellenos, colores y adicionales, cada uno con su costo si suma al total
+// (por tamaño cuando el producto tiene porciones o presentaciones). Todo es de este producto y nada se comparte.
 function choicesHTML(p) {
-    if (p.category === 'tortas') {
-        const own = !p.basedOn || Array.isArray(p.options);
-        return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
-            <p class="field-note">Bizcochos, rellenos y adicionales son los mismos en todas las tortas.</p>
-            <p><button type="button" class="admin-add" data-action="shared">${icon('arrow')} Editar sabores y adicionales</button></p>
-            ${phraseHTML(p)}
-            ${own ? `${groupsHTML(p, false)}<p><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar otro grupo para elegir</button></p>` : ''}</fieldset>`;
-    }
-    if (p.category === 'extras' || (p.basedOn && !Array.isArray(p.options))) return '';
+    if (p.category === 'extras') return '';
+    const addons = (p.options || []).some(o => o.addons);
     return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
-        <p class="field-note">Sabores, rellenos, colores… El cliente elige una opción de cada grupo.</p>
+        <p class="field-note">Sabores, rellenos, colores y adicionales de este producto. Lo que cuesta más se suma al total que ve el cliente${M.sizeOf(p) ? ', según el tamaño que elija' : ''}.</p>
+        ${p.category === 'tortas' ? phraseHTML(p) : ''}
         ${groupsHTML(p, false)}
-        <p><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button></p></fieldset>`;
+        <p class="admin-add-row"><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button>${addons ? '' : `<button type="button" class="admin-add" data-action="add-addons">${icon('plus')} Agregar adicionales</button>`}</p></fieldset>`;
+}
+
+// Costo de una elección: una casilla por tamaño (con «Mismo valor en todos») o una sola si el producto no tiene tamaños.
+function extraHTML(p, option, o, choice, c) {
+    const size = M.sizeOf(p);
+    const blank = option.addons ? 'Cotiza' : 'Sin costo';
+    const name = choice.label || `la opción ${c + 1}`;
+    if (!size) return `<div class="admin-extra-sizes"><label class="admin-extra"><span>${option.addons ? 'Precio' : 'Costo adicional'}</span><span class="admin-money"><input data-extra="${o}.${c}" data-kind="money" inputmode="numeric" aria-label="${option.addons ? 'Precio' : 'Costo adicional'} de ${esc(name)}" value="${esc(moneyValue(typeof choice.extra === 'number' ? choice.extra : null))}" placeholder="${blank}"></span></label></div>`;
+    const value = key => typeof choice.extra === 'number' ? choice.extra : choice.extra?.[key];
+    return `<div class="admin-extra-sizes">${size.choices.map(sz => `<label class="admin-extra"><span>${esc(sz.label || 'Tamaño')}</span><span class="admin-money"><input data-extra="${o}.${c}" data-size="${esc(sz.value)}" data-kind="money" inputmode="numeric" aria-label="${option.addons ? 'Precio' : 'Costo adicional'} de ${esc(name)} en ${esc(sz.label)}" value="${esc(moneyValue(value(sz.value)))}" placeholder="${blank}"></span></label>`).join('')}</div>
+        <button type="button" class="admin-add admin-add-small" data-action="same-extra" data-option="${o}" data-choice="${c}">${icon('check')} Mismo valor en todos</button>`;
+}
+// Foto de un bizcocho o relleno («Un sabor para recordar»): la subida, o la de la web que ya le corresponde.
+function choicePhotoHTML(p, option, o, choice, c) {
+    if (!M.FLAVOR_PHOTOS.includes(option.id) || p.category !== 'tortas') return '';
+    const fallback = window.LaurenFlavors?.withPhotos(option.id, option.choices).find(item => item.choice === choice)?.photo?.src;
+    const src = choice.image || fallback;
+    return `<div class="admin-choice-photo">${src ? `<img src="${esc(imagePath(src))}" alt="" width="64" height="64" loading="lazy">` : `<span class="admin-choice-nophoto">${icon('cake')}</span>`}
+        <div><p class="field-note">${choice.image ? 'Foto subida.' : src ? 'Foto de la web.' : 'Sin foto: en «Un sabor para recordar» sale en «También».'}</p>
+        <button type="button" class="admin-add admin-add-small" data-action="choice-photo" data-option="${o}" data-choice="${c}">${icon('plus')} ${src ? 'Cambiar foto' : 'Subir foto'}</button>${choice.image ? `<button type="button" class="admin-danger" data-action="choice-photo-remove" data-option="${o}" data-choice="${c}">Quitar foto</button>` : ''}</div></div>`;
 }
 
 function groupsHTML(p, pricedOnes) {
-    return (p.options || []).map((option, o) => [option, o]).filter(([option]) => (option.type !== 'toggle' && M.priced(option)) === pricedOnes && !(p.category === 'tortas' && M.SHARED.includes(option.id))).map(([option, o]) => {
+    return (p.options || []).map((option, o) => [option, o]).filter(([option]) => (option.type !== 'toggle' && M.priced(option)) === pricedOnes).map(([option, o]) => {
         const path = `options.${o}`;
         if (option.type === 'toggle') return `<div class="admin-option">${field('Casilla que puede marcar', `${path}.label`, option.label)}${field('Costo adicional', `${path}.priceModifier`, moneyValue(option.priceModifier), { type: 'money', placeholder: 'Sin costo' })}</div>`;
         const depends = option.dependsOn ? (() => {
@@ -532,11 +518,19 @@ function groupsHTML(p, pricedOnes) {
             return `<p class="field-note">Solo aparece cuando se elige «${esc(values)}» en «${esc(parent?.label || '')}».</p>`;
         })() : '';
         const multiplier = option.multiplier ? '<p class="field-note">Multiplica el precio por la cantidad elegida.</p>' : '';
-        const head = pricedOnes ? '<div class="admin-choice admin-choice-head" aria-hidden="true"><span>Opción</span><span>Precio</span><span></span></div>' : '';
-        const rows = (option.choices || []).map((choice, c) => `<div class="admin-choice${pricedOnes ? '' : ' no-price'}"><input aria-label="Opción ${c + 1} de ${esc(option.label)}" data-path="${path}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" placeholder="Escribe la opción" ${option.multiplier ? 'readonly' : ''}>${pricedOnes ? `<div class="admin-money"><input aria-label="Precio de ${esc(choice.label || `la opción ${c + 1}`)}" data-path="${path}.choices.${c}.price" data-kind="money" inputmode="numeric" value="${esc(moneyValue(choice.price))}" placeholder="Cotiza"></div>` : ''}${option.multiplier ? '<span></span>' : `<button type="button" class="icon-button" data-action="remove-choice" data-option="${o}" data-choice="${c}" aria-label="Quitar ${esc(choice.label || 'esta opción')}">${icon('close')}</button>`}</div>`).join('');
-        return `<div class="admin-option">${field(pricedOnes ? 'Título del grupo (lo ve el cliente)' : 'Título del grupo (lo ve el cliente)', `${path}.label`, option.label, { placeholder: pricedOnes ? 'Ej.: Número de porciones' : 'Ej.: Sabor del bizcocho' })}${depends}${multiplier}${head}${rows}
-            <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} Agregar opción</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div>
-            ${pricedOnes ? '<p class="field-note">Un precio vacío muestra «Cotiza por WhatsApp» para esa opción.</p>' : ''}</div>`;
+        const remove = (c, choice) => option.multiplier ? '<span></span>' : `<button type="button" class="icon-button" data-action="remove-choice" data-option="${o}" data-choice="${c}" aria-label="Quitar ${esc(choice.label || 'esta opción')}">${icon('close')}</button>`;
+        const label = (c, choice) => `<input aria-label="Opción ${c + 1} de ${esc(option.label)}" data-path="${path}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" placeholder="Escribe la opción" ${option.multiplier ? 'readonly' : ''}>`;
+        let body;
+        if (pricedOnes) {
+            body = `<div class="admin-choice admin-choice-head" aria-hidden="true"><span>Opción</span><span>Precio</span><span></span></div>` + (option.choices || []).map((choice, c) => `<div class="admin-choice">${label(c, choice)}<div class="admin-money"><input aria-label="Precio de ${esc(choice.label || `la opción ${c + 1}`)}" data-path="${path}.choices.${c}.price" data-kind="money" inputmode="numeric" value="${esc(moneyValue(choice.price))}" placeholder="Cotiza"></div>${remove(c, choice)}</div>`).join('');
+        } else {
+            body = (option.choices || []).map((choice, c) => `<div class="admin-choice-card"><div class="admin-choice no-price">${label(c, choice)}${remove(c, choice)}</div>${option.multiple && !option.addons ? '' : extraHTML(p, option, o, choice, c)}${choicePhotoHTML(p, option, o, choice, c)}</div>`).join('');
+        }
+        const note = pricedOnes ? '<p class="field-note">Un precio vacío muestra «Cotiza por WhatsApp» para esa opción.</p>'
+            : option.addons ? '<p class="field-note">El cliente marca los que quiera y cada uno suma su precio. Vacío: se puede marcar, pero la torta se consulta por WhatsApp.</p>'
+            : option.multiple ? '' : '<p class="field-note">Si una opción cuesta más (un relleno premium), escribe cuánto se suma. Vacío: no suma.</p>';
+        return `<div class="admin-option">${field('Título del grupo (lo ve el cliente)', `${path}.label`, option.label)}${depends}${multiplier}${note}${body}
+            <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} ${option.addons ? 'Agregar adicional' : 'Agregar opción'}</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div></div>`;
     }).join('');
 }
 
@@ -573,8 +567,6 @@ const previewTitle = p => `Así se verá en la web <span class="admin-tag"${p.vi
 
 function renderEditor() {
     const p = edit;
-    const base = p.basedOn ? products.find(b => b.id === p.basedOn) : null;
-    const inherited = key => base && !(key in p) ? `Si lo dejas vacío, usa el de ${esc(base.name)}.` : '';
     const groups = M.GROUPS[p.category];
     // La portada tiene cuatro lugares, solo para tortas: si ya están ocupados por otras, la casilla no se puede marcar.
     const max = window.Catalog.FEATURED;
@@ -582,8 +574,6 @@ function renderEditor() {
     const others = products.filter(x => x.id !== editingId && onHome(x));
     const full = others.length >= max && p.featured !== true;
     const names = list => list.map(x => x.name).join(', ').replace(/, ([^,]*)$/, ' y $1');
-    // Los cuadros de texto muestran todo su contenido sin desplazarse por dentro.
-    const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
     const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
     const section = choices('Sección de la web', 'category', p.category, M.SECTIONS);
     const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? choices('Filtro en la página', 'group', p.group, [['', 'Ninguno'], ...groups]) : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
@@ -600,16 +590,17 @@ function renderEditor() {
             ${p.category === 'extras' ? '' : photosHTML(p)}
             <fieldset class="admin-fieldset"><legend>Textos</legend>
                 ${field('Frase corta de la tarjeta', 'summary', p.summary, { note: p.category === 'tortas' ? 'Una línea que invite, bajo el nombre de la torta. Si la dejas vacía, la tarjeta muestra solo el nombre y el precio.' : 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
-                ${field('Descripción', 'description', p.description, { area: true, placeholder: base?.description || '', note: inherited('description'), attrs: rows(Array(Math.ceil(String(p.description || base?.description || '').length / 70)).fill(0)) })}
-                ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.includes || []).join('\n'), note: inherited('includes'), attrs: rows(p.includes || base?.includes || []) })}
-                ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, placeholder: (base?.notes || []).join('\n'), note: inherited('notes') || 'Aclaraciones que se ven bajo las opciones.', attrs: rows(Array(Math.ceil((p.notes || base?.notes || []).join(' ').length / 70)).fill(0), 2) })}
+                ${field('Descripción', 'description', p.description, { area: true, attrs: rows(Array(Math.ceil(String(p.description || '').length / 70)).fill(0)) })}
+                ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, attrs: rows(p.includes || []) })}
+                ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, note: 'Aclaraciones que se ven bajo las opciones.', attrs: rows(Array(Math.ceil((p.notes || []).join(' ').length / 70)).fill(0), 2) })}
             </fieldset>
             ${choicesHTML(p)}
-            ${!M.QUANTITY.includes(p.category) || p.basedOn ? '' : `<fieldset class="admin-fieldset"><legend>Cantidad</legend><div class="admin-grid">
+            ${!M.QUANTITY.includes(p.category) ? '' : `<fieldset class="admin-fieldset"><legend>Cantidad</legend><div class="admin-grid">
                 ${field('Cantidad mínima por pedido', 'minimum', p.minimum ?? 1, { type: 'number', attrs: 'min="1" max="99"' })}
-                ${field('Cómo se llama la cantidad', 'quantityLabel', p.quantityLabel, { placeholder: 'Cantidad de esta presentación', note: 'Ej.: Número de cajas.' })}
+                ${field('Cómo se llama la cantidad', 'quantityLabel', p.quantityLabel ?? 'Cantidad de esta presentación', { note: 'Ej.: Número de cajas.' })}
             </div>${personal ? `<p class="field-note">El cliente también escribe: ${esc(personal)}.</p>` : ''}</fieldset>`}
             ${editingId ? '<div class="admin-delete"><button type="button" class="admin-danger" data-action="delete">Eliminar producto</button><p class="field-note">Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p></div>' : ''}
+            <input type="file" id="choicePhotoUpload" accept="image/*" hidden>
             <p class="field-error" id="editorError" role="alert" hidden></p>
             </div>
             <aside class="admin-editor-side" aria-label="Vista previa y estado">
@@ -644,7 +635,24 @@ function readInput(input) {
     if (kind === 'lines') return input.value.split('\n');
     return input.value;
 }
+// Costo de una elección (por tamaño o uno solo). Vacío = sin costo (en adicionales, se cotiza).
+function setExtra(choice, size, value) {
+    if (!size) { if (value === null) delete choice.extra; else choice.extra = value; return; }
+    const sizes = M.sizeOf(edit)?.choices.map(c => c.value) || [];
+    // Un costo único de antes pasa a ser el de cada tamaño.
+    if (typeof choice.extra === 'number') choice.extra = Object.fromEntries(sizes.map(key => [key, choice.extra]));
+    choice.extra = { ...(choice.extra && typeof choice.extra === 'object' ? choice.extra : {}), [size]: value };
+}
 editor.addEventListener('input', event => {
+    const cost = event.target.closest('[data-extra]');
+    if (cost) {
+        const [o, c] = cost.dataset.extra.split('.').map(Number);
+        setExtra(edit.options[o].choices[c], cost.dataset.size, readInput(cost));
+        const preview = editor.querySelector('#pricePreview');
+        if (preview) preview.innerHTML = pricePreview();
+        editor.querySelector('#cardPreview').innerHTML = cardPreview(edit);
+        return;
+    }
     const input = event.target.closest('[data-path]');
     if (!input) return;
     const value = readInput(input);
@@ -657,15 +665,13 @@ editor.addEventListener('input', event => {
         editor.querySelector('[data-path="phrase"]').focus({ preventScroll: true });
         return;
     }
-    // Un texto heredado que se deja vacío vuelve a tomar el de la torta base.
-    if (edit.basedOn && ['description', 'includes', 'notes'].includes(path) && (value === '' || (Array.isArray(value) && !value.join('').trim()))) delete edit[path];
-    else setPath(edit, path, value);
+    setPath(edit, path, value);
     if (path === 'name') editor.querySelector('#editorTitle').textContent = value || 'Sin nombre';
     const preview = editor.querySelector('#pricePreview');
     if (preview) preview.innerHTML = pricePreview();
     editor.querySelector('#cardPreview').innerHTML = cardPreview(edit);
     editor.querySelector('#cardPreviewTitle').innerHTML = previewTitle(edit);
-    if (path === 'category' || path === 'basedOn' || path === 'featured') {
+    if (path === 'category' || path === 'featured') {
         if (path === 'category') delete edit.group;
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
         const top = input.closest('label').getBoundingClientRect().top;
@@ -730,7 +736,19 @@ editor.addEventListener('click', async event => {
     if (!button) return;
     const action = button.dataset.action;
     const option = edit.options?.[Number(button.dataset.option)];
-    if (action === 'add-choice') option.choices.push(M.priced(option) ? { value: '', label: '', price: null } : { value: '', label: '' });
+    // Un tamaño nuevo lleva su identificador desde ya: los costos por tamaño de los sabores se guardan con él.
+    if (action === 'add-choice') option.choices.push(M.priced(option) ? { value: M.unique('tamano', new Set(option.choices.map(c => c.value))), label: '', price: null } : { value: '', label: '' });
+    if (action === 'add-addons') { edit.options = [...(edit.options || []), M.addonsGroup([{ value: '', label: '' }])]; }
+    if (action === 'same-extra') {
+        // «Mismo valor en todos»: el primer tamaño con valor se copia en los demás.
+        const choice = option.choices[Number(button.dataset.choice)];
+        const sizes = M.sizeOf(edit)?.choices.map(c => c.value) || [];
+        const first = typeof choice.extra === 'number' ? choice.extra : sizes.map(key => choice.extra?.[key]).find(v => typeof v === 'number');
+        if (first === undefined) { LaurenUI.toast('Escribe primero el valor de un tamaño.'); return; }
+        choice.extra = Object.fromEntries(sizes.map(key => [key, first]));
+    }
+    if (action === 'choice-photo') { choicePhotoTarget = { o: Number(button.dataset.option), c: Number(button.dataset.choice) }; if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#choicePhotoUpload').click(); return; }
+    if (action === 'choice-photo-remove') delete option.choices[Number(button.dataset.choice)].image;
     if (action === 'remove-choice') option.choices.splice(Number(button.dataset.choice), 1);
     if (action === 'remove-option') {
         if (!(await askConfirm({
@@ -745,8 +763,6 @@ editor.addEventListener('click', async event => {
         edit.options = edit.options || [];
         edit.options.push({ id: '', label: button.dataset.priced ? 'Tamaño' : 'Sabor', type: 'radio', required: true, choices: [button.dataset.priced ? { value: '', label: '', price: null } : { value: '', label: '' }] });
     }
-    if (action === 'own-prices') edit.options = M.clone(products.find(b => b.id === edit.basedOn)?.options || []);
-    if (action === 'inherit') delete edit.options;
     if (action === 'main-photo') { const src = button.dataset.src; edit.images = [src, ...(edit.images || []).filter(s => s !== src)]; edit.mainImage = src; }
     if (action === 'remove-photo') {
         // Sacar una foto nunca la pierde: una de la web vuelve al selector; con una subida se elige guardarla o borrarla.
@@ -771,7 +787,6 @@ editor.addEventListener('click', async event => {
             : erase ? `Salió de ${where}. Se borra cuando publiques los cambios.` : `Salió de ${where}. Queda en tus fotos subidas, en «Agregar fotos de la web».`);
     }
     if (action === 'pick-photo') { openPicker(); return; }
-    if (action === 'shared') { openShared(); return; }
     if (action === 'upload-photo') { if (uploading) LaurenUI.toast('Espera a que terminen de subir las fotos.'); else editor.querySelector('#photoUpload').click(); return; }
     if (action === 'delete') {
         if (!(await askConfirm({
@@ -964,7 +979,32 @@ async function changeUploads({ add = [], remove = [] }) {
     });
     if (uploadedList) uploadedList = [...new Set([...uploadedList.filter(src => !remove.includes(src)), ...add])];
 }
+// Foto de un bizcocho o relleno: una sola, al mismo worker de fotos.
+let choicePhotoTarget = null;
+async function uploadChoicePhoto(file) {
+    const target = choicePhotoTarget && edit.options?.[choicePhotoTarget.o]?.choices[choicePhotoTarget.c];
+    if (!file || !target) return;
+    if (preview) { LaurenUI.toast('Vista previa: aquí no se suben fotos.'); return; }
+    try {
+        showUpload('Subiendo la foto…');
+        LaurenUI.toast('Subiendo la foto…');
+        const { photo, thumb } = await compress(file);
+        const ext = photo.type === 'image/webp' ? 'webp' : 'jpg';
+        const form = new FormData();
+        form.append('foto', photo, `foto.${ext}`);
+        form.append('miniatura', thumb, `miniatura.${ext}`);
+        form.append('nombre', target.label || 'sabor');
+        const { foto } = await photosApi('/subir', { method: 'POST', body: form });
+        if (!M.IMAGE.test(foto)) throw new Error('error');
+        target.image = foto;
+        await changeUploads({ add: [foto] }).catch(() => {});
+        LaurenUI.toast('Foto lista. Toca «Guardar» y luego «Publicar cambios».');
+    } catch (error) { LaurenUI.toast(uploadError(error)); }
+    finally { showUpload(''); }
+    if (editor.open) { const scroll = editor.querySelector('.dialog-scroll').scrollTop; renderEditor(); editor.querySelector('.dialog-scroll').scrollTop = scroll; }
+}
 editor.addEventListener('change', event => {
+    if (event.target.id === 'choicePhotoUpload') { uploadChoicePhoto(event.target.files[0]); event.target.value = ''; return; }
     if (event.target.id !== 'photoUpload') return;
     uploadPhotos([...event.target.files]);
     event.target.value = '';
@@ -997,13 +1037,14 @@ async function showPicker() {
     takenMains = M.takenPhotos(others);
     pending = { merges: new Set(), moves: new Set() };
     // Una foto subida que no usa ningún producto (ni en el borrador ni en lo publicado) se puede borrar para siempre.
-    const used = new Set([...products, ...Object.values(original), edit].flatMap(M.photos));
+    const used = new Set([...products, ...Object.values(original), edit].flatMap(p => [...M.photos(p), ...M.choicePhotos(p)]));
+    const flavorPhotos = new Set([...products, edit].flatMap(M.choicePhotos));
     const spare = src => src.startsWith(M.UPLOADED) && !used.has(src);
     // Una foto subida que se sacó con «Borrarla» espera a la publicación.
     const doomed = src => pendingDeletes.has(src) || photoFates.get(src) === 'borrar';
     // Las que ya están en otro producto van tapadas y al final de su sección: así se ven primero las libres.
     const taken = src => takenMains.has(src) || others.some(p => M.photos(p).includes(src));
-    const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal)).map(item => ({ ...item, taken: taken(item.proposal) }))
+    const items = [...uploaded, ...manifest].filter(item => !own.has(item.proposal) && !flavorPhotos.has(item.proposal)).map(item => ({ ...item, taken: taken(item.proposal) }))
         .sort((a, b) => (b.category === edit.category) - (a.category === edit.category) || a.taken - b.taken);
     picker.innerHTML = `<div class="admin-picker-body"><div class="dialog-scroll"><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button><p class="eyebrow">Fotos de la web</p><h2 id="pickerTitle">${edit.mainImage ? 'Agrega más <em>fotos.</em>' : 'Elige la <em>foto principal.</em>'}</h2><p class="admin-lead">${edit.mainImage ? `Toca todas las que quieras: se ven en pequeño bajo la foto de «${esc(edit.name || 'este producto')}». Primero las de ${esc(sectionName(edit.category))}.` : 'La primera que toques será la de la tarjeta. Luego puedes tocar más.'} Las libres se ven primero; las que ya están en otro producto se ven borrosas. Cada foto vive en un solo producto: si ya está en otro, se mueve aquí, y si es la de su tarjeta, ese producto se une a este. Al tocar «Listo» te mostramos el resumen antes de hacerlo.</p><div class="admin-photos">${items.map((item, i) => {
         const main = takenMains.get(item.proposal);
@@ -1134,154 +1175,6 @@ document.addEventListener('keydown', event => {
     else if (editor.open) { event.preventDefault(); leaveEditor(); }
 }, true);
 
-
-/* ---------- Sabores y adicionales: lo que comparten todas las tortas ---------- */
-// Bizcochos y rellenos (con su costo adicional, si lo tienen) y los adicionales de torta (productos «extras», con
-// su precio) se editan juntos aquí. Al guardar, se copian en todas las tortas; la web los suma al total.
-const sharedDialog = $('sharedEditor');
-LaurenUI.dialogEvents(sharedDialog);
-let shared = null;
-let sharedStart = '';
-let sharedFrom = [];
-let sharedBackToEditor = false;
-const rangeText = p => typeof p.priceMax === 'number' && p.priceMax > p.price && typeof p.price === 'number' ? `${window.Catalog.money(p.price)} - ${window.Catalog.money(p.priceMax)}` : '';
-function openShared() {
-    const groups = M.sharedGroups(products);
-    const extras = products.filter(p => p.category === 'extras');
-    // Un adicional con rango aún no tiene precio fijo: el campo empieza vacío y recuerda el rango de antes.
-    shared = { groups: M.clone(groups), extras: extras.map(p => ({ id: p.id, name: p.name, icon: p.icon || 'gift', price: rangeText(p) ? null : p.price ?? null, range: rangeText(p) })) };
-    sharedFrom = M.clone(shared.extras);
-    sharedStart = JSON.stringify(shared);
-    sharedBackToEditor = editor.open;
-    renderShared();
-    LaurenUI.open(sharedDialog);
-}
-function sharedChoicesHTML(id, legend, note, add) {
-    const option = shared.groups[id];
-    if (!option) return '';
-    const rows = option.choices.map((choice, c) => `<div class="admin-choice"><input aria-label="${esc(legend)}: opción ${c + 1}" data-shared-path="groups.${id}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" placeholder="Escribe la opción"><div class="admin-money"><input aria-label="Costo adicional de ${esc(choice.label || `la opción ${c + 1}`)}" data-shared-path="groups.${id}.choices.${c}.extra" data-kind="money" inputmode="numeric" value="${esc(moneyValue(choice.extra))}" placeholder="Sin costo"></div><button type="button" class="icon-button" data-shared-action="remove-choice" data-group="${id}" data-index="${c}" aria-label="Quitar ${esc(choice.label || 'esta opción')}">${icon('close')}</button></div>`).join('');
-    return `<fieldset class="admin-fieldset"><legend>${esc(legend)}</legend><p class="field-note">${note}</p>
-        <div class="admin-choice admin-choice-head" aria-hidden="true"><span>Opción</span><span>Costo adicional</span><span></span></div>${rows}
-        <p><button type="button" class="admin-add" data-shared-action="add-choice" data-group="${id}">${icon('plus')} ${esc(add)}</button></p></fieldset>`;
-}
-// Si hoy alguna torta tiene otra lista (por ejemplo, un relleno menos), se avisa: al guardar, todas quedan iguales.
-function sharedDiffHTML() {
-    const lines = products.filter(p => p.category === 'tortas' && Array.isArray(p.options)).flatMap(p => M.SHARED.map(id => {
-        const mine = p.options.find(o => o.id === id)?.choices.map(c => c.label) || [];
-        const all = M.sharedGroups(products)[id]?.choices.map(c => c.label) || [];
-        const missing = all.filter(label => !mine.includes(label)), extra = mine.filter(label => !all.includes(label));
-        const names = list => list.map(label => `«${esc(label)}»`).join(', ');
-        return missing.length || extra.length ? `<li>${esc(p.name)}${missing.length ? ` no tiene ${names(missing)}` : ''}${missing.length && extra.length ? ' y' : ''}${extra.length ? ` tiene además ${names(extra)}` : ''}.</li>` : '';
-    })).filter(Boolean);
-    return lines.length ? `<div class="admin-option"><p class="field-note">Hoy no todas las tortas tienen la misma lista. Al guardar, todas quedan con la de abajo:</p><ul class="admin-confirm-notes">${lines.join('')}</ul></div>` : '';
-}
-function renderShared() {
-    const rows = shared.extras.map((extra, i) => `<div class="admin-choice admin-addon"><span class="admin-addon-icon" aria-hidden="true">${icon(extra.icon)}</span><input aria-label="Nombre del adicional ${i + 1}" data-shared-path="extras.${i}.name" data-kind="text" value="${esc(extra.name)}" placeholder="Ej.: Moños" maxlength="60"><div class="admin-money"><input aria-label="Precio de ${esc(extra.name || `el adicional ${i + 1}`)}" data-shared-path="extras.${i}.price" data-kind="money" inputmode="numeric" value="${esc(moneyValue(extra.price))}" placeholder="Cotiza"></div><button type="button" class="icon-button" data-shared-action="remove-extra" data-index="${i}" aria-label="Quitar ${esc(extra.name || 'este adicional')}">${icon('close')}</button>${extra.range && extra.price === null ? `<p class="field-note">Antes: ${esc(extra.range)}. Escribe un solo precio para que se sume al total.</p>` : ''}</div>`).join('');
-    sharedDialog.innerHTML = `<form novalidate>
-        <div class="dialog-scroll">
-            <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
-            <p class="eyebrow">Para todas las tortas</p>
-            <h2 id="sharedTitle">Sabores y adicionales</h2>
-            <p class="admin-lead">Lo que cambies aquí se ve en la ficha de todas las tortas. Lo que cuesta más se suma al total que ve el cliente.</p>
-            ${sharedDiffHTML()}
-            ${sharedChoicesHTML('sabor', 'Bizcochos', 'Si un bizcocho cuesta más, escribe cuánto se suma. Vacío, no cambia el precio.', 'Agregar bizcocho')}
-            ${sharedChoicesHTML('relleno', 'Rellenos', 'Para los rellenos premium, escribe cuánto se suma (por ejemplo, 10.000). Vacío, no cambia el precio.', 'Agregar relleno')}
-            <fieldset class="admin-fieldset"><legend>Adicionales</legend>
-                <p class="field-note">El cliente los marca en la ficha de su torta y su precio se suma al total. Sin precio se pueden marcar, pero esa torta se consulta por WhatsApp.</p>
-                <div class="admin-choice admin-addon admin-choice-head" aria-hidden="true"><span></span><span>Adicional</span><span>Precio</span><span></span></div>${rows}
-                <p><button type="button" class="admin-add" data-shared-action="add-extra">${icon('plus')} Agregar adicional</button></p>
-            </fieldset>
-            <p class="field-error" id="sharedError" role="alert" hidden></p>
-        </div>
-        <div class="admin-editor-actions">
-            <div><button type="button" class="btn btn-secondary" data-close-dialog>Cancelar</button><button type="submit" class="btn">Guardar ${icon('check')}</button></div>
-        </div>
-    </form>`;
-}
-// Cerrar con cambios sin guardar pregunta antes, como la ficha. Si se abrió desde una ficha, se vuelve a ella.
-async function leaveShared() {
-    if (JSON.stringify(shared) !== sharedStart && !(await askConfirm({
-        title: '¿Salir sin <em>guardar</em>?',
-        body: '<p>Los cambios de sabores y adicionales se pierden. Para conservarlos, toca «Guardar».</p>',
-        action: 'Salir sin guardar',
-        cancel: 'Seguir editando'
-    }))) return;
-    LaurenUI.close(sharedDialog);
-}
-sharedDialog.addEventListener('click', event => {
-    const bounds = sharedDialog.getBoundingClientRect();
-    const outside = event.target === sharedDialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
-    if (!outside && !event.target.closest('[data-close-dialog]')) return;
-    event.stopImmediatePropagation();
-    leaveShared();
-}, true);
-sharedDialog.addEventListener('cancel', event => { event.preventDefault(); leaveShared(); });
-sharedDialog.addEventListener('close', () => {
-    if (!sharedBackToEditor || confirmDialog.open || $('appView').hidden) return;
-    sharedBackToEditor = false;
-    renderEditor();
-    LaurenUI.open(editor);
-    editor.querySelector('[data-action="shared"]')?.scrollIntoView({ block: 'center' });
-});
-sharedDialog.addEventListener('input', event => {
-    const input = event.target.closest('[data-shared-path]');
-    if (!input) return;
-    setPath(shared, input.dataset.sharedPath, readInput(input));
-});
-sharedDialog.addEventListener('click', event => {
-    const button = event.target.closest('[data-shared-action]');
-    if (!button) return;
-    const action = button.dataset.sharedAction;
-    const index = Number(button.dataset.index);
-    if (action === 'add-choice') shared.groups[button.dataset.group].choices.push({ value: '', label: '' });
-    if (action === 'remove-choice') shared.groups[button.dataset.group].choices.splice(index, 1);
-    if (action === 'add-extra') shared.extras.push({ id: '', name: '', icon: 'gift', price: null, range: '' });
-    if (action === 'remove-extra') shared.extras.splice(index, 1);
-    const scroll = sharedDialog.querySelector('.dialog-scroll').scrollTop;
-    renderShared();
-    sharedDialog.querySelector('.dialog-scroll').scrollTop = scroll;
-    if (action.startsWith('add')) {
-        const inputs = sharedDialog.querySelectorAll(action === 'add-extra' ? '[data-shared-path^="extras."][data-shared-path$=".name"]' : `[data-shared-path^="groups.${button.dataset.group}."][data-shared-path$=".label"]`);
-        inputs[inputs.length - 1]?.focus();
-    }
-});
-sharedDialog.addEventListener('submit', event => {
-    event.preventDefault();
-    // Costo vacío = sin costo: la elección no lleva `extra`.
-    for (const option of Object.values(shared.groups)) for (const choice of option.choices) if (choice.extra === null || choice.extra === '') delete choice.extra;
-    if (shared.extras.some(extra => !extra.name.trim())) { showError('sharedError', 'Ponle nombre a cada adicional o quítalo.'); return; }
-    // Adicionales: los que no se tocaron quedan como estaban (también su rango); los nuevos toman un identificador.
-    const taken = new Set(products.map(p => p.id));
-    const before = new Map(sharedFrom.map(extra => [extra.id, JSON.stringify(extra)]));
-    const extras = shared.extras.map(extra => {
-        const current = products.find(p => p.id === extra.id && p.category === 'extras');
-        if (current && before.get(extra.id) === JSON.stringify(extra)) return current;
-        const product = current ? M.clone(current) : { id: M.unique(`extra-${M.slug(extra.name)}`, taken), category: 'extras', visible: true, description: '', icon: extra.icon, options: [], personalization: null };
-        taken.add(product.id);
-        Object.assign(product, { name: extra.name.trim(), price: extra.price });
-        delete product.priceMax;
-        return product;
-    });
-    // Los adicionales nuevos van después del último; los quitados salen del catálogo al publicar.
-    const others = products.filter(p => p.category !== 'extras');
-    const at = products.findIndex(p => p.category === 'extras');
-    const next = at < 0 ? [...others, ...extras] : [...products.slice(0, at).filter(p => p.category !== 'extras'), ...extras, ...products.slice(at).filter(p => p.category !== 'extras')];
-    const updated = M.applyShared(next, shared.groups);
-    const touched = updated.filter((p, i) => p !== next[i] || extras.includes(p));
-    const errors = M.validate(touched, updated);
-    if (errors.length) { showError('sharedError', errors[0]); $('sharedError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
-    showError('sharedError', '');
-    products = updated;
-    // La ficha abierta (si se vino de ella) toma la lista nueva, sin contarla como un cambio suyo.
-    if (sharedBackToEditor && edit?.category === 'tortas') {
-        [edit] = M.applyShared([edit], shared.groups);
-        pristine = JSON.stringify(M.applyShared([JSON.parse(pristine)], shared.groups)[0]);
-    }
-    sharedStart = JSON.stringify(shared);
-    LaurenUI.close(sharedDialog);
-    render();
-    LaurenUI.toast('Guardado en tu borrador. Se verá en todas las tortas cuando publiques.');
-});
 
 
 if (preview) {

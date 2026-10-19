@@ -17,7 +17,8 @@
 | `includes` | No | Lista «Qué incluye» |
 | `notes` | No | Aclaraciones bajo las opciones de la ficha |
 | `price` | No | Precio cuando ninguna opción lo fija. `null` = «Cotiza por WhatsApp» |
-| `priceMax` | No | Solo extras: tope del rango («$2.000 - $3.000») |
+| `priceMax` | No | Solo extras, formato anterior: tope del rango («$2.000 - $3.000») |
+| `priceText` | No | Solo extras (vitrina «Adicionales para tu torta»): el precio en texto libre, como lo escribe el negocio («De $2.000 a $5.000 según el tamaño»). Si existe, es lo que se ve |
 | `priceSuffix` | No | Complemento del precio de la tarjeta: `c/u`, `la caja` |
 | `minimum` | No | Cantidad mínima por pedido (por defecto 1) |
 | `quantityLabel` | No | Rótulo de la cantidad (por defecto «Cantidad de esta presentación») |
@@ -25,7 +26,7 @@
 | `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
 | `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración: así se bloquea la frase en una torta |
-| `basedOn` | No | Torta (`torta-vintage`, `torta-sencilla`) de la que toma lo que no define: opciones, precios, notas, textos, mínimo. No se repite en el JSON-LD |
+| `basedOn` | No | Formato anterior: torta de la que tomaba lo que no definía. El centro de control lo copia en cada torta al abrirse (cada grupo es independiente); la web aún lo lee mientras no se publique |
 
 ## Opciones y precios
 
@@ -38,15 +39,13 @@ Cada opción tiene `id`, `label`, `type` (`radio`, `select` o `toggle`), `requir
 - `dependsOn` + `showWhen`: la opción solo aparece con esa elección de otra opción.
 - `toggle` con `priceModifier`: suma ese valor al marcarse.
 - `multiple` + `maxSelection`: elección de varios valores (colores).
-- **Costo adicional por elección:** `extra` en una elección suma ese valor al total (rellenos premium). Sin `extra`, no cambia el precio. Vale también en elecciones múltiples: cada valor marcado suma el suyo. `extra: null` = esa elección se cotiza por WhatsApp.
+- **Costo adicional por elección:** `extra` suma ese valor al total. Puede ser un número (igual en todos los tamaños) o un valor por tamaño: `extra: { "4-5": 5000, "25-30": 20000 }`, con las claves de las elecciones del **tamaño** (la primera opción con precio por elección, sin `dependsOn` ni `multiplier`: porciones, presentación; `Catalog.sizeOption`). Vacío o sin valor para ese tamaño: no suma.
+- **Adicionales:** una opción con `addons: true` y `multiple: true` (en la ficha, «Adicionales», opcional). Cada elección suma su `extra` del tamaño elegido; una sin valor para ese tamaño se puede marcar, pero la selección se cotiza por WhatsApp. Cada producto tiene los suyos.
+- `image` en una elección de `sabor` o `relleno` (tortas): su foto subida desde el centro de control, para «Un sabor para recordar».
 
-### Bizcochos, rellenos y adicionales de torta
+### «Un sabor para recordar» (/tortas/)
 
-- Las opciones `sabor` y `relleno` son las mismas en todas las tortas: el centro de control las edita una sola vez («Sabores y adicionales») y las copia en Torta Vintage, Torta Sencilla y cada torta con precios propios.
-- «Un sabor para recordar» (/tortas/) sale de esa misma lista: `js/flavors.js` la pinta en el navegador y `scripts/seo.mjs` la escribe en el HTML publicado. Cada bizcocho o relleno usa su foto si la hay (por valor o por nombre: «Mermelada de frutos rojos» usa la de frutos rojos; la lista de fotos está en `PHOTOS`); los que no tienen foto van en «También: …». Para darle foto a uno nuevo, se agrega la foto a `assets/propuestas-fotograficas/` y una línea a `PHOTOS`.
-- Los adicionales (`category: "extras"`) se eligen en la ficha de cada torta: `js/catalog-model.js` añade a toda torta la opción `adicionales` (varios, opcional) con los adicionales visibles. Cada uno suma su `price`. Un adicional sin precio, o con rango (`priceMax`), se puede marcar pero deja la torta en «Consultar por WhatsApp». El «Desde» de la tarjeta no cambia por los adicionales.
-
-La tarjeta calcula sola su precio: «$22.000» si es único, «Desde $65.000» si varía, el rango en los extras y «Cotiza por WhatsApp» si no hay ninguno.
+Sale de los bizcochos y rellenos de la primera torta visible del catálogo: `js/flavors.js` la pinta en el navegador y `scripts/seo.mjs` la escribe en el HTML publicado. Cada uno usa su foto subida (`image`, también si se subió en otra torta con el mismo nombre) o la de la web que le corresponde (por valor o por nombre; lista en `PHOTOS`); los que no tienen foto van en «También: …».
 
 ## Precios dentro de los textos
 

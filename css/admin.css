@@ -151,13 +151,25 @@
 /* En el panel, las flechas se centran sobre las fotos, no sobre los tres puntos. */
 .admin-photo-strip .photo-strip-arrow { top: 62px; }
 
-/* «Sabores y adicionales»: una columna, filas como las opciones de la ficha; los adicionales llevan su icono delante. */
-.admin-shared { width: min(760px, calc(100% - 32px)); }
-.admin-shared .admin-lead { margin-top: 8px; }
-.admin-choice.admin-addon { grid-template-columns: 44px minmax(0, 1fr) 150px 44px; }
-.admin-choice.admin-addon > .field-note { grid-column: 2 / -1; margin: -4px 0 4px; }
-.admin-addon-icon { display: grid; place-items: center; width: 44px; height: 44px; color: var(--color-text); }
-.admin-addon-icon svg { width: 32px; height: 32px; stroke-width: var(--icon-stroke-display); }
+/* Lo que elige el cliente: cada opción en su tarjeta, con su costo por tamaño (una casilla por tamaño) y, en
+   bizcochos y rellenos de las tortas, su foto. Todo desplegado: nada se esconde. */
+.admin-choice-card { padding: 12px; margin-bottom: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-cream); }
+.admin-choice-card > .admin-choice { margin-bottom: 0; }
+.admin-extra-sizes { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px 10px; margin-top: 10px; }
+.admin-extra { display: grid; gap: 4px; font-size: .6875rem; color: var(--color-text-soft); min-width: 0; }
+.admin-extra > span:first-child { overflow-wrap: anywhere; line-height: 1.3; }
+.admin-extra input { display: block; width: 100%; min-height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-white); padding: 10px 12px 10px 24px; color: var(--color-text); }
+.admin-add.admin-add-small { min-height: 44px; font-size: .75rem; margin-top: 6px; }
+.admin-add-small svg { width: 16px; height: 16px; }
+.admin-add-row { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.admin-choice-photo { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--color-border); }
+.admin-choice-photo img, .admin-choice-nophoto { width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-peach); }
+.admin-choice-nophoto { display: grid; place-items: center; color: var(--color-text-soft); }
+.admin-choice-nophoto svg { width: 28px; height: 28px; }
+.admin-choice-photo .field-note { margin: 0; }
+.admin-choice-photo div { display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; }
+.admin-choice-photo div .field-note { flex-basis: 100%; }
+.admin-editor textarea { overflow-wrap: anywhere; }
 
 /* Confirmación de la marca: diálogo pequeño con titular, qué pasa y las dos acciones. */
 .admin-confirm { width: min(480px, calc(100% - 32px)); }
@@ -209,13 +221,6 @@
     .admin-editor, .admin-picker { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
     .admin-editor form, .admin-picker-body { max-height: 100dvh; height: 100%; }
     .admin-choice { grid-template-columns: minmax(0, 1fr) 118px 44px; }
-    /* En el teléfono, cada adicional en dos líneas: nombre completo arriba y el precio debajo. */
-    .admin-choice.admin-addon { grid-template-columns: 28px minmax(0, 1fr) 44px; gap: 8px; margin-bottom: 16px; }
-    .admin-choice.admin-addon > .admin-money { grid-column: 2; grid-row: 2; max-width: 160px; }
-    .admin-choice.admin-addon > .icon-button { grid-column: 3; grid-row: 1; }
-    .admin-choice.admin-addon.admin-choice-head { display: none; }
-    .admin-addon-icon { width: 28px; }
-    .admin-addon-icon svg { width: 26px; height: 26px; }
     .admin-gallery { grid-template-columns: minmax(0, 1fr); }
     .admin-editor-actions > div { flex: 1; }
     .admin-editor-actions .btn { flex: 1; }

@@ -15,6 +15,12 @@ for (const file of ['catalog-data', 'catalog-model', 'admin-model', 'image-varia
 const { Catalog, AdminModel: M, LaurenFlavors: F, LaurenUI } = context;
 const real = () => Object.values(M.clone(context.catalogData));
 
+test('Catálogo real: el panel lo independiza sin errores (cada grupo con lo suyo)', () => {
+    const migrated = M.migrate(real());
+    assert.deepEqual([...M.validate(migrated)], []);
+    assert.ok(migrated.every(p => !p.basedOn));
+    assert.equal(JSON.stringify(M.migrate(migrated)), JSON.stringify(migrated));
+});
 test('Catálogo real: publicarlo sin cambios desde el panel lo deja idéntico', () => {
     assert.deepEqual([...M.validate(real())], []);
     assert.equal(JSON.stringify(M.toCatalog(M.normalize(real()))), JSON.stringify(context.catalogData));
@@ -38,7 +44,7 @@ test('Catálogo real: cada producto visible muestra su precio y se puede abrir',
         } else assert.equal(label.text, 'Cotiza por WhatsApp', p.id);
     }
 });
-test('Catálogo real: las tortas toman sus precios de una torta base y mandan su foto a WhatsApp', () => {
+test('Catálogo real: las tortas se pueden pedir y mandan su foto a WhatsApp', () => {
     const tortas = Catalog.all().filter(p => p.category === 'tortas');
     assert.ok(tortas.length, 'hay tortas visibles');
     for (const p of tortas) {
@@ -46,7 +52,6 @@ test('Catálogo real: las tortas toman sus precios de una torta base y mandan su
         if (own.basedOn) assert.ok(context.catalogData[own.basedOn] && !context.catalogData[own.basedOn].basedOn, `${p.id}: su torta base existe`);
         assert.equal(Catalog.quoteOnly(p), false, p.id);
         assert.match(Catalog.photo(p), /^https:\/\//, `${p.id}: foto para WhatsApp`);
-        assert.ok(p.options.some(o => o.id === Catalog.ADDONS) || !Catalog.all().some(x => x.category === 'extras'), `${p.id}: ofrece los adicionales`);
     }
     const featured = Catalog.featured();
     assert.ok(featured.length <= Catalog.FEATURED && featured.every(p => p.category === 'tortas'));

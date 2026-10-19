@@ -39,7 +39,7 @@
         '.process-section': [
             ['mucho-encanto', row(204, { d: [-.5, -.9], m: 1 })]
         ],
-        // Complementos de Tortas («Los detalles hacen la diferencia»): el isotipo en el hueco entre el título y la frase;
+        // Adicionales de Tortas («Adicionales para tu torta»): el isotipo en el hueco entre el título y la frase;
         // en móvil, donde la frase va debajo del título, al final de la frase.
         '#complementos': [
             ['isotipo-circulo', { between: ['.section-heading h2', '.section-heading > p'], desk: 1, d: [0, 0], w: 84, c: 'white', m: 1, alt: [{ to: '.section-heading > p', end: 1, d: [.9, -.3] }] }]

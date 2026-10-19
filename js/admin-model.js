@@ -40,6 +40,8 @@
     }
     const formatMoney = value => typeof value === 'number' && Number.isFinite(value) ? new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value) : '';
     const priced = option => Boolean(option.choices?.some(choice => Object.hasOwn(choice, 'price')));
+    // Tamaño del producto: igual que Catalog.sizeOption (porciones, presentación).
+    const sizeOf = product => (product.options || []).find(o => o.type !== 'toggle' && !o.dependsOn && !o.multiplier && priced(o)) || null;
     const photos = product => [...new Set([product.mainImage, ...(product.images || [])].filter(Boolean))];
     /**
      * Fotos principales de los demás productos. La principal (la de la tarjeta) es única: así no hay
@@ -50,19 +52,23 @@
     /** Nombre corto de una foto para los mensajes: «torta-vintage», «foto subida». */
     const photoName = src => src.split('/').pop().replace(/\.\w+$/, '');
     /**
-     * Producto nuevo con la estructura del primero de su sección (opciones, porciones, campos de
-     * mensaje), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
+     * Producto nuevo con la estructura y los textos del primero de su sección (opciones, porciones, campos de
+     * mensaje, descripción), sin nombre, sin fotos y con todos los precios vacíos. Empieza oculto.
      */
     function template(category, products) {
         const base = products.find(p => p.category === category && !p.basedOn);
         const product = base ? clone(base) : { category, options: [], personalization: null };
-        for (const key of ['basedOn', 'featured', 'summary', 'priceMax']) delete product[key];
-        Object.assign(product, { id: '', name: '', category, visible: false, description: '', mainImage: '', images: [] });
+        // Los textos del primero de la sección quedan escritos (no de ejemplo): se editan, se completan o se borran.
+        for (const key of ['basedOn', 'featured', 'priceMax']) delete product[key];
+        Object.assign(product, { id: '', name: '', category, visible: false, description: product.description || '', mainImage: '', images: [] });
         product.price = null;
         if (category === 'extras') product.priceMax = null;
         for (const option of product.options || []) {
             if (option.type === 'toggle' && 'priceModifier' in option) option.priceModifier = null;
-            for (const choice of option.choices || []) if (Object.hasOwn(choice, 'price')) choice.price = null;
+            for (const choice of option.choices || []) {
+                if (Object.hasOwn(choice, 'price')) choice.price = null;
+                delete choice.extra; delete choice.image;
+            }
         }
         return product;
     }
@@ -73,7 +79,7 @@
             const product = clone(source);
             if (!product.id) { product.id = unique(slug(product.name), taken); taken.add(product.id); }
             product.name = product.name.trim();
-            for (const key of ['summary', 'description', 'priceSuffix', 'quantityLabel', 'group']) {
+            for (const key of ['summary', 'description', 'priceSuffix', 'priceText', 'quantityLabel', 'group']) {
                 if (typeof product[key] === 'string') product[key] = product[key].trim();
                 if (product[key] === '') delete product[key];
             }
@@ -85,6 +91,7 @@
             if (product.images) product.images = [...new Set(product.images.filter(Boolean))];
             if (!product.mainImage && product.images?.length) product.mainImage = product.images[0];
             if (!QUANTITY.includes(product.category) || product.basedOn) { delete product.minimum; delete product.quantityLabel; }
+            for (const option of product.options || []) if (option.addons && option.multiple) option.maxSelection = option.choices?.length || 1;
             if (product.minimum === 1 || product.minimum === null) delete product.minimum;
             const optionIds = new Set();
             for (const option of product.options || []) {
@@ -93,37 +100,54 @@
                 const values = new Set(option.choices?.filter(c => c.value).map(c => c.value));
                 for (const choice of option.choices || []) {
                     choice.label = String(choice.label || '').trim();
-                    // Costo adicional vacío = sin costo.
-                    if (Object.hasOwn(choice, 'extra') && (choice.extra === null || choice.extra === undefined)) delete choice.extra;
+                    // Costo adicional: vacío = sin costo (en adicionales, se cotiza). Por tamaño, solo quedan los tamaños que existen.
+                    if (choice.extra && typeof choice.extra === 'object') {
+                        const size = sizeOf(product);
+                        const sizes = new Set(size?.choices.map(c => c.value));
+                        choice.extra = Object.fromEntries(Object.entries(choice.extra).filter(([key, value]) => sizes.has(key) && value !== null && value !== undefined && value !== ''));
+                        if (!Object.keys(choice.extra).length) delete choice.extra;
+                    } else if (Object.hasOwn(choice, 'extra') && (choice.extra === null || choice.extra === undefined)) delete choice.extra;
+                    if (!choice.image) delete choice.image;
                     if (!choice.value) { choice.value = unique(slug(choice.label) || 'opcion', values); values.add(choice.value); }
                 }
             }
             return product;
         });
     }
+    /** Fotos de las elecciones (bizcochos y rellenos con foto propia, para «Un sabor para recordar»). */
+    const choicePhotos = product => (product.options || []).flatMap(o => (o.choices || []).map(c => c.image)).filter(Boolean);
+    const FLAVOR_PHOTOS = ['sabor', 'relleno'];
+    /** Grupo de adicionales nuevo: se marcan varios y cada uno suma su precio (por tamaño, si el producto lo tiene). */
+    const addonsGroup = (choices = []) => ({ id: 'adicionales', label: 'Adicionales', type: 'radio', required: false, multiple: true, addons: true, note: 'Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.', choices });
     /**
-     * Bizcochos y rellenos son los mismos en todas las tortas: se toman de la primera torta que fija precios
-     * (Torta Vintage) y el panel los copia en todas las que tienen opciones propias. Cada elección puede
-     * llevar `extra`, lo que suma al total (relleno premium); sin él, no cuesta más.
+     * Cada producto es independiente: lo que antes tomaba de su torta base (`basedOn`: porciones, precios, textos,
+     * sabores) se copia en él, y los adicionales de la vitrina (productos «extras») se copian como grupo propio de cada
+     * torta que aún no lo tiene. El panel lo hace al abrir; la web lo ve al publicar.
      */
-    const SHARED = ['sabor', 'relleno'];
-    function sharedGroups(products) {
-        const source = products.find(p => p.category === 'tortas' && !p.basedOn && p.options?.some(o => SHARED.includes(o.id)));
-        return Object.fromEntries(SHARED.map(id => [id, source?.options.find(o => o.id === id)]).filter(([, option]) => option));
-    }
-    function applyShared(products, groups) {
+    function migrate(products) {
+        const keys = ['description', 'includes', 'notes', 'price', 'priceSuffix', 'minimum', 'quantityLabel', 'options', 'personalization'];
+        const vitrina = products.filter(p => p.category === 'extras' && p.visible !== false);
         return products.map(source => {
-            if (source.category !== 'tortas' || !Array.isArray(source.options)) return source;
-            const product = clone(source);
-            const missing = SHARED.filter(id => groups[id] && !product.options.some(o => o.id === id)).map(id => clone(groups[id]));
-            product.options = [...missing, ...product.options.map(o => groups[o.id] ? { ...o, label: groups[o.id].label, choices: clone(groups[o.id].choices) } : o)];
+            let product = source;
+            const base = source.basedOn ? products.find(b => b.id === source.basedOn && !b.basedOn) : null;
+            if (source.basedOn) {
+                product = clone(source);
+                if (base) for (const key of keys) if (!(key in product) && key in base) product[key] = clone(base[key]);
+                delete product.basedOn;
+            }
+            if (product.category === 'tortas' && vitrina.length && !(product.options || []).some(o => o.id === 'adicionales')) {
+                if (product === source) product = clone(source);
+                const fixed = p => typeof p.price === 'number' && p.price > 0 && !(typeof p.priceMax === 'number' && p.priceMax > p.price);
+                product.options = [...(product.options || []), addonsGroup(vitrina.map(p => ({ value: slug(p.name) || p.id, label: p.name, ...(fixed(p) ? { extra: p.price } : {}) })))];
+            }
+            for (const option of product.options || []) if (option.multiple && option.addons) option.maxSelection = option.choices.length;
             return product;
         });
     }
     const toCatalog = products => Object.fromEntries(products.map(p => [p.id, p]));
     /** Fotos subidas que se pidió borrar y que ya ningún producto usa: el panel las borra después de publicar. */
     function unusedUploads(pending, products) {
-        const used = new Set(products.flatMap(photos));
+        const used = new Set(products.flatMap(p => [...photos(p), ...choicePhotos(p)]));
         return [...pending].filter(src => typeof src === 'string' && src.startsWith(UPLOADED) && !used.has(src));
     }
     /** Errores que impiden publicar, en palabras de la persona que edita. */
@@ -161,7 +185,9 @@
                 for (const choice of option.choices || []) {
                     if (!String(choice.label || '').trim()) errors.push(`${name} · ${option.label}: hay una opción sin nombre.`);
                     money(choice.price, `${name} · ${choice.label || option.label}`);
-                    money(choice.extra, `${name} · ${choice.label || option.label} (costo adicional)`, '«Sin costo»');
+                    const extras = choice.extra && typeof choice.extra === 'object' ? Object.values(choice.extra) : [choice.extra];
+                    for (const value of extras) money(value, `${name} · ${choice.label || option.label} (${option.addons ? 'precio' : 'costo adicional'})`, option.addons ? '«Cotiza»' : '«Sin costo»');
+                    if (choice.image && (!IMAGE.test(choice.image) || choice.image.includes('..'))) errors.push(`${name} · ${choice.label}: la foto no es de la web.`);
                 }
             }
         }
@@ -181,5 +207,5 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { SHARED, sharedGroups, applyShared, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
+    window.AdminModel = { migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
 })();

@@ -25,14 +25,21 @@
     };
     const plain = text => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     // La primera torta visible que fija precios (Torta Vintage) tiene la lista de todas las tortas.
+    // Una foto subida desde el centro de control para un sabor sirve aunque se haya subido en otra torta.
     function groups() {
-        const source = Catalog.all().find(p => p.category === 'tortas' && !p.basedOn && p.options?.some(o => o.id === 'sabor' || o.id === 'relleno'));
-        return Object.fromEntries(['sabor', 'relleno'].map(id => [id, source?.options.find(o => o.id === id)?.choices || []]));
+        const tortas = Catalog.all().filter(p => p.category === 'tortas');
+        const source = tortas.find(p => !p.basedOn && p.options?.some(o => o.id === 'sabor' || o.id === 'relleno'));
+        const uploaded = id => new Map(tortas.flatMap(p => p.options?.find(o => o.id === id)?.choices || []).filter(c => c.image).map(c => [plain(c.label), c.image]));
+        return Object.fromEntries(['sabor', 'relleno'].map(id => {
+            const images = uploaded(id);
+            return [id, (source?.options.find(o => o.id === id)?.choices || []).map(c => c.image || !images.has(plain(c.label)) ? c : { ...c, image: images.get(plain(c.label)) })];
+        }));
     }
     // Primero las que coinciden por valor; después, por nombre. Cada foto se usa una sola vez.
     function withPhotos(id, choices) {
         const free = [...PHOTOS[id]];
-        const found = choices.map(() => null);
+        // Primero la foto subida para ese sabor; después, las de la web.
+        const found = choices.map(choice => choice.image ? { key: 'subida', src: choice.image, alt: choice.label, text: '' } : null);
         const take = test => choices.forEach((choice, i) => {
             const index = found[i] ? -1 : free.findIndex(photo => test(photo, choice));
             if (index >= 0) found[i] = free.splice(index, 1)[0];
@@ -48,20 +55,22 @@
         const { sabor, relleno } = groups();
         if (!sabor.length && !relleno.length) return 'Tu combinación favorita.';
         const text = [sabor.length && count(sabor.length, 'bizcocho', 'bizcochos'), relleno.length && count(relleno.length, 'relleno', 'rellenos')].filter(Boolean).join(', ');
-        return `${text.charAt(0).toUpperCase()}${text.slice(1)} y tu combinación favorita.`;
+        // Si alguno sube el precio de alguna torta, se dice aquí para que nadie se lleve una sorpresa.
+        const extra = Catalog.all().filter(p => p.category === 'tortas').some(p => (p.options || []).some(o => ['sabor', 'relleno'].includes(o.id) && o.choices?.some(c => c.extra && (typeof c.extra === 'number' ? c.extra > 0 : Object.values(c.extra).some(v => v > 0)))));
+        return `${text.charAt(0).toUpperCase()}${text.slice(1)} y tu combinación favorita.${extra ? ' Algunos tienen un valor adicional según el tamaño de la torta: lo ves al elegirla.' : ''}`;
     }
     /** Bizcochos y rellenos: fotos en su fila y, sin foto, «También: …». `image(src, sizes)` da los atributos de la foto. */
     function html(image, escape) {
         const all = groups();
-        // Lo que cuesta más lo dice igual que la ficha: «Nutella · +$10.000».
+        // Un costo fijo se dice como en la ficha («Nutella · +$10.000»); si cambia con el tamaño, se ve al abrir cada torta.
         const label = choice => escape(choice.label) + (typeof choice.extra === 'number' && choice.extra > 0 ? ` · +${Catalog.money(choice.extra)}` : '');
         const more = list => list.length ? `<p class="flavor-more"><span>También:</span> ${list.map(({ choice }) => label(choice)).join(' · ')}</p>` : '';
         const sabor = withPhotos('sabor', all.sabor), relleno = withPhotos('relleno', all.relleno);
-        const flavors = sabor.filter(item => item.photo).map(({ choice, photo }) => `<article class="flavor"><img ${image(photo.src, '(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 282px')} alt="${escape(photo.alt)}" width="1536" height="1024" loading="lazy" fetchpriority="low" decoding="async"><h3>${label(choice)}</h3><p>${escape(photo.text)}</p></article>`).join('');
+        const flavors = sabor.filter(item => item.photo).map(({ choice, photo }) => `<article class="flavor"><img ${image(photo.src, '(max-width: 600px) 45vw, (max-width: 1280px) 22vw, 282px')} alt="${escape(photo.alt)}" width="1536" height="1024" loading="lazy" fetchpriority="low" decoding="async"><h3>${label(choice)}</h3>${photo.text ? `<p>${escape(photo.text)}</p>` : ''}</article>`).join('');
         const fillings = relleno.filter(item => item.photo).map(({ choice, photo }) => `<figure><img ${image(photo.src, '(max-width: 600px) 45vw, (max-width: 1280px) 18vw, 224px')} alt="${escape(photo.alt)}" width="1254" height="1254" loading="lazy" fetchpriority="low" decoding="async"><figcaption>${label(choice)}</figcaption></figure>`).join('');
         return [
-            sabor.length ? `<h3 class="flavor-label">El bizcocho</h3>${flavors ? `<div class="flavor-grid">${flavors}</div>` : ''}${more(sabor.filter(item => !item.photo))}` : '',
-            relleno.length ? `<div class="filling-list"><h3>El relleno</h3>${fillings ? `<div class="filling-grid">${fillings}</div>` : ''}${more(relleno.filter(item => !item.photo))}</div>` : ''
+            sabor.length ? `<h3 class="flavor-label">El bizcocho</h3>${flavors ? `<div class="flavor-grid" style="--n: ${sabor.filter(item => item.photo).length}">${flavors}</div>` : ''}${more(sabor.filter(item => !item.photo))}` : '',
+            relleno.length ? `<div class="filling-list"><h3>El relleno</h3>${fillings ? `<div class="filling-grid" style="--n: ${relleno.filter(item => item.photo).length}">${fillings}</div>` : ''}${more(relleno.filter(item => !item.photo))}</div>` : ''
         ].join('');
     }
     window.LaurenFlavors = { PHOTOS, groups, withPhotos, intro, html };
