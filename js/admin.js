@@ -549,7 +549,7 @@ function choicesHTML(p) {
     if (p.category === 'extras') return '';
     const addons = (p.options || []).some(o => o.addons);
     return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
-        <p class="field-note">Lo que el cliente puede escoger en este producto. Si algo cuesta más, escribe cuánto suma${M.sizeOf(p) ? ' en cada tamaño' : ''}.</p>
+        <p class="field-note">Lo que el cliente puede escoger en este producto. Si algo cuesta más, escribe cuánto suma${M.sizeOf(p) ? ` según «${esc(M.sizeOf(p).label || 'el tamaño')}»` : ''}.</p>
         ${p.category === 'tortas' ? '<p class="field-note">El mensaje o las letras de la torta no se escriben en la web: se acuerdan con el cliente en la asesoría.</p>' : ''}
         ${groupsHTML(p, false)}
         <p class="admin-add-row"><button type="button" class="admin-add" data-action="add-option">${icon('plus')} Agregar un grupo (por ejemplo, sabores)</button>${addons ? '' : `<button type="button" class="admin-add" data-action="add-addons">${icon('plus')} Agregar adicionales</button>`}</p></fieldset>`;
@@ -641,7 +641,9 @@ function renderEditor() {
     const others = products.filter(x => x.id !== editingId && onHome(x));
     const full = others.length >= max && p.featured !== true;
     const names = list => list.map(x => x.name).join(', ').replace(/, ([^,]*)$/, ' y $1');
-    const personal = p.personalization?.enabled ? (p.personalization.fields || [p.personalization]).map(f => `«${f.label}» (hasta ${f.maxLength || 100} caracteres)`).join(', ') : '';
+    // Lo que el cliente escribe en la ficha; lo que va escrito en una torta se acuerda en la asesoría (Catalog.advice).
+    const personal = window.Catalog.fields(p, window.Catalog.defaults(p)).map(f => `«${f.label}» (hasta ${f.maxLength || 100} letras)`).join(', ');
+    const advice = window.Catalog.advice(p) && p.category !== 'tortas' ? '<p class="field-note">Lo que va escrito en la torta (frase, número o letras) no se escribe en la web: se acuerda en la asesoría.</p>' : '';
     const section = choices('Sección de la web', 'category', p.category, M.SECTIONS);
     const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? choices('Filtro en la página', 'group', p.group, [['', 'Ninguno'], ...groups]) : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
     editor.innerHTML = `<form novalidate>
@@ -665,7 +667,7 @@ function renderEditor() {
             ${!M.QUANTITY.includes(p.category) ? '' : `<fieldset class="admin-fieldset"><legend>Cantidad</legend><div class="admin-grid">
                 ${field('Cantidad mínima por pedido', 'minimum', p.minimum ?? 1, { type: 'number', attrs: 'min="1" max="99"' })}
                 ${field('Cómo se llama la cantidad', 'quantityLabel', p.quantityLabel ?? 'Cantidad de esta presentación', { note: 'Ej.: Número de cajas.' })}
-            </div>${personal ? `<p class="field-note">El cliente también escribe: ${esc(personal)}.</p>` : ''}</fieldset>`}
+            </div>${personal ? `<p class="field-note">El cliente también escribe: ${esc(personal)}.</p>` : ''}${advice}</fieldset>`}
             ${editingId ? '<div class="admin-delete"><button type="button" class="admin-danger" data-action="delete">Eliminar producto</button><p class="field-note">Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p></div>' : ''}
             <input type="file" id="choicePhotoUpload" accept="image/*" hidden>
             <p class="field-error" id="editorError" role="alert" hidden></p>

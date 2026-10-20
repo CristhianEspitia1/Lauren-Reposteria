@@ -25,7 +25,7 @@
 | `icon` | No | Solo extras: icono de `LaurenIcons` |
 | `mainImage`, `images` | Sí, salvo extras | Foto principal y galería de la ficha, rutas de `assets/`. Los extras no llevan fotos: se muestran con su `icon` |
 | `options` | No | Opciones que elige el cliente (ver abajo) |
-| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración. En las tortas no se usa: el mensaje se acuerda en la asesoría (`Catalog.fields` no devuelve campos para ellas) |
+| `personalization` | No | Campos de texto (mensaje, iniciales, tema); `null` si no lleva. `enabled: false` lo apaga sin perder su configuración. Lo que va escrito en una torta no se pide en la web: en las tortas y en todo campo cuya etiqueta habla de la torta («Frase corta o número para la torta») `Catalog.fields` no lo devuelve y la ficha muestra el aviso de la asesoría (`Catalog.advice`) |
 | `basedOn` | No | Formato anterior: torta de la que tomaba lo que no definía. El centro de control lo copia en cada torta al abrirse (cada grupo es independiente); la web aún lo lee mientras no se publique |
 
 ## Opciones y precios
@@ -35,7 +35,7 @@ Cada opción tiene `id`, `label`, `type` (`radio`, `select` o `toggle`), `requir
 - **Precio por elección:** si alguna elección lleva `price`, esa opción fija el valor del producto (porciones, presentación, tamaño). `price: null` en una elección = esa elección se cotiza por WhatsApp; la ficha cambia el total por el botón «Consultar por WhatsApp».
 - **Orden:** se recorren las opciones visibles en orden; la última elección con precio manda. Así, en brownies la presentación «Individual» se completa con las «Unidades en la bolsa».
 - `perUnit: true` añade «c/u» al precio de la elección.
-- `multiplier: true` multiplica el precio por el número elegido (galletas individuales × cantidad).
+- `multiplier: true` multiplica el precio por el número elegido (galletas individuales × cantidad). Los costos adicionales (`extra`) se suman antes, así que también son por unidad.
 - `dependsOn` + `showWhen`: la opción solo aparece con esa elección de otra opción.
 - `toggle` con `priceModifier`: suma ese valor al marcarse.
 - `multiple` + `maxSelection`: elección de varios valores (colores).

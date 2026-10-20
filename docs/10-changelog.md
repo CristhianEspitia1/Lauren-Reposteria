@@ -7,6 +7,14 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-19 — Lo nuevo de Tortas, en los demás productos]
+
+- Revisión de Alfajores, Brownies y galletas y Detalles: sus páginas ya salen del catálogo, sin secciones escritas a mano, y lo nuevo (costos por tamaño, adicionales propios, avisos, preguntas antes de lo delicado, filas parejas e imagen para compartir) ya les aplica.
+- «Detalle torta» también acuerda la frase o el número de la torta en la asesoría, como las tortas; las letras e iniciales de los demás detalles siguen escribiéndose en la ficha.
+- En los productos que se piden por unidad (galletas × 6), los costos adicionales se cobran por cada unidad.
+- El panel dice según qué grupo cambian los costos de cada producto («según «Presentación»»).
+- Manual de marca 3.7. 2 pruebas nuevas.
+
 ## [2026-10-19 — Filas parejas sin estilos en el HTML]
 
 - En producción, la política de seguridad de la web bloqueaba el `style="--n: …"` que llevaban las filas de bizcochos y rellenos, y se veían angostas. Ahora `site.js` pone `--n` con el CSSOM (permitido) y, sin él, las filas usan su máximo por fila. Prueba: el HTML de «Un sabor para recordar» no lleva estilos.

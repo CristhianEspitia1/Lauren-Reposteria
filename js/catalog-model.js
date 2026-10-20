@@ -68,10 +68,12 @@
     const amount = value => typeof value === 'number' && value > 0 ? value : null;
     function price(product, selection) {
         let result = amount(product.price);
+        // La cantidad elegida (galletas × 6) multiplica al final, para que los costos adicionales también sean por unidad.
+        let units = 1;
         for (const option of choices(product, selection)) {
             if (option.type === 'toggle') continue;
             if (option.multiplier) {
-                if (result !== null) result *= Number(selection[option.id]);
+                units *= Number(selection[option.id]);
                 continue;
             }
             const selected = option.choices?.find(choice => choice.value === selection[option.id]);
@@ -89,6 +91,7 @@
                 else if (option.addons && choice) return null;
             }
         }
+        result *= units;
         for (const option of choices(product, selection)) {
             if (option.type === 'toggle' && selection[option.id] === true && typeof option.priceModifier === 'number') result += option.priceModifier;
         }
@@ -148,13 +151,19 @@
         return Number.isSafeInteger(value) && value > 0 ? value : null;
     }
     const priceRefText = ref => { const value = priceRef(ref); return value === null ? 'precio a consultar' : money(value); };
-    // El mensaje o las letras de una torta no se escriben en la web: se acuerdan con Lauren en la asesoría.
-    const TORTA_MESSAGE = 'El mensaje o las letras de tu torta los acordamos contigo en la asesoría por WhatsApp.';
+    // Lo que va escrito en una torta (mensaje, frase, número, letras) no se escribe en la web: se acuerda con Lauren
+    // en la asesoría. Vale para las tortas y para todo campo que hable de la torta (la frase de «Detalle torta»).
+    const TORTA_MESSAGE = 'La frase, el número o las letras de tu torta los acordamos contigo en la asesoría por WhatsApp.';
+    const plainText = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const onCake = field => /\btorta\b/.test(plainText(field.label));
+    const allFields = product => product.personalization?.enabled ? (product.personalization.fields || [{ ...product.personalization, id: product.personalization.field || 'mensaje' }]) : [];
+    /** El aviso de la asesoría si el producto lleva algo escrito en una torta; si no, vacío. */
+    const advice = product => product?.category === 'tortas' || allFields(product || {}).some(onCake) ? TORTA_MESSAGE : '';
     function fields(product, selection) {
         if (product.category === 'tortas') return [];
         const config = product.personalization;
         if (!config?.enabled || (config.dependsOn && !selection[config.dependsOn])) return [];
-        return config.fields || [{ ...config, id: config.field || 'mensaje' }];
+        return allFields(product).filter(field => !onCake(field));
     }
     function validate(product, selection, personal = {}) {
         const errors = [];
@@ -195,8 +204,8 @@
         return fields(product, selection).filter(field => String(personal[field.id] || '').trim()).map(field => `${shortLabel(field.label)}: ${String(personal[field.id]).trim()}`).join('\n');
     }
     // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
-    const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization);
+    const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization) || Boolean(advice(product));
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
     const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { TORTA_MESSAGE, ADDONS, sizeOption, extraOf, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();

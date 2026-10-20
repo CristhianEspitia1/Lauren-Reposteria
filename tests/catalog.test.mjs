@@ -304,3 +304,27 @@ test('«Un sabor para recordar» sale de los bizcochos y rellenos del catálogo'
         assert.equal((html.match(/<figure>/g) || []).length, 4);
     } finally { context.catalogData = data; }
 });
+
+test('Lo escrito en una torta se acuerda en la asesoría, también en «Detalle torta»; los demás textos siguen', () => {
+    const detalle = Catalog.get('detalle-torta');
+    assert.equal(Catalog.fields(detalle, selected('detalle-torta')).length, 0, 'sin campo para la frase de la torta');
+    assert.equal(Catalog.advice(detalle), Catalog.TORTA_MESSAGE);
+    assert.equal(Catalog.advice(Catalog.get('torta-vintage')), Catalog.TORTA_MESSAGE);
+    assert.equal(Catalog.advice(Catalog.get('detalle-hbd')), '', 'las letras e iniciales de Detalles siguen escribiéndose');
+    assert.ok(Catalog.fields(Catalog.get('detalle-hbd'), selected('detalle-hbd')).length > 0);
+    assert.equal(Catalog.custom(detalle, ''), true, 'el pedido sigue siendo personalizado');
+    cart.clearCart(); assert.equal(cart.addItem(item('detalle-torta', {}, { frase: 'Feliz 15' })), true);
+    assert.deepEqual({ ...cart.getItems()[0].personal }, {});
+    cart.clearCart();
+});
+test('Los costos adicionales en productos por unidad (galletas × 6) se cobran por cada unidad', () => {
+    const data = context.catalogData;
+    const copy = JSON.parse(JSON.stringify(data));
+    copy['galleta-chips'].options.push({ id: 'relleno', label: 'Relleno', type: 'radio', required: true, choices: [{ value: 'normal', label: 'Normal' }, { value: 'doble', label: 'Doble', extra: 1000 }] });
+    context.catalogData = copy;
+    try {
+        const galleta = Catalog.get('galleta-chips');
+        assert.equal(Catalog.price(galleta, { ...Catalog.defaults(galleta), cantidad: '6' }), 48000);
+        assert.equal(Catalog.price(galleta, { ...Catalog.defaults(galleta), cantidad: '6', relleno: 'doble' }), 54000, '6 × (8.000 + 1.000)');
+    } finally { context.catalogData = data; }
+});
