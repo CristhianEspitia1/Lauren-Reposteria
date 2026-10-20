@@ -345,19 +345,47 @@ window.catalogData = {
                 "choices": [
                     {
                         "value": "monos-lacitos",
-                        "label": "Moños (lacitos)"
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
                     },
                     {
                         "value": "mariposas",
-                        "label": "Mariposas"
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday"
+                        "label": "Happy Birthday",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
                     },
                     {
                         "value": "perlas-comestibles",
-                        "label": "Perlas comestibles"
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "coronas-especiales",
@@ -502,19 +530,47 @@ window.catalogData = {
                 "choices": [
                     {
                         "value": "monos-lacitos",
-                        "label": "Moños (lacitos)"
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
                     },
                     {
                         "value": "mariposas",
-                        "label": "Mariposas"
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday"
+                        "label": "Happy Birthday",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
                     },
                     {
                         "value": "perlas-comestibles",
-                        "label": "Perlas comestibles"
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "coronas-especiales",
@@ -679,19 +735,47 @@ window.catalogData = {
                 "choices": [
                     {
                         "value": "monos-lacitos",
-                        "label": "Moños (lacitos)"
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
                     },
                     {
                         "value": "mariposas",
-                        "label": "Mariposas"
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday"
+                        "label": "Happy Birthday",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
                     },
                     {
                         "value": "perlas-comestibles",
-                        "label": "Perlas comestibles"
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "coronas-especiales",
@@ -853,19 +937,47 @@ window.catalogData = {
                 "choices": [
                     {
                         "value": "monos-lacitos",
-                        "label": "Moños (lacitos)"
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
                     },
                     {
                         "value": "mariposas",
-                        "label": "Mariposas"
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday"
+                        "label": "Happy Birthday",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
                     },
                     {
                         "value": "perlas-comestibles",
-                        "label": "Perlas comestibles"
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "coronas-especiales",
@@ -908,7 +1020,8 @@ window.catalogData = {
         "priceMax": 3000,
         "icon": "butterfly",
         "options": [],
-        "personalization": null
+        "personalization": null,
+        "priceText": "$5.000 - $10.000"
     },
     "extra-hbd": {
         "id": "extra-hbd",
@@ -920,7 +1033,8 @@ window.catalogData = {
         "priceMax": 8000,
         "icon": "birthday-topper",
         "options": [],
-        "personalization": null
+        "personalization": null,
+        "priceText": "$9.000 - $18.000"
     },
     "extra-perlas": {
         "id": "extra-perlas",
