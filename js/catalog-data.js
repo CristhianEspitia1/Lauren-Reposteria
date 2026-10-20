@@ -165,15 +165,36 @@ window.catalogData = {
                     },
                     {
                         "value": "mariposas",
-                        "label": "Mariposas"
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday"
+                        "label": "Happy Birthday(acrilico)",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
                     },
                     {
                         "value": "perlas-comestibles",
-                        "label": "Perlas comestibles"
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
                     },
                     {
                         "value": "coronas-especiales",
@@ -874,7 +895,8 @@ window.catalogData = {
         "priceMax": 3000,
         "icon": "bow",
         "options": [],
-        "personalization": null
+        "personalization": null,
+        "priceText": "$2.000 - $6.000"
     },
     "extra-mariposas": {
         "id": "extra-mariposas",
