@@ -77,15 +77,36 @@ window.catalogData = {
                     },
                     {
                         "value": "ganache-de-cafe",
-                        "label": "Ganache de café"
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "mermelada-de-frutos-rojos",
-                        "label": "Mermelada de frutos rojos"
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "nutella",
-                        "label": "Nutella"
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     }
                 ]
             },
@@ -121,6 +142,45 @@ window.catalogData = {
                         "price": 385000
                     }
                 ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
             }
         ],
         "personalization": {
@@ -252,6 +312,38 @@ window.catalogData = {
                         "price": 285000
                     }
                 ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
             }
         ],
         "personalization": {
@@ -268,7 +360,6 @@ window.catalogData = {
         "name": "Torta Vintage Sencilla",
         "category": "tortas",
         "visible": true,
-        "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
         "images": [
             "/assets/propuestas-fotograficas/galeria-tortas-28.webp",
@@ -378,6 +469,38 @@ window.catalogData = {
                         "price": 305000
                     }
                 ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
             }
         ],
         "description": "Torta Vintage sencilla con bordes clásicos en la parte superior e inferir, sutiles detalles en los laterales, frase corta sobre la torta y elección de colores a tu gusto.\n(Cualquier detalle que no este mencionado será adicional y puedes consultarlo en la sección de \"adicionales\" o durante la asesoría)",
@@ -388,14 +511,26 @@ window.catalogData = {
             "Decoración vintage",
             "Frase corta",
             "Elección de colores"
-        ]
+        ],
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
     },
     "galeria-tortas-06": {
         "id": "galeria-tortas-06",
         "name": "Tortas personalizadas",
         "category": "tortas",
         "visible": true,
-        "basedOn": "torta-vintage",
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-39.webp",
         "images": [
             "/assets/propuestas-fotograficas/galeria-tortas-39.webp",
@@ -511,15 +646,68 @@ window.catalogData = {
                         "price": 385000
                     }
                 ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
             }
-        ]
+        ],
+        "description": "Torta vintage con bordes clásicos en la parte superior e inferior, sutiles detalles en los laterales y frambuesas frescas sobre la torta.",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno a elección",
+            "Decoración vintage",
+            "Frambuesas frescas",
+            "Elección de colores"
+        ],
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
     },
     "galeria-tortas-18": {
         "id": "galeria-tortas-18",
         "name": "Torta con flores naturales",
         "category": "tortas",
         "visible": true,
-        "basedOn": "torta-vintage",
         "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
         "includes": [
             "Torta personalizada según porciones",
@@ -537,7 +725,144 @@ window.catalogData = {
             "/assets/propuestas-fotograficas/galeria-tortas-25.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-35.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-19.webp"
-        ]
+        ],
+        "price": null,
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "zanahoria",
+                        "label": "Zanahoria con nueces"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café"
+                    },
+                    {
+                        "value": "mermelada-de-frutos-rojos",
+                        "label": "Mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella"
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "4 a 6 porciones",
+                        "price": 110000
+                    },
+                    {
+                        "value": "8-10",
+                        "label": "8 a 10 porciones",
+                        "price": 155000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12 a 15 porciones",
+                        "price": 215000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18 a 20 porciones",
+                        "price": 265000
+                    },
+                    {
+                        "value": "25-30",
+                        "label": "25 a 30 porciones",
+                        "price": 385000
+                    }
+                ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
+            }
+        ],
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
     },
     "extra-monos": {
         "id": "extra-monos",

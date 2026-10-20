@@ -65,5 +65,5 @@ test('Catálogo real: «Un sabor para recordar» se arma con sus bizcochos y rel
         assert.equal(new Set(photos).size, photos.length, `${id}: cada foto una sola vez`);
         for (const { choice } of items) assert.ok(html.includes(LaurenUI.escape(choice.label)), `${id}: ${choice.label}`);
     }
-    assert.match(F.intro(), /tu combinación favorita\.$/);
+    assert.match(F.intro(), /tu combinación favorita\.( Algunos tienen un valor adicional según el tamaño de la torta: lo ves al elegirla\.)?$/);
 });
