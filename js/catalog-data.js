@@ -289,15 +289,36 @@ window.catalogData = {
                     },
                     {
                         "value": "ganache-de-cafe",
-                        "label": "Ganache de café"
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "mermelada-de-frutos-rojos",
-                        "label": "Mermelada de frutos rojos"
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "nutella",
-                        "label": "Nutella"
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     }
                 ]
             },
@@ -474,15 +495,36 @@ window.catalogData = {
                     },
                     {
                         "value": "ganache-de-cafe",
-                        "label": "Ganache de café"
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "mermelada-de-frutos-rojos",
-                        "label": "Mermelada de frutos rojos"
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "nutella",
-                        "label": "Nutella"
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     }
                 ]
             },
