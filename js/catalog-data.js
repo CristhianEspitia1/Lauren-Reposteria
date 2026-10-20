@@ -197,8 +197,15 @@ window.catalogData = {
                         }
                     },
                     {
-                        "value": "coronas-especiales",
-                        "label": "Coronas especiales"
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
                     }
                 ],
                 "maxSelection": 5
@@ -236,7 +243,6 @@ window.catalogData = {
         "images": [
             "/assets/propuestas-fotograficas/torta-sencilla.webp",
             "/assets/propuestas-fotograficas/torta-chocolate-amor.webp",
-            "/assets/propuestas-fotograficas/torta-uno.webp",
             "/assets/propuestas-fotograficas/torta-rosa-diecinueve-r3.webp",
             "/assets/propuestas-fotograficas/torta-amor-amistad.webp"
         ],
@@ -409,8 +415,15 @@ window.catalogData = {
                         }
                     },
                     {
-                        "value": "coronas-especiales",
-                        "label": "Coronas especiales"
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
                     }
                 ],
                 "maxSelection": 5
@@ -443,8 +456,7 @@ window.catalogData = {
             "/assets/propuestas-fotograficas/galeria-tortas-33.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-21.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-24.webp",
-            "/assets/propuestas-fotograficas/torta-azul-mami.webp",
-            "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp"
+            "/assets/propuestas-fotograficas/torta-azul-mami.webp"
         ],
         "options": [
             {
@@ -615,8 +627,15 @@ window.catalogData = {
                         }
                     },
                     {
-                        "value": "coronas-especiales",
-                        "label": "Coronas especiales"
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
                     }
                 ],
                 "maxSelection": 5
@@ -647,7 +666,7 @@ window.catalogData = {
     },
     "galeria-tortas-06": {
         "id": "galeria-tortas-06",
-        "name": "Tortas personalizadas",
+        "name": "Tortas con personajes",
         "category": "tortas",
         "visible": true,
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-39.webp",
@@ -721,15 +740,36 @@ window.catalogData = {
                     },
                     {
                         "value": "ganache-de-cafe",
-                        "label": "Ganache de café"
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "mermelada-de-frutos-rojos",
-                        "label": "Mermelada de frutos rojos"
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "nutella",
-                        "label": "Nutella"
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     }
                 ]
             },
@@ -742,27 +782,27 @@ window.catalogData = {
                     {
                         "value": "4-5",
                         "label": "4 a 6 porciones",
-                        "price": 110000
+                        "price": 104000
                     },
                     {
                         "value": "8-10",
                         "label": "8 a 10 porciones",
-                        "price": 155000
+                        "price": 145000
                     },
                     {
                         "value": "12-15",
                         "label": "12 a 15 porciones",
-                        "price": 215000
+                        "price": 190000
                     },
                     {
                         "value": "18-20",
                         "label": "18 a 20 porciones",
-                        "price": 265000
+                        "price": 240000
                     },
                     {
                         "value": "25-30",
                         "label": "25 a 30 porciones",
-                        "price": 385000
+                        "price": 345000
                     }
                 ]
             },
@@ -820,20 +860,26 @@ window.catalogData = {
                         }
                     },
                     {
-                        "value": "coronas-especiales",
-                        "label": "Coronas especiales"
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
                     }
                 ],
                 "maxSelection": 5
             }
         ],
-        "description": "Torta vintage con bordes clásicos en la parte superior e inferior, sutiles detalles en los laterales y frambuesas frescas sobre la torta.",
+        "description": "Torta sencilla con personajes o temáticas específicas, las figuras van impresas en papel comestible y sobre fondant.",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
             "Relleno a elección",
-            "Decoración vintage",
-            "Frambuesas frescas",
+            "Figuras impresas en papel de azúcar",
             "Elección de colores"
         ],
         "notes": [
@@ -1020,13 +1066,150 @@ window.catalogData = {
                             "18-20": 8000,
                             "25-30": 10000
                         }
-                    },
-                    {
-                        "value": "coronas-especiales",
-                        "label": "Coronas especiales"
                     }
                 ],
-                "maxSelection": 5
+                "maxSelection": 4
+            }
+        ],
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
+    },
+    "mini-cake": {
+        "id": "mini-cake",
+        "name": "Mini cake",
+        "category": "tortas",
+        "visible": true,
+        "description": "Mini torta con diseños sencillos o tipo vintage, en este tamaño no se realiza cualquier decoración, solo las referencias seleccionadas.\n(Puedes consultar mediante WhatsApp si tienes otro diseño diferente)",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno a elección",
+            "Decoración Sencilla o tipo vintage",
+            "Elección de colores"
+        ],
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "mainImage": "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp",
+            "/assets/propuestas-fotograficas/torta-uno.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000
+                        }
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "2 a 4 porciones",
+                        "price": 58000
+                    }
+                ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 3000
+                        }
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000
+                        }
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000
+                        }
+                    },
+                    {
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000
+                        }
+                    }
+                ],
+                "maxSelection": 4
             }
         ],
         "personalization": {
@@ -1050,7 +1233,7 @@ window.catalogData = {
         "icon": "bow",
         "options": [],
         "personalization": null,
-        "priceText": "$2.000 - $6.000"
+        "priceText": "De $2.000 a $6.000"
     },
     "extra-mariposas": {
         "id": "extra-mariposas",
@@ -1063,7 +1246,7 @@ window.catalogData = {
         "icon": "butterfly",
         "options": [],
         "personalization": null,
-        "priceText": "$5.000 - $10.000"
+        "priceText": "$5.000 a $10.000"
     },
     "extra-hbd": {
         "id": "extra-hbd",
@@ -1076,7 +1259,7 @@ window.catalogData = {
         "icon": "birthday-topper",
         "options": [],
         "personalization": null,
-        "priceText": "$9.000 - $18.000"
+        "priceText": "$9.000 a $18.000"
     },
     "extra-perlas": {
         "id": "extra-perlas",
@@ -1116,7 +1299,7 @@ window.catalogData = {
             "Caja para regalo",
             "Producto artesanal"
         ],
-        "price": 22000,
+        "price": 25000,
         "mainImage": "/assets/propuestas-fotograficas/caja-x6.webp",
         "images": [
             "/assets/propuestas-fotograficas/caja-x6.webp"
@@ -1138,7 +1321,7 @@ window.catalogData = {
             "Caja para regalo",
             "Producto artesanal"
         ],
-        "price": 37000,
+        "price": 40000,
         "mainImage": "/assets/propuestas-fotograficas/caja-x12.webp",
         "images": [
             "/assets/propuestas-fotograficas/caja-x12.webp"
@@ -1155,12 +1338,11 @@ window.catalogData = {
         "summary": "30 mini alfajores en un vaso para regalar.",
         "description": "Vaso decorativo lleno de mini alfajores. Perfecto para regalar o disfrutar en porciones pequeñas.",
         "includes": [
-            "Vaso decorativo",
             "Mini alfajores (30 unidades)",
             "Relleno de arequipe",
             "Presentación especial"
         ],
-        "price": 27000,
+        "price": 28000,
         "mainImage": "/assets/propuestas-fotograficas/vaso-minis.webp",
         "images": [
             "/assets/propuestas-fotograficas/vaso-minis.webp"
@@ -1179,8 +1361,7 @@ window.catalogData = {
         "includes": [
             "Torta de alfajor según tamaño",
             "3 capas de relleno de arequipe",
-            "Capas de alfajor de maicena",
-            "Decoración elegante"
+            "Capas de alfajor de maicena"
         ],
         "price": null,
         "mainImage": "/assets/propuestas-fotograficas/torta-alfajor.webp",
@@ -1198,22 +1379,22 @@ window.catalogData = {
                     {
                         "value": "personal",
                         "label": "Personal (8 cm)",
-                        "price": 25000
+                        "price": 27000
                     },
                     {
                         "value": "4-6",
                         "label": "4 a 6 porciones (11 cm)",
-                        "price": 38000
+                        "price": 42000
                     },
                     {
                         "value": "6-8",
                         "label": "6 a 8 porciones (13 cm)",
-                        "price": 45000
+                        "price": 52000
                     },
                     {
                         "value": "10-12",
                         "label": "10 a 12 porciones (16 cm)",
-                        "price": 60000
+                        "price": 64000
                     }
                 ]
             }
@@ -1293,13 +1474,11 @@ window.catalogData = {
         "group": "especiales",
         "visible": true,
         "summary": "Tu ocasión, convertida en un detalle comestible.",
-        "description": "Caja de 6 alfajores de maicena personalizados para tu celebración. Cada alfajor se decora a mano en fondant según tu ocasión.",
+        "description": "Caja de 6 alfajores de maicena con relleno de arequipe, decoración en fondant o impresión comestible según el diseño que requieras (puedes confirmar mediante WhatsApp como seria la decoración)",
         "includes": [
             "6 alfajores de maicena rellenos de arequipe",
-            "Decoración personalizada en fondant",
-            "Diseño según tu ocasión",
-            "Empaque decorativo",
-            "Producto 100 % artesanal"
+            "Decoración en fondant o impresión comestible",
+            "Caja con tapa transparente y moño"
         ],
         "notes": [
             "Cada caja trae 6 alfajores decorados con el mismo tema. Afinamos el diseño contigo por WhatsApp."
@@ -1348,7 +1527,7 @@ window.catalogData = {
             "Horneados frescos bajo pedido"
         ],
         "notes": [
-            "Los individuales se piden en grupos de mínimo 6. El vaso de minis no incluye toppings."
+            "El vaso de minis no incluye toppings."
         ],
         "price": null,
         "mainImage": "/assets/propuestas-fotograficas/brownies.webp",
@@ -1366,30 +1545,24 @@ window.catalogData = {
                 "required": true,
                 "choices": [
                     {
-                        "value": "individual",
-                        "label": "Individual (4,5 cm), en bolsa",
-                        "price": 6500,
-                        "perUnit": true
-                    },
-                    {
                         "value": "caja-x3",
                         "label": "Caja x3",
-                        "price": 24000
+                        "price": 26000
                     },
                     {
                         "value": "caja-x6",
                         "label": "Caja x6",
-                        "price": 43000
+                        "price": 45000
                     },
                     {
                         "value": "caja-x16",
                         "label": "Caja x16",
-                        "price": 93000
+                        "price": 95000
                     },
                     {
                         "value": "vaso-minis",
                         "label": "Vaso de 20 mini brownies (sin toppings)",
-                        "price": 27000
+                        "price": 28000
                     }
                 ]
             },
@@ -1425,36 +1598,6 @@ window.catalogData = {
                     {
                         "value": "oreo",
                         "label": "Galleta Oreo"
-                    }
-                ]
-            },
-            {
-                "id": "cantidad",
-                "label": "Unidades en la bolsa",
-                "type": "radio",
-                "required": true,
-                "dependsOn": "presentacion",
-                "showWhen": "individual",
-                "choices": [
-                    {
-                        "value": "6",
-                        "label": "6 unidades",
-                        "price": 39000
-                    },
-                    {
-                        "value": "12",
-                        "label": "12 unidades",
-                        "price": 78000
-                    },
-                    {
-                        "value": "18",
-                        "label": "18 unidades",
-                        "price": 117000
-                    },
-                    {
-                        "value": "24",
-                        "label": "24 unidades",
-                        "price": 156000
                     }
                 ]
             }
