@@ -133,7 +133,7 @@
             const errorId = `option-error-${option.id}`;
             // Si alguna opción sube el precio, se dice debajo para que nadie se confunda.
             const extras = !option.addons && (option.choices || []).some(choice => (Catalog.extraOf(this.product, choice, this.selection) || 0) > 0);
-            const note = option.note || (option.multiple ? `Elige hasta ${option.maxSelection || 1} colores.` : extras ? 'Las opciones con «+» tienen un valor adicional que se suma al total.' : '');
+            const note = option.note || (option.multiple ? Catalog.maxText(this.product, option, this.selection) : extras ? 'Las opciones con «+» tienen un valor adicional que se suma al total.' : '');
             let controls;
             if (option.type === 'toggle') {
                 controls = `<label class="toggle-option"><input data-option-input="${esc(option.id)}" type="checkbox" ${selected ? 'checked' : ''} aria-describedby="${errorId}"><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Agregar${typeof option.priceModifier === 'number' ? ` · +${Catalog.money(option.priceModifier)}` : ''}</span></label>`;
@@ -166,10 +166,11 @@
             if (option.type === 'toggle') this.selection[option.id] = input.checked;
             else if (option.multiple) {
                 const selected = Array.from(this.dialog.querySelectorAll(`[data-option-input="${option.id}"]:checked`)).map(el => el.value);
-                if (selected.length > option.maxSelection) {
+                const max = option.addons ? option.maxSelection || 1 : Catalog.maxOf(this.product, option, this.selection);
+                if (selected.length > max) {
                     input.checked = false;
                     const error = this.dialog.querySelector(`#option-error-${option.id}`);
-                    error.textContent = `Puedes elegir hasta ${option.maxSelection} colores. Desmarca uno para cambiarlo.`;
+                    error.textContent = `${option.addons ? `Puedes elegir hasta ${max} opciones.` : Catalog.maxText(this.product, option, this.selection).replace('Elige', 'Puedes elegir')} Desmarca uno para cambiarlo.`;
                     error.hidden = false;
                     return;
                 }
@@ -177,7 +178,11 @@
             } else this.selection[option.id] = input.value;
             this.dialog.querySelector(`#option-error-${option.id}`).hidden = true;
             // Otro tamaño: los costos de bizcochos, rellenos y adicionales cambian con él («Nutella · +$12.000»).
-            if (Catalog.sizeOption(this.product)?.id === option.id) this.renderOptions(option.id, input.value);
+            if (Catalog.sizeOption(this.product)?.id === option.id) {
+                // Una cajita más pequeña deja elegir menos sabores: se quedan los primeros que se marcaron.
+                for (const other of this.product.options) if (other.multiple && !other.addons && Array.isArray(this.selection[other.id])) this.selection[other.id] = this.selection[other.id].slice(0, Catalog.maxOf(this.product, other, this.selection));
+                this.renderOptions(option.id, input.value);
+            }
             this.updateDependencies();
             if (this.product.personalization?.dependsOn === option.id) {
                 this.dialog.querySelector('.personal-fields').innerHTML = this.personalHTML();

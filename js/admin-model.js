@@ -182,6 +182,11 @@
                 if (!String(option.label || '').trim()) errors.push(`${name}: hay un grupo de opciones sin título.`);
                 if (option.type === 'toggle') { money(option.priceModifier, `${name} · ${option.label}`, '«Sin costo»'); continue; }
                 if (!option.choices?.length) errors.push(`${name} · ${option.label || 'opciones'}: agrega al menos una opción.`);
+                // Cuántas puede marcar el cliente en un grupo de varias: de 1 al número de opciones.
+                if (option.multiple && !option.addons) {
+                    const caps = option.maxSelection && typeof option.maxSelection === 'object' ? Object.values(option.maxSelection) : [option.maxSelection ?? 1];
+                    if (caps.some(n => n !== null && !(Number.isInteger(n) && n >= 1 && n <= (option.choices?.length || 1)))) errors.push(`${name} · ${option.label}: escribe cuántas puede elegir con un número de 1 a ${option.choices?.length || 1}.`);
+                }
                 for (const choice of option.choices || []) {
                     if (!String(choice.label || '').trim()) errors.push(`${name} · ${option.label}: hay una opción sin nombre.`);
                     money(choice.price, `${name} · ${choice.label || option.label}`);

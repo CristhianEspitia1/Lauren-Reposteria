@@ -23,6 +23,7 @@ js/quick-view-modal.js            Configurador de producto
 js/gallery-data.js / site.js      Fotografías e interacción del sitio
 js/image-variants.js             Anchos de las fotos para srcset (generado)
 js/flavors.js                    «Un sabor para recordar» (Tortas) desde el catálogo
+js/faq-data.js / faqs.js         Preguntas frecuentes (solo datos) y sus reglas: cada página, precios y enlaces
 assets/brand/                    Logotipos, sello e isotipo SVG
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
 assets/optimized/                Video de la historia y su poster

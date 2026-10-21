@@ -38,7 +38,7 @@ Ejecutar `seo.mjs` después de cambiar precios, productos, galerías, preguntas 
 - Favicon SVG + `favicon.ico` + `apple-touch-icon` + `site.webmanifest` con iconos 192/512 y maskable.
 - JSON-LD (`@graph`):
   - `Bakery` (`#bakery`): nombre, logo PNG, teléfono, correo, Medellín/Antioquia, horario lunes a sábado 9:00–18:00, rango de precios calculado, redes y `hasMenu`.
-  - `WebSite` y `WebPage`/`CollectionPage` + `FAQPage` con las preguntas visibles copiadas textualmente del HTML.
+  - `WebSite` y `WebPage`/`CollectionPage` + `FAQPage` con las preguntas visibles copiadas textualmente del HTML. Las preguntas de cada página las escribe el mismo script desde `js/faq-data.js` (las edita el centro de control).
   - Colecciones: `BreadcrumbList` y `MenuSection` con un `MenuItem` por producto (imágenes y `Offer` en COP con precio mínimo, rango y cantidad mínima). Se usa `Menu`/`MenuItem` y no `Product` porque las directrices de Google reservan los fragmentos de producto a páginas de un solo producto.
   - Portada: `Menu` con las cuatro secciones y `VideoObject` de la historia.
 - `sitemap.xml` con `lastmod` desde Git y todas las fotografías de cada página (`image:image`); se omiten `changefreq` y `priority`, que Google ignora.

@@ -76,6 +76,19 @@
         flavors.innerHTML = LaurenFlavors.html(imageAttributes, esc);
         document.querySelectorAll('[data-flavor-intro]').forEach(element => { element.textContent = LaurenFlavors.intro(); });
     });
+    // Preguntas frecuentes: el HTML trae las del repositorio (js/faq-data.js); si llega otra versión publicada, se vuelven
+    // a pintar (js/faqs.js). Una página sin preguntas no muestra la sección.
+    const faqLists = document.querySelectorAll('[data-faqs]');
+    const hideEmptyFaqs = () => faqLists.forEach(list => { list.closest('.faq-section').hidden = !list.querySelector('.faq-item'); });
+    hideEmptyFaqs();
+    if (faqLists.length && window.LaurenFaqs) catalogRenders.push(() => {
+        faqLists.forEach(list => {
+            list.innerHTML = LaurenFaqs.html(list.dataset.faqs);
+            list.querySelectorAll('[data-icon]').forEach(element => { element.innerHTML = icon(element.dataset.icon); });
+        });
+        document.querySelectorAll('[data-faq-topics]').forEach(nav => { nav.innerHTML = LaurenFaqs.topicsHtml(); });
+        hideEmptyFaqs();
+    });
     // Filas parejas (bizcochos, rellenos, adicionales): cada cuadrícula sabe cuántos tiene (--n) para repartir sus filas.
     // Va por el CSSOM: la política de seguridad de la web no deja estilos escritos en el HTML.
     const balance = () => document.querySelectorAll('.flavor-grid, .filling-grid, .extras-grid').forEach(grid => grid.style.setProperty('--n', grid.children.length));

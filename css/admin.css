@@ -57,6 +57,20 @@
 .admin-tag { display: inline-block; border-radius: var(--radius-pill); padding: 1px 8px; margin-left: 6px; background: var(--color-peach); color: var(--color-text); font-size: .6875rem; vertical-align: middle; }
 .admin-tag-change { background: var(--color-lilac); }
 
+/* Preguntas frecuentes: van al final de la lista, con flechas para subir y bajar (la flecha `arrow`, girada) */
+.admin-move { display: inline-flex; }
+.admin-move .icon-button svg { width: 18px; height: 18px; }
+.admin-move-up svg { transform: rotate(-90deg); }
+.admin-move-down svg { transform: rotate(90deg); }
+.admin-move .icon-button:disabled { opacity: .3; cursor: default; background: transparent; }
+.admin-faq-add { padding-top: 12px; }
+/* Vista previa de la pregunta sobre el fondo de la sección de preguntas de la web (durazno 35 % + crema) */
+.admin-faq-preview { padding: 0 16px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-peach) 35%, var(--color-cream)); pointer-events: none; }
+.admin-faq-preview .faq-item, .admin-faq-preview .faq-item:first-child { border: 0; }
+.admin-faq-preview .faq-item > p { padding-right: 0; }
+.admin-faq-preview .field-error { padding-bottom: 16px; }
+.admin-price-picker { max-height: min(24dvh, 240px); overflow-y: auto; padding: 2px 6px 2px 2px; border-bottom: 1px solid var(--color-border); }
+
 /* Barra de publicación: flota sobre la página como el aviso */
 .admin-savebar { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(760px, calc(100% - 32px)); display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px 14px 22px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-float); z-index: var(--z-toast); font-size: .8125rem; }
 .admin-savebar > div { display: flex; gap: 10px; flex-shrink: 0; }
@@ -159,6 +173,7 @@
 .admin-extra { display: grid; gap: 4px; font-size: .6875rem; color: var(--color-text-soft); min-width: 0; }
 .admin-extra > span:first-child { overflow-wrap: anywhere; line-height: 1.3; }
 .admin-extra input { display: block; width: 100%; min-height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-white); padding: 10px 12px 10px 24px; color: var(--color-text); }
+.admin-max input { padding-left: 12px; }
 .admin-add.admin-add-small { min-height: 44px; font-size: .75rem; margin-top: 6px; }
 .admin-add-small svg { width: 16px; height: 16px; }
 .admin-add-row { display: flex; flex-wrap: wrap; gap: 8px 24px; }

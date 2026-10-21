@@ -259,3 +259,38 @@ test('Avisos: lo que impide publicar va a su producto y lo que conviene revisar 
     const vitrina = list.find(p => p.category === 'extras' && p.price === null);
     assert.ok(M.warnings(list).some(w => w.id === vitrina.id && w.text.includes('Cotiza por WhatsApp')));
 });
+test('Toppings de varias: hasta un máximo según la cajita, y al menos uno', () => {
+    const p = M.clone(context.catalogData.brownies);
+    const topping = p.options.find(o => o.id === 'topping');
+    const sizes = p.options.find(o => o.id === 'presentacion').choices.map(c => c.value);
+    topping.multiple = true;
+    topping.maxSelection = { [sizes[1]]: 3, [sizes[2]]: 4 };
+    const pick = (size, list) => ({ ...Catalog.defaults(p), presentacion: size, topping: list });
+    const values = topping.choices.map(c => c.value);
+    assert.equal(Catalog.maxOf(p, topping, pick(sizes[1], [])), 3);
+    assert.equal(Catalog.maxText(p, topping, pick(sizes[2], [])), 'Elige hasta 4 sabores.');
+    assert.equal(Catalog.maxText(p, topping, pick(sizes[0], [])), 'Elige un sabor.');
+    assert.equal(Catalog.validate(p, pick(sizes[1], values.slice(0, 3))).length, 0);
+    assert.match(Catalog.validate(p, pick(sizes[1], values.slice(0, 4)))[0].message, /Puedes elegir hasta 3 sabores/);
+    assert.equal(Catalog.validate(p, pick(sizes[2], values.slice(0, 4))).length, 0);
+    assert.match(Catalog.validate(p, pick(sizes[1], []))[0].message, /Selecciona una opción/);
+    // El panel no publica un máximo que no sea un número de 1 al número de toppings.
+    assert.equal(M.validate([p], products()).length, 0);
+    topping.maxSelection[sizes[1]] = values.length + 1;
+    assert.match(M.validate([p], products()).join('\n'), /cuántas puede elegir con un número de 1 a/);
+    topping.maxSelection[sizes[1]] = NaN;
+    assert.match(M.validate([p], products()).join('\n'), /cuántas puede elegir/);
+});
+test('Ofertas: cada cantidad con su propio precio en vez de multiplicar el de una', () => {
+    const p = M.clone(Object.values(context.catalogData).find(x => x.options?.some(o => o.multiplier)));
+    const option = p.options.find(o => o.multiplier);
+    const unit = p.price;
+    const before = option.choices.map(c => Catalog.price(p, { ...Catalog.defaults(p), [option.id]: c.value }));
+    assert.deepEqual(before, option.choices.map(c => unit * Number(c.value)));
+    option.choices = option.choices.map((c, i) => ({ ...c, price: i === option.choices.length - 1 ? unit * Number(c.value) - 5000 : unit * Number(c.value) }));
+    delete option.multiplier; delete p.price;
+    const after = option.choices.map(c => Catalog.price(p, { ...Catalog.defaults(p), [option.id]: c.value }));
+    assert.equal(after.at(-1), before.at(-1) - 5000);
+    assert.deepEqual(after.slice(0, -1), before.slice(0, -1));
+    assert.equal(M.validate([p], products()).length, 0);
+});

@@ -2,7 +2,7 @@
 /**
  * SEO del sitio a partir del catálogo: metadatos de cada página, datos estructurados
  * (JSON-LD), sitemap.xml con imágenes y llms.txt. Uso: node scripts/seo.mjs
- * Ejecutar después de cambiar textos SEO, precios, productos o galerías.
+ * Ejecutar después de cambiar textos SEO, precios, productos, preguntas o galerías.
  * Con --check no escribe nada y termina con error si algo está desactualizado.
  * También pone la huella de su contenido (?v=…) a cada CSS y JS propio de las páginas.
  */
@@ -21,8 +21,8 @@ const read = file => readFileSync(path.join(root, file), 'utf8');
 const context = { console, Intl, URL };
 context.window = context;
 vm.createContext(context);
-for (const file of ['catalog-data', 'catalog-model', 'gallery-data', 'image-variants', 'ui', 'flavors']) vm.runInContext(read(`js/${file}.js`), context);
-const { Catalog, galleryData, LaurenUI, LaurenFlavors } = context;
+for (const file of ['catalog-data', 'catalog-model', 'gallery-data', 'image-variants', 'ui', 'flavors', 'faq-data', 'faqs']) vm.runInContext(read(`js/${file}.js`), context);
+const { Catalog, galleryData, LaurenUI, LaurenFlavors, LaurenFaqs } = context;
 const money = Catalog.money;
 
 export const BUSINESS = {
@@ -50,6 +50,10 @@ export const withPrices = html => html.replace(/(<span data-price="([^"]+)">)[^<
 export const withFlavors = html => html
     .replace(/(<p data-flavor-intro>)[^<]*(<\/p>)/, (_, open, close) => open + LaurenUI.escape(LaurenFlavors.intro()) + close)
     .replace(/(<div data-flavors>\n)[\s\S]*?(<\/div><!-- \/sabores -->)/, (_, open, close) => open + LaurenFlavors.html(LaurenUI.imageAttributes, LaurenUI.escape).replace(/></g, '>\n<') + '\n' + close);
+/** Preguntas frecuentes de cada página (`data-faqs`) y el índice de temas de la página de preguntas, desde js/faq-data.js (js/faqs.js). */
+export const withFaqs = html => html
+    .replace(/(<div data-faqs="([^"]+)">\n)[\s\S]*?(\n?<\/div><!-- \/preguntas -->)/g, (_, open, key, close) => open + LaurenFaqs.html(key) + close.replace(/^(?!\n)/, '\n'))
+    .replace(/(<nav class="faq-topics"[^>]*data-faq-topics>\n)[\s\S]*?(\n<\/nav>)/, (_, open, close) => open + LaurenFaqs.topicsHtml() + close);
 
 export const PAGES = [
     {
@@ -309,7 +313,7 @@ export const withAssetVersions = html => html.replace(/(\s(?:href|src)=")\/((?:c
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const check = process.argv.includes('--check');
-    const pages = PAGES.map(page => ({ page, html: withFlavors(withPrices(read(page.file))) }));
+    const pages = PAGES.map(page => ({ page, html: withFlavors(withPrices(withFaqs(read(page.file)))) }));
     const outputs = new Map();
     for (const { page, html } of pages) {
         if (!existsSync(path.join(root, socialImage(page)))) throw new Error(`Falta ${socialImage(page)}: ejecutar node scripts/social-images.mjs`);

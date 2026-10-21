@@ -7,6 +7,19 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-20 — Varios toppings con máximo y ofertas por cantidad]
+
+- Un grupo de opciones puede dejar elegir varias, con un máximo por tamaño: toppings de brownies, hasta 3 en las cajas x3 y x6 y hasta 4 en la x16. Se configura en el panel («El cliente puede elegir varias» y «Cuántas puede elegir») y la ficha no deja marcar de más.
+- Galletas: «Poner un precio a cada cantidad» deja escribir el precio de 3, 6 o 12 galletas (ofertas) en vez de multiplicar el de una.
+- Manual de marca 3.8. 2 pruebas nuevas.
+
+## [2026-10-20 — Preguntas frecuentes desde el centro de control]
+
+- Las preguntas de Portada, Tortas, Alfajores, Brownies y galletas, Detalles y la página de preguntas se editan en el panel: una sola lista (filtro «Preguntas»), cada pregunta con sus páginas y su tema, en el orden de la lista (flechas para subir y bajar). Se agregan, se cambian y se eliminan, y se publican con «Publicar cambios».
+- Los precios dentro de las respuestas siguen saliendo del catálogo vigente: «Agregar precio» los pone en palabras («[precio de Torta Sencilla, 25 a 30 porciones]»), y «[página Tortas]» pone un enlace.
+- Datos en `js/faq-data.js` (repositorio) y en `preguntas` de `catalogo/actual` (Firestore); `scripts/seo.mjs` escribe las secciones y su JSON-LD, la web las lee en vivo y el workflow las trae al repositorio con el catálogo. Reglas de Firestore con el campo nuevo.
+- Manual de marca 3.8. 9 pruebas nuevas.
+
 ## [2026-10-19 — Lo nuevo de Tortas, en los demás productos]
 
 - Revisión de Alfajores, Brownies y galletas y Detalles: sus páginas ya salen del catálogo, sin secciones escritas a mano, y lo nuevo (costos por tamaño, adicionales propios, avisos, preguntas antes de lo delicado, filas parejas e imagen para compartir) ya les aplica.

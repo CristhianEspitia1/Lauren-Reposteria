@@ -35,10 +35,10 @@ Cada opción tiene `id`, `label`, `type` (`radio`, `select` o `toggle`), `requir
 - **Precio por elección:** si alguna elección lleva `price`, esa opción fija el valor del producto (porciones, presentación, tamaño). `price: null` en una elección = esa elección se cotiza por WhatsApp; la ficha cambia el total por el botón «Consultar por WhatsApp».
 - **Orden:** se recorren las opciones visibles en orden; la última elección con precio manda. Así, en brownies la presentación «Individual» se completa con las «Unidades en la bolsa».
 - `perUnit: true` añade «c/u» al precio de la elección.
-- `multiplier: true` multiplica el precio por el número elegido (galletas individuales × cantidad). Los costos adicionales (`extra`) se suman antes, así que también son por unidad.
+- `multiplier: true` multiplica el precio por el número elegido (galletas individuales × cantidad). Los costos adicionales (`extra`) se suman antes, así que también son por unidad. Para ofertas, el panel («Poner un precio a cada cantidad») lo cambia por un precio en cada elección, empezando por precio × cantidad, y quita `multiplier` y el precio del producto.
 - `dependsOn` + `showWhen`: la opción solo aparece con esa elección de otra opción.
 - `toggle` con `priceModifier`: suma ese valor al marcarse.
-- `multiple` + `maxSelection`: elección de varios valores (colores).
+- `multiple` + `maxSelection`: elección de varios valores (colores, toppings). `maxSelection` es cuántos puede marcar como máximo: un número o uno por tamaño, con las claves del tamaño como `extra` (`{ "caja-x3": 3, "caja-x6": 3, "caja-x16": 4 }`); un tamaño sin número deja elegir uno. Si el grupo es obligatorio, hay que marcar al menos uno. Al pasar a un tamaño que deja menos, se quedan los primeros que se marcaron. La ficha dice «Elige hasta 3 sabores.» (sabores si el grupo habla de sabor o topping, colores si habla de color, si no opciones).
 - **Costo adicional por elección:** `extra` suma ese valor al total. Puede ser un número (igual en todos los tamaños) o un valor por tamaño: `extra: { "4-5": 5000, "25-30": 20000 }`, con las claves de las elecciones del **tamaño** (la primera opción con precio por elección, sin `dependsOn` ni `multiplier`: porciones, presentación; `Catalog.sizeOption`). Vacío o sin valor para ese tamaño: no suma.
 - **Adicionales:** una opción con `addons: true` y `multiple: true` (en la ficha, «Adicionales», opcional). Cada elección suma su `extra` del tamaño elegido; una sin valor para ese tamaño se puede marcar, pero la selección se cotiza por WhatsApp. Cada producto tiene los suyos.
 - `image` en una elección de `sabor` o `relleno` (tortas): su foto subida desde el centro de control, para «Un sabor para recordar».
@@ -59,9 +59,23 @@ Los importes de las páginas (preguntas frecuentes, introducciones) no se escrib
 
 Si el producto se oculta o queda sin precio, el texto dice «precio a consultar». La prueba `tests/seo.test.mjs` impide precios escritos a mano en las páginas.
 
+## Preguntas frecuentes
+
+`js/faq-data.js` guarda solo datos (`window.faqData`), con el mismo formato que publica el centro de control en el campo `preguntas` de `catalogo/actual`; las reglas viven en `js/faqs.js`. Las secciones de preguntas de Portada, Tortas, Alfajores, Brownies y galletas, Detalles y la página de preguntas no se escriben a mano: `scripts/seo.mjs` las escribe entre `<div data-faqs="…">` y `</div><!-- /preguntas -->` (y el índice de temas en `<nav … data-faq-topics>`), y `site.js` las vuelve a pintar si llega otra versión publicada. Una página sin preguntas oculta su sección.
+
+| Campo | Qué es |
+| --- | --- |
+| `temas` | `[{ id, nombre }]`: los grupos de la página de preguntas, en su orden («Pedidos y fechas»…) |
+| `preguntas[].id` | Identificador único (sale de la pregunta) |
+| `preguntas[].pregunta` / `respuesta` | Textos. En la respuesta, `{precio:ref}` es un importe con las referencias de la tabla de arriba y `{pagina:tortas}` un enlace (`inicio`, `tortas`, `alfajores`, `brownies-galletas`, `detalles`, `preguntas`) |
+| `preguntas[].paginas` | Dónde sale: las mismas claves de página |
+| `preguntas[].tema` | Su tema en la página de preguntas (solo si sale en ella) |
+
+El orden de la lista es el de cada página. En el panel, los importes y enlaces se escriben en palabras («[precio de Torta Sencilla, 25 a 30 porciones]», «[precio más bajo de Brownies y Galletas]», «[página Tortas]») y se guardan con estas referencias.
+
 ## Después de cambiar el catálogo
 
-Lo publicado desde el centro de control llega solo al repositorio en menos de una hora (workflow «Catálogo publicado», ver [centro de control](13-centro-de-control.md#cómo-funciona)). Para traerlo ya, también regenera el SEO:
+Lo publicado desde el centro de control (catálogo y preguntas) llega solo al repositorio en menos de una hora (workflow «Catálogo publicado», ver [centro de control](13-centro-de-control.md#cómo-funciona)). Para traerlo ya, también regenera el SEO:
 
 ```bash
 node scripts/pull-catalog.mjs

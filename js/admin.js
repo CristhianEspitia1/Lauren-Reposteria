@@ -225,7 +225,7 @@ let products = [];
 const fresh = new Set();
 let filter = 'all';
 const sectionName = id => M.SECTIONS.find(([key]) => key === id)?.[1] || 'Sin sección';
-const hasChanges = () => M.changes(original, products).total > 0;
+const hasChanges = () => totalChanges() > 0;
 // El modelo del catálogo lee window.catalogData: se apunta al borrador para calcular precios y herencias.
 const useDraft = () => { window.catalogData = M.toCatalog(M.clone(products)); };
 
@@ -235,13 +235,19 @@ async function loadCatalog() {
         const published = await getDoc(catalogRef);
         loadedJson = published.exists() ? published.data().json : null;
         original = loadedJson ? JSON.parse(loadedJson) : M.clone(snapshot);
+        // Las preguntas se publican desde el panel desde octubre de 2026; antes de eso, las de la web.
+        loadedFaqs = published.exists() ? published.data().preguntas ?? null : null;
+        faqOriginal = loadedFaqs ? JSON.parse(loadedFaqs) : M.clone(faqSnapshot);
     } catch {
         warn('No pudimos leer lo que está publicado. Revisa tu conexión y recarga la página.');
         loadedJson = undefined;
         original = M.clone(snapshot);
+        faqOriginal = M.clone(faqSnapshot);
     }
     products = M.migrate(Object.values(M.clone(original)));
+    faqs = M.clone(faqOriginal);
     fresh.clear();
+    freshFaqs.clear();
     render();
     // Formato anterior (tortas que tomaban precios de otra, adicionales compartidos): cada grupo queda independiente.
     if (hasChanges()) LaurenUI.toast('Cada grupo quedó con sus propios precios, sabores y adicionales. Revísalos y toca «Publicar cambios».');
@@ -249,17 +255,21 @@ async function loadCatalog() {
 
 // Un filtro por tipo de producto: todas las tortas y la vitrina de adicionales en Tortas; brownies y galletas, cada uno en el suyo.
 const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
-const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['home', 'En portada'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
+const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['faqs', 'Preguntas'], ['home', 'En portada'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
 // La portada muestra hasta cuatro tortas marcadas con «Portada» (Catalog.FEATURED).
 const onHome = p => p.featured === true && window.Catalog.featurable(p);
 // La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
 const groupOf = p => p.category === 'extras' ? 'Vitrina de adicionales (Tortas)' : sectionName(p.category);
 const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0);
-const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : PAGES[id][1].includes(p.category));
+const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : id !== 'faqs' && PAGES[id][1].includes(p.category));
+// Preguntas que salen con el filtro: todas en «Todos» y «Preguntas»; en «Con cambios», las nuevas o cambiadas.
+const faqInFilter = (q, id, changedFaqs) => id === 'all' || id === 'faqs' || (id === 'changed' && changedFaqs.includes(q.id));
+const faqChangedIds = () => { const c = faqChanges(); return [...c.added, ...c.changed]; };
 function renderFilters() {
     const { changed } = M.changes(original, products);
+    const changedFaqs = faqChangedIds();
     $('filters').innerHTML = FILTERS.map(([id, label]) => {
-        const count = products.filter(p => inFilter(p, id, changed)).length;
+        const count = products.filter(p => inFilter(p, id, changed)).length + faqs.preguntas.filter(q => faqInFilter(q, id, changedFaqs)).length;
         return (id === 'hidden' || id === 'changed') && !count && filter !== id ? '' : `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)} <span class="admin-filter-count">${count}</span></button>`;
     }).join('');
 }
@@ -278,7 +288,10 @@ function render() {
     const search = normalizeText($('search').value.trim());
     const shown = products.filter(p => inFilter(p, filter, changed) && (!search || normalizeText(`${p.name} ${groupOf(p)}`).includes(search)))
         .map((p, i) => [p, i]).sort(([a, i], [b, j]) => order(a) - order(b) || i - j).map(([p]) => p);
-    $('count').textContent = search ? `${shown.length} ${shown.length === 1 ? 'producto encontrado' : 'productos encontrados'}` : '';
+    const changedFaqs = faqChangedIds();
+    const shownFaqs = faqs.preguntas.filter(q => faqInFilter(q, filter, changedFaqs) && (!search || normalizeText(`${q.pregunta} ${q.respuesta} preguntas frecuentes`).includes(search)));
+    const found = shown.length + shownFaqs.length;
+    $('count').textContent = search ? `${found} ${found === 1 ? 'resultado' : 'resultados'}` : '';
     let group = '';
     $('list').innerHTML = shown.map(p => {
         const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;
@@ -288,8 +301,9 @@ function render() {
         const home = window.Catalog.featurable(p) ? `<label class="toggle-option" for="${homeId}"><input id="${homeId}" type="checkbox" data-home="${esc(p.id)}" ${onHome(p) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Portada</span></label>` : '';
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
         return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
-    }).join('') || `<li class="admin-empty">${search ? 'No encontramos productos con ese nombre. Prueba con otra palabra.' : 'No hay productos aquí.'}</li>`;
-    const total = M.changes(original, products).total;
+    }).join('') + faqRows(shownFaqs, changedFaqs) + (['all', 'faqs'].includes(filter) && !search ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : '');
+    if (!shown.length && !shownFaqs.length) $('list').innerHTML = `<li class="admin-empty">${search ? 'No encontramos productos ni preguntas con esas palabras. Prueba con otra.' : 'No hay nada aquí.'}</li>${filter === 'faqs' ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : ''}`;
+    const total = totalChanges();
     $('saveBar').hidden = total === 0;
     $('saveCount').textContent = total === 1 ? '1 cambio sin publicar.' : `${total} cambios sin publicar.`;
     $('saveHint').textContent = total === 1 ? 'Aún no se ve en la web.' : 'Aún no se ven en la web.';
@@ -337,14 +351,15 @@ $('list').addEventListener('click', event => {
     if (button) openEditor(products.find(p => p.id === button.dataset.edit));
 });
 $('discard').addEventListener('click', async () => {
-    const { total } = M.changes(original, products);
+    const total = totalChanges();
     if (!(await askConfirm({
         title: '¿Descartar <em>tus cambios</em>?',
         body: `<p>${total === 1 ? 'El cambio sin publicar se pierde' : `Los ${total} cambios sin publicar se pierden`} y el panel vuelve a lo que hoy se ve en la web.</p>`,
         action: 'Descartar',
         cancel: 'Conservarlos'
     }))) return;
-    products = M.migrate(Object.values(M.clone(original))); fresh.clear(); pendingDeletes.clear(); render();
+    products = M.migrate(Object.values(M.clone(original))); fresh.clear(); pendingDeletes.clear();
+    faqs = M.clone(faqOriginal); freshFaqs.clear(); render();
 });
 window.addEventListener('beforeunload', event => { if (hasChanges()) event.preventDefault(); });
 
@@ -352,18 +367,22 @@ window.addEventListener('beforeunload', event => { if (hasChanges()) event.preve
 $('publish').addEventListener('click', async () => {
     if (preview) { LaurenUI.toast('Vista previa: aquí no se publica.'); return; }
     // Si algo impide publicar, se abren los avisos con «Ir a arreglarlo» en cada uno.
-    if (M.validate(products).length) {
+    if (M.validate(products).length || F.problems(faqs).length) {
         LaurenUI.toast('Antes de publicar falta arreglar algo. Te lo mostramos en «Avisos».');
         $('noticesButton').click();
         return;
     }
     if (loadedJson === undefined) { warn('No pudimos leer lo que está publicado. Recarga la página antes de publicar.'); return; }
-    const { changed, removed, total } = M.changes(original, products);
+    const { changed, removed } = M.changes(original, products);
+    const total = totalChanges();
     const nameOf = id => products.find(p => p.id === id)?.name || original[id]?.name || id;
-    const pending = M.warnings(products).length;
+    const faqDiff = faqChanges();
+    const questionOf = id => `«${faqName(faqs.preguntas.find(q => q.id === id) || faqOriginal.preguntas.find(q => q.id === id))}»`;
+    const faqNotes = [...faqDiff.added.map(id => `${questionOf(id)}: nueva`), ...faqDiff.changed.map(id => `${questionOf(id)}: con cambios`), ...faqDiff.removed.map(id => `${questionOf(id)}: se elimina`), ...(faqDiff.moved ? ['Orden de las preguntas: con cambios'] : [])];
+    const pending = M.warnings(products).length + F.warnings(faqs).length;
     if (!(await askConfirm({
         title: `¿Publicar <em>${total === 1 ? 'tu cambio' : `tus ${total} cambios`}</em>?`,
-        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
+        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`), ...faqNotes.map(text => `<li>${esc(text)}</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
         action: 'Publicar',
         cancel: 'Todavía no'
     }))) return;
@@ -371,15 +390,19 @@ $('publish').addEventListener('click', async () => {
     try {
         const data = M.toCatalog(M.normalize(products));
         const json = JSON.stringify(data);
+        const faqData = { temas: faqs.temas, preguntas: faqs.preguntas.map(cleanFaq) };
+        const preguntas = JSON.stringify(faqData);
         await runTransaction(db, async transaction => {
             const current = await transaction.get(catalogRef);
-            if ((current.exists() ? current.data().json : null) !== loadedJson) throw Object.assign(new Error('conflict'), { code: 'conflict' });
+            const now = current.exists() ? current.data() : {};
+            if ((now.json ?? null) !== loadedJson || (now.preguntas ?? null) !== loadedFaqs) throw Object.assign(new Error('conflict'), { code: 'conflict' });
             // Lo publicado es de lectura pública: no lleva el correo de quien publica. El historial, que solo leen
             // los administradores, sí lo guarda.
-            transaction.set(catalogRef, { json, updatedAt: serverTimestamp() });
-            transaction.set(doc(collection(db, 'historial')), { json, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
+            transaction.set(catalogRef, { json, preguntas, updatedAt: serverTimestamp() });
+            transaction.set(doc(collection(db, 'historial')), { json, preguntas, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
         });
         original = data; loadedJson = json; products = M.migrate(Object.values(M.clone(data))); fresh.clear();
+        faqOriginal = M.clone(faqData); loadedFaqs = preguntas; faqs = M.clone(faqData); freshFaqs.clear();
         if (filter === 'changed') filter = 'all';
         render();
         const erased = await erasePending();
@@ -418,7 +441,9 @@ function flavorWarnings() {
 }
 function noticeList() {
     useDraft();
-    return { problems: M.problems(products), warnings: [...M.warnings(products), ...flavorWarnings()] };
+    // Las de las preguntas llevan «faq:» delante, para que «Ir a arreglarlo» abra la pregunta.
+    const faqNotes = list => list.map(({ id, text }) => ({ id: id ? `faq:${id}` : null, text }));
+    return { problems: [...M.problems(products), ...faqNotes(F.problems(faqs))], warnings: [...M.warnings(products), ...flavorWarnings(), ...faqNotes(F.warnings(faqs))] };
 }
 function updateNotices() {
     const { problems, warnings } = noticeList();
@@ -431,7 +456,7 @@ function updateNotices() {
 function renderNotices() {
     const { problems, warnings } = noticeList();
     const time = at => at.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
-    const item = ({ id, text, at }) => `<li><span>${esc(text)}${at ? ` <small>${time(at)}</small>` : ''}</span>${id && products.some(p => p.id === id) ? `<button type="button" class="text-link" data-fix="${esc(id)}">Ir a arreglarlo ${icon('arrow')}</button>` : ''}</li>`;
+    const item = ({ id, text, at }) => `<li><span>${esc(text)}${at ? ` <small>${time(at)}</small>` : ''}</span>${id && (products.some(p => p.id === id) || faqs.preguntas.some(q => `faq:${q.id}` === id)) ? `<button type="button" class="text-link" data-fix="${esc(id)}">Ir a arreglarlo ${icon('arrow')}</button>` : ''}</li>`;
     const group = (title, note, list) => list.length ? `<section><p class="eyebrow">${title} · ${list.length}</p><p class="field-note">${note}</p><ul class="admin-notice-list">${list.map(item).join('')}</ul></section>` : '';
     const empty = !problems.length && !warnings.length && !events.length;
     noticesDialog.innerHTML = `<form method="dialog"><h2 id="noticesTitle">${empty ? 'Todo <em>en orden.</em>' : 'Tus <em>avisos.</em>'}</h2><div class="admin-confirm-body">
@@ -452,12 +477,249 @@ noticesDialog.addEventListener('click', event => {
     const fix = event.target.closest('[data-fix]');
     if (!fix) return;
     noticesDialog.close();
+    const question = faqs.preguntas.find(q => `faq:${q.id}` === fix.dataset.fix);
+    if (question) return openFaqEditor(question);
     const product = products.find(p => p.id === fix.dataset.fix);
     if (product) openEditor(product);
 });
 // Un error inesperado del panel también se cuenta, en palabras sencillas.
 addEventListener('error', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
 addEventListener('unhandledrejection', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
+
+/* ---------- Preguntas frecuentes ---------- */
+// Una sola lista (js/faqs.js): cada pregunta marca en qué páginas sale y, en la página de preguntas, su tema. En cada
+// página van en el orden de la lista. Se publican junto con el catálogo, con el mismo «Publicar cambios».
+const F = window.LaurenFaqs;
+const faqSnapshot = M.clone(window.faqData);
+let faqOriginal = M.clone(faqSnapshot);
+let faqs = M.clone(faqSnapshot);
+let loadedFaqs = null;
+const freshFaqs = new Set();
+const faqChanges = () => F.changes(faqOriginal, faqs);
+const totalChanges = () => M.changes(original, products).total + faqChanges().total;
+const faqName = q => q?.pregunta?.trim() || 'esta pregunta';
+const topicName = id => faqs.temas.find(t => t.id === id)?.nombre || '';
+// «Portada · Tortas · Página de preguntas (Pedidos y fechas)»
+const faqWhere = q => (q.paginas || []).length ? F.PAGES.filter(([id]) => q.paginas.includes(id)).map(([id, label]) => id === 'preguntas' && topicName(q.tema) ? `${label} (${topicName(q.tema)})` : label).join(' · ') : 'No sale en ninguna página';
+// Lo publicado, limpio: textos sin espacios de más, páginas en el orden de la web y el tema solo si sale en la página de preguntas.
+const cleanFaq = q => {
+    const out = { id: q.id, pregunta: q.pregunta.trim(), respuesta: q.respuesta.trim(), paginas: F.PAGES.map(([id]) => id).filter(id => q.paginas.includes(id)) };
+    if (out.paginas.includes('preguntas') && q.tema) out.tema = q.tema;
+    return out;
+};
+
+function faqRows(list, changedFaqs) {
+    if (!list.length) return '';
+    const all = faqs.preguntas;
+    return `<li class="admin-group"><p class="eyebrow">Preguntas frecuentes · ${list.length}</p></li>${list.map(q => {
+        const at = all.indexOf(q);
+        const tags = [freshFaqs.has(q.id) && '<span class="admin-tag admin-tag-change">Nueva</span>', !freshFaqs.has(q.id) && changedFaqs.includes(q.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
+        const name = esc(faqName(q));
+        return `<li class="admin-row admin-faq-row"><span class="admin-row-icon" aria-hidden="true">${icon('chat')}</span><div><h2><button type="button" class="admin-row-name" data-faq-edit="${esc(q.id)}">${name}</button>${tags}</h2><p>${esc(faqWhere(q))}</p></div><div class="admin-row-actions"><span class="admin-move"><button type="button" class="icon-button admin-move-up" data-faq-move="-1" data-faq="${esc(q.id)}" aria-label="Subir «${name}»" ${at === 0 ? 'disabled' : ''}>${icon('arrow')}</button><button type="button" class="icon-button admin-move-down" data-faq-move="1" data-faq="${esc(q.id)}" aria-label="Bajar «${name}»" ${at === all.length - 1 ? 'disabled' : ''}>${icon('arrow')}</button></span><button type="button" class="text-link" data-faq-edit="${esc(q.id)}" aria-label="Editar «${name}»">Editar ${icon('arrow')}</button></div></li>`;
+    }).join('')}`;
+}
+$('list').addEventListener('click', event => {
+    const move = event.target.closest('[data-faq-move]');
+    if (move) {
+        // Subir o bajar una pregunta: cambia su lugar en todas las páginas donde sale. El foco se queda en la flecha.
+        const from = faqs.preguntas.findIndex(q => q.id === move.dataset.faq);
+        const to = from + Number(move.dataset.faqMove);
+        if (from < 0 || to < 0 || to >= faqs.preguntas.length) return;
+        const list = [...faqs.preguntas];
+        [list[from], list[to]] = [list[to], list[from]];
+        faqs = { ...faqs, preguntas: list };
+        render();
+        const again = $('list').querySelector(`[data-faq="${CSS.escape(move.dataset.faq)}"][data-faq-move="${move.dataset.faqMove}"]`);
+        (again?.disabled ? $('list').querySelector(`[data-faq="${CSS.escape(move.dataset.faq)}"]:not([disabled])`) : again)?.focus();
+        return;
+    }
+    const open = event.target.closest('[data-faq-edit]');
+    if (open) openFaqEditor(faqs.preguntas.find(q => q.id === open.dataset.faqEdit));
+    if (event.target.closest('[data-faq-new]')) openFaqEditor({ id: '', pregunta: '', respuesta: '', paginas: [] }, true);
+});
+
+const faqEditor = $('faqEditor');
+LaurenUI.dialogEvents(faqEditor);
+let faqEdit = null;
+let faqEditingId = null;
+let faqPristine = '';
+// Dónde estaba el cursor en la respuesta al tocar «Agregar precio»; si no se ha escrito en ella, el precio va al final.
+let faqCaret = null;
+function openFaqEditor(question, isNew = false) {
+    faqCaret = null;
+    faqEdit = { ...M.clone(question), respuesta: F.toFriendly(question.respuesta, M.SECTIONS) };
+    faqEditingId = isNew ? null : question.id;
+    faqPristine = JSON.stringify(faqEdit);
+    renderFaqEditor();
+    LaurenUI.open(faqEditor);
+}
+// La respuesta como se verá: los precios del catálogo vigente y los enlaces; lo que no se reconoce se dice debajo.
+function faqPreview() {
+    const { value, errors } = F.fromFriendly(faqEdit.respuesta, M.SECTIONS);
+    return `<details class="faq-item" open><summary>${esc(faqEdit.pregunta?.trim() || 'Escribe la pregunta')}${icon('plus')}</summary><p>${F.answer(value) || 'Escribe la respuesta.'}</p></details>${errors.length ? `<p class="field-error">${esc(errors[0])}</p>` : ''}`;
+}
+function renderFaqEditor() {
+    const q = faqEdit;
+    const onTopics = q.paginas.includes('preguntas');
+    faqEditor.innerHTML = `<form novalidate>
+        <div class="dialog-scroll">
+            <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
+            <p class="eyebrow">${faqEditingId ? 'Pregunta frecuente' : 'Nueva pregunta'}</p>
+            <h2 id="faqEditorTitle">${esc(q.pregunta?.trim() || 'Sin pregunta')}</h2>
+            <div class="admin-editor-layout"><div class="admin-editor-main">
+            <fieldset class="admin-fieldset"><legend>La pregunta</legend>
+                ${field('Pregunta', 'pregunta', q.pregunta, { attrs: 'required maxlength="160"', placeholder: 'Ej.: ¿Hacen domicilios?' })}
+                ${field('Respuesta', 'respuesta', q.respuesta, { area: true, attrs: `maxlength="1200" ${rows(Array(Math.ceil(String(q.respuesta || '').length / 70)).fill(0), 4)}`, note: 'Un precio entre corchetes se escribe solo y siempre está al día: tócalo en «Agregar precio» o escríbelo así: [precio de Torta Sencilla], [precio de Torta Sencilla, 25 a 30 porciones] o [precio más bajo de Tortas]. Para un enlace a otra página: [página Tortas].' })}
+                <p><button type="button" class="admin-add admin-add-small" data-action="faq-price">${icon('plus')} Agregar precio</button></p>
+            </fieldset>
+            ${faqEditingId ? '<div class="admin-delete"><button type="button" class="admin-danger" data-action="faq-delete">Eliminar pregunta</button><p class="field-note">Si solo quieres quitarla de una página, desmárcala en «Dónde aparece».</p></div>' : ''}
+            <p class="field-error" id="faqEditorError" role="alert" hidden></p>
+            </div>
+            <aside class="admin-editor-side" aria-label="Vista previa y páginas">
+                <div class="admin-side-track"><div class="admin-side-sticky">
+                <fieldset class="admin-fieldset admin-side-preview"><legend>Así se verá en la web</legend><div class="admin-faq-preview" id="faqPreview" aria-hidden="true">${faqPreview()}</div></fieldset>
+                <fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend>
+                    <div class="admin-toggles">${F.PAGES.map(([id, label]) => `<label class="toggle-option"><input type="checkbox" data-faq-page="${id}" ${q.paginas.includes(id) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>${esc(label)}</span></label>`).join('')}</div>
+                    ${onTopics ? choices('Tema en la página de preguntas', 'tema', q.tema, faqs.temas.map(t => [t.id, t.nombre])) : ''}
+                    <p class="field-note">En cada página salen en el orden de la lista; cámbialo con las flechas.</p>
+                </fieldset>
+                </div></div>
+            </aside></div>
+        </div>
+        <div class="admin-editor-actions">
+            <div><button type="button" class="btn btn-secondary" data-close-dialog>Cancelar</button><button type="submit" class="btn">Guardar ${icon('check')}</button></div>
+        </div>
+    </form>`;
+}
+faqEditor.addEventListener('input', event => {
+    const pageBox = event.target.closest('[data-faq-page]');
+    if (pageBox) {
+        faqEdit.paginas = F.PAGES.map(([id]) => id).filter(id => id === pageBox.dataset.faqPage ? pageBox.checked : faqEdit.paginas.includes(id));
+        // Al marcar o desmarcar la página de preguntas aparece o se va su tema: la casilla tocada se queda bajo el dedo.
+        if (pageBox.dataset.faqPage === 'preguntas') {
+            const scroller = faqEditor.querySelector('.dialog-scroll');
+            const top = pageBox.closest('label').getBoundingClientRect().top;
+            renderFaqEditor();
+            const again = faqEditor.querySelector('[data-faq-page="preguntas"]');
+            faqEditor.querySelector('.dialog-scroll').scrollTop = scroller.scrollTop + again.closest('label').getBoundingClientRect().top - top;
+            again.focus({ preventScroll: true });
+        }
+        return;
+    }
+    const input = event.target.closest('[data-path]');
+    if (!input) return;
+    faqEdit[input.dataset.path] = input.value;
+    if (input.dataset.path === 'pregunta') faqEditor.querySelector('#faqEditorTitle').textContent = input.value.trim() || 'Sin pregunta';
+    faqEditor.querySelector('#faqPreview').innerHTML = faqPreview();
+});
+faqEditor.addEventListener('focusout', event => {
+    if (event.target.matches('[data-path="respuesta"]')) faqCaret = [event.target.selectionStart, event.target.selectionEnd];
+});
+async function leaveFaqEditor() {
+    if (JSON.stringify(faqEdit) !== faqPristine && !(await askConfirm({
+        title: `¿Salir sin guardar <em>${esc(faqName(faqEdit))}</em>?`,
+        body: '<p>Lo que cambiaste en esta pregunta se pierde. Para conservarlo, toca «Seguir editando» y luego «Guardar».</p>',
+        action: 'Salir sin guardar',
+        cancel: 'Seguir editando'
+    }))) return;
+    LaurenUI.close(faqEditor);
+}
+faqEditor.addEventListener('click', event => {
+    const bounds = faqEditor.getBoundingClientRect();
+    const outside = event.target === faqEditor && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+    if (!outside && !event.target.closest('[data-close-dialog]')) return;
+    event.stopImmediatePropagation();
+    leaveFaqEditor();
+}, true);
+faqEditor.addEventListener('cancel', event => { event.preventDefault(); leaveFaqEditor(); });
+faqEditor.addEventListener('click', async event => {
+    const action = event.target.closest('[data-action]')?.dataset.action;
+    if (action === 'faq-price') {
+        const textarea = faqEditor.querySelector('[data-path="respuesta"]');
+        const [start, end] = faqCaret || [textarea.value.length, textarea.value.length];
+        const token = await askPrice();
+        if (!token) { textarea.focus(); return; }
+        // Con espacios alrededor si hacen falta, para que no quede pegado a las palabras de al lado.
+        const before = textarea.value.slice(0, start), after = textarea.value.slice(end);
+        textarea.focus();
+        textarea.setRangeText(`${before && !/\s$/.test(before) ? ' ' : ''}${token}${/^[\p{L}\p{N}]/u.test(after) ? ' ' : ''}`, start, end, 'end');
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (action === 'faq-delete') {
+        if (!(await askConfirm({
+            title: `¿Eliminar <em>${esc(faqName(faqEdit))}</em>?`,
+            body: '<p>Deja de verse en todas sus páginas cuando publiques los cambios. Si solo quieres quitarla de una página, desmárcala en «Dónde aparece».</p>',
+            action: 'Eliminar',
+            cancel: 'Conservarla'
+        }))) return;
+        faqs = { ...faqs, preguntas: faqs.preguntas.filter(q => q.id !== faqEditingId) };
+        freshFaqs.delete(faqEditingId);
+        LaurenUI.close(faqEditor); render();
+        LaurenUI.toast('Pregunta eliminada. Toca «Publicar cambios» para que se vea en la web.');
+    }
+});
+faqEditor.addEventListener('submit', async event => {
+    event.preventDefault();
+    const fail = (message, path) => { showError('faqEditorError', message); faqEditor.querySelector(path ? `[data-path="${path}"]` : '#faqEditorError')?.focus(); };
+    if (!faqEdit.pregunta?.trim()) return fail('Escribe la pregunta.', 'pregunta');
+    if (!faqEdit.respuesta?.trim()) return fail('Escribe la respuesta.', 'respuesta');
+    const { value, errors } = F.fromFriendly(faqEdit.respuesta, M.SECTIONS);
+    if (errors.length) return fail(errors[0], 'respuesta');
+    if (faqEdit.paginas.includes('preguntas') && !faqs.temas.some(t => t.id === faqEdit.tema)) return fail('Elige su tema en la página de preguntas.', 'tema');
+    if (!faqEdit.paginas.length && !(await askConfirm({
+        title: `¿Guardar <em>${esc(faqName(faqEdit))}</em> así?`,
+        body: '<p>No está marcada en ninguna página, así que no se verá en la web. Márcala en «Dónde aparece» para que salga.</p>',
+        action: 'Guardar así',
+        cancel: 'Seguir editando'
+    }))) return;
+    showError('faqEditorError', '');
+    const others = new Set(faqs.preguntas.filter(q => q.id !== faqEditingId).map(q => q.id));
+    // Una pregunta aún sin publicar toma su identificador de la pregunta definitiva.
+    const id = faqEditingId && !freshFaqs.has(faqEditingId) ? faqEditingId : M.unique(M.slug(faqEdit.pregunta) || 'pregunta', others);
+    const saved = cleanFaq({ ...faqEdit, id, respuesta: value });
+    if (faqEditingId) {
+        freshFaqs.delete(faqEditingId);
+        faqs = { ...faqs, preguntas: faqs.preguntas.map(q => q.id === faqEditingId ? saved : q) };
+    } else faqs = { ...faqs, preguntas: [...faqs.preguntas, saved] };
+    if (!faqOriginal.preguntas.some(q => q.id === id)) freshFaqs.add(id);
+    LaurenUI.close(faqEditor);
+    render();
+    LaurenUI.toast(saved.paginas.length ? `Guardada. ${faqEditingId ? '' : 'Quedó al final de la lista; súbela con las flechas si quieres. '}Toca «Publicar cambios» para que se vea en la web.` : 'Guardada. No sale en ninguna página hasta que la marques en «Dónde aparece».');
+});
+/**
+ * «Agregar precio»: se elige de qué (el más bajo de una sección o un producto) y, si tiene tamaños, cuál. Devuelve el
+ * texto entre corchetes que va en la respuesta, o nada si se cancela.
+ */
+function askPrice() {
+    if (confirmDialog.open) return Promise.resolve(null);
+    useDraft();
+    const sections = M.SECTIONS.filter(([id]) => window.Catalog.priceRef(`@${id}`) !== null).map(([id, label]) => [`@${id}`, `Lo más bajo de ${label}`]);
+    const items = window.Catalog.all().filter(p => window.Catalog.range(p)).map(p => [p.id, p.name]);
+    const radios = (name, list) => list.map(([value, text], i) => `<label class="choice"><input type="radio" name="${name}" value="${esc(value)}" ${i === 0 ? 'checked' : ''}><span>${esc(text)}</span></label>`).join('');
+    const sizes = id => {
+        const product = window.Catalog.get(id);
+        const size = product && window.Catalog.sizeOption(product);
+        if (!size) return '';
+        return `<fieldset class="personal-field admin-choice-field"><legend>¿Qué tamaño?</legend><div class="choice-list">${radios('faqPriceSize', [[id, 'Desde (el más bajo)'], ...size.choices.map(c => [`${id}?${size.id}=${c.value}`, c.label])])}</div></fieldset>`;
+    };
+    // La lista de productos se desplaza en su caja; los tamaños quedan siempre a la vista debajo.
+    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">Agregar <em>un precio.</em></h2><div class="admin-confirm-body">
+        <p>En la web siempre se ve el precio vigente: si lo cambias en el panel, la respuesta se pone al día sola.</p>
+        <fieldset class="personal-field admin-choice-field"><legend>¿De qué?</legend><div class="choice-list admin-price-picker">${radios('faqPrice', [...sections, ...items])}</div></fieldset>
+        <div data-price-sizes></div>
+        </div><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">Cancelar</button><button type="submit" class="btn" value="ok">Agregar precio ${icon('check')}</button></div></form>`;
+    confirmDialog.querySelector('[data-price-sizes]').innerHTML = sizes(confirmDialog.querySelector('[name="faqPrice"]:checked')?.value || '');
+    const onChange = event => { if (event.target.name === 'faqPrice') confirmDialog.querySelector('[data-price-sizes]').innerHTML = sizes(event.target.value); };
+    confirmDialog.addEventListener('change', onChange);
+    confirmDialog.returnValue = '';
+    confirmDialog.showModal();
+    confirmDialog.querySelector('[value="cancel"]').focus();
+    return new Promise(resolve => confirmDialog.addEventListener('close', () => {
+        confirmDialog.removeEventListener('change', onChange);
+        const ref = confirmDialog.querySelector('[name="faqPriceSize"]:checked')?.value || confirmDialog.querySelector('[name="faqPrice"]:checked')?.value;
+        resolve(confirmDialog.returnValue === 'ok' && ref ? F.toFriendly(`{precio:${ref}}`, M.SECTIONS) : null);
+    }, { once: true }));
+}
 
 /* ---------- Editor ---------- */
 const editor = $('editor');
@@ -575,6 +837,20 @@ function choicePhotoHTML(p, option, o, choice, c) {
         <button type="button" class="admin-add admin-add-small" data-action="choice-photo" data-option="${o}" data-choice="${c}">${icon('plus')} ${src ? 'Cambiar foto' : 'Subir foto'}</button>${choice.image ? `<button type="button" class="admin-danger" data-action="choice-photo-remove" data-option="${o}" data-choice="${c}">Quitar foto</button>` : ''}</div></div>`;
 }
 
+// Cuántas opciones del grupo puede marcar el cliente (toppings, colores): una, o varias con un máximo por tamaño.
+function pickHTML(p, option, o) {
+    if (option.addons || option.multiplier) return '';
+    const toggle = `<div class="admin-toggles">${check('El cliente puede elegir varias', `options.${o}.multiple`, option.multiple === true)}</div>`;
+    if (!option.multiple) return toggle;
+    const size = M.sizeOf(p);
+    // Solo los tamaños en los que se ve el grupo (el vaso de mini brownies no lleva toppings).
+    const sizes = size && size.id !== option.id ? size.choices.filter(c => option.dependsOn !== size.id || [].concat(option.showWhen).includes(c.value)) : [];
+    const cap = key => typeof option.maxSelection === 'number' ? option.maxSelection : option.maxSelection?.[key];
+    const input = (key, label) => `<label class="admin-extra"><span>${esc(label)}</span><input data-max="${o}" ${key ? `data-size="${esc(key)}"` : ''} data-kind="number" inputmode="numeric" aria-label="Cuántas puede elegir${key ? ` en ${esc(label)}` : ''}" value="${esc(cap(key) ?? 1)}"></label>`;
+    return `${toggle}<p class="field-note">Cuántas puede marcar como máximo${sizes.length ? ` según «${esc(size.label)}»` : ''}; puede elegir menos. Hay ${option.choices?.length || 0} para elegir.</p>
+        <div class="admin-extra-sizes admin-max">${sizes.length ? sizes.map(c => input(c.value, c.label || 'Tamaño')).join('') : input('', 'Hasta')}</div>`;
+}
+
 function groupsHTML(p, pricedOnes) {
     return (p.options || []).map((option, o) => [option, o]).filter(([option]) => (option.type !== 'toggle' && M.priced(option)) === pricedOnes).map(([option, o]) => {
         const path = `options.${o}`;
@@ -584,7 +860,7 @@ function groupsHTML(p, pricedOnes) {
             const values = [].concat(option.showWhen).map(v => parent?.choices?.find(c => c.value === v)?.label || v).join(' o ');
             return `<p class="field-note">Solo aparece cuando se elige «${esc(values)}» en «${esc(parent?.label || '')}».</p>`;
         })() : '';
-        const multiplier = option.multiplier ? '<p class="field-note">Multiplica el precio por la cantidad elegida.</p>' : '';
+        const multiplier = option.multiplier ? `<p class="field-note">Multiplica el precio por la cantidad elegida. Para ofertas (12 por menos que 12 × el precio de una), ponle a cada cantidad su propio precio.</p><p><button type="button" class="admin-add admin-add-small" data-action="price-each" data-option="${o}">${icon('plus')} Poner un precio a cada cantidad</button></p>` : '';
         const remove = (c, choice) => option.multiplier ? '<span></span>' : `<button type="button" class="icon-button" data-action="remove-choice" data-option="${o}" data-choice="${c}" aria-label="Quitar ${esc(choice.label || 'esta opción')}">${icon('close')}</button>`;
         const label = (c, choice) => `<input aria-label="Opción ${c + 1} de ${esc(option.label)}" data-path="${path}.choices.${c}.label" data-kind="text" value="${esc(choice.label)}" placeholder="Escribe la opción" ${option.multiplier ? 'readonly' : ''}>`;
         let body;
@@ -596,7 +872,7 @@ function groupsHTML(p, pricedOnes) {
         const note = pricedOnes ? '<p class="field-note">Si dejas un precio vacío, esa opción dice «Cotiza por WhatsApp».</p>'
             : option.addons ? '<p class="field-note">Detalles que el cliente puede sumar a su torta. Escribe su precio; si lo dejas vacío, se puede marcar, pero esa torta se consulta por WhatsApp.</p>'
             : option.multiple ? '' : '<p class="field-note">¿Alguna cuesta más, como un relleno premium? Escribe cuánto suma. Si lo dejas vacío, no suma nada.</p>';
-        return `<div class="admin-option">${field('Título del grupo (lo ve el cliente)', `${path}.label`, option.label)}${depends}${multiplier}${note}${body}
+        return `<div class="admin-option">${field('Título del grupo (lo ve el cliente)', `${path}.label`, option.label)}${depends}${multiplier}${pricedOnes ? '' : pickHTML(p, option, o)}${note}${body}
             <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} ${option.addons ? 'Agregar adicional' : 'Agregar opción'}</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div></div>`;
     }).join('');
 }
@@ -713,6 +989,14 @@ function setExtra(choice, size, value) {
     choice.extra = { ...(choice.extra && typeof choice.extra === 'object' ? choice.extra : {}), [size]: value };
 }
 editor.addEventListener('input', event => {
+    const cap = event.target.closest('[data-max]');
+    if (cap) {
+        const option = edit.options[Number(cap.dataset.max)];
+        const value = readInput(cap);
+        if (!cap.dataset.size) option.maxSelection = value;
+        else option.maxSelection = { ...(option.maxSelection && typeof option.maxSelection === 'object' ? option.maxSelection : {}), [cap.dataset.size]: value };
+        return;
+    }
     const cost = event.target.closest('[data-extra]');
     if (cost) {
         const [o, c] = cost.dataset.extra.split('.').map(Number);
@@ -750,7 +1034,12 @@ function applyInput(path, value, input) {
     if (preview) preview.innerHTML = pricePreview();
     editor.querySelector('#cardPreview').innerHTML = cardPreview(edit);
     editor.querySelector('#cardPreviewTitle').innerHTML = previewTitle(edit);
-    if (path === 'category' || path === 'featured') {
+    // Un grupo pasa a ser de varias: empieza dejando elegir una en cada tamaño, hasta que se escriba otro número.
+    if (path.endsWith('.multiple')) {
+        const option = edit.options[Number(path.split('.')[1])];
+        if (value) option.maxSelection = 1; else { delete option.multiple; delete option.maxSelection; }
+    }
+    if (path === 'category' || path === 'featured' || path.endsWith('.multiple')) {
         if (path === 'category') delete edit.group;
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
         const top = input.closest('label').getBoundingClientRect().top;
@@ -818,6 +1107,21 @@ editor.addEventListener('click', async event => {
     // Un tamaño nuevo lleva su identificador desde ya: los costos por tamaño de los sabores se guardan con él.
     if (action === 'add-choice') option.choices.push(M.priced(option) ? { value: M.unique('tamano', new Set(option.choices.map(c => c.value))), label: '', price: null } : { value: '', label: '' });
     if (action === 'add-addons') { edit.options = [...(edit.options || []), M.addonsGroup([{ value: '', label: '' }])]; }
+    if (action === 'price-each') {
+        // Ofertas: cada cantidad con su propio precio, empezando por lo que hoy cuesta (precio de una × cantidad).
+        const unit = typeof edit.price === 'number' && edit.price > 0 ? edit.price : null;
+        const list = option.choices.map(c => `<li>${esc(c.label)}: ${unit && Number(c.value) > 0 ? esc(window.Catalog.money(unit * Number(c.value))) : 'Cotiza por WhatsApp'}</li>`).join('');
+        if (!(await askConfirm({
+            title: `¿Poner un precio a cada cantidad de <em>${esc(edit.name || 'este producto')}</em>?`,
+            body: `<p>Cada cantidad empieza con lo que cuesta hoy y luego le escribes el precio que quieras en «Precios». Ya no se multiplica el precio de una.</p><ul class="admin-confirm-notes">${list}</ul>`,
+            action: 'Poner precios',
+            cancel: 'Dejarlo como está'
+        }))) return;
+        option.choices = option.choices.map(c => ({ ...c, price: unit && Number(c.value) > 0 ? unit * Number(c.value) : null }));
+        delete option.multiplier;
+        delete edit.price;
+        delete edit.priceSuffix;
+    }
     if (action === 'same-extra') {
         // «Mismo valor en todos»: el primer tamaño con valor se copia en los demás.
         const choice = option.choices[Number(button.dataset.choice)];

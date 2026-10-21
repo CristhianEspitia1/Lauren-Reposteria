@@ -49,6 +49,24 @@
      * de bizcochos, rellenos y adicionales pueden cambiar según ese tamaño (`extra: { "4-5": 5000, "12-15": 12000 }`).
      */
     const sizeOption = product => (product.options || []).find(option => option.type !== 'toggle' && !option.dependsOn && !option.multiplier && priced(option)) || null;
+    /**
+     * Cuántas puede marcar el cliente en un grupo de varias (toppings, colores): un número o uno por tamaño, como los
+     * costos (`maxSelection: { "caja-x3": 3, "caja-x16": 4 }`). Un tamaño sin número deja elegir una.
+     */
+    function maxOf(product, option, selection) {
+        const max = option.maxSelection;
+        if (typeof max === 'number') return Number.isInteger(max) && max > 0 ? max : 1;
+        const size = sizeOption(product);
+        const value = max && typeof max === 'object' && size ? max[selection[size.id]] : undefined;
+        return Number.isInteger(value) && value > 0 ? value : 1;
+    }
+    // Cómo se llaman las opciones de un grupo de varias, para decir cuántas se eligen.
+    const nounOf = option => /color/i.test(option.label || '') ? ['un color', 'colores'] : /sabor|topping/i.test(option.label || '') ? ['un sabor', 'sabores'] : ['una opción', 'opciones'];
+    /** «Elige hasta 3 sabores.» o «Elige un sabor.», según el tamaño elegido. */
+    function maxText(product, option, selection) {
+        const n = maxOf(product, option, selection), [one, many] = nounOf(option);
+        return n === 1 ? `Elige ${one}.` : `Elige hasta ${n} ${many}.`;
+    }
     /** Costo adicional de una elección con la selección actual: un número fijo o el del tamaño elegido. */
     function extraOf(product, choice, selection) {
         if (typeof choice?.extra === 'number') return choice.extra;
@@ -176,7 +194,8 @@
             const selected = Array.isArray(value) ? value : value ? [value] : [];
             if (option.required && !selected.length) errors.push({ id: option.id, message: 'Selecciona una opción para continuar.' });
             if (selected.some(v => !option.choices.some(c => c.value === v)) || (!option.multiple && selected.length > 1)) errors.push({ id: option.id, message: 'Selecciona una opción del catálogo.' });
-            if (option.multiple && selected.length > (option.maxSelection || 1)) errors.push({ id: option.id, message: `Puedes elegir hasta ${option.maxSelection || 1} opciones.` });
+            if (option.multiple && !option.addons && selected.length > maxOf(product, option, selection)) errors.push({ id: option.id, message: maxText(product, option, selection).replace('Elige', 'Puedes elegir') });
+            if (option.addons && selected.length > (option.maxSelection || 1)) errors.push({ id: option.id, message: `Puedes elegir hasta ${option.maxSelection || 1} opciones.` });
         }
         for (const field of fields(product, selection)) {
             const value = String(personal[field.id] || '').trim();
@@ -207,5 +226,5 @@
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization) || Boolean(advice(product));
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
     const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, maxOf, maxText, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
 })();
