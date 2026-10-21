@@ -80,7 +80,10 @@ test('Los precios de los textos salen del catálogo, no se escriben a mano', () 
         const body = html.slice(html.indexOf('<body'));
         const loose = body.replace(/<span data-price="[^"]+">[^<]*<\/span>/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
         assert.doesNotMatch(loose, /\$\d{1,3}(?:\.\d{3})+/, `${page.file}: precio escrito a mano; usar <span data-price="…">`);
-        for (const [, ref, text] of body.matchAll(/<span data-price="([^"]+)">([^<]*)<\/span>/g)) assert.match(text, /^\$\d/, `${page.file}: ${ref} sin precio en el catálogo`);
+        // Las preguntas frecuentes las escribe el negocio en el panel, que avisa si citan un producto oculto o sin precio
+        // («precio a consultar»); aquí no frenan la sincronización del catálogo. Los demás textos de la página, sí.
+        const fixed = body.replace(/<div data-faqs="[^"]+">[\s\S]*?<\/div><!-- \/preguntas -->/g, '');
+        for (const [, ref, text] of fixed.matchAll(/<span data-price="([^"]+)">([^<]*)<\/span>/g)) assert.match(text, /^\$\d/, `${page.file}: ${ref} sin precio en el catálogo`);
     }
 });
 

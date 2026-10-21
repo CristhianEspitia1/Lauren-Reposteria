@@ -1599,7 +1599,13 @@ window.catalogData = {
                         "value": "oreo",
                         "label": "Galleta Oreo"
                     }
-                ]
+                ],
+                "multiple": true,
+                "maxSelection": {
+                    "caja-x3": 3,
+                    "caja-x6": 3,
+                    "caja-x16": 5
+                }
             }
         ],
         "personalization": null
@@ -1620,7 +1626,7 @@ window.catalogData = {
         "notes": [
             "Mínimo 3 galletas."
         ],
-        "price": 8000,
+        "price": 10000,
         "mainImage": "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
         "images": [
             "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
@@ -1917,7 +1923,7 @@ window.catalogData = {
             "6 mini alfajores rellenos de arequipe",
             "3 mini galletas (chips con nueces o red velvet)"
         ],
-        "price": 27000,
+        "price": 28000,
         "mainImage": "/assets/propuestas-fotograficas/oso-pequeno.webp",
         "images": [
             "/assets/propuestas-fotograficas/oso-pequeno.webp"
@@ -1988,14 +1994,14 @@ window.catalogData = {
         "category": "detalles",
         "group": "osos",
         "visible": true,
-        "description": "Oso de chocolate de tamaño grande acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.",
+        "description": "Oso de chocolate  acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.",
         "includes": [
             "Oso de chocolate (blanco o semiamargo)",
             "Brownie grande con Nutella",
             "6 alfajores pequeños rellenos de arequipe",
             "2 galletas grandes"
         ],
-        "price": 49000,
+        "price": 54000,
         "mainImage": "/assets/propuestas-fotograficas/oso-grande.webp",
         "images": [
             "/assets/propuestas-fotograficas/oso-grande.webp",
@@ -2089,12 +2095,12 @@ window.catalogData = {
         "visible": true,
         "description": "Oso de chocolate con fresas cubiertas, brownie y galleta. La combinación perfecta entre chocolate y frescura.",
         "includes": [
-            "Oso de chocolate",
+            "Oso de chocolate (blanco o semiamargo)",
             "Brownie grande",
             "Galleta grande",
-            "6 fresas cubiertas"
+            "6 fresas cubiertas de chocolate (blanco o semiamargo)"
         ],
-        "price": 59000,
+        "price": 61000,
         "mainImage": "/assets/propuestas-fotograficas/oso-fresas.webp",
         "images": [
             "/assets/propuestas-fotograficas/oso-fresas.webp"
@@ -2288,7 +2294,7 @@ window.catalogData = {
         "name": "Detalle HBD",
         "category": "detalles",
         "group": "mix",
-        "visible": true,
+        "visible": false,
         "description": "Mini torta de cumpleaños con letras personalizadas, alfajores, galletas y trufas.",
         "includes": [
             "Mini torta de vainilla",
@@ -2371,11 +2377,11 @@ window.catalogData = {
         "description": "Variedad de delicias: alfajores, frambuesas cubiertas, mini galletas y brownie.",
         "includes": [
             "Caja x6 alfajores",
-            "Caja x4 frambuesas",
-            "Caja x7 mini galletas",
-            "Porción de brownie"
+            "Caja x4 frambuesas cubiertas de chocolate",
+            "Caja x7 mini galletas surtidas",
+            "Porción de brownie con crema de chocolate blanco"
         ],
-        "price": 65000,
+        "price": 67000,
         "mainImage": "/assets/propuestas-fotograficas/detalle-margarita.webp",
         "images": [
             "/assets/propuestas-fotograficas/detalle-margarita.webp"
@@ -2388,7 +2394,7 @@ window.catalogData = {
         "name": "Detalle con Torta",
         "category": "detalles",
         "group": "golden",
-        "visible": true,
+        "visible": false,
         "description": "Torta de 5 porciones personalizada con frase o número, acompañada de alfajores medianos.",
         "includes": [
             "Torta de 5 porciones",
@@ -2436,7 +2442,7 @@ window.catalogData = {
         "name": "Detalle Mix",
         "category": "detalles",
         "group": "mix",
-        "visible": true,
+        "visible": false,
         "description": "Letras personalizadas en chocolate, mini alfajores, chocolatina y galletas.",
         "includes": [
             "2 iniciales de letras",
@@ -2503,7 +2509,7 @@ window.catalogData = {
         "name": "Detalle Mix 2",
         "category": "detalles",
         "group": "mix",
-        "visible": true,
+        "visible": false,
         "description": "Letras en chocolate, alfajores, chocolatina y brownies con arequipe.",
         "includes": [
             "2 iniciales de letras",
@@ -2609,12 +2615,7 @@ window.catalogData = {
                     {
                         "value": "sencilla",
                         "label": "Galleta sencilla",
-                        "price": 88000
-                    },
-                    {
-                        "value": "especial",
-                        "label": "Galleta especial",
-                        "price": 94000
+                        "price": 85000
                     }
                 ]
             },
@@ -2639,28 +2640,6 @@ window.catalogData = {
                         "label": "Cocoa (Chocolate)"
                     }
                 ]
-            },
-            {
-                "id": "sabor-galleta-especial",
-                "label": "Sabor de galleta especial",
-                "type": "radio",
-                "required": true,
-                "dependsOn": "tipo-galleta",
-                "showWhen": "especial",
-                "choices": [
-                    {
-                        "value": "pistachos",
-                        "label": "Pistachos (chocolate blanco)"
-                    },
-                    {
-                        "value": "chocolate-mermelada",
-                        "label": "Chocolate blanco con mermelada"
-                    },
-                    {
-                        "value": "panelita-copelia",
-                        "label": "Panelita Copelia (Arequipe)"
-                    }
-                ]
             }
         ],
         "personalization": null
@@ -2678,7 +2657,7 @@ window.catalogData = {
             "Brownie grande",
             "7 mini galletas"
         ],
-        "price": 86000,
+        "price": 85000,
         "mainImage": "/assets/propuestas-fotograficas/detalle-golden-2.webp",
         "images": [
             "/assets/propuestas-fotograficas/detalle-golden-2.webp"
@@ -2709,7 +2688,7 @@ window.catalogData = {
         "category": "detalles",
         "group": "golden",
         "visible": true,
-        "description": "Mini torta vasca, trufas de Oreo, brownie grande y alfajor especial.",
+        "description": "Mini torta vasca, trufas de Oreo, brownie grande y alfajores especial.",
         "includes": [
             "Mini torta vasca",
             "4 trufas de Oreo",
