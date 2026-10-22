@@ -43,7 +43,7 @@ Hecho:
 
 - Las cuentas (el Gmail dueño de Firebase y Cloudflare, GitHub y Hostinger) tienen verificación en dos pasos, según el negocio el 17 de octubre de 2026. Es la protección más importante: quien entre a esas cuentas controla la web.
 - La llave de Firebase del navegador («Browser key (auto created by Firebase)») solo funciona desde `https://laurenreposteria.com/*`, `https://lauren-reposteria.firebaseapp.com/*`, `https://lauren-reposteria.web.app/*` y `http://localhost:5173/*` (18 de octubre de 2026). Comprobado: desde la web y desde Firebase responde; desde otro sitio o sin origen, Google la bloquea. Si algún día se publica la web en otra dirección, hay que agregarla allí (Google Cloud → Credenciales).
-- Reglas de Firestore con la lista de administradores publicadas y `config/admins` creada con los UID de las dos cuentas (vjaramillo17@gmail.com y crizczi22@gmail.com), verificados contra la consola (22 de octubre de 2026). Comprobado con la sesión real: la cuenta en la lista lee lo de administradores y la lista no se puede leer desde la web.
+- Reglas de Firestore con la lista de administradores publicadas y `config/admins` creada con los UID de las dos cuentas del panel, verificados contra la consola (22 de octubre de 2026). Comprobado con la sesión real: la cuenta en la lista lee lo de administradores y la lista no se puede leer desde la web.
 - GitHub (22 de octubre de 2026): «Secret scanning» y «Push protection» activos, y la regla «Proteger main» impide borrar `main` o reescribir su historial (el workflow del catálogo sigue publicando).
 - DNS de `laurenreposteria.com` en Hostinger: `TXT @ "v=spf1 -all"` y `TXT _dmarc "v=DMARC1; p=reject; adkim=s; aspf=s"` (18 de octubre de 2026). El dominio no envía correos, así que nadie puede mandar correos falsos a nombre de Lauren. Si algún día se crea un correo @laurenreposteria.com, hay que cambiar esos dos registros por los del servicio de correo.
 
@@ -77,6 +77,17 @@ Revisado y correcto: el escape de todo lo dinámico (web y panel), la política 
 - Los de cuota gratuita, descritos arriba. Volver a una versión anterior ya no exige ayuda técnica: lo hace «Versiones» en el panel.
 - GitHub Pages no permite cabeceras propias: sin HSTS ni `frame-ancestors`. El paso a HTTPS lo hace GitHub (redirige siempre) y el panel se protege de los marcos con JavaScript. Poner Cloudflare delante del dominio permitiría ambas cabeceras.
 - `fotos/subidas` comprueba que `nombres` sea una lista de hasta 5000, pero las reglas no pueden revisar cada elemento; el panel descarta lo que no sea una foto del worker.
+
+
+## Revisión de privacidad (22 de octubre de 2026)
+
+Se revisó qué ve cualquiera en GitHub, en la web y en los servicios del proyecto.
+
+- **El repositorio es público** y tiene que serlo mientras la web viva en GitHub Pages con el plan gratuito: hacerlo privado apaga laurenreposteria.com. Para tenerlo privado hay dos caminos: pagar GitHub Pro o publicar la web desde Cloudflare Pages (gratis). Con el plan gratuito, un repositorio privado también pierde el escaneo de secretos y la regla «Proteger main». Sin forks, sin estrellas, sin secretos de Actions, sin llaves de despliegue y con un solo colaborador.
+- **Secretos:** ninguno en las 2.458 versiones de archivos del historial. La única alerta de GitHub («Google API Key») es la llave web de Firebase, pública por diseño y restringida a `laurenreposteria.com`, los dominios de Firebase y `localhost:5173`, y solo para las API de Firebase.
+- **Fotos y videos:** ninguna de las 1.026 versiones guarda ubicación (GPS) ni el modelo del teléfono.
+- **Datos personales:** los correos de las dos cuentas del panel estaban en esta guía y en la del centro de control; se quitaron. Siguen en el historial de Git y como autor de los commits (`crizczi22@gmail.com`), y el usuario de Cloudflare se ve en la dirección del worker de fotos. El número de WhatsApp anterior quedó en el historial, pero ya era público en la web de entonces. Solo los de la marca (WhatsApp y `reposterialauren@gmail.com`) están en la web.
+- **Web publicada:** no sirve la documentación, las pruebas, los scripts, el worker ni la configuración (todo da 404). Lo público en Firestore (`catalogo/actual`) no lleva correos; el historial, las fotos subidas y la lista de administradores responden 403 sin sesión. La lista de Instagram del worker no lleva la llave.
 
 ## Auditoría del centro de control (22 de octubre de 2026)
 

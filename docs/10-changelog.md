@@ -7,6 +7,10 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-22 — Revisión de privacidad]
+
+- Sin secretos en el historial y sin ubicación en fotos ni videos; la alerta de GitHub es la llave web de Firebase, pública y restringida. Los correos de las cuentas del panel salen de la documentación. El repositorio sigue público porque lo exige GitHub Pages gratuito. Detalle en [seguridad](09-seguridad.md#revisión-de-privacidad-22-de-octubre-de-2026).
+
 ## [2026-10-22 — Versiones del catálogo en el centro de control]
 
 - «Versiones», junto a «Avisos»: las 12 publicaciones más recientes con su fecha, quién la publicó y qué cambió frente a la anterior; «En la web» marca la que se ve hoy. «Volver a esta versión» pregunta antes (y avisa si se pierden cambios sin publicar) y la deja en el borrador para revisarla y publicarla; trae de vuelta de la papelera las fotos que se borraron hace menos de 30 días. Si alguien publicó desde otro equipo, pide recargar antes.
