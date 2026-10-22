@@ -57,7 +57,7 @@ Los importes de las páginas (preguntas frecuentes, introducciones) no se escrib
 | `torta-vintage?porciones=25-30` | Precio de esa elección |
 | `@tortas` o `@brownies,galletas` | Pedido mínimo de esas categorías (precio × cantidad mínima) |
 
-Si el producto se oculta o queda sin precio, el texto dice «precio a consultar». La prueba `tests/seo.test.mjs` impide precios escritos a mano en las páginas y que un texto fijo de la página cite un precio que no existe; en las preguntas frecuentes, que escribe el negocio, eso lo avisa el panel en «Avisos» y no frena la sincronización del catálogo.
+Si el producto se oculta o queda sin precio, el texto dice «precio a consultar». La prueba `tests/seo.test.mjs` impide precios escritos a mano en las páginas y que un texto fijo de la página cite un precio que no existe; en las preguntas frecuentes, que escribe el negocio, el panel no deja publicar una respuesta que cite un precio que ya no se puede mostrar (sale en «Avisos», en «Para poder publicar», y se avisa al ocultar o eliminar ese producto); el workflow no lo exige, así que no frena la sincronización del catálogo.
 
 ## Preguntas frecuentes
 
