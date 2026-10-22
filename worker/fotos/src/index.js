@@ -8,8 +8,9 @@
  * Google (doble factor por app, TOTP).
  *
  *   GET  /f/<nombre>   La foto, pública y con caché larga (el nombre no cambia nunca).
- *   GET  /fotos        Fotos ya subidas: { fotos: [url] } (solo administradores). El panel ya no la usa: la lista de fotos
- *                      subidas vive en Firestore (fotos/subidas), porque la lista de claves de KV tarda en ponerse al día.
+ *   GET  /fotos        Fotos ya subidas que siguen guardadas: { fotos: [url] } (solo administradores). «Versiones» del panel
+ *                      la usa para saber qué fotos de una versión vieja se borraron. «Agregar fotos de la web» usa la lista
+ *                      de Firestore (fotos/subidas), porque la lista de claves de KV tarda en mostrar una foto recién subida.
  *   POST /fotos/subir  Una foto (multipart: foto, su miniatura de 320 px y nombre) → { foto: url }. La web
  *                      usa la miniatura (<nombre>-320.webp) en las filas de fotos.
  *   DELETE /fotos/<nombre>  Borra una foto subida y su miniatura (solo administradores). El panel solo lo
@@ -18,6 +19,7 @@
  *                      Queda marcada en «fotos-borradas», así GET /fotos no la vuelve a mostrar aunque la lista de
  *                      KV tarde en ponerse al día. Borrar una foto que ya no estaba responde igual (yaNoEstaba).
  *   POST /fotos/recuperar/<nombre>  Devuelve desde la papelera una foto borrada y su miniatura (solo administradores).
+ *                      «Volver a esta versión» la usa con las fotos borradas de esa versión.
  *   GET  /instagram…   Lo último de Instagram para la portada (ver instagram.js). Es lo único que usa un secreto:
  *                      INSTAGRAM_TOKEN, opcional.
  */

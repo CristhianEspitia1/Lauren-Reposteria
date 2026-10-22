@@ -36,7 +36,6 @@ Recorrido completo del centro de control (vista previa) y de la web, más prueba
 ### Riesgos que quedan
 
 - Cuotas gratuitas: alguien podría pedir miles de veces lo publicado (50.000 lecturas de Firestore al día) o las fotos subidas (100.000 visitas al worker al día). La web sigue con su copia local, pero ese día las fotos subidas y el panel podrían fallar hasta que la cuota se renueve. No hay daño permanente.
-- Historial sin botón: volver a una versión anterior del catálogo exige ayuda técnica.
 
 ### Pendiente fuera del código (lo hace quien tenga las cuentas)
 
@@ -75,7 +74,7 @@ Revisado y correcto: el escape de todo lo dinámico (web y panel), la política 
 
 ### Riesgos que quedan
 
-- Los de cuota gratuita y el historial sin botón, descritos arriba.
+- Los de cuota gratuita, descritos arriba. Volver a una versión anterior ya no exige ayuda técnica: lo hace «Versiones» en el panel.
 - GitHub Pages no permite cabeceras propias: sin HSTS ni `frame-ancestors`. El paso a HTTPS lo hace GitHub (redirige siempre) y el panel se protege de los marcos con JavaScript. Poner Cloudflare delante del dominio permitiría ambas cabeceras.
 - `fotos/subidas` comprueba que `nombres` sea una lista de hasta 5000, pero las reglas no pueden revisar cada elemento; el panel descarta lo que no sea una foto del worker.
 

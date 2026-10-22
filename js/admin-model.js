@@ -287,5 +287,51 @@
         const removed = [...before.keys()].filter(id => !now.has(id));
         return { changed, removed, total: changed.length + removed.length };
     }
-    window.AdminModel = { problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes };
+    /* ---------- Versiones: el historial de lo publicado ---------- */
+    const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    /** Cuándo se publicó una versión: «22 de octubre, 8:49 a. m.», con el año si no es el de hoy. La hora lleva espacios duros. */
+    function versionDate(date, today = new Date()) {
+        const hour = date.getHours();
+        const year = date.getFullYear() === today.getFullYear() ? '' : ` de ${date.getFullYear()}`;
+        return `${date.getDate()} de ${MONTHS[date.getMonth()]}${year}, ${hour % 12 || 12}:${String(date.getMinutes()).padStart(2, '0')} ${hour < 12 ? 'a.' : 'p.'} m.`;
+    }
+    /** «Torta Sencilla, Oso Grande y Brownie»; con más de tres, «Torta Sencilla, Oso Grande y 2 más». */
+    const someNames = names => names.length <= 3 ? names.join(', ').replace(/, ([^,]*)$/, ' y $1') : `${names.slice(0, 2).join(', ')} y ${names.length - 2} más`;
+    /**
+     * Qué cambió una versión frente a la anterior, en pocas palabras: «Con cambios: Torta Sencilla, Oso Grande y 2 más ·
+     * 3 preguntas · Se eliminó: Oso con Fresas». Cada una es { catalog, faqs }, ya leídas (las de antes de octubre de 2026
+     * no tienen preguntas). Sin la anterior, es la primera que se guardó.
+     */
+    function versionChanges(version, previous) {
+        if (!previous) return 'La primera que se guardó';
+        if (!version.catalog || !previous.catalog) return '';
+        const name = (catalog, id) => clean(catalog[id]?.name) || 'Producto sin nombre';
+        const { changed, removed } = changes(previous.catalog, Object.values(version.catalog));
+        const parts = changed.length ? [someNames(changed.map(id => name(version.catalog, id)))] : [];
+        const F = window.LaurenFaqs;
+        if (F && version.faqs && previous.faqs) {
+            const diff = F.changes(previous.faqs, version.faqs);
+            const count = diff.added.length + diff.changed.length + diff.removed.length;
+            if (count) parts.push(`${count} ${count === 1 ? 'pregunta' : 'preguntas'}`);
+            else if (diff.moved) parts.push('el orden de las preguntas');
+            else if (diff.temas) parts.push('los temas de las preguntas');
+        }
+        const out = parts.length ? [`Con cambios: ${parts.join(' · ')}`] : [];
+        if (removed.length) out.push(`${removed.length === 1 ? 'Se eliminó' : 'Se eliminaron'}: ${someNames(removed.map(id => name(previous.catalog, id)))}`);
+        return out.join(' · ') || 'Igual a la anterior';
+    }
+    /** Fotos subidas desde el panel que usa un catálogo, en sus productos y en sus sabores. */
+    const uploadsIn = products => [...new Set(products.flatMap(p => [...photos(p), ...choicePhotos(p)]))].filter(src => typeof src === 'string' && src.startsWith(UPLOADED));
+    /** Saca de los productos las fotos que ya no existen; si era la principal, pasa a serlo la siguiente. */
+    function withoutPhotos(products, gone) {
+        if (!gone.size) return products;
+        return products.map(source => {
+            const product = clone(source);
+            if (Array.isArray(product.images)) product.images = product.images.filter(src => !gone.has(src));
+            if (gone.has(product.mainImage)) product.mainImage = product.images?.[0] || '';
+            for (const option of product.options || []) for (const choice of option.choices || []) if (gone.has(choice.image)) delete choice.image;
+            return product;
+        });
+    }
+    window.AdminModel = { problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes, versionDate, versionChanges, uploadsIn, withoutPhotos };
 })();

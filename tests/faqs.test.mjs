@@ -129,3 +129,17 @@ test('Unas preguntas dañadas o publicadas sin pasar por el panel no llegan al r
     vacia.preguntas[0].pregunta = '';
     assert.ok(revisar(catalog, vacia).some(e => e.includes('escribe la pregunta')));
 });
+
+test('Versiones: cuentan las preguntas que cambiaron entre dos publicaciones', () => {
+    const catalog = clone(context.catalogData);
+    const before = faq();
+    const after = faq();
+    after.preguntas[0].respuesta += ' Con cariño.';
+    after.preguntas.pop();
+    assert.equal(M.versionChanges({ catalog, faqs: after }, { catalog, faqs: before }), 'Con cambios: 2 preguntas');
+    const moved = faq();
+    moved.preguntas.reverse();
+    assert.equal(M.versionChanges({ catalog, faqs: moved }, { catalog, faqs: before }), 'Con cambios: el orden de las preguntas');
+    // Las de antes de octubre de 2026 no tienen preguntas: solo se compara el catálogo.
+    assert.equal(M.versionChanges({ catalog, faqs: after }, { catalog, faqs: null }), 'Igual a la anterior');
+});

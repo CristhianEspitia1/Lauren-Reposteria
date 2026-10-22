@@ -252,13 +252,14 @@ const sectionName = id => M.SECTIONS.find(([key]) => key === id)?.[1] || 'Sin se
 const hasChanges = () => totalChanges() > 0;
 // El modelo del catálogo lee window.catalogData: se apunta al borrador para calcular precios y herencias.
 const useDraft = () => { window.catalogData = M.toCatalog(M.clone(products)); };
+// Un texto publicado (catálogo o preguntas) ya leído, o null si no existe o tiene un error.
+const read = (text, ok) => { if (typeof text !== 'string') return null; try { const value = JSON.parse(text); return ok(value) ? value : null; } catch { return null; } };
 
 async function loadCatalog() {
     $('list').innerHTML = '<li class="admin-count">Cargando tus productos…</li>';
     // Lo publicado con un error (escrito sin pasar por el panel) no se abre: se edita la copia de la web y todo cuenta
     // como cambio, para que «Publicar cambios» lo reemplace.
     let draft = snapshot, draftFaqs = faqSnapshot, damaged = false;
-    const read = (text, ok) => { try { const value = JSON.parse(text); return ok(value) ? value : null; } catch { return null; } };
     try {
         const published = await getDoc(catalogRef);
         loadedJson = published.exists() ? published.data().json : null;
@@ -540,6 +541,141 @@ noticesDialog.addEventListener('click', event => {
     const product = products.find(p => p.id === fix.dataset.fix);
     if (product) openEditor(product);
 });
+
+/* ---------- Versiones: volver a lo que se publicó antes ---------- */
+// Cada publicación guarda una copia en el historial, que solo leen los administradores. «Volver a esta versión» la deja
+// en el borrador: se revisa y se publica como cualquier cambio; hasta entonces la web sigue igual.
+const VERSIONS = 12;
+const versionsDialog = $('versions');
+LaurenUI.dialogEvents(versionsDialog);
+let versions = [];
+let versionsTicket = 0;
+// Lo que hoy se ve en la web, leído al abrir «Versiones», y las fotos subidas que siguen guardadas.
+let liveNow = {};
+let photoCheck = null;
+const sameAsLive = v => v.json === liveNow.json && v.preguntas === (liveNow.preguntas ?? null);
+function renderVersions() {
+    // Si lo publicado ya no es lo que abrió el panel, alguien publicó desde otro equipo: primero hay que recargar.
+    const stale = loadedJson === undefined || (liveNow.json ?? null) !== loadedJson || (liveNow.preguntas ?? null) !== loadedFaqs;
+    const live = versions.findIndex(sameAsLive);
+    const me = String(auth.currentUser?.email || '').toLowerCase();
+    const rows = versions.slice(0, VERSIONS).map((v, i) => {
+        const when = v.at ? M.versionDate(v.at) : 'Sin fecha';
+        const who = v.by ? (v.by.toLowerCase() === me ? 'La publicaste tú' : `La publicó ${v.by}`) : '';
+        const what = !v.catalog ? 'Esta copia tiene un error y no se puede abrir.' : i !== live && sameAsLive(v) ? 'Igual a la que está en la web' : M.versionChanges(v, versions[i + 1] || null);
+        const action = i !== live && v.catalog && !sameAsLive(v) && !stale ? `<button type="button" class="text-link" data-version="${i}" aria-label="Volver a la versión del ${esc(when)}">Volver a esta versión ${icon('arrow')}</button>` : '';
+        const meta = [who, what].filter(Boolean).join(' · ');
+        return `<li><span><strong class="admin-version-date">${esc(when)}</strong>${i === live ? '<span class="admin-tag admin-tag-change">En la web</span>' : ''}</span>${meta ? `<span class="admin-version-meta">${esc(meta)}</span>` : ''}${action}</li>`;
+    });
+    const note = loadedJson === undefined ? 'No pudimos leer lo que está publicado. Recarga la página antes de volver a una versión.'
+        : stale ? 'Alguien publicó desde otro equipo mientras tenías el panel abierto. Recarga la página para traer lo último antes de volver a una versión.' : '';
+    $('versionsBody').innerHTML = rows.length ? `${note && versions.length ? `<p class="field-note">${note}</p>` : ''}<ul class="admin-notice-list">${rows.join('')}</ul>`
+        : '<p>Todavía no hay versiones guardadas. Cada vez que publiques, guardaremos una copia aquí.</p>';
+}
+$('versionsButton').addEventListener('click', async () => {
+    const ticket = ++versionsTicket;
+    versionsDialog.innerHTML = `<form method="dialog"><h2 id="versionsTitle">Tus <em>versiones.</em></h2><div class="admin-confirm-body">
+        <p>Cada vez que publicas, guardamos una copia. Si vuelves a una, queda en tu borrador: la revisas y la publicas con «Publicar cambios».</p>
+        <section id="versionsBody" aria-live="polite"><p>Buscando tus versiones…</p></section>
+        </div><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">Cerrar</button></div></form>`;
+    versionsDialog.showModal();
+    versionsDialog.querySelector('[value="cancel"]').focus();
+    photoCheck = preview ? null : existingPhotos().catch(() => null);
+    try {
+        // Una más de las que se muestran: con ella se dice qué cambió la más vieja.
+        const [published, history] = await Promise.all([getDoc(catalogRef), getDocs(query(collection(db, 'historial'), orderBy('updatedAt', 'desc'), limit(VERSIONS + 1)))]);
+        if (ticket !== versionsTicket) return;
+        liveNow = published.exists() ? published.data() : {};
+        versions = history.docs.map(item => {
+            const data = item.data();
+            return {
+                at: typeof data.updatedAt?.toDate === 'function' ? data.updatedAt.toDate() : null,
+                by: typeof data.updatedBy === 'string' ? data.updatedBy : '',
+                json: data.json,
+                preguntas: data.preguntas ?? null,
+                catalog: read(data.json, window.Catalog.wellFormed),
+                faqs: read(data.preguntas, F.valid)
+            };
+        });
+    } catch (error) {
+        if (ticket !== versionsTicket || !versionsDialog.open) return;
+        const say = text => { $('versionsBody').innerHTML = `<p>${esc(text)}</p>`; };
+        if (error.code !== 'permission-denied' || preview) say('No pudimos traer tus versiones. Revisa tu conexión e inténtalo de nuevo.');
+        // Con la sesión al día, el permiso negado es de la cuenta: no está en la lista de administradores (config/admins).
+        else if (await auth.currentUser?.getIdToken(true).then(() => true, () => false)) say('Tu usuario no tiene permiso para ver las versiones. Pide que lo agreguen a la lista de administradores.');
+        else { versionsDialog.close(); warn('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
+        return;
+    }
+    if (versionsDialog.open) renderVersions();
+});
+versionsDialog.addEventListener('click', async event => {
+    const button = event.target.closest('[data-version]');
+    const version = button && versions[Number(button.dataset.version)];
+    if (!version?.catalog || button.disabled) return;
+    button.disabled = true;
+    try { await restoreVersion(version); } finally { button.disabled = false; }
+});
+// Fotos subidas que siguen guardadas: la lista del worker de fotos, que ya descuenta las borradas.
+async function existingPhotos() {
+    const { fotos } = await photosApi('');
+    const saved = new Set(Array.isArray(fotos) ? fotos : []);
+    erasedHere.forEach(src => saved.delete(src));
+    return saved;
+}
+/** Trae de vuelta de la papelera del worker las fotos borradas de una versión (se guardan 30 días). */
+async function recoverPhotos(list) {
+    const recovered = [], gone = [];
+    try {
+        for (const src of list) {
+            try { await photosApi(`/recuperar/${encodeURIComponent(src.split('/').pop())}`, { method: 'POST' }); recovered.push(src); erasedHere.delete(src); }
+            catch (error) { if (error.code === 'no-existe') gone.push(src); else throw error; }
+        }
+    } finally {
+        // Vuelven a la lista de fotos subidas; si no se pudo anotar, igual quedan en sus productos.
+        if (recovered.length) await changeUploads({ add: recovered }).catch(() => {});
+    }
+    return { recovered, gone };
+}
+async function restoreVersion(version) {
+    const when = version.at ? M.versionDate(version.at) : 'sin fecha';
+    const restored = M.migrate(Object.values(M.clone(version.catalog)));
+    let missing = [];
+    if (!preview) {
+        try {
+            const saved = (await photoCheck) || await existingPhotos();
+            missing = M.uploadsIn(restored).filter(src => M.IMAGE.test(src) && !saved.has(src));
+        } catch (error) { warn(error.code === 'sesion' ? UPLOAD_ERRORS.sesion : 'No pudimos revisar las fotos de esa versión. Revisa tu conexión e inténtalo de nuevo.'); return; }
+    }
+    const total = totalChanges();
+    const notes = [
+        total ? `<p>${total === 1 ? 'Tienes un cambio sin publicar: se pierde' : `Tienes ${total} cambios sin publicar: se pierden`} al volver.</p>` : '',
+        missing.length ? `<p>${missing.length === 1 ? 'Usa una foto que se borró: la traemos de vuelta si se borró' : `Usa ${missing.length} fotos que se borraron: las traemos de vuelta si se borraron`} hace menos de 30 días.</p>` : '',
+        version.faqs ? '' : '<p>Es de antes de que las preguntas frecuentes se editaran aquí: las preguntas se quedan como están en la web.</p>'
+    ].join('');
+    if (!(await askConfirm({
+        title: `¿Volver a la versión del <em>${esc(when)}</em>?`,
+        body: `<p>Queda en tu borrador para que la revises. La web sigue igual hasta que toques «Publicar cambios».</p>${notes}`,
+        action: 'Volver a esta versión',
+        cancel: 'Seguir como está'
+    }))) return;
+    let recovered = [], gone = [];
+    if (missing.length) {
+        LaurenUI.toast(missing.length === 1 ? 'Trayendo de vuelta su foto…' : 'Trayendo de vuelta sus fotos…');
+        try { ({ recovered, gone } = await recoverPhotos(missing)); }
+        catch (error) { warn(error.code === 'sesion' ? UPLOAD_ERRORS.sesion : 'No pudimos traer de vuelta las fotos de esa versión. Revisa tu conexión e inténtalo de nuevo.'); return; }
+    }
+    // Como «Descartar», pero hacia esa versión: lo que se cambió y no se publicó se pierde.
+    const lost = new Set(gone);
+    products = M.withoutPhotos(restored, lost);
+    faqs = M.clone(version.faqs || faqOriginal);
+    fresh.clear(); freshFaqs.clear(); pendingDeletes.clear();
+    versionsDialog.close();
+    render();
+    const done = `Listo: la versión del ${when} quedó en tu borrador.`;
+    if (!hasChanges()) LaurenUI.toast('Esa versión es igual a lo que hoy se ve en la web: no hay nada que publicar.');
+    else if (gone.length) warn(`${done} ${gone.length === 1 ? 'Una de sus fotos se borró hace más de 30 días y ya no está' : `${gone.length} de sus fotos se borraron hace más de 30 días y ya no están`}: revisa ese producto antes de publicar.`, restored.find(p => M.uploadsIn([p]).some(src => lost.has(src)))?.id);
+    else LaurenUI.toast(`${done} ${recovered.length ? `${recovered.length === 1 ? 'Trajimos de vuelta su foto borrada' : `Trajimos de vuelta sus ${recovered.length} fotos borradas`}. ` : ''}Revísala y toca «Publicar cambios» para que se vea en la web.`);
+}
 // Un error inesperado del panel también se cuenta, en palabras sencillas.
 addEventListener('error', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
 addEventListener('unhandledrejection', () => warn('Algo no funcionó en el panel. Recarga la página; si vuelve a pasar, avísanos y cuéntanos qué estabas haciendo.'));
@@ -817,6 +953,8 @@ let moves = new Map();
 // En la ficha abierta, lo que se decide de cada foto (borrar o guardar) solo cuenta al tocar «Guardar».
 const pendingDeletes = new Set();
 let photoFates = new Map();
+// Fotos que este panel borró: «Versiones» no las da por guardadas aunque la lista del worker tarde en ponerse al día.
+const erasedHere = new Set();
 function openEditor(product, isNew = false) {
     merges = new Map();
     moves = new Map();
@@ -1395,6 +1533,7 @@ const deleteError = error => ({
 async function erasePhoto(src) {
     try { await photosApi(`/${src.split('/').pop()}`, { method: 'DELETE' }); }
     catch (error) { if (error.code !== 'no-existe') throw error; }
+    erasedHere.add(src);
     await changeUploads({ remove: [src] });
     pendingDeletes.delete(src);
 }

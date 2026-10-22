@@ -7,6 +7,13 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-22 — Versiones del catálogo en el centro de control]
+
+- «Versiones», junto a «Avisos»: las 12 publicaciones más recientes con su fecha, quién la publicó y qué cambió frente a la anterior; «En la web» marca la que se ve hoy. «Volver a esta versión» pregunta antes (y avisa si se pierden cambios sin publicar) y la deja en el borrador para revisarla y publicarla; trae de vuelta de la papelera las fotos que se borraron hace menos de 30 días. Si alguien publicó desde otro equipo, pide recargar antes.
+- El diálogo de «Avisos» mide 600 px, como dice el manual (la regla de la confirmación lo dejaba en 480). En el teléfono, «Avisos» y «Versiones» comparten la línea y «Nuevo producto» va debajo, a todo el ancho.
+- El centro de control carga Firebase desde el sitio (`js/vendor/firebase/13.0.0`, la versión 13.0.0 sin cambios salvo sus importaciones internas): ya no depende de `gstatic.com` y solo ejecuta código propio (`script-src 'self'`).
+- Manual de marca 3.9. 4 pruebas nuevas (105 en total).
+
 ## [2026-10-22 — Auditoría del centro de control]
 
 - Publicado desde el panel: la respuesta de «¿Cuánto cuesta un detalle de regalo?» cita ahora el Detalle Golden ($85.000) en vez del Detalle con Torta, oculto (en la web decía «precio a consultar»), y se corrigieron errores de escritura en Torta Vintage Sencilla, Alfajores Personalizados, Mini cake, Oso Grande y el adicional «Happy Birthday (acrílico)».

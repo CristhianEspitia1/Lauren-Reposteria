@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/css/site.css?v=2eb9b1bf6f">
 <link rel="stylesheet" href="/css/dialogs.css?v=3f70d0f090">
 <link rel="stylesheet" href="/css/catalog.css?v=0e3b3cea2e">
-<link rel="stylesheet" href="/css/admin.css?v=05d65cf67d">
+<link rel="stylesheet" href="/css/admin.css?v=c4e9b7fe13">
 <script src="/js/catalog-data.js?v=e8062d5443" defer></script>
 <script src="/js/catalog-model.js?v=cb4822e53f" defer></script>
 <script src="/js/brand-icons.js?v=83da1c0e22" defer></script>
@@ -27,8 +27,8 @@
 <script src="/js/flavors.js?v=794171a317" defer></script>
 <script src="/js/firebase-config.js?v=4478ad1ded" defer></script>
 <script src="/js/vendor/qrcode.min.js?v=c8ecfeb828" defer></script>
-<script src="/js/admin-model.js?v=59f0a59396" defer></script>
-<script src="/js/admin.js?v=995d63cae4" type="module"></script>
+<script src="/js/admin-model.js?v=b79d9b3cdd" defer></script>
+<script src="/js/admin.js?v=240869d79e" type="module"></script>
 </head>
 <body class="admin">
 <header class="admin-header">
@@ -90,6 +90,7 @@
 </div>
 <div class="admin-top-actions">
 <button type="button" class="btn btn-secondary" id="noticesButton" aria-haspopup="dialog">Avisos <span class="admin-tag admin-tag-change admin-notice-count" id="noticeCount" hidden></span></button>
+<button type="button" class="btn btn-secondary" id="versionsButton" aria-haspopup="dialog">Versiones</button>
 <button type="button" class="btn" id="newProduct">Nuevo producto <span data-icon="plus"></span></button>
 </div>
 </div>
@@ -114,6 +115,7 @@
 <dialog class="product-dialog admin-editor" id="faqEditor" aria-labelledby="faqEditorTitle"></dialog>
 <dialog class="product-dialog admin-picker" id="picker" aria-labelledby="pickerTitle"></dialog>
 <dialog class="admin-confirm admin-notices" id="notices" aria-labelledby="noticesTitle"></dialog>
+<dialog class="admin-confirm admin-notices admin-versions" id="versions" aria-labelledby="versionsTitle"></dialog>
 <dialog class="admin-confirm" id="confirmDialog" aria-labelledby="confirmTitle"></dialog>
 <div class="toast" id="toast" role="status" hidden></div>
 </body>

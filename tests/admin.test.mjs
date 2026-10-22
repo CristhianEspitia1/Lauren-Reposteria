@@ -351,3 +351,46 @@ test('Los caracteres invisibles y de dirección del texto no cuentan como nombre
     assert.deepEqual([clean.name, clean.description, clean.options[0].label, clean.options[0].choices[0].label], ['Caja x6', 'Texto bonito', 'Sabor', 'Arequipe']);
     assert.equal(M.clean(' ​hola‮ '), 'hola');
 });
+test('Versiones: la fecha se lee como en Colombia, con el año solo si no es el de hoy, y la hora no se parte', () => {
+    assert.equal(M.versionDate(new Date(2026, 9, 22, 8, 49), new Date(2026, 9, 23)), '22 de octubre, 8:49 a. m.');
+    assert.equal(M.versionDate(new Date(2026, 5, 1, 12, 30), new Date(2026, 9, 1)), '1 de junio, 12:30 p. m.');
+    assert.equal(M.versionDate(new Date(2025, 0, 3, 0, 5), new Date(2026, 0, 1)), '3 de enero de 2025, 12:05 a. m.');
+});
+test('Versiones: dicen qué cambió frente a la anterior, con pocos nombres y lo que se eliminó aparte', () => {
+    const before = M.toCatalog(products());
+    const after = M.clone(before);
+    after['torta-sencilla'].description = 'Otra descripción';
+    after['caja-x6'].name = 'Caja x6';
+    after.brownies.visible = false;
+    after['oso-grande'].price = 99000;
+    delete after['oso-fresas'];
+    assert.equal(M.versionChanges({ catalog: after }, { catalog: before }), 'Con cambios: Torta Sencilla, Caja x6 y 2 más · Se eliminó: Oso con Fresas');
+    after['oso-grande'] = M.clone(before['oso-grande']);
+    after.brownies = M.clone(before.brownies);
+    delete after['oso-pequeno'];
+    assert.equal(M.versionChanges({ catalog: after }, { catalog: before }), 'Con cambios: Torta Sencilla y Caja x6 · Se eliminaron: Oso Pequeño y Oso con Fresas');
+    assert.equal(M.versionChanges({ catalog: before }, { catalog: M.clone(before) }), 'Igual a la anterior');
+    assert.equal(M.versionChanges({ catalog: before }, null), 'La primera que se guardó');
+    assert.equal(M.versionChanges({ catalog: null }, { catalog: before }), '', 'una copia dañada no se compara');
+});
+test('Versiones: una foto que ya no existe sale del producto y la principal pasa a la siguiente', () => {
+    const up = name => `${M.UPLOADED}${name}.webp`;
+    const list = products();
+    const oso = list.find(x => x.id === 'oso-grande');
+    const web = oso.mainImage;
+    oso.mainImage = up('oso-1');
+    oso.images = [up('oso-1'), up('oso-2'), web];
+    const choice = list.find(x => x.id === 'torta-sencilla').options.find(o => o.choices?.length).choices[0];
+    choice.image = up('sabor-1');
+    assert.deepEqual([...M.uploadsIn(list)].sort(), [up('oso-1'), up('oso-2'), up('sabor-1')]);
+    const after = M.withoutPhotos(list, new Set([up('oso-1'), up('sabor-1')]));
+    const restored = after.find(x => x.id === 'oso-grande');
+    assert.equal(restored.mainImage, up('oso-2'));
+    assert.deepEqual([...restored.images], [up('oso-2'), web]);
+    assert.ok(!M.choicePhotos(after.find(x => x.id === 'torta-sencilla')).includes(up('sabor-1')));
+    assert.equal(oso.mainImage, up('oso-1'), 'el original no cambia');
+    assert.equal(M.withoutPhotos(list, new Set()), list);
+    const alone = M.withoutPhotos([{ ...oso, images: [up('oso-1')] }], new Set([up('oso-1')]))[0];
+    assert.equal(alone.mainImage, '');
+    assert.match(M.validate([alone], list).join('\n'), /elige al menos una foto/);
+});
