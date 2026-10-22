@@ -3,12 +3,14 @@
  * publicación en Firestore (catalogo/actual). La web lee esa versión al instante (catalog-live.js).
  * Reglas de datos en admin-model.js; reglas de acceso en firestore.rules.
  */
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
+// El SDK de Firebase se sirve desde el sitio (js/vendor/firebase, copia sin cambios de la versión 13.0.0 de gstatic.com, salvo
+// sus importaciones internas): el panel solo ejecuta código propio y no depende de otro servidor.
+import { initializeApp } from '/js/vendor/firebase/13.0.0/firebase-app.js';
 import {
     initializeAuth, browserSessionPersistence, onAuthStateChanged, signInWithEmailAndPassword,
     signOut, getMultiFactorResolver, multiFactor, TotpMultiFactorGenerator, sendEmailVerification
-} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
-import { getFirestore, doc, collection, getDoc, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore-lite.js';
+} from '/js/vendor/firebase/13.0.0/firebase-auth.js';
+import { getFirestore, doc, collection, getDoc, getDocs, query, orderBy, limit, runTransaction, serverTimestamp } from '/js/vendor/firebase/13.0.0/firebase-firestore-lite.js';
 
 // El panel no funciona dentro de otra página: GitHub Pages no deja prohibirlo con cabeceras, y así ningún sitio
 // ajeno puede mostrarlo escondido para que alguien toque «Publicar» o «Eliminar» sin darse cuenta.
