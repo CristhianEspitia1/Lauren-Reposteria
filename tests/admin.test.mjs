@@ -255,7 +255,7 @@ test('Avisos: lo que impide publicar va a su producto y lo que conviene revisar 
     const warnings = M.warnings(list).filter(w => w.id === 'torta-vintage').map(w => w.text);
     assert.ok(warnings.some(t => t.includes(`«${sizes[0].label}» no tiene precio; se cotiza por WhatsApp.`)), warnings.join('\n'));
     assert.ok(warnings.some(t => t.includes(`adicionales sin precio para algún tamaño: «${addon.label}» en ${sizes[1].label}`)), warnings.join('\n'));
-    assert.ok(warnings.length <= 3, 'un aviso por tema, no uno por opción');
+    assert.ok(warnings.filter(t => !t.includes('misma descripción')).length <= 3, 'un aviso por tema, no uno por opción');
     const vitrina = list.find(p => p.category === 'extras' && p.price === null);
     assert.ok(M.warnings(list).some(w => w.id === vitrina.id && w.text.includes('Cotiza por WhatsApp')));
 });
@@ -293,4 +293,61 @@ test('Ofertas: cada cantidad con su propio precio en vez de multiplicar el de un
     assert.equal(after.at(-1), before.at(-1) - 5000);
     assert.deepEqual(after.slice(0, -1), before.slice(0, -1));
     assert.equal(M.validate([p], products()).length, 0);
+});
+test('Avisos: nombre o descripción repetidos y páginas que quedarían vacías', () => {
+    const list = products();
+    const [a, b] = list.filter(p => p.category === 'alfajores' && p.visible !== false);
+    assert.ok(!M.warnings(list).some(w => /se llama igual|misma descripción/.test(w.text) && w.id === b.id));
+    b.name = ` ${a.name.toUpperCase()} `;
+    b.description = a.description;
+    const texts = M.warnings(list).filter(w => w.id === b.id).map(w => w.text);
+    assert.ok(texts.some(t => t.includes('se llama igual que otro producto visible')), texts.join('\n'));
+    assert.ok(texts.some(t => t.includes(`misma descripción que «${a.name}»`)), texts.join('\n'));
+    // Al guardar una sola ficha se compara con las demás, pero no se avisa de páginas vacías.
+    const alone = M.warnings([b], list.filter(p => p.id !== b.id)).map(w => w.text);
+    assert.ok(alone.some(t => t.includes('se llama igual')));
+    assert.ok(!alone.some(t => t.includes('vacía')));
+    // Un producto oculto no cuenta como repetido.
+    b.visible = false;
+    assert.ok(!M.warnings(list).some(w => w.id === b.id));
+    for (const p of list) if (p.category === 'alfajores') p.visible = false;
+    assert.ok(M.warnings(list).some(w => w.id === null && w.text === 'La página de Alfajores no tiene productos visibles: se verá vacía en la web.'));
+    assert.deepEqual({ ...M.LIMITS }, { catalog: 900000, faqs: 200000, document: 1000000 }, 'los mismos límites de firestore.rules y bajo 1 MiB');
+    assert.match(fs.readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8'), /data\.json\.size\(\) < 900000[\s\S]*data\.preguntas\.size\(\) < 200000/);
+});
+
+test('Un producto con demasiadas combinaciones de opciones no se publica (la web no podría calcular su precio)', () => {
+    const list = products();
+    const p = list.find(x => x.id === 'caja-x6');
+    p.options = ['Sabor', 'Relleno', 'Cobertura', 'Decoración', 'Caja'].map((label, o) => ({ id: `g${o}`, label, type: 'radio', required: true, choices: Array.from({ length: 8 }, (_, c) => ({ value: `v${c}`, label: `${label} ${c + 1}` })) }));
+    assert.match(M.validate(list).join('\n'), /Caja x6 Alfajores: tiene demasiadas combinaciones de opciones/);
+    p.options = p.options.slice(0, 3);
+    assert.deepEqual([...M.validate(list)], []);
+});
+test('Dos grupos u opciones iguales no se publican, y un grupo propio llamado «Adicionales» no choca con el de adicionales', () => {
+    const list = products();
+    const p = list.find(x => x.id === 'brownies');
+    const extra = M.addonsGroup([{ value: 'monos', label: 'Moños', extra: 2000 }]);
+    p.options = [...p.options, { id: '', label: 'Adicionales', type: 'radio', required: false, choices: [{ value: '', label: 'Vela' }] }, extra];
+    const [published] = M.normalize([p]);
+    const ids = published.options.map(o => o.id);
+    assert.equal(new Set(ids).size, ids.length, ids.join(', '));
+    assert.ok(ids.includes('adicionales') && ids.includes('adicionales-2'), ids.join(', '));
+    p.options = [...published.options, { ...extra }];
+    assert.match(M.validate([p], list).join('\n'), /hay dos grupos de opciones iguales/);
+    p.options = published.options;
+    p.options[0].choices.push({ ...p.options[0].choices[0] });
+    assert.match(M.validate([p], list).join('\n'), /hay dos opciones iguales/);
+});
+test('Los caracteres invisibles y de dirección del texto no cuentan como nombre ni llegan a lo publicado', () => {
+    const list = products();
+    const p = list.find(x => x.id === 'caja-x6');
+    p.name = '​‮ ﻿';
+    assert.match(M.validate(list).join('\n'), /Hay un producto sin nombre/);
+    p.name = 'Caja‮ x6';
+    p.description = '⁦Texto⁩ bonito';
+    p.options = [{ id: 'sabor', label: '‏Sabor', type: 'radio', required: true, choices: [{ value: 'a', label: 'Arequipe​' }] }];
+    const [clean] = M.normalize([p]);
+    assert.deepEqual([clean.name, clean.description, clean.options[0].label, clean.options[0].choices[0].label], ['Caja x6', 'Texto bonito', 'Sabor', 'Arequipe']);
+    assert.equal(M.clean(' ​hola‮ '), 'hola');
 });

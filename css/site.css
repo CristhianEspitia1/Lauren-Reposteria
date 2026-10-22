@@ -158,7 +158,7 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 .faq-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 80px; align-items: start; }
 .faq-copy .eyebrow { margin-bottom: 20px; }
 .faq-copy p { font-size: .875rem; color: var(--color-text-soft); margin-block: 24px 16px; }
-.faq-item { border-bottom: 1px solid color-mix(in srgb, var(--color-lilac) 55%, var(--color-peach)); }
+.faq-item { border-bottom: 1px solid color-mix(in srgb, var(--color-lilac) 55%, var(--color-peach)); overflow-wrap: anywhere; }
 .faq-item:first-child { border-top: 1px solid color-mix(in srgb, var(--color-lilac) 55%, var(--color-peach)); }
 .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 24px; align-items: center; font-size: .875rem; font-weight: 500; padding: 24px 0; }
 .faq-item summary::-webkit-details-marker { display: none; }

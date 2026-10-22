@@ -7,6 +7,28 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-10-22 — Auditoría del centro de control]
+
+- Publicado desde el panel: la respuesta de «¿Cuánto cuesta un detalle de regalo?» cita ahora el Detalle Golden ($85.000) en vez del Detalle con Torta, oculto (en la web decía «precio a consultar»), y se corrigieron errores de escritura en Torta Vintage Sencilla, Alfajores Personalizados, Mini cake, Oso Grande y el adicional «Happy Birthday (acrílico)».
+- GitHub: «Secret scanning», «Push protection» y la regla «Proteger main» activos.
+
+- Recorrido como administradora en la vista previa, en escritorio y teléfono: lista, filtros, buscador, avisos, fichas de todos los productos, precios y cantidades con valores raros, grupos y opciones, «Elegir varias», portada, ocultar, cambiar de sección, producto nuevo en cada sección, fotos (menú, sacar, selector, mover y unir), preguntas frecuentes («Agregar precio», orden, temas, eliminar), descartar y Esc.
+- Al guardar una ficha, lo que impide guardarla (un precio con letras o de $0) se dice primero; antes preguntaba «¿Guardar así?» como si fuera un precio vacío y después daba el error.
+- Una pregunta frecuente que cita el precio de un producto oculto, eliminado o sin precio ya no se puede publicar (en la web decía «precio a consultar»; hoy pasa en «¿Cuánto cuesta un detalle de regalo?», que cita a Detalle con Torta, oculto). El panel lo avisa al ocultar o eliminar ese producto.
+- Avisos nuevos para revisar: dos productos visibles con el mismo nombre o la misma descripción (un producto nuevo empieza con la del primero de su sección) y una página que quedaría sin productos.
+- Publicar revisa antes el tamaño máximo de las reglas y, si Firestore niega el permiso con la sesión al día, dice que la cuenta no tiene permiso en vez de «tu sesión venció».
+- La vista previa de las tortas en la ficha es la tarjeta compacta de la web; la caja de «Agregar precio» es más alta en el teléfono; los textos largos sin espacios (un enlace pegado en una descripción) se parten en tarjetas, fichas, pedido, preguntas y panel en vez de cortarse.
+- Seguridad del panel ([detalle](09-seguridad.md#auditoría-del-centro-de-control-22-de-octubre-de-2026)): la sesión vive solo en la pestaña y el cierre por inactividad no se puede burlar; el worker de fotos respeta la lista de administradores; «Borrar para siempre» mira lo publicado antes; no se publican productos con demasiadas combinaciones, grupos u opciones repetidos ni nombres invisibles; identificadores nuevos que no reutilizan los de productos eliminados; lectura de precios lineal; lo publicado dañado se puede reemplazar; el doble factor y la sesión anterior no dejan rastros; el panel arranca oculto.
+- 6 pruebas nuevas (101 en total).
+
+## [2026-10-22 — Auditoría de cliente y de seguridad]
+
+- Recorrido completo como cliente en escritorio y teléfono (también Safari de iPhone) y prueba de ataque a la web, el panel, el worker, las reglas y el workflow. Detalle en [seguridad](09-seguridad.md#auditoría-del-22-de-octubre-de-2026).
+- Pedido: las opciones se leen en el mismo orden que en la ficha (porciones primero) y sin las aclaraciones del formulario («Número de galletas: 6 galletas»), en el pedido y en el mensaje de WhatsApp. «Deshacer» devuelve el producto a su lugar en la lista, con el foco en él.
+- Mensaje de WhatsApp en una sola línea por dato y foto de referencia solo de la web o del worker; catálogo en vivo que revisa la forma de cada producto; el workflow rechaza `__proto__` e identificadores que no crea el panel; `llms.txt` con cada producto en su línea; acciones del workflow fijadas a su commit.
+- Reglas de Firestore con lista de administradores (`config/admins`), probadas en el emulador, publicadas y con la lista creada (las dos cuentas); `ADMIN_EMAILS` del worker pasa a ser un secreto opcional de Cloudflare.
+- 9 pruebas nuevas.
+
 ## [2026-10-20 — Varios toppings con máximo y ofertas por cantidad]
 
 - Un grupo de opciones puede dejar elegir varias, con un máximo por tamaño: toppings de brownies, hasta 3 en las cajas x3 y x6 y hasta 4 en la x16. Se configura en el panel («El cliente puede elegir varias» y «Cuántas puede elegir») y la ficha no deja marcar de más.

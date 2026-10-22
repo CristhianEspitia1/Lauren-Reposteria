@@ -5,7 +5,7 @@
  */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
 import {
-    initializeAuth, indexedDBLocalPersistence, browserLocalPersistence, onAuthStateChanged, signInWithEmailAndPassword,
+    initializeAuth, browserSessionPersistence, onAuthStateChanged, signInWithEmailAndPassword,
     signOut, getMultiFactorResolver, multiFactor, TotpMultiFactorGenerator, sendEmailVerification
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
 import { getFirestore, doc, collection, getDoc, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore-lite.js';
@@ -21,7 +21,10 @@ const { escape: esc, icon, imagePath } = LaurenUI;
 const M = window.AdminModel;
 const $ = id => document.getElementById(id);
 const app = initializeApp(window.firebaseConfig);
-const auth = initializeAuth(app, { persistence: [indexedDBLocalPersistence, browserLocalPersistence] });
+// La sesión vive solo en esta pestaña: al cerrarla, la clave y el código se piden de nuevo. Así no queda guardada en el
+// equipo (un teléfono perdido o un computador prestado no abren el panel), y el cierre por inactividad no se puede burlar
+// desde otra página del sitio.
+const auth = initializeAuth(app, { persistence: browserSessionPersistence });
 auth.languageCode = 'es';
 const db = getFirestore(app);
 // Copia de la web (catalog-data.js) por si aún no se ha publicado nada desde el panel.
@@ -86,7 +89,8 @@ let lastActivity = 0;
 let signedIn = '';
 let kept = null;
 let signedOutNote = '';
-const readActivity = () => { try { return Number(localStorage.getItem(ACTIVITY_KEY)) || 0; } catch { return 0; } };
+// Una hora guardada en el futuro (o que no es un número) no cuenta: nadie alarga la sesión escribiendo en el almacenamiento.
+const readActivity = () => { try { const at = Number(localStorage.getItem(ACTIVITY_KEY)); return at > 0 && at <= Date.now() + 60000 ? at : 0; } catch { return 0; } };
 function markActivity(force = false) {
     const now = Date.now();
     if (!force && now - lastActivity < 15000) return;
@@ -131,6 +135,13 @@ views.code.addEventListener('submit', async event => {
     finally { button.disabled = false; }
 });
 
+// El secreto del doble factor (código QR, enlace y clave escrita) solo está en la página mientras se configura.
+function clearEnrollment() {
+    $('enrollSecret').textContent = '';
+    $('enrollLink').removeAttribute('href');
+    $('enrollQr').removeAttribute('src');
+    $('enrollCode').value = '';
+}
 // El doble factor solo se activa con el correo confirmado: primero se envía el enlace de confirmación.
 const enrollParts = () => views.enroll.querySelectorAll('ol, img, .field-note, .personal-field, button[type=submit]');
 async function startEnrollment(user) {
@@ -172,6 +183,7 @@ views.enroll.addEventListener('submit', async event => {
     try {
         await multiFactor(auth.currentUser).enroll(TotpMultiFactorGenerator.assertionForEnrollment(enrollment, code), 'App de códigos');
         enrollment = null;
+        clearEnrollment();
         await signOut(auth);
         showAuth('login', 'Listo, tu cuenta quedó protegida. Entra de nuevo con tu clave y el código.');
     } catch (error) { showError('enrollError', authMessage(error)); }
@@ -192,6 +204,8 @@ $('signOut').addEventListener('click', async () => {
 onAuthStateChanged(auth, async user => {
     if (preview) return;
     if (!user) {
+        enrollment = null;
+        clearEnrollment();
         // Si la sesión se cerró sola (inactividad o vencida), el borrador y la ficha abierta esperan al mismo usuario.
         if (signedIn && (hasChanges() || editor.open || picker.open)) kept = { email: signedIn, editor: editor.open || picker.open };
         signedIn = '';
@@ -212,7 +226,12 @@ onAuthStateChanged(auth, async user => {
     $('appView').hidden = false;
     const resume = kept?.email === user.email ? kept : null;
     kept = null;
-    if (!resume) { await loadCatalog(); return; }
+    if (!resume) {
+        // Sin nada que retomar, no queda nada de la sesión anterior: ni fotos por borrar ni avisos.
+        pendingDeletes.clear(); photoFates.clear(); uploadedList = null; events.length = 0; unseen = 0;
+        await loadCatalog();
+        return;
+    }
     render();
     if (resume.editor) { renderEditor(); LaurenUI.open(editor); }
     LaurenUI.toast('Seguimos donde ibas: tus cambios siguen aquí.');
@@ -231,21 +250,31 @@ const useDraft = () => { window.catalogData = M.toCatalog(M.clone(products)); };
 
 async function loadCatalog() {
     $('list').innerHTML = '<li class="admin-count">Cargando tus productos…</li>';
+    // Lo publicado con un error (escrito sin pasar por el panel) no se abre: se edita la copia de la web y todo cuenta
+    // como cambio, para que «Publicar cambios» lo reemplace.
+    let draft = snapshot, draftFaqs = faqSnapshot, damaged = false;
+    const read = (text, ok) => { try { const value = JSON.parse(text); return ok(value) ? value : null; } catch { return null; } };
     try {
         const published = await getDoc(catalogRef);
         loadedJson = published.exists() ? published.data().json : null;
-        original = loadedJson ? JSON.parse(loadedJson) : M.clone(snapshot);
         // Las preguntas se publican desde el panel desde octubre de 2026; antes de eso, las de la web.
         loadedFaqs = published.exists() ? published.data().preguntas ?? null : null;
-        faqOriginal = loadedFaqs ? JSON.parse(loadedFaqs) : M.clone(faqSnapshot);
+        const catalog = loadedJson ? read(loadedJson, window.Catalog.wellFormed) : null;
+        const questions = loadedFaqs ? read(loadedFaqs, F.valid) : null;
+        damaged = Boolean((loadedJson && !catalog) || (loadedFaqs && !questions));
+        original = loadedJson ? catalog || {} : M.clone(snapshot);
+        faqOriginal = loadedFaqs ? questions || { temas: [], preguntas: [] } : M.clone(faqSnapshot);
+        draft = catalog || snapshot;
+        draftFaqs = questions || faqSnapshot;
     } catch {
         warn('No pudimos leer lo que está publicado. Revisa tu conexión y recarga la página.');
         loadedJson = undefined;
         original = M.clone(snapshot);
         faqOriginal = M.clone(faqSnapshot);
     }
-    products = M.migrate(Object.values(M.clone(original)));
-    faqs = M.clone(faqOriginal);
+    products = M.migrate(Object.values(M.clone(draft)));
+    faqs = M.clone(draftFaqs);
+    if (damaged) warn('Lo publicado tiene un error y no se pudo abrir. Te mostramos la copia de la web: revísala y toca «Publicar cambios» para reemplazarlo.');
     fresh.clear();
     freshFaqs.clear();
     render();
@@ -294,7 +323,8 @@ function render() {
     $('count').textContent = search ? `${found} ${found === 1 ? 'resultado' : 'resultados'}` : '';
     let group = '';
     $('list').innerHTML = shown.map(p => {
-        const label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text;
+        let label = 'Revisa sus opciones';
+        try { label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text; } catch { /* «Avisos» dice qué pasa */ }
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
         const visibleId = `visible-${esc(p.id)}`;
         const homeId = `home-${esc(p.id)}`;
@@ -315,12 +345,20 @@ $('list').addEventListener('change', event => {
     const input = event.target.closest('[data-visible]');
     if (input) setVisible(input);
 });
+// Si una pregunta frecuente cita el precio del producto, se avisa antes de ocultarlo o eliminarlo: sin ese precio, la
+// respuesta diría «precio a consultar» y no se puede publicar hasta cambiarla.
+function citedNote(id) {
+    const list = F.citing(id, faqs);
+    if (!list.length) return '';
+    const names = list.map(q => `«${esc(faqName(q))}»`).join(', ').replace(/, ([^,]*)$/, ' y $1');
+    return `<p>${list.length === 1 ? `La respuesta de ${names} cita su precio: antes de publicar tendrás que cambiarla.` : `Las respuestas de ${names} citan su precio: antes de publicar tendrás que cambiarlas.`}</p>`;
+}
 // Ocultar un producto pregunta antes: deja de verse en la web, aunque no se borra.
 async function setVisible(input) {
     const index = products.findIndex(p => p.id === input.dataset.visible);
     if (!input.checked && !(await askConfirm({
         title: `¿Ocultar <em>${esc(products[index].name || 'este producto')}</em>?`,
-        body: '<p>Cuando publiques, deja de verse en la web, no se puede pedir y sale de Google. No se borra: lo vuelves a mostrar marcando «Visible».</p>',
+        body: `<p>Cuando publiques, deja de verse en la web, no se puede pedir y sale de Google. No se borra: lo vuelves a mostrar marcando «Visible».</p>${citedNote(products[index].id)}`,
         action: 'Ocultarlo',
         cancel: 'Dejarlo visible'
     }))) { input.checked = true; return; }
@@ -367,7 +405,8 @@ window.addEventListener('beforeunload', event => { if (hasChanges()) event.preve
 $('publish').addEventListener('click', async () => {
     if (preview) { LaurenUI.toast('Vista previa: aquí no se publica.'); return; }
     // Si algo impide publicar, se abren los avisos con «Ir a arreglarlo» en cada uno.
-    if (M.validate(products).length || F.problems(faqs).length) {
+    useDraft();
+    if (M.validate(products).length || F.problems(faqs).length || F.broken(faqs, M.SECTIONS).length) {
         LaurenUI.toast('Antes de publicar falta arreglar algo. Te lo mostramos en «Avisos».');
         $('noticesButton').click();
         return;
@@ -387,11 +426,19 @@ $('publish').addEventListener('click', async () => {
         cancel: 'Todavía no'
     }))) return;
     const button = $('publish'); button.disabled = true;
+    let published = null;
     try {
         const data = M.toCatalog(M.normalize(products));
         const json = JSON.stringify(data);
         const faqData = { temas: faqs.temas, preguntas: faqs.preguntas.map(cleanFaq) };
         const preguntas = JSON.stringify(faqData);
+        // Los mismos límites de las reglas de Firestore (firestore.rules) y del documento (1 MiB), contados en bytes para no
+        // quedarse corto: así se dice qué pasa en vez de un permiso negado.
+        const size = text => new TextEncoder().encode(text).length;
+        if (size(json) >= M.LIMITS.catalog || size(preguntas) >= M.LIMITS.faqs || size(json) + size(preguntas) >= M.LIMITS.document) {
+            warn(`No pudimos publicar: ${size(preguntas) >= M.LIMITS.faqs ? 'las preguntas frecuentes quedaron demasiado largas' : 'el catálogo quedó demasiado largo'}. Acorta los textos más extensos e inténtalo otra vez.`);
+            return;
+        }
         await runTransaction(db, async transaction => {
             const current = await transaction.get(catalogRef);
             const now = current.exists() ? current.data() : {};
@@ -401,17 +448,23 @@ $('publish').addEventListener('click', async () => {
             transaction.set(catalogRef, { json, preguntas, updatedAt: serverTimestamp() });
             transaction.set(doc(collection(db, 'historial')), { json, preguntas, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
         });
-        original = data; loadedJson = json; products = M.migrate(Object.values(M.clone(data))); fresh.clear();
-        faqOriginal = M.clone(faqData); loadedFaqs = preguntas; faqs = M.clone(faqData); freshFaqs.clear();
-        if (filter === 'changed') filter = 'all';
-        render();
-        const erased = await erasePending();
-        LaurenUI.toast(erased ? `Listo. La web ya muestra tus cambios y borramos ${erased === 1 ? 'la foto que sacaste' : `las ${erased} fotos que sacaste`}.` : 'Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
+        published = { data, json, faqData, preguntas };
     } catch (error) {
         if (error.code === 'conflict') warn('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
-        else if (error.code === 'permission-denied') { warn('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
-        else warn('No pudimos publicar. Revisa tu conexión e inténtalo de nuevo.');
+        else if (error.code === 'permission-denied') {
+            // Con la sesión al día, el permiso negado es de la cuenta: no está en la lista de administradores (config/admins).
+            if (await auth.currentUser?.getIdToken(true).then(() => true, () => false)) warn('Tu usuario no tiene permiso para publicar. Pide que lo agreguen a la lista de administradores.');
+            else { warn('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
+        } else warn('No pudimos publicar. Revisa tu conexión e inténtalo de nuevo.');
     } finally { button.disabled = false; }
+    if (!published) return;
+    // Ya se ve en la web: el panel queda al día con lo publicado (si algo falla desde aquí, lo publicado ya está bien).
+    original = published.data; loadedJson = published.json; products = M.migrate(Object.values(M.clone(published.data))); fresh.clear();
+    faqOriginal = M.clone(published.faqData); loadedFaqs = published.preguntas; faqs = M.clone(published.faqData); freshFaqs.clear();
+    if (filter === 'changed') filter = 'all';
+    render();
+    const erased = await erasePending();
+    LaurenUI.toast(erased ? `Listo. La web ya muestra tus cambios y borramos ${erased === 1 ? 'la foto que sacaste' : `las ${erased} fotos que sacaste`}.` : 'Listo. La web ya muestra tus cambios.', { label: 'Ver la web', run: () => window.open('/', '_blank', 'noopener') });
 });
 
 /* ---------- Avisos: lo que falta, lo que conviene revisar y lo que no se pudo hacer ---------- */
@@ -443,7 +496,7 @@ function noticeList() {
     useDraft();
     // Las de las preguntas llevan «faq:» delante, para que «Ir a arreglarlo» abra la pregunta.
     const faqNotes = list => list.map(({ id, text }) => ({ id: id ? `faq:${id}` : null, text }));
-    return { problems: [...M.problems(products), ...faqNotes(F.problems(faqs))], warnings: [...M.warnings(products), ...flavorWarnings(), ...faqNotes(F.warnings(faqs))] };
+    return { problems: [...M.problems(products), ...faqNotes([...F.problems(faqs), ...F.broken(faqs, M.SECTIONS)])], warnings: [...M.warnings(products), ...flavorWarnings(), ...faqNotes(F.warnings(faqs))] };
 }
 function updateNotices() {
     const { problems, warnings } = noticeList();
@@ -809,7 +862,7 @@ const rows = (lines, min = 3) => `rows="${Math.max(min, lines.length + 1)}"`;
 // (por tamaño cuando el producto tiene porciones o presentaciones). Todo es de este producto y nada se comparte.
 function choicesHTML(p) {
     if (p.category === 'extras') return '';
-    const addons = (p.options || []).some(o => o.addons);
+    const addons = (p.options || []).some(o => o.addons || o.id === 'adicionales');
     return `<fieldset class="admin-fieldset"><legend>Lo que elige el cliente</legend>
         <p class="field-note">Lo que el cliente puede escoger en este producto. Si algo cuesta más, escribe cuánto suma${M.sizeOf(p) ? ` según «${esc(M.sizeOf(p).label || 'el tamaño')}»` : ''}.</p>
         ${p.category === 'tortas' ? '<p class="field-note">El mensaje o las letras de la torta no se escriben en la web: se acuerdan con el cliente en la asesoría.</p>' : ''}
@@ -950,7 +1003,7 @@ function renderEditor() {
             </div>
             <aside class="admin-editor-side" aria-label="Vista previa y estado">
                 <div class="admin-side-track"><div class="admin-side-sticky">
-                <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
+                <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview${p.category === 'tortas' ? ' four-columns' : ''}" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
                 <fieldset class="admin-fieldset admin-side-state"><legend>En la web</legend>
                     <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${homeable ? check('Mostrar en la portada', 'featured', p.featured === true, full) : ''}</div>
                     ${homeable ? `<p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} tortas: ${esc(names(others))}. Desmarca una de ellas para poner esta.` : `En la portada caben ${max} tortas. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}; si faltan, la web la completa con las siguientes del catálogo.`}</p>` : ''}
@@ -1199,7 +1252,7 @@ editor.addEventListener('click', async event => {
     if (action === 'delete') {
         if (!(await askConfirm({
             title: `¿Eliminar <em>${esc(edit.name || 'este producto')}</em>?`,
-            body: '<p>Sale del catálogo y deja de verse en la web cuando publiques los cambios. Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p>',
+            body: `<p>Sale del catálogo y deja de verse en la web cuando publiques los cambios. Si solo quieres quitarlo por un tiempo, mejor desmarca «Visible en la web».</p>${citedNote(editingId)}`,
             action: 'Eliminar',
             cancel: 'Conservarlo'
         }))) return;
@@ -1214,33 +1267,41 @@ editor.addEventListener('click', async event => {
 
 editor.addEventListener('submit', async event => {
     event.preventDefault();
-    // Si a la ficha le falta algo que no impide guardar (un precio vacío), se dice antes de guardar.
-    const pending = M.warnings([edit]).map(w => w.text.replace(/^[^:]*: /, ''));
-    if (edit.name?.trim() && pending.length && !(await askConfirm({
+    if (!M.clean(edit.name)) { showError('editorError', 'Ponle un nombre al producto.'); editor.querySelector('#f-name')?.focus(); return; }
+    // Primero lo que impide guardar (un precio con letras, una opción sin nombre); después, lo que solo conviene revisar.
+    const images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
+    const draft = { ...edit, images, mainImage: images[0] || '' };
+    // Solo se une o se mueve lo que sigue en la ficha: si se quitó esa foto, el otro producto queda como estaba.
+    const staying = new Set(M.photos(draft));
+    merges.forEach((merge, id) => { if (!staying.has(merge.main)) merges.delete(id); });
+    moves.forEach((_, src) => { if (!staying.has(src)) moves.delete(src); });
+    const others = products.filter(p => p.id !== editingId && !merges.has(p.id));
+    // El identificador lo pone el panel al guardar: su aviso de repetido no cuenta aquí (solo ese aviso, por su texto exacto).
+    const errors = M.validate([draft], others).filter(message => !/: el identificador «[^»]*» está repetido\.$/.test(message));
+    if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); warn(`No se guardó: ${errors[0]}`, editingId); return; }
+    // Si a la ficha le falta algo que no impide guardar (un precio vacío, un nombre repetido), se dice antes de guardar.
+    const pending = M.warnings([draft], others).map(w => w.text.replace(/^[^:]*: /, ''));
+    if (pending.length && !(await askConfirm({
         title: `¿Guardar <em>${esc(edit.name.trim())}</em> así?`,
         body: `<ul class="admin-confirm-notes">${pending.slice(0, 6).map(text => `<li>${esc(text)}</li>`).join('')}</ul>${pending.length > 6 ? `<p>Y ${pending.length - 6} más.</p>` : ''}<p class="field-note">Se puede guardar y publicar así; lo verás también en «Avisos».</p>`,
         action: 'Guardar así',
         cancel: 'Seguir editando'
     }))) return;
-    if (!edit.name?.trim()) { showError('editorError', 'Ponle un nombre al producto.'); editor.querySelector('#f-name')?.focus(); return; }
     showError('editorError', '');
+    // Un identificador nuevo no repite el de un producto publicado, aunque se haya eliminado en este borrador: una pregunta
+    // que citaba su precio pasaría a citar el del nuevo sin avisar.
+    const taken = except => new Set([...products.filter(p => p.id !== except).map(p => p.id), ...Object.keys(original)]);
     if (!editingId) {
-        edit.id = M.unique(M.slug(edit.name), new Set(products.map(p => p.id)));
+        edit.id = M.unique(M.slug(edit.name), taken(null));
         fresh.add(edit.id);
     } else if (fresh.has(editingId)) {
         // Un producto aún sin publicar toma su identificador del nombre definitivo.
         fresh.delete(editingId);
-        edit.id = M.unique(M.slug(edit.name), new Set(products.filter(p => p.id !== editingId).map(p => p.id)));
+        edit.id = M.unique(M.slug(edit.name), taken(editingId));
         fresh.add(edit.id);
     }
-    edit.images = [...new Set([edit.mainImage, ...(edit.images || [])].filter(Boolean))];
-    edit.mainImage = edit.images[0] || '';
-    // Solo se une o se mueve lo que sigue en la ficha: si se quitó esa foto, el otro producto queda como estaba.
-    const staying = new Set(M.photos(edit));
-    merges.forEach((merge, id) => { if (!staying.has(merge.main)) merges.delete(id); });
-    moves.forEach((_, src) => { if (!staying.has(src)) moves.delete(src); });
-    const errors = M.validate([edit], products.filter(p => p.id !== editingId && !merges.has(p.id))).filter(message => !message.includes('identificador'));
-    if (errors.length) { showError('editorError', errors[0]); $('editorError').scrollIntoView({ block: 'center', behavior: 'smooth' }); warn(`No se guardó: ${errors[0]}`, editingId); return; }
+    edit.images = images;
+    edit.mainImage = draft.mainImage;
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
     else {
@@ -1249,6 +1310,7 @@ editor.addEventListener('submit', async event => {
     }
     photoFates.forEach((fate, src) => { if (fate === 'borrar') pendingDeletes.add(src); else pendingDeletes.delete(src); });
     const joined = products.filter(p => merges.has(p.id)).map(p => p.name);
+    const gone = [...merges.keys()];
     const moved = [...new Set([...moves.values()].flat())].filter(id => !merges.has(id));
     products = products.map(p => moved.includes(p.id) ? { ...p, images: (p.images || []).filter(src => !moves.has(src) || !moves.get(src).includes(p.id)) } : p);
     if (joined.length) {
@@ -1257,8 +1319,13 @@ editor.addEventListener('submit', async event => {
     }
     LaurenUI.close(editor);
     render();
-    // Un producto oculto (como todo producto nuevo) no sale en la web al publicar: el aviso lo recuerda.
-    const next = saved.visible === false ? 'Está oculto: marca «Visible» y publica para que se vea en la web.' : 'Toca «Publicar cambios» para que se vea en la web.';
+    // Un producto oculto (como todo producto nuevo) no sale en la web al publicar: el aviso lo recuerda. Si una pregunta
+    // frecuente citaba su precio y ya no se puede mostrar (lo ocultaste o le quitaste el precio), también.
+    // (También si cita a un producto que se unió a este y desaparece.)
+    const cited = new Set([saved.id, ...gone].flatMap(id => F.citing(id, faqs).map(q => q.id)));
+    const broken = F.broken(faqs, M.SECTIONS).filter(item => cited.has(item.id));
+    const next = broken.length ? `Antes de publicar, cambia la respuesta de ${broken.map(item => `«${faqName(faqs.preguntas.find(q => q.id === item.id))}»`).join(' y ')}: cita un precio que ya no se puede mostrar.`
+        : saved.visible === false ? 'Está oculto: marca «Visible» y publica para que se vea en la web.' : 'Toca «Publicar cambios» para que se vea en la web.';
     LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(', ').replace(/, ([^,]*)$/, ' y $1')} ${joined.length === 1 ? 'quedó' : 'quedaron'} dentro de «${saved.name}». ${next}` : `Guardado. ${next}`);
 });
 
@@ -1545,6 +1612,11 @@ picker.addEventListener('click', async event => {
     });
     if (!ok) return;
     try {
+        // «Sin usar» se calculó con lo publicado al abrir el panel: si desde otro equipo se publicó algo, primero hay que
+        // verlo (esa foto podría estar ya en la web). Se vuelve a mirar lo publicado justo antes de borrar.
+        const live = await getDoc(catalogRef);
+        const json = live.exists() ? live.data().json : null;
+        if (json !== loadedJson) { warn('Alguien publicó cambios desde otro equipo. Recarga la página antes de borrar fotos.'); return; }
         await erasePhoto(src);
         photoFates.delete(src);
         remove.closest('.admin-photo').remove();
@@ -1567,6 +1639,7 @@ async function finishPicker() {
         body: `${joined.length ? `<p>${joined.length === 1 ? `${thisOne} ${one} pasa` : `${these} ${many} pasan`} a ${here} con todas sus fotos y ${joined.length === 1 ? 'se elimina' : 'se eliminan'} del panel:</p>
             <ul class="admin-confirm-list">${joined.map(p => `<li><img src="${esc(imagePath(p.mainImage))}" alt="" width="40" height="50"><span>${esc(p.name)}</span><small>${count(M.photos(p).length)}</small></li>`).join('')}</ul>` : ''}
             ${moved.length ? `<p>${joined.length ? 'Además, ' : ''}${moved.length === 1 ? `${joined.length ? 'u' : 'U'}na foto sale` : `${moved.length} fotos salen`} de ${listNames(from)} y ${moved.length === 1 ? 'queda' : 'quedan'} solo aquí.</p>` : ''}
+            ${joined.map(p => citedNote(p.id)).join('')}
             <p class="field-note">En la web se verá cuando guardes la ficha y publiques los cambios.</p>`,
         action: joined.length ? 'Unir y seguir' : 'Mover y seguir',
         cancel: 'Volver'

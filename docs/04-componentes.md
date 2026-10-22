@@ -22,7 +22,7 @@ Los scripts clásicos se cargan con `defer`, en el orden declarado en cada pági
 
 El carrito conserva `id`, `quantity`, `selection` y `personal`; deriva del catálogo el nombre, imagen, precio y resumen legible. Dos productos solo se combinan si coinciden sus opciones y personalización. `getItems()` devuelve una copia para impedir modificaciones accidentales del estado.
 
-Los diálogos nativos contienen el foco, hacen inerte el fondo y cierran con Escape. La edición desde el pedido conserva opciones y vuelve al resumen. El aviso para deshacer una eliminación está dentro del propio diálogo.
+Los diálogos nativos contienen el foco, hacen inerte el fondo y cierran con Escape. La edición desde el pedido conserva opciones y vuelve al resumen. El aviso para deshacer una eliminación está dentro del propio diálogo y devuelve el producto a su lugar en la lista.
 
 ## Galería y video
 

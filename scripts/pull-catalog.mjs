@@ -26,12 +26,16 @@ const source = name => readFileSync(fileURLToPath(new URL(`../js/${name}.js`, im
 /** Problemas del catálogo (y de las preguntas, si llegan) publicados, en palabras del panel; vacío si se puede traer. */
 export function revisar(published, faqs = null) {
     if (!published || typeof published !== 'object' || Array.isArray(published) || !Object.keys(published).length) return ['El catálogo publicado llegó vacío.'];
-    const broken = Object.entries(published).filter(([id, p]) => !p || typeof p !== 'object' || p.id !== id || typeof p.name !== 'string' || typeof p.category !== 'string');
+    // Identificadores como los que crea el panel (AdminModel.slug): así ninguno es «__proto__» ni rompe el archivo.
+    const broken = Object.entries(published).filter(([id, p]) => !/^[a-z0-9-]{1,80}$/.test(id) || !p || typeof p !== 'object' || p.id !== id || typeof p.name !== 'string' || typeof p.category !== 'string');
     if (broken.length) return broken.map(([id]) => `«${id}»: le falta su identificador, su nombre o su sección.`);
     const context = { Intl, catalogData: published };
     context.window = context;
     vm.createContext(context);
     try {
+        // Un «__proto__» escrito en js/catalog-data.js o js/faq-data.js cambiaría el prototipo del objeto al cargarlo.
+        const unsafe = value => Boolean(value) && typeof value === 'object' && Object.keys(value).some(key => key === '__proto__' || unsafe(value[key]));
+        if (unsafe(published) || unsafe(faqs)) return ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).'];
         for (const name of ['catalog-model', 'admin-model', 'faqs']) vm.runInContext(source(name), context);
         const errors = [...context.AdminModel.validate(Object.values(published))];
         // La web debe poder dibujar el precio de cada tarjeta sin fallar.

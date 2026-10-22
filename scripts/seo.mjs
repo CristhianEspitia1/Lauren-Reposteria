@@ -273,12 +273,14 @@ function sitemap(pages) {
 }
 
 function llms() {
+    // Cada producto en una sola línea: un salto de línea en el catálogo no puede abrir otra entrada ni otra sección.
+    const line = value => String(value ?? '').replace(/\s+/g, ' ').trim();
     const sections = PAGES.filter(p => p.section).map(page => {
         const items = productsOf(page.categories).filter(p => !p.basedOn).map(product => {
             const range = priceRange(product);
             const price = !range ? 'precio según diseño' : range.max > range.min ? `desde ${money(range.min)}` : money(range.min);
             const unit = range?.minimum > 1 ? ` por unidad, mínimo ${range.minimum}` : '';
-            return `- ${product.name} (${price}${unit}): ${product.description}`;
+            return `- ${line(product.name)} (${price}${unit}): ${line(product.description)}`;
         }).join('\n');
         return `## [${page.section}](${ORIGIN}${page.path})\n\n${page.description()}\n\n${items}`;
     }).join('\n\n');

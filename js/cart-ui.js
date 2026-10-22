@@ -40,20 +40,23 @@
                 if (catalog) catalog.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
                 else window.location.href = '/#colecciones';
             } else if (button.hasAttribute('data-remove')) {
-                const removed = cartManager.removeItem(Number(button.dataset.remove));
+                const index = Number(button.dataset.remove);
+                const removed = cartManager.removeItem(index);
                 this.dialog.querySelector('[data-remove]')?.focus();
                 if (removed) {
                     this.removedItem = removed;
+                    this.removedIndex = index;
                     const notice = this.dialog.querySelector('#cartNotice');
                     notice.innerHTML = '<span>Producto eliminado.</span><button type="button" data-undo>Deshacer</button>';
                     notice.hidden = false;
                     notice.querySelector('button').focus();
                 }
             } else if (button.hasAttribute('data-undo') && this.removedItem) {
-                if (cartManager.addItem(this.removedItem)) {
+                // El producto vuelve al lugar que tenía en la lista, y el foco con él.
+                if (cartManager.addItem(this.removedItem, null, this.removedIndex)) {
                     this.removedItem = null;
                     this.dialog.querySelector('#cartNotice').hidden = true;
-                    this.dialog.querySelector('[data-remove]')?.focus();
+                    (this.dialog.querySelector(`[data-remove="${this.removedIndex}"]`) || this.dialog.querySelector('[data-remove]'))?.focus();
                 }
             } else if (button.hasAttribute('data-cart-quantity')) {
                 const index = Number(button.dataset.cartQuantity);

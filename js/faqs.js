@@ -78,7 +78,9 @@
      */
     function fromFriendly(value, sections) {
         const errors = [];
-        const result = String(value || '').replace(/\[\s*(precio más bajo de|precio mas bajo de|precio de|página|pagina)\s+([^\]]+?)\s*\]/gi, (token, kind, rest) => {
+        // El nombre empieza y termina sin espacios: así la lectura es lineal aunque falte el «]» de cierre (con «[^\]]+?\s*»
+        // un texto largo sin cerrar tardaba segundos en cada tecla).
+        const result = String(value || '').replace(/\[\s*(precio más bajo de|precio mas bajo de|precio de|página|pagina)\s+([^\]\s](?:[^\]]*[^\]\s])?)\s*\]/gi, (token, kind, rest) => {
             const how = plain(kind);
             if (how === 'pagina') {
                 const target = PAGES.find(p => [p[1], p[3]].some(name => plain(name) === plain(rest)));
@@ -125,15 +127,23 @@
     }
     /** Se puede publicar, pero conviene revisarlo. */
     function warnings(faq = data()) {
+        return faq.preguntas.filter(q => !(q.paginas || []).length).map(q => ({ id: q.id, text: `«${q.pregunta?.trim() || 'Sin pregunta'}» no sale en ninguna página: marca dónde se ve.` }));
+    }
+    /**
+     * Respuestas que citan el precio de un producto oculto, sin precio o que ya no está (o una página que no existe): en la
+     * web la frase quedaría con «precio a consultar». El panel no deja publicar así.
+     */
+    function broken(faq = data(), sections = []) {
         return faq.preguntas.flatMap(q => {
-            const name = `«${q.pregunta?.trim() || 'Sin pregunta'}»`;
-            const out = [];
-            if (!(q.paginas || []).length) out.push({ id: q.id, text: `${name} no sale en ninguna página: marca dónde se ve.` });
             const missing = [...String(q.respuesta || '').matchAll(TOKEN)].filter(([, kind, ref]) => kind === 'precio' ? window.Catalog.priceRef(ref) === null : !page(ref));
-            if (missing.length) out.push({ id: q.id, text: `${name}: la respuesta cita ${missing.length === 1 ? 'un precio o una página que ya no está' : 'precios o páginas que ya no están'}; en la web se ve «precio a consultar».` });
-            return out;
+            if (!missing.length) return [];
+            const named = missing.map(([token]) => toFriendly(token, sections)).filter(text => text.startsWith('['));
+            const which = named.length ? ` (${list([...new Set(named)])})` : '';
+            return [{ id: q.id, text: `«${q.pregunta?.trim() || 'Sin pregunta'}»: la respuesta cita ${missing.length === 1 ? 'un precio que ya no se puede mostrar' : 'precios que ya no se pueden mostrar'}${which}; en la web se vería «precio a consultar». Cambia la respuesta o vuelve a mostrar ese producto con su precio.` }];
         });
     }
+    /** Preguntas cuya respuesta cita el precio de un producto (para avisar antes de ocultarlo o eliminarlo). */
+    const citing = (id, faq = data()) => faq.preguntas.filter(q => [...String(q.respuesta || '').matchAll(TOKEN)].some(([, kind, ref]) => kind === 'precio' && ref.split('?')[0] === id));
     /** Cambios entre lo publicado y el borrador: preguntas nuevas, eliminadas, con cambios y si cambió el orden. */
     function changes(before, after) {
         const old = new Map(before.preguntas.map(q => [q.id, JSON.stringify(q)]));
@@ -151,5 +161,5 @@
         && faq.temas.every(t => t && typeof t.id === 'string' && typeof t.nombre === 'string')
         && faq.preguntas.every(q => q && typeof q.id === 'string' && typeof q.pregunta === 'string' && typeof q.respuesta === 'string' && Array.isArray(q.paginas));
 
-    window.LaurenFaqs = { PAGES, answer, item, forPage, topics, html, topicsHtml, toFriendly, fromFriendly, problems, warnings, changes, valid };
+    window.LaurenFaqs = { PAGES, answer, item, forPage, topics, html, topicsHtml, toFriendly, fromFriendly, problems, warnings, broken, citing, changes, valid };
 })();

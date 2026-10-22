@@ -69,7 +69,8 @@ class CartManager {
         const sorted = obj => Object.entries(obj || {}).sort(([a], [b]) => a.localeCompare(b)).map(([key, value]) => [key, Array.isArray(value) ? [...value].sort() : value]);
         return JSON.stringify([item.id, sorted(item.selection), sorted(item.personal)]);
     }
-    addItem(input, editIndex = null) {
+    /** Agrega (o reemplaza en `editIndex`). `at` devuelve un producto a su lugar en la lista, como «Deshacer». */
+    addItem(input, editIndex = null, at = null) {
         const item = this.normalize(input);
         if (!item) return false;
         if (editIndex !== null && (!Number.isInteger(editIndex) || !this.cart[editIndex])) return false;
@@ -80,7 +81,7 @@ class CartManager {
             this.cart[duplicate].quantity += item.quantity;
             if (editIndex !== null) this.cart.splice(editIndex, 1);
         } else if (editIndex !== null) this.cart[editIndex] = item;
-        else this.cart.push(item);
+        else this.cart.splice(Number.isInteger(at) ? Math.min(Math.max(at, 0), this.cart.length) : this.cart.length, 0, item);
         this.saveCart();
         return true;
     }
@@ -109,7 +110,7 @@ class CartManager {
         const custom = this.isCustom();
         const lines = [custom ? 'Hola, Laura. Quiero encargar este pedido personalizado:' : 'Hola, Laura. Quiero hacer este pedido:', ''];
         this.cart.forEach((item, index) => {
-            lines.push(`*${index + 1}. ${item.name}*`);
+            lines.push(`*${index + 1}. ${Catalog.oneLine(item.name)}*`);
             const photo = Catalog.photo(Catalog.get(item.id));
             if (photo) lines.push(`Foto de referencia: ${photo}`);
             for (const [key, value] of Object.entries(item.options)) lines.push(`${key}: ${value}`);

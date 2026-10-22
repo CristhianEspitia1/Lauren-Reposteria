@@ -52,7 +52,7 @@
                             <div class="product-dialog-heading"><h2 id="productTitle">${esc(p.name)}</h2></div>
                             <p class="product-dialog-description">${esc(p.description)}</p>
                             ${p.includes?.length ? `<section class="product-includes" aria-labelledby="productIncludesTitle"><h3 id="productIncludesTitle">Qué incluye</h3><ul>${p.includes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></section>` : ''}
-                            <div class="product-options">${Catalog.options(p).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('')}</div>
+                            <div class="product-options">${Catalog.ordered(Catalog.options(p)).map(option => this.optionHTML(option)).join('')}</div>
                             <div class="personal-fields">${this.personalHTML()}</div>
                             ${(p.notes || []).map(note => `<p class="field-note">${esc(note)}</p>`).join('')}
                         </div>
@@ -193,7 +193,7 @@
         /** Vuelve a pintar las opciones con sus importes y deja el foco en la elección que se tocó. */
         renderOptions(id, value) {
             const box = this.dialog.querySelector('.product-options');
-            box.innerHTML = Catalog.options(this.product).slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0)).map(option => this.optionHTML(option)).join('');
+            box.innerHTML = Catalog.ordered(Catalog.options(this.product)).map(option => this.optionHTML(option)).join('');
             box.querySelectorAll('[data-option-input]').forEach(input => input.addEventListener('change', () => this.optionChange(input)));
             box.querySelector(`[data-option-input="${CSS.escape(id)}"][value="${CSS.escape(value)}"]`)?.focus({ preventScroll: true });
         }
@@ -242,7 +242,8 @@
             if (errors.length) { this.dialog.querySelector('[aria-invalid=true]')?.focus(); return; }
             if (Catalog.quote(this.product, this.selection)) {
                 const details = Object.entries(Catalog.summary(this.product, this.selection)).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const intro = this.product.category === 'tortas' ? `Hola, Laura. Quisiera cotizar esta torta: ${this.product.name}.` : `Hola, Laura. Quisiera cotizar ${this.product.name}${Catalog.quoteOnly(this.product) ? ' para mi torta' : ''}.`;
+                const name = Catalog.oneLine(this.product.name);
+                const intro = this.product.category === 'tortas' ? `Hola, Laura. Quisiera cotizar esta torta: ${name}.` : `Hola, Laura. Quisiera cotizar ${name}${Catalog.quoteOnly(this.product) ? ' para mi torta' : ''}.`;
                 const message = [intro, Catalog.photo(this.product) && `Foto de referencia: ${Catalog.photo(this.product)}`, details, Catalog.personalText(this.product, this.selection, this.personal), '¿Me cuentas el valor y si está disponible?'].filter(Boolean).join('\n');
                 window.open(wa(message), '_blank', 'noopener,noreferrer');
                 return;

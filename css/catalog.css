@@ -40,7 +40,7 @@
     .product-grid.four-columns > :nth-child(4n+1):nth-last-child(2),
     .product-grid.four-columns > :nth-child(4n):nth-last-child(2) { grid-column-start: 3; }
 }
-.product-card { min-width: 0; position: relative; }
+.product-card { min-width: 0; position: relative; overflow-wrap: anywhere; }
 .product-image { position: relative; display: block; width: 100%; padding: 0; background: var(--color-peach); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
 .product-image > img { width: 100%; aspect-ratio: 4 / 5; object-fit: contain; background: var(--color-cream); transition: transform 600ms cubic-bezier(.2,.65,.3,1); }
 .product-image:hover > img { transform: scale(1.035); }

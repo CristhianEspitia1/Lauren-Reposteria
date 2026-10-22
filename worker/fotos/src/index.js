@@ -104,6 +104,23 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
         return cachedKeys;
     }
 
+    /**
+     * La misma lista de administradores que las reglas de Firestore (config/admins): con el token de la persona se lee
+     * fotos/subidas, que solo pueden leer los administradores de la lista. Si Firestore lo niega, aquí tampoco se suben,
+     * borran ni recuperan fotos. La respuesta se recuerda un minuto por usuario, para no consultar en cada foto de una tanda.
+     */
+    const listed = new Map();
+    async function checkListed(token, user, env) {
+        const known = listed.get(user.sub);
+        if (!known || known.until <= now()) {
+            const response = await fetchImpl(`https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT}/databases/(default)/documents/fotos/subidas?mask.fieldPaths=updatedAt`, { headers: { Authorization: `Bearer ${token}` } });
+            if (![200, 403, 404].includes(response.status)) throw new HttpError(503, 'lista');
+            if (listed.size > 50) listed.clear();
+            listed.set(user.sub, { ok: response.status !== 403, until: now() + 60 });
+        }
+        if (!listed.get(user.sub).ok) throw new HttpError(403, 'permiso');
+    }
+
     return {
         async fetch(request, env, ctx) {
             const url = new URL(request.url);
@@ -144,6 +161,7 @@ export function createHandler({ fetchImpl = (...args) => fetch(...args), now = (
                 const user = await verifyIdToken(token, { projectId: env.FIREBASE_PROJECT, keys: await googleKeys(), now: now() });
                 const admins = String(env.ADMIN_EMAILS || '').toLowerCase().split(',').map(e => e.trim()).filter(Boolean);
                 if (admins.length && !admins.includes(String(user.email || '').toLowerCase())) throw new HttpError(403, 'permiso');
+                await checkListed(token, user, env);
                 const link = name => `${url.origin}/f/${name}`;
                 const thumbOf = name => name.replace(/\.(\w+)$/, '-320.$1');
                 // Pasa un archivo de una clave a otra (con sus datos, que `change` puede ajustar) y borra el de origen.

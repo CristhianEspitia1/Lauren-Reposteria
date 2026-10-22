@@ -205,26 +205,55 @@
         }
         return errors;
     }
+    // Una sola línea: un texto del catálogo o del pedido guardado no puede abrir líneas nuevas en el mensaje de WhatsApp
+    // (un salto de línea dentro de un nombre podría simular un subtotal o una indicación del negocio), ni llevar caracteres
+    // invisibles o de dirección del texto, que desordenan lo que se lee.
+    const oneLine = value => String(value ?? '').replace(/[\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]/g, '').replace(/\s*[\r\n\u2028\u2029]+\s*/g, ' ').trim();
+    // Las porciones van primero, en la ficha y en el pedido, para que ambos se lean en el mismo orden.
+    const ordered = list => list.slice().sort((a, b) => (a.id === 'porciones' ? -1 : b.id === 'porciones' ? 1 : 0));
     function summary(product, selection) {
         // El interruptor que activa la personalización se omite: el texto escrito ya lo expresa.
-        return Object.fromEntries(choices(product, selection).filter(option => {
+        const listed = ordered(choices(product, selection)).filter(option => {
             if (option.id === product.personalization?.dependsOn) return false;
             const value = selection[option.id];
             return Array.isArray(value) ? value.length : value !== false && value !== '' && value !== undefined && value !== null;
-        }).map(option => {
+        });
+        // Sin la aclaración del formulario («Número de galletas (mínimo 3)» → «Número de galletas»), salvo que dos queden iguales.
+        const names = listed.map(option => shortLabel(oneLine(option.label)));
+        return Object.fromEntries(listed.map((option, index) => {
             const value = selection[option.id];
             const selected = Array.isArray(value) ? value : [value];
-            return [option.label, option.type === 'toggle' ? 'Sí' : selected.map(v => option.choices.find(c => c.value === v)?.label || '').join(', ')];
+            const name = names.indexOf(names[index]) === names.lastIndexOf(names[index]) ? names[index] : oneLine(option.label);
+            return [name, option.type === 'toggle' ? 'Sí' : oneLine(selected.map(v => option.choices.find(c => c.value === v)?.label || '').join(', '))];
         }));
     }
     // Etiqueta sin aclaraciones de formulario: «Mensaje personalizado (opcional)» → «Mensaje personalizado».
     const shortLabel = label => label.replace(/\s*\([^)]*\)$/, '');
     function personalText(product, selection, personal) {
-        return fields(product, selection).filter(field => String(personal[field.id] || '').trim()).map(field => `${shortLabel(field.label)}: ${String(personal[field.id]).trim()}`).join('\n');
+        return fields(product, selection).filter(field => oneLine(personal[field.id])).map(field => `${shortLabel(oneLine(field.label))}: ${oneLine(personal[field.id])}`).join('\n');
     }
     // Pedido personalizado: las tortas (diseño a mano) y todo producto con texto o tema propio.
     const custom = (product, personalization) => product?.category === 'tortas' || Boolean(personalization) || Boolean(advice(product));
     // Toda torta viaja a WhatsApp con su foto, para que Laura sepa cuál es (las subidas desde el panel ya traen su dirección completa).
-    const photo = product => product?.category === 'tortas' && product.mainImage ? (product.mainImage.startsWith('https://') ? product.mainImage : `https://laurenreposteria.com${product.mainImage}`) : '';
-    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, maxOf, maxText, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, custom };
+    // Solo fotos de la web o del worker de fotos, las mismas que acepta LaurenUI.imagePath: ninguna otra dirección llega al mensaje.
+    function photo(product) {
+        const src = product?.category === 'tortas' ? product.mainImage : '';
+        if (!src || window.LaurenUI?.imagePath(src) !== src) return '';
+        return src.startsWith('https://') ? src : `https://laurenreposteria.com${src}`;
+    }
+    /**
+     * Forma de un catálogo publicado: cada producto con un identificador como los que crea el panel, textos donde van
+     * textos y listas donde van listas (una lista que llega como texto rompería la tarjeta o la ficha al pintarla). La usan
+     * la web antes de cambiar su copia (catalog-live.js) y el panel al abrir lo publicado.
+     */
+    const isText = value => value === undefined || value === null || typeof value === 'string';
+    const isList = value => value === undefined || value === null || Array.isArray(value);
+    const wellFormed = data => Boolean(data) && typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length > 0
+        && Object.entries(data).every(([id, p]) => /^[a-z0-9-]{1,80}$/.test(id) && p && typeof p === 'object' && !Array.isArray(p) && p.id === id && typeof p.name === 'string' && typeof p.category === 'string'
+            && ['description', 'summary', 'mainImage', 'group', 'icon', 'priceText', 'priceSuffix', 'quantityLabel'].every(key => isText(p[key]))
+            && ['images', 'includes', 'notes', 'options'].every(key => isList(p[key]))
+            && (p.personalization === undefined || p.personalization === null || (typeof p.personalization === 'object' && !Array.isArray(p.personalization) && isList(p.personalization.fields)))
+            && (p.options || []).every(option => option && typeof option === 'object' && typeof option.id === 'string' && typeof option.label === 'string' && isList(option.choices)
+                && (option.choices || []).every(choice => choice && typeof choice === 'object' && typeof choice.value === 'string' && typeof choice.label === 'string')));
+    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, maxOf, maxText, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, ordered, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, oneLine, wellFormed, custom };
 })();

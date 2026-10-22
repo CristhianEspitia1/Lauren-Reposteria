@@ -2,7 +2,7 @@
 <html lang="es-CO">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com/firebasejs/13.0.0/; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://lauren-reposteria.crizczi22.workers.dev; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://lauren-reposteria.crizczi22.workers.dev; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com/firebasejs/13.0.0/; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://lauren-reposteria.crizczi22.workers.dev; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://lauren-reposteria.crizczi22.workers.dev; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
@@ -14,21 +14,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/tokens.css?v=c948957e37">
-<link rel="stylesheet" href="/css/site.css?v=e00b0be750">
-<link rel="stylesheet" href="/css/dialogs.css?v=e13ab20ddf">
-<link rel="stylesheet" href="/css/catalog.css?v=baddf3e885">
-<link rel="stylesheet" href="/css/admin.css?v=cfb71e3247">
-<script src="/js/catalog-data.js?v=3d2a1e5147" defer></script>
-<script src="/js/catalog-model.js?v=1bcdba6944" defer></script>
+<link rel="stylesheet" href="/css/site.css?v=2eb9b1bf6f">
+<link rel="stylesheet" href="/css/dialogs.css?v=3f70d0f090">
+<link rel="stylesheet" href="/css/catalog.css?v=0e3b3cea2e">
+<link rel="stylesheet" href="/css/admin.css?v=05d65cf67d">
+<script src="/js/catalog-data.js?v=e8062d5443" defer></script>
+<script src="/js/catalog-model.js?v=cb4822e53f" defer></script>
 <script src="/js/brand-icons.js?v=83da1c0e22" defer></script>
 <script src="/js/ui.js?v=e8506fedcb" defer></script>
-<script src="/js/faq-data.js?v=23209444b8" defer></script>
-<script src="/js/faqs.js?v=a0b018ba1c" defer></script>
+<script src="/js/faq-data.js?v=abd986acda" defer></script>
+<script src="/js/faqs.js?v=b18d09596a" defer></script>
 <script src="/js/flavors.js?v=794171a317" defer></script>
 <script src="/js/firebase-config.js?v=4478ad1ded" defer></script>
 <script src="/js/vendor/qrcode.min.js?v=c8ecfeb828" defer></script>
-<script src="/js/admin-model.js?v=8292c8ae08" defer></script>
-<script src="/js/admin.js?v=df954a3cf5" type="module"></script>
+<script src="/js/admin-model.js?v=59f0a59396" defer></script>
+<script src="/js/admin.js?v=b44a997d61" type="module"></script>
 </head>
 <body class="admin">
 <header class="admin-header">
@@ -44,7 +44,8 @@
 </header>
 
 <main id="adminMain">
-<section class="admin-auth container" id="authView" aria-labelledby="authTitle">
+<p class="admin-boot container" id="bootNote">Abriendo el centro de control… Si no abre, revisa tu conexión y recarga la página.</p>
+<section class="admin-auth container" id="authView" hidden aria-labelledby="authTitle">
 <div class="admin-card">
 <p class="eyebrow">Centro de control</p>
 <h1 id="authTitle">Hola de <em>nuevo.</em></h1>

@@ -38,7 +38,8 @@
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     // Todo lo que sale del catálogo se vuelve a pintar si llega una versión nueva (catalog-live.js).
     const catalogRenders = [];
-    document.addEventListener('catalog:updated', () => catalogRenders.forEach(render => render()));
+    // Cada parte se pinta por separado: si una falla con un dato raro, las demás se actualizan igual.
+    document.addEventListener('catalog:updated', () => catalogRenders.forEach(render => { try { render(); } catch (error) { console.error(error); } }));
     document.querySelectorAll('[data-category], [data-featured]').forEach(grid => {
         let products = productsFor(grid);
         const scope = grid.closest('[data-catalog-section]') || grid.parentElement;
@@ -101,7 +102,7 @@
         if (button) window.quickView.open(button.dataset.product);
     });
     document.querySelectorAll('[data-extras]').forEach(grid => {
-            const render = () => { const extras = Catalog.all().filter(p => p.category === 'extras'); grid.innerHTML = extras.map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${p.name} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join(''); };
+            const render = () => { const extras = Catalog.all().filter(p => p.category === 'extras'); grid.innerHTML = extras.map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${Catalog.oneLine(p.name)} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join(''); };
         render();
         catalogRenders.push(render);
     });

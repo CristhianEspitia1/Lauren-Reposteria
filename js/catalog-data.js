@@ -176,7 +176,7 @@ window.catalogData = {
                     },
                     {
                         "value": "happy-birthday",
-                        "label": "Happy Birthday(acrilico)",
+                        "label": "Happy Birthday (acrílico)",
                         "extra": {
                             "4-5": 9000,
                             "8-10": 12000,
@@ -641,7 +641,7 @@ window.catalogData = {
                 "maxSelection": 5
             }
         ],
-        "description": "Torta Vintage sencilla con bordes clásicos en la parte superior e inferir, sutiles detalles en los laterales, frase corta sobre la torta y elección de colores a tu gusto.\n(Cualquier detalle que no este mencionado será adicional y puedes consultarlo en la sección de \"adicionales\" o durante la asesoría)",
+        "description": "Torta Vintage sencilla con bordes clásicos en la parte superior e inferior, sutiles detalles en los laterales, frase corta sobre la torta y elección de colores a tu gusto.\n(Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
@@ -1091,7 +1091,7 @@ window.catalogData = {
             "Torta personalizada según porciones",
             "Bizcocho a elección",
             "Relleno a elección",
-            "Decoración Sencilla o tipo vintage",
+            "Decoración sencilla o tipo vintage",
             "Elección de colores"
         ],
         "notes": [
@@ -1474,7 +1474,7 @@ window.catalogData = {
         "group": "especiales",
         "visible": true,
         "summary": "Tu ocasión, convertida en un detalle comestible.",
-        "description": "Caja de 6 alfajores de maicena con relleno de arequipe, decoración en fondant o impresión comestible según el diseño que requieras (puedes confirmar mediante WhatsApp como seria la decoración)",
+        "description": "Caja de 6 alfajores de maicena con relleno de arequipe, decoración en fondant o impresión comestible según el diseño que requieras (puedes confirmar mediante WhatsApp cómo sería la decoración)",
         "includes": [
             "6 alfajores de maicena rellenos de arequipe",
             "Decoración en fondant o impresión comestible",
@@ -1994,7 +1994,7 @@ window.catalogData = {
         "category": "detalles",
         "group": "osos",
         "visible": true,
-        "description": "Oso de chocolate  acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.",
+        "description": "Oso de chocolate acompañado de brownie, alfajores y galletas. Ideal para celebraciones especiales.",
         "includes": [
             "Oso de chocolate (blanco o semiamargo)",
             "Brownie grande con Nutella",

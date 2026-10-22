@@ -6,6 +6,7 @@
 # Cada hora, una revisión liviana (solo tres archivos) compara lo publicado con js/catalog-data.js y js/faq-data.js. Si el repositorio
 # quedó atrás, otro trabajo trae el repositorio completo, ejecuta scripts/pull-catalog.mjs, corre las pruebas y, solo
 # si todo pasa, hace commit y push a main y pide la publicación de GitHub Pages. Si algo falla, no cambia nada.
+# Las acciones van fijadas a su commit, no a una etiqueta que su autor puede mover: este trabajo puede escribir en main.
 name: Catálogo publicado
 
 on:
@@ -28,14 +29,14 @@ jobs:
     outputs:
       atrasado: ${{ steps.revision.outputs.atrasado }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           sparse-checkout: |
             scripts/pull-catalog.mjs
             js/catalog-data.js
             js/faq-data.js
           sparse-checkout-cone-mode: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
       - id: revision
@@ -61,8 +62,8 @@ jobs:
       contents: write
       pages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
       - name: Traer el catálogo y regenerar el SEO

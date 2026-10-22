@@ -24,7 +24,7 @@ const JPG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 16]);
  * Workers KV y las llaves de Google simulados. Con `staleList`, la lista de claves se comporta como la de KV real
  * cuando aún no se pone al día: sigue mostrando las claves borradas y todavía no muestra las nuevas.
  */
-function fakeWorker(vars = {}, { staleList = false } = {}) {
+function fakeWorker(vars = {}, { staleList = false, listedStatus = 404 } = {}) {
     const store = new Map();
     const listed = new Set();
     const kv = {
@@ -48,13 +48,21 @@ function fakeWorker(vars = {}, { staleList = false } = {}) {
     kv.listNow = () => store.forEach((_, key) => listed.add(key));
     const env = { FIREBASE_PROJECT: PROJECT, ALLOWED_ORIGINS: `${ORIGIN},http://localhost:5173`, ADMIN_EMAILS: '', FOTOS: kv, ...vars };
     let googleCalls = 0;
-    const fetchImpl = async url => {
-        assert.ok(String(url).includes('googleapis.com'), 'el worker solo consulta las llaves de Google');
+    // La lista de administradores: Firestore responde 404 (sin fotos aún) o 200 si la persona está en ella, y 403 si no.
+    const probes = [];
+    const fetchImpl = async (url, init) => {
+        assert.ok(String(url).includes('googleapis.com'), 'el worker solo consulta a Google');
+        if (String(url).startsWith('https://firestore.googleapis.com/')) {
+            assert.match(String(url), new RegExp(`/projects/${PROJECT}/databases/\\(default\\)/documents/fotos/subidas\\?`));
+            probes.push(init?.headers?.Authorization);
+            return new Response('{}', { status: worker.listedStatus });
+        }
         googleCalls++;
         return new Response(JSON.stringify({ keys: [jwk] }), { headers: { 'Cache-Control': 'public, max-age=20000' } });
     };
     const handler = createHandler({ fetchImpl, now: () => NOW });
-    return { store, env, handler, googleCalls: () => googleCalls, call: request => handler.fetch(request, env) };
+    const worker = { store, env, handler, listedStatus, probes, googleCalls: () => googleCalls, call: request => handler.fetch(request, env) };
+    return worker;
 }
 async function upload(worker, { photo = WEBP, thumb = WEBP_MINI, token, name = 'Torta Corazón Lila', origin = ORIGIN } = {}) {
     const form = new FormData();
@@ -208,4 +216,25 @@ test('Una foto borrada no vuelve a la lista aunque la lista de KV siga atrasada'
     assert.equal(quick.status, 200, 'una foto recién subida se borra aunque la lista aún no la muestre');
     assert.ok(!(await quick.json()).yaNoEstaba);
     assert.equal((await worker.call(new Request(reciente))).status, 404);
+});
+
+test('Una cuenta que no está en la lista de administradores (config/admins) no sube, borra ni ve fotos', async () => {
+    const outsider = fakeWorker({}, { listedStatus: 403 });
+    const token = await idToken({ sub: 'fuera-1' });
+    assert.equal((await upload(outsider, { token })).status, 403);
+    assert.equal((await (await upload(outsider, { token })).json()).error, 'permiso');
+    assert.equal((await outsider.call(new Request(`${WORKER}/fotos`, { headers: { Authorization: `Bearer ${token}`, Origin: ORIGIN } }))).status, 403);
+    assert.equal((await outsider.call(new Request(`${WORKER}/fotos/torta-abc.webp`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}`, Origin: ORIGIN } }))).status, 403);
+    assert.equal(outsider.store.size, 0, 'nada se guardó');
+    assert.equal(outsider.probes[0], `Bearer ${token}`, 'Firestore decide con el token de la persona');
+    assert.equal(outsider.probes.length, 1, 'la respuesta se recuerda un minuto');
+    // En la lista (o sin lista todavía): sube como siempre, consultando una vez por minuto.
+    const admin = fakeWorker();
+    assert.equal((await upload(admin)).status, 201);
+    assert.equal((await upload(admin, { name: 'Otra' })).status, 201);
+    assert.equal(admin.probes.length, 1);
+    // Si Firestore no responde, no se sube nada.
+    const down = fakeWorker({}, { listedStatus: 500 });
+    assert.equal((await upload(down)).status, 503);
+    assert.equal(down.store.size, 0);
 });

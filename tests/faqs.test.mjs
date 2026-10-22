@@ -79,7 +79,29 @@ test('Lo que impide publicar y lo que conviene revisar en las preguntas', () => 
     assert.match(problems, /elige su tema/);
     const warnings = F.warnings(data).map(w => w.text).join('\n');
     assert.match(warnings, /no sale en ninguna página/);
-    assert.match(warnings, /precio a consultar/);
+    assert.doesNotMatch(warnings, /precio a consultar/, 'citar un precio que no está impide publicar: va en broken()');
+    const [broken] = F.broken(data);
+    assert.equal(broken.id, data.preguntas[3].id);
+    assert.match(broken.text, /precio a consultar/);
+});
+
+test('Una respuesta que cita el precio de un producto oculto no se puede publicar, y se sabe antes de ocultarlo', () => {
+    const data = { ...faq(), preguntas: faq().preguntas.slice(0, 1) };
+    const id = 'torta-vintage';
+    const name = context.catalogData[id].name;
+    data.preguntas[0].respuesta = `Cuesta {precio:${id}} y {precio:${id}?porciones=ya-no-existe}.`;
+    assert.deepEqual(F.citing(id, data).map(q => q.id), [data.preguntas[0].id]);
+    assert.deepEqual(F.citing(`${id}-otro`, data), []);
+    assert.equal(F.broken(data).length, 1, 'un tamaño que ya no existe no tiene precio');
+    data.preguntas[0].respuesta = `Cuesta {precio:${id}}.`;
+    assert.deepEqual(F.broken(data), []);
+    const before = context.catalogData[id].visible;
+    context.catalogData[id].visible = false;
+    try {
+        const [item] = F.broken(data);
+        assert.equal(item.id, data.preguntas[0].id);
+        assert.ok(item.text.includes(`[precio de ${name}]`), item.text);
+    } finally { context.catalogData[id].visible = before; }
 });
 
 test('Cambios para publicar: nuevas, eliminadas, cambiadas y el orden', () => {

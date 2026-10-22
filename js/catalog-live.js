@@ -7,8 +7,8 @@
 (() => {
     'use strict';
     const source = 'https://firestore.googleapis.com/v1/projects/lauren-reposteria/databases/(default)/documents/catalogo/actual';
-    const valid = data => data && typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length > 0
-        && Object.entries(data).every(([id, p]) => p && typeof p === 'object' && p.id === id && typeof p.name === 'string' && typeof p.category === 'string');
+    // Cada producto con su forma (Catalog.wellFormed): una lista que llega como texto rompería la tarjeta o la ficha.
+    const valid = data => window.Catalog.wellFormed(data);
     // Antes de cambiar, se prueba que cada tarjeta pueda calcular su precio: un catálogo dañado no rompe la página.
     function usable(data) {
         const local = window.catalogData;

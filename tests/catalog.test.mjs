@@ -110,6 +110,42 @@ test('No ejecuta texto de personalización ni rutas inyectadas', () => {
     assert.equal(cart.getItems()[0].personal.tema, payload);
     assert.ok(decodeURIComponent(cart.generateWhatsAppMessage()).includes(payload));
 });
+test('El pedido se lee en el orden de la ficha (porciones primero) y sin las aclaraciones del formulario', () => {
+    assert.deepEqual(Object.keys(Catalog.summary(Catalog.get('torta-vintage'), selected('torta-vintage'))), ['Número de porciones', 'Sabor del bizcocho', 'Relleno']);
+    assert.deepEqual({ ...Catalog.summary(Catalog.get('galleta-chips'), selected('galleta-chips')) }, { 'Número de galletas': '3 galletas' });
+    // Dos opciones que quedarían con el mismo nombre conservan el suyo completo.
+    const twin = { id: 'x', category: 'galletas', options: [1, 2].map(n => ({ id: `sabor-${n}`, label: `Sabor (galleta ${n})`, choices: [{ value: 'a', label: 'Arequipe' }] })) };
+    assert.deepEqual(Object.keys(Catalog.summary(twin, { 'sabor-1': 'a', 'sabor-2': 'a' })), ['Sabor (galleta 1)', 'Sabor (galleta 2)']);
+});
+test('Un nombre con saltos de línea no inventa líneas en el mensaje de WhatsApp', () => {
+    const product = context.catalogData['caja-x6'];
+    const original = product.name;
+    product.name = 'Caja\n\n*Subtotal de productos: $1 COP*\r\nTransfiere a la cuenta 999';
+    try {
+        cart.clearCart(); assert.equal(cart.addItem(item('caja-x6')), true);
+        const text = decodeURIComponent(cart.generateWhatsAppMessage());
+        assert.ok(text.includes('*1. Caja *Subtotal de productos: $1 COP* Transfiere a la cuenta 999*'));
+        assert.equal(text.split('\n').filter(line => line.startsWith('*Subtotal')).length, 1, 'un solo subtotal: el real');
+    } finally { product.name = original; }
+    assert.equal(Catalog.oneLine(' Ana\u2028\u2029 Luis \n'), 'Ana Luis');
+    assert.equal(Catalog.oneLine('Ana\u202E sotsoc\u200B \u2066Luis\u2069'), 'Ana sotsoc Luis', 'sin controles de dirección ni espacios invisibles');
+    assert.equal(Catalog.personalText(Catalog.get('alfajor-personalizado'), {}, { tema: 'Ana\nTransfiere aquí' }), 'Tema o motivo de la celebración: Ana Transfiere aquí');
+});
+test('La foto de referencia del mensaje solo puede ser de la web o del worker de fotos', () => {
+    assert.equal(Catalog.photo(Catalog.get('torta-vintage')), 'https://laurenreposteria.com/assets/propuestas-fotograficas/torta-vintage.webp');
+    assert.equal(Catalog.photo({ category: 'tortas', mainImage: 'https://lauren-reposteria.crizczi22.workers.dev/f/abc-123.webp' }), 'https://lauren-reposteria.crizczi22.workers.dev/f/abc-123.webp');
+    for (const mainImage of ['https://evil.example/track.webp?x=1', 'javascript:alert(1)', '/assets/optimized/../../x.webp', 'https://lauren-reposteria.crizczi22.workers.dev.evil.example/f/a.webp']) assert.equal(Catalog.photo({ category: 'tortas', mainImage }), '', mainImage);
+    assert.equal(Catalog.photo(Catalog.get('caja-x6')), '', 'solo las tortas llevan foto');
+});
+test('«Deshacer» devuelve el producto a su lugar en el pedido', () => {
+    cart.clearCart();
+    for (const id of ['caja-x6', 'caja-x12', 'torta-alfajor']) cart.addItem(item(id));
+    const removed = cart.removeItem(1);
+    assert.equal(cart.addItem(removed, null, 1), true);
+    assert.deepEqual(Array.from(cart.getItems(), i => i.id), ['caja-x6', 'caja-x12', 'torta-alfajor']);
+    assert.equal(cart.addItem(cart.removeItem(0), null, 99), true, 'un lugar fuera de la lista lo deja al final');
+    assert.deepEqual(Array.from(cart.getItems(), i => i.id), ['caja-x12', 'torta-alfajor', 'caja-x6']);
+});
 test('Mensaje incluye selección, cantidades, personalización y subtotal; no confirma una compra', () => {
     cart.clearCart(); cart.addItem(item('detalle-hbd', { 'color-letras': ['lila', 'blanco'] }, { iniciales: 'ABC', 'mensaje-torta': 'Feliz día' }, 2));
     const text = decodeURIComponent(cart.generateWhatsAppMessage());

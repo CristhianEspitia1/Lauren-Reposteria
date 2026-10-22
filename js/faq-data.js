@@ -243,7 +243,7 @@ window.faqData = {
         {
             "id": "cuanto-cuesta-un-detalle-de-regalo",
             "pregunta": "¿Cuánto cuesta un detalle de regalo?",
-            "respuesta": "Los detalles van desde {precio:oso-pequeno}, el Oso Pequeño, hasta {precio:detalle-torta}, el Detalle con Torta. Cada uno muestra su precio y las opciones que puedes elegir.",
+            "respuesta": "Los detalles van desde {precio:oso-pequeno}, el Oso Pequeño, hasta {precio:detalle-golden-1}, el Detalle Golden. Cada uno muestra su precio y las opciones que puedes elegir.",
             "paginas": [
                 "detalles"
             ]

@@ -15,8 +15,9 @@ binding = "FOTOS"
 [vars]
 FIREBASE_PROJECT = "lauren-reposteria"
 ALLOWED_ORIGINS = "https://laurenreposteria.com,https://www.laurenreposteria.com,http://localhost:5173"
-# Opcional: correos que pueden subir fotos, separados por comas. Vacío = cualquier administrador con doble factor.
-ADMIN_EMAILS = ""
+# Opcional: ADMIN_EMAILS, los correos que pueden subir y borrar fotos, separados por comas. Va como secreto en Cloudflare
+# (Settings → Variables and Secrets → Secret), no aquí: el repositorio es público y un secreto no se borra al publicar.
+# Sin él, puede cualquier administrador con doble factor.
 
 # Cada día: renueva la llave de Instagram cuando toca (cada semana) y trae lo último publicado.
 [triggers]

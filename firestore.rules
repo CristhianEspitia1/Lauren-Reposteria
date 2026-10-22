@@ -7,13 +7,23 @@ rules_version = '2';
 // - historial: copia de cada versión guardada, con el correo de quien la publicó, para poder deshacer.
 //   Solo administradores; nadie la cambia ni la borra.
 // - fotos/subidas: los nombres de las fotos subidas desde el panel. Solo administradores.
+// - config/admins: la lista de administradores (`uids`, los UID de Authentication → Usuarios). Solo se escribe desde
+//   la consola de Firebase; nadie la lee desde la web.
 // - Todo lo demás está cerrado.
 // No hay registro público: los administradores se crean en la consola de Firebase.
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Mientras config/admins no exista, basta una sesión con doble factor. Cuando existe, además hay que estar en la
+    // lista: una cuenta que no esté en ella (aunque tenga doble factor) no publica ni lee el historial.
+    function listed() {
+      let admins = /databases/$(database)/documents/config/admins;
+      return !exists(admins) || request.auth.uid in get(admins).data.uids;
+    }
+
     function admin() {
       return request.auth != null
-        && request.auth.token.firebase.sign_in_second_factor == 'totp';
+        && request.auth.token.firebase.sign_in_second_factor == 'totp'
+        && listed();
     }
 
     function version() {
