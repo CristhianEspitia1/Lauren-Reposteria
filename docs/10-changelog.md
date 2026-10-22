@@ -25,7 +25,7 @@ que volver.
 
 - Recorrido completo como cliente en escritorio y teléfono (también Safari de iPhone) y prueba de ataque a la web, el panel, el worker, las reglas y el workflow. Detalle en [seguridad](09-seguridad.md#auditoría-del-22-de-octubre-de-2026).
 - Pedido: las opciones se leen en el mismo orden que en la ficha (porciones primero) y sin las aclaraciones del formulario («Número de galletas: 6 galletas»), en el pedido y en el mensaje de WhatsApp. «Deshacer» devuelve el producto a su lugar en la lista, con el foco en él.
-- Mensaje de WhatsApp en una sola línea por dato y foto de referencia solo de la web o del worker; catálogo en vivo que revisa la forma de cada producto; el workflow rechaza `__proto__` e identificadores que no crea el panel; `llms.txt` con cada producto en su línea; acciones del workflow fijadas a su commit.
+- Mensaje de WhatsApp en una sola línea por dato y foto de referencia solo de la web o del worker; catálogo en vivo que revisa la forma de cada producto; el workflow rechaza `__proto__` e identificadores que no crea el panel; `llms.txt` con cada producto en su línea; acciones del workflow en v5 (Node 24, sin el aviso de Node 20) y fijadas a su commit.
 - Reglas de Firestore con lista de administradores (`config/admins`), probadas en el emulador, publicadas y con la lista creada (las dos cuentas); `ADMIN_EMAILS` del worker pasa a ser un secreto opcional de Cloudflare.
 - 9 pruebas nuevas.
 
