@@ -26,6 +26,9 @@ const app = initializeApp(window.firebaseConfig);
 // desde otra página del sitio.
 const auth = initializeAuth(app, { persistence: browserSessionPersistence });
 auth.languageCode = 'es';
+// Hasta octubre de 2026 la sesión se guardaba en el equipo (IndexedDB o localStorage): se borra la que haya quedado.
+try { localStorage.removeItem(`firebase:authUser:${window.firebaseConfig.apiKey}:[DEFAULT]`); } catch { /* sin almacenamiento */ }
+try { indexedDB.deleteDatabase('firebaseLocalStorageDb'); } catch { /* sin IndexedDB */ }
 const db = getFirestore(app);
 // Copia de la web (catalog-data.js) por si aún no se ha publicado nada desde el panel.
 const snapshot = M.clone(window.catalogData);
