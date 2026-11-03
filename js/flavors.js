@@ -24,11 +24,12 @@
         ]
     };
     const plain = text => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-    // La primera torta visible que fija precios (Torta Vintage) tiene la lista de todas las tortas.
-    // Una foto subida desde el centro de control para un sabor sirve aunque se haya subido en otra torta.
+    // La torta visible con más bizcochos y rellenos tiene la lista de todas las tortas (si empatan, la primera): así no
+    // cambia al subir o bajar tortas en el centro de control. Una foto subida para un sabor sirve aunque se haya subido en otra torta.
     function groups() {
         const tortas = Catalog.all().filter(p => p.category === 'tortas');
-        const source = tortas.find(p => !p.basedOn && p.options?.some(o => o.id === 'sabor' || o.id === 'relleno'));
+        const count = p => ['sabor', 'relleno'].reduce((sum, id) => sum + (p.options?.find(o => o.id === id)?.choices?.length || 0), 0);
+        const source = tortas.filter(p => !p.basedOn && count(p)).reduce((best, p) => !best || count(p) > count(best) ? p : best, null);
         const uploaded = id => new Map(tortas.flatMap(p => p.options?.find(o => o.id === id)?.choices || []).filter(c => c.image).map(c => [plain(c.label), c.image]));
         return Object.fromEntries(['sabor', 'relleno'].map(id => {
             const images = uploaded(id);

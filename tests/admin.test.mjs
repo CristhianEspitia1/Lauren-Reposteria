@@ -126,6 +126,17 @@ test('Cuenta productos cambiados, nuevos y eliminados', () => {
     assert.equal(removed.length, 1);
     assert.equal(total, 2);
 });
+test('Subir o bajar un producto cuenta como un cambio y se publica en ese orden', () => {
+    const list = products();
+    [list[0], list[1]] = [list[1], list[0]];
+    const diff = M.changes(context.catalogData, list);
+    assert.deepEqual([diff.changed.length, diff.removed.length, diff.moved, diff.total], [0, 0, true, 1]);
+    assert.deepEqual(Object.keys(M.toCatalog(M.normalize(list))).slice(0, 2), [list[0].id, list[1].id]);
+    const version = M.versionChanges({ catalog: M.toCatalog(list) }, { catalog: context.catalogData });
+    assert.equal(version, 'Con cambios: el orden de los productos');
+    // Eliminar uno no cuenta además como cambio de orden.
+    assert.equal(M.changes(context.catalogData, products().slice(1)).moved, false);
+});
 test('Cada tarjeta tiene su foto principal y la ficha admite más fotos de la misma referencia', () => {
     const list = products();
     const seen = new Map();

@@ -1,6 +1,6 @@
 # Catálogo de productos
 
-`js/catalog-data.js` guarda solo datos (JSON dentro de `window.catalogData`), sin lógica. Es el mismo formato que publica el [centro de control](13-centro-de-control.md) en Firestore: cada producto es un objeto con los campos de esta tabla, y la web lo muestra sin tocar HTML ni JS. Las reglas (precio, validación, etiquetas) viven en `js/catalog-model.js`.
+`js/catalog-data.js` guarda solo datos (JSON dentro de `window.catalogData`), sin lógica. Es el mismo formato que publica el [centro de control](13-centro-de-control.md) en Firestore: cada producto es un objeto con los campos de esta tabla, y la web lo muestra sin tocar HTML ni JS. Los productos de cada sección salen en la web en el orden en que están en el archivo, que se cambia con las flechas del centro de control. Las reglas (precio, validación, etiquetas) viven en `js/catalog-model.js`.
 
 ## Campos de un producto
 
@@ -45,7 +45,7 @@ Cada opción tiene `id`, `label`, `type` (`radio`, `select` o `toggle`), `requir
 
 ### «Un sabor para recordar» (/tortas/)
 
-Sale de los bizcochos y rellenos de la primera torta visible del catálogo: `js/flavors.js` la pinta en el navegador y `scripts/seo.mjs` la escribe en el HTML publicado. Cada uno usa su foto subida (`image`, también si se subió en otra torta con el mismo nombre) o la de la web que le corresponde (por valor o por nombre; lista en `PHOTOS`); los que no tienen foto van en «También: …».
+Sale de los bizcochos y rellenos de la torta visible que tiene más (si empatan, la primera del catálogo), así no cambia al reordenar las tortas en el centro de control: `js/flavors.js` la pinta en el navegador y `scripts/seo.mjs` la escribe en el HTML publicado. Cada uno usa su foto subida (`image`, también si se subió en otra torta con el mismo nombre) o la de la web que le corresponde (por valor o por nombre; lista en `PHOTOS`); los que no tienen foto van en «También: …».
 
 ## Precios dentro de los textos
 

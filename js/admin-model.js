@@ -285,7 +285,10 @@
         const now = new Set(products.map(p => p.id).filter(Boolean));
         const changed = products.filter(p => !p.id || !before.has(p.id) || before.get(p.id) !== JSON.stringify(p)).map(p => p.id || p.name);
         const removed = [...before.keys()].filter(id => !now.has(id));
-        return { changed, removed, total: changed.length + removed.length };
+        // El orden de la lista es el de la web: subir o bajar un producto es un cambio aunque el producto sea igual.
+        const kept = list => list.filter(id => before.has(id) && now.has(id)).join('\n');
+        const moved = kept(products.map(p => p.id)) !== kept([...before.keys()]);
+        return { changed, removed, moved, total: changed.length + removed.length + (moved ? 1 : 0) };
     }
     /* ---------- Versiones: el historial de lo publicado ---------- */
     const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -306,8 +309,8 @@
         if (!previous) return 'La primera que se guardó';
         if (!version.catalog || !previous.catalog) return '';
         const name = (catalog, id) => clean(catalog[id]?.name) || 'Producto sin nombre';
-        const { changed, removed } = changes(previous.catalog, Object.values(version.catalog));
-        const parts = changed.length ? [someNames(changed.map(id => name(version.catalog, id)))] : [];
+        const { changed, removed, moved } = changes(previous.catalog, Object.values(version.catalog));
+        const parts = changed.length ? [someNames(changed.map(id => name(version.catalog, id)))] : moved ? ['el orden de los productos'] : [];
         const F = window.LaurenFaqs;
         if (F && version.faqs && previous.faqs) {
             const diff = F.changes(previous.faqs, version.faqs);

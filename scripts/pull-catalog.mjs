@@ -82,7 +82,9 @@ async function main() {
     // Sin el correo de quien publicó: este texto termina en el historial público del repositorio.
     console.log(`Publicado el ${document.fields.updatedAt?.timestampValue ?? '¿?'}: ${ids(published).length} productos${faqs ? ` y ${faqs.preguntas.length} preguntas` : ''}.`);
     if (next === text && faqNext === faqText) { console.log('El repositorio ya tiene el catálogo publicado.'); process.exit(0); }
-    if (next !== text) console.log(`Nuevos: ${names(added)}\nEliminados: ${names(removed)}\nCon cambios: ${names(changed)}`);
+    // Subir o bajar productos en el centro de control solo cambia su orden.
+    const kept = data => ids(data).filter(id => current[id] && published[id]).join('\n');
+    if (next !== text) console.log(`Nuevos: ${names(added)}\nEliminados: ${names(removed)}\nCon cambios: ${names(changed)}${kept(published) !== kept(current) ? '\nOrden de los productos: con cambios' : ''}`);
     if (faqNext !== faqText) console.log('Preguntas frecuentes: con cambios');
     if (check) { console.error('El repositorio está atrasado: ejecuta node scripts/pull-catalog.mjs'); process.exit(1); }
 

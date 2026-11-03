@@ -328,6 +328,7 @@ function render() {
     const found = shown.length + shownFaqs.length;
     $('count').textContent = search ? `${found} ${found === 1 ? 'resultado' : 'resultados'}` : '';
     let group = '';
+    const sortable = !search && (filter === 'all' || filter in PAGES);
     $('list').innerHTML = shown.map(p => {
         let label = 'Revisa sus opciones';
         try { label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text; } catch { /* «Avisos» dice qué pasa */ }
@@ -335,8 +336,12 @@ function render() {
         const visibleId = `visible-${esc(p.id)}`;
         const homeId = `home-${esc(p.id)}`;
         const home = window.Catalog.featurable(p) ? `<label class="toggle-option" for="${homeId}"><input id="${homeId}" type="checkbox" data-home="${esc(p.id)}" ${onHome(p) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Portada</span></label>` : '';
+        // Subir y bajar: solo con toda la sección a la vista (Todos o el filtro de su página, sin buscar), para que la fila se mueva donde se ve.
+        const mates = sortable ? products.filter(x => x.category === p.category) : [];
+        const name = esc(p.name || 'este producto');
+        const move = sortable ? `<span class="admin-move"><button type="button" class="icon-button admin-move-up" data-move="-1" data-product="${esc(p.id)}" aria-label="Subir «${name}»" ${mates[0] === p ? 'disabled' : ''}>${icon('arrow')}</button><button type="button" class="icon-button admin-move-down" data-move="1" data-product="${esc(p.id)}" aria-label="Bajar «${name}»" ${mates.at(-1) === p ? 'disabled' : ''}>${icon('arrow')}</button></span>` : '';
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
-        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions"><label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions">${move}<label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
     }).join('') + faqRows(shownFaqs, changedFaqs) + (['all', 'faqs'].includes(filter) && !search ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : '');
     if (!shown.length && !shownFaqs.length) $('list').innerHTML = `<li class="admin-empty">${search ? 'No encontramos productos ni preguntas con esas palabras. Prueba con otra.' : 'No hay nada aquí.'}</li>${filter === 'faqs' ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : ''}`;
     const total = totalChanges();
@@ -390,6 +395,23 @@ function toggleHome(input) {
     render();
     LaurenUI.toast(!input.checked ? 'Saldrá de la portada cuando publiques.' : product.visible === false ? 'Irá a la portada cuando la hagas visible y publiques.' : 'Irá a la portada cuando publiques.');
 }
+// Subir o bajar un producto: cambia su lugar en su página de la web (y en la portada, si está en ella). Salta a la
+// siguiente de su sección, aunque entre ellas haya de otras: la web solo mira el orden dentro de cada sección.
+$('list').addEventListener('click', event => {
+    const move = event.target.closest('[data-move]');
+    if (!move) return;
+    const from = products.findIndex(p => p.id === move.dataset.product);
+    const step = Number(move.dataset.move);
+    let to = from + step;
+    while (to >= 0 && to < products.length && products[to].category !== products[from].category) to += step;
+    if (from < 0 || to < 0 || to >= products.length) return;
+    const list = [...products];
+    [list[from], list[to]] = [list[to], list[from]];
+    products = list;
+    render();
+    const again = $('list').querySelector(`[data-product="${CSS.escape(move.dataset.product)}"][data-move="${move.dataset.move}"]`);
+    (again?.disabled ? $('list').querySelector(`[data-product="${CSS.escape(move.dataset.product)}"]:not([disabled])`) : again)?.focus();
+});
 $('list').addEventListener('click', event => {
     const button = event.target.closest('[data-edit]');
     if (button) openEditor(products.find(p => p.id === button.dataset.edit));
@@ -418,7 +440,7 @@ $('publish').addEventListener('click', async () => {
         return;
     }
     if (loadedJson === undefined) { warn('No pudimos leer lo que está publicado. Recarga la página antes de publicar.'); return; }
-    const { changed, removed } = M.changes(original, products);
+    const { changed, removed, moved } = M.changes(original, products);
     const total = totalChanges();
     const nameOf = id => products.find(p => p.id === id)?.name || original[id]?.name || id;
     const faqDiff = faqChanges();
@@ -427,7 +449,7 @@ $('publish').addEventListener('click', async () => {
     const pending = M.warnings(products).length + F.warnings(faqs).length;
     if (!(await askConfirm({
         title: `¿Publicar <em>${total === 1 ? 'tu cambio' : `tus ${total} cambios`}</em>?`,
-        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`), ...faqNotes.map(text => `<li>${esc(text)}</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
+        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`), ...(moved ? ['<li>Orden de los productos: con cambios</li>'] : []), ...faqNotes.map(text => `<li>${esc(text)}</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
         action: 'Publicar',
         cancel: 'Todavía no'
     }))) return;
