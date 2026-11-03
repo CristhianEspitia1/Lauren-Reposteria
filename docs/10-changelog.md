@@ -11,6 +11,7 @@ que volver.
 
 - Cada producto de la lista tiene flechas para subir y bajar, como las preguntas: el orden de cada grupo es el de su página en la web y el de la portada. Salen en «Todos» y en el filtro de cada página, sin buscar. Mover cuenta como un cambio; al publicar se lista «Orden de los productos: con cambios» y en «Versiones», «el orden de los productos». La sincronización del repositorio también lo dice.
 - «Un sabor para recordar» sale de la torta con más bizcochos y rellenos (antes, de la primera): reordenar las tortas ya no cambia los sabores que se muestran.
+- La sincronización de cada hora fallaba desde el 29 de octubre: las pruebas de SEO esperaban que toda foto estuviera en el repositorio y la del Mini cake se subió desde el panel. Ahora aceptan las fotos del worker de fotos, y el repositorio quedó con lo publicado ese día (Torta Vintage Premium, Kit para decorar y Otros diseños que te pueden gustar, más los cambios en las demás tortas).
 - Manual de marca 3.10. 1 prueba nueva (106 en total).
 
 ## [2026-10-22 — Revisión de privacidad]

@@ -10,7 +10,7 @@ window.catalogData = {
         "category": "tortas",
         "visible": true,
         "featured": true,
-        "description": "Torta vintage con bordes clásicos en la parte superior e inferior, sutiles detalles en los laterales y frambuesas frescas sobre la torta.",
+        "description": "Torta vintage con bordes clásicos en la parte superior e inferior, sutiles detalles en los laterales y frambuesas frescas sobre la torta. (Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
@@ -226,7 +226,7 @@ window.catalogData = {
         "name": "Torta Sencilla",
         "category": "tortas",
         "visible": true,
-        "description": "Torta con diseño delicado que destaca por su sencillez y pequeños detalles. Decoraciones como frases cortas, corazones, pinceladas o flores de crema.",
+        "description": "Torta con diseño delicado que destaca por su sencillez y pequeños detalles. Decoraciones como frases cortas, corazones, pinceladas o flores de crema. (Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
@@ -874,7 +874,7 @@ window.catalogData = {
                 "maxSelection": 5
             }
         ],
-        "description": "Torta sencilla con personajes o temáticas específicas, las figuras van impresas en papel comestible y sobre fondant.",
+        "description": "Torta sencilla con personajes o temáticas específicas, las figuras van impresas en papel comestible y sobre fondant. (Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
@@ -901,21 +901,22 @@ window.catalogData = {
         "name": "Torta con flores naturales",
         "category": "tortas",
         "visible": true,
-        "description": "Un diseño hecho a mano para tu celebración. Elige las porciones, el bizcocho y el relleno; confirmamos contigo el valor final por WhatsApp.",
+        "description": "Tortas sencillas decoradas con flores como claveles, rosas, gerberas y follaje. (Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
         "includes": [
             "Torta personalizada según porciones",
             "Bizcocho a elección",
-            "Relleno premium",
-            "Decoración como la de la foto, hecha a mano"
+            "Relleno a elección",
+            "Decoración sencilla en crema",
+            "Decoración con las flores mencionadas"
         ],
         "notes": [
-            "Es un precio de referencia según las porciones. Confirmamos contigo el valor final de este diseño y sus adicionales por WhatsApp."
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría.",
+            "En las tortas mas grandes el valor que se da es para máximo 10 flores."
         ],
         "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-18.webp",
         "images": [
             "/assets/propuestas-fotograficas/galeria-tortas-18.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-26.webp",
-            "/assets/propuestas-fotograficas/galeria-tortas-25.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-35.webp",
             "/assets/propuestas-fotograficas/galeria-tortas-19.webp"
         ],
@@ -969,15 +970,36 @@ window.catalogData = {
                     },
                     {
                         "value": "ganache-de-cafe",
-                        "label": "Ganache de café"
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "mermelada-de-frutos-rojos",
-                        "label": "Mermelada de frutos rojos"
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     },
                     {
                         "value": "nutella",
-                        "label": "Nutella"
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
                     }
                 ]
             },
@@ -990,27 +1012,27 @@ window.catalogData = {
                     {
                         "value": "4-5",
                         "label": "4 a 6 porciones",
-                        "price": 110000
+                        "price": 95000
                     },
                     {
                         "value": "8-10",
                         "label": "8 a 10 porciones",
-                        "price": 155000
+                        "price": 140000
                     },
                     {
                         "value": "12-15",
                         "label": "12 a 15 porciones",
-                        "price": 215000
+                        "price": 180000
                     },
                     {
                         "value": "18-20",
                         "label": "18 a 20 porciones",
-                        "price": 265000
+                        "price": 235000
                     },
                     {
                         "value": "25-30",
                         "label": "25 a 30 porciones",
-                        "price": 385000
+                        "price": 335000
                     }
                 ]
             },
@@ -1066,9 +1088,20 @@ window.catalogData = {
                             "18-20": 8000,
                             "25-30": 10000
                         }
+                    },
+                    {
+                        "value": "glitter-comestibles",
+                        "label": "Glitter comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
                     }
                 ],
-                "maxSelection": 4
+                "maxSelection": 5
             }
         ],
         "personalization": {
@@ -1101,7 +1134,8 @@ window.catalogData = {
         "mainImage": "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp",
         "images": [
             "/assets/propuestas-fotograficas/torta-negra-cumpleanos.webp",
-            "/assets/propuestas-fotograficas/torta-uno.webp"
+            "/assets/propuestas-fotograficas/torta-uno.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/mini-cake-mvst9ztp87d9a3.webp"
         ],
         "options": [
             {
@@ -1210,6 +1244,492 @@ window.catalogData = {
                     }
                 ],
                 "maxSelection": 4
+            }
+        ],
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
+    },
+    "torta-vintage-premium": {
+        "id": "torta-vintage-premium",
+        "name": "Torta Vintage Premium",
+        "category": "tortas",
+        "visible": true,
+        "description": "Torta vintage con bordes en la parte superior e inferior de la torta, detalles en crema alrededor de la torta, con mas detalles que la torta vintage sencilla. (Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
+        "includes": [
+            "Torta personalizada según porciones",
+            "Bizcocho a elección",
+            "Relleno a elección",
+            "Decoración vintage",
+            "Elección de colores"
+        ],
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "mainImage": "/assets/propuestas-fotograficas/galeria-tortas-07.webp",
+        "images": [
+            "/assets/propuestas-fotograficas/galeria-tortas-07.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-09.webp",
+            "/assets/propuestas-fotograficas/galeria-tortas-32.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/torta-vintage-premium-mvst29avf0024f.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "zanahoria",
+                        "label": "Zanahoria con nueces"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
+                    },
+                    {
+                        "value": "mermelada-de-frutos-rojos",
+                        "label": "Mermelada de frutos rojos",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella",
+                        "extra": {
+                            "4-5": 4000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 15000,
+                            "25-30": 25000
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "4 a 6 porciones",
+                        "price": 87000
+                    },
+                    {
+                        "value": "8-10",
+                        "label": "8 a 10 porciones",
+                        "price": 135000
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12 a 15 porciones",
+                        "price": 180000
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18 a 20 porciones",
+                        "price": 230000
+                    },
+                    {
+                        "value": "25-30",
+                        "label": "25 a 30 porciones",
+                        "price": 330000
+                    }
+                ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)",
+                        "extra": {
+                            "4-5": 2000,
+                            "8-10": 2000,
+                            "12-15": 4000,
+                            "18-20": 4000,
+                            "25-30": 6000
+                        }
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday (acrílico)",
+                        "extra": {
+                            "4-5": 9000,
+                            "8-10": 12000,
+                            "12-15": 15000,
+                            "18-20": 15000,
+                            "25-30": 18000
+                        }
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 5000,
+                            "12-15": 8000,
+                            "18-20": 8000,
+                            "25-30": 10000
+                        }
+                    },
+                    {
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible",
+                        "extra": {
+                            "4-5": 5000,
+                            "8-10": 8000,
+                            "12-15": 10000,
+                            "18-20": 12000,
+                            "25-30": 15000
+                        }
+                    }
+                ],
+                "maxSelection": 5
+            }
+        ],
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
+    },
+    "kit-para-decorar": {
+        "id": "kit-para-decorar",
+        "name": "Kit para decorar",
+        "category": "tortas",
+        "visible": true,
+        "description": "Kit para decorar tu propia mini cake con 3 mangas de diferentes colores y una bolsita de sprinkles para dar el toque final.(Cualquier detalle que no esté mencionado será adicional y puedes consultarlo en la sección de «Adicionales» o durante la asesoría)",
+        "includes": [
+            "Mini torta blanca",
+            "Bizcocho de vainilla",
+            "3 mangas con crema",
+            "Sprinkles para decorar",
+            "Tarjeta con indicaciones",
+            "Cuchara"
+        ],
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/kit-para-decorar-mvst438n873cb7.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/kit-para-decorar-mvst438n873cb7.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/kit-para-decorar-mvst4amx8d2268.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe",
+                        "extra": {
+                            "4-5": 8000
+                        }
+                    },
+                    {
+                        "value": "sin-relleno",
+                        "label": "Sin relleno"
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "2 porciones",
+                        "price": 38000
+                    }
+                ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "coronas-especiales",
+                        "label": "Coronas especiales"
+                    }
+                ],
+                "maxSelection": 5
+            }
+        ],
+        "personalization": {
+            "enabled": true,
+            "field": "mensaje",
+            "label": "Mensaje personalizado para la torta",
+            "placeholder": "Ej.: Feliz cumpleaños, María",
+            "maxLength": 40,
+            "required": false,
+            "note": "Todas las letras se realizan con moldes para garantizar un acabado profesional"
+        }
+    },
+    "otras-disenos-que-te-pueden-gustar": {
+        "id": "otras-disenos-que-te-pueden-gustar",
+        "name": "Otros diseños que te pueden gustar",
+        "category": "tortas",
+        "visible": true,
+        "description": "Acá puedes encontrar otros tipos de diseños que realizamos, su cotización se hará durante la asesoría mediante WhatsApp donde también nos podrás enviar una foto de referencia si deseas un diseño que no veas acá.",
+        "notes": [
+            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+        ],
+        "price": null,
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssr4mecf3dc7.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssr4mecf3dc7.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssqs1h6356fe.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssqwzl37be98.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssr0y1360428.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssxdu22f7d38.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssxiribab805.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvst1urw1ee7f1.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvstep8aa23292.webp"
+        ],
+        "options": [
+            {
+                "id": "sabor",
+                "label": "Sabor del bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    },
+                    {
+                        "value": "red-velvet",
+                        "label": "Red Velvet"
+                    },
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "zanahoria",
+                        "label": "Zanahoria con nueces"
+                    }
+                ]
+            },
+            {
+                "id": "relleno",
+                "label": "Relleno",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arequipe",
+                        "label": "Arequipe"
+                    },
+                    {
+                        "value": "crema-queso",
+                        "label": "Crema de queso"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate oscuro"
+                    },
+                    {
+                        "value": "crema-de-vainilla",
+                        "label": "Crema de vainilla"
+                    },
+                    {
+                        "value": "ganache-de-cafe",
+                        "label": "Ganache de café"
+                    },
+                    {
+                        "value": "mermelada-de-frutos-rojos",
+                        "label": "Mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "nutella",
+                        "label": "Nutella"
+                    }
+                ]
+            },
+            {
+                "id": "porciones",
+                "label": "Número de porciones",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "4-5",
+                        "label": "4 a 6 porciones",
+                        "price": null
+                    },
+                    {
+                        "value": "8-10",
+                        "label": "8 a 10 porciones",
+                        "price": null
+                    },
+                    {
+                        "value": "12-15",
+                        "label": "12 a 15 porciones",
+                        "price": null
+                    },
+                    {
+                        "value": "18-20",
+                        "label": "18 a 20 porciones",
+                        "price": null
+                    },
+                    {
+                        "value": "25-30",
+                        "label": "25 a 30 porciones",
+                        "price": null
+                    }
+                ]
+            },
+            {
+                "id": "adicionales",
+                "label": "Adicionales",
+                "type": "radio",
+                "required": false,
+                "multiple": true,
+                "addons": true,
+                "note": "Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.",
+                "choices": [
+                    {
+                        "value": "monos-lacitos",
+                        "label": "Moños (lacitos)"
+                    },
+                    {
+                        "value": "mariposas",
+                        "label": "Mariposas"
+                    },
+                    {
+                        "value": "happy-birthday",
+                        "label": "Happy Birthday (acrílico)"
+                    },
+                    {
+                        "value": "perlas-comestibles",
+                        "label": "Perlas comestibles"
+                    },
+                    {
+                        "value": "glitter-comestible",
+                        "label": "Glitter comestible"
+                    }
+                ],
+                "maxSelection": 5
             }
         ],
         "personalization": {

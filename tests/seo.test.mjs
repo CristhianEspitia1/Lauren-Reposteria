@@ -11,7 +11,10 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const pages = PAGES.map(page => ({ page, html: read(page.file) }));
 const meta = (html, attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))?.[1];
 const jsonld = html => JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+// Las fotos subidas desde el centro de control las sirve el worker de fotos (js/admin-model.js, UPLOADED), no el repositorio.
+const UPLOADED = /^https:\/\/lauren-reposteria\.crizczi22\.workers\.dev\/f\/[\w-]+\.webp$/;
 const exists = url => {
+    if (UPLOADED.test(url)) return true;
     const clean = decodeURI(url.split(/[?#]/)[0]);
     const file = path.join(root, clean.endsWith('/') ? clean + 'index.html' : clean);
     return fs.existsSync(file);
