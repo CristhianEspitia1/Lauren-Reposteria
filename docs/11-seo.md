@@ -59,7 +59,7 @@ Estas pruebas no sustituyen la validación externa después de publicar (ver aba
 
 ## Tareas externas (requieren las cuentas del negocio)
 
-1. **Google Search Console**: verificar el dominio `laurenreposteria.com` (registro DNS TXT), enviar `https://laurenreposteria.com/sitemap.xml`, solicitar indexación de las seis URL y revisar «Páginas» y «Mejoras» (migas de pan, vídeos). Usar «Cambio de dirección» no aplica: el dominio es el mismo.
+1. **Google Search Console**: la propiedad `https://laurenreposteria.com/` (prefijo de URL) se verifica con el archivo `googlefa5e2e2f32db3488.html` de la raíz del repositorio: no borrarlo ni cambiarlo, o Google retira la verificación. Enviar `https://laurenreposteria.com/sitemap.xml`, solicitar indexación de las seis URL y revisar «Páginas» y «Mejoras» (migas de pan, vídeos). Usar «Cambio de dirección» no aplica: el dominio es el mismo.
 2. **Perfil de Empresa de Google** (Google Maps): crear o reclamar «Lauren Repostería», categoría *Pastelería*/*Repostería*, área de servicio Medellín (sin dirección pública si atienden desde casa), horario lunes a sábado 9:00–18:00, teléfono, web `https://laurenreposteria.com/`, enlace de pedidos a WhatsApp, fotos reales y publicaciones periódicas. Es el factor con más peso en búsquedas locales.
 3. **Reseñas**: pedir reseñas en Google a clientes satisfechos (enlace corto del perfil en el mensaje de entrega). No marcar reseñas en JSON-LD propio: Google no muestra estrellas de reseñas autoservidas para negocios locales.
 4. **Bing Webmaster Tools**: importar desde Search Console; alimenta también a asistentes que usan Bing.
