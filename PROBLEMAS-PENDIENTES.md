@@ -23,5 +23,4 @@ Sugerencias de la auditoría del 22 de octubre de 2026; no se cambiaron porque s
 
 - Nombres: «Tortas Vintage con frambuesas» y «Tortas con personajes» van en plural y las demás tortas en singular; «Mini cake» está en inglés.
 - Precios de la vitrina de adicionales en distinto formato: «De $2.000 a $6.000», «$5.000 a $10.000», «$5.000 - $10.000».
-- Erratas en las preguntas frecuentes, que Google muestra tal cual: «durente» (por «durante») y «eres tu» (por «eres tú»).
 - Lo que el panel muestra en «Avisos» para revisar: Coronas especiales sin precio (dice «Cotiza por WhatsApp») y los rellenos Crema de vainilla y Ganache de café sin foto en «Un sabor para recordar».

@@ -29,7 +29,7 @@ window.faqData = {
         {
             "id": "con-cuanto-tiempo-debo-hacer-mi-pedido",
             "pregunta": "¿Con cuánto tiempo debo hacer mi pedido?",
-            "respuesta": "Hazlo con al menos 2-3 días de anticipación. Si tu entrega es para realizarla durente el fin de semana el pedido debe quedar agendado desde el día jueves. No recibimos pedidos para el mismo día. La disponibilidad depende de la fecha y del diseño; la confirmamos contigo por WhatsApp.",
+            "respuesta": "Hazlo con al menos 2-3 días de anticipación. Si tu entrega es para realizarla durante el fin de semana el pedido debe quedar agendado desde el día jueves. No recibimos pedidos para el mismo día. La disponibilidad depende de la fecha y del diseño; la confirmamos contigo por WhatsApp.",
             "paginas": [
                 "inicio",
                 "tortas",
@@ -69,7 +69,7 @@ window.faqData = {
         {
             "id": "que-medios-de-pago-aceptan",
             "pregunta": "¿Qué medios de pago aceptan?",
-            "respuesta": "Transferencia o efectivo solo si es para cancelar el restante y eres tu quien viene a recoger el pedido.",
+            "respuesta": "Transferencia o efectivo solo si es para cancelar el restante y eres tú quien viene a recoger el pedido.",
             "paginas": [
                 "preguntas"
             ],
