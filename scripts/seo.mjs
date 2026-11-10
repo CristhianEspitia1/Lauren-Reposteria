@@ -35,7 +35,7 @@ export const BUSINESS = {
     email: 'reposterialauren@gmail.com',
     city: 'Medellín', region: 'Antioquia', country: 'CO',
     foundingDate: '2022',
-    hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '18:00', text: 'Todos los días, también domingos y festivos, de 9:00 a. m. a 6:00 p. m.' },
+    hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '09:00', closes: '18:00', text: 'Lunes a sábado, de 9:00 a. m. a 6:00 p. m. Domingos y festivos solo entregamos pedidos agendados con anticipación.' },
     sameAs: ['https://www.instagram.com/laurenreposteria22/', 'https://www.tiktok.com/@laurenreposteria']
 };
 

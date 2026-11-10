@@ -1,6 +1,6 @@
 # SEO
 
-Estado: octubre de 2026. Objetivo: que Lauren Repostería aparezca en búsquedas locales de Medellín («tortas personalizadas Medellín», «alfajores Medellín», «detalles de regalo Medellín»), que sus enlaces se vean bien al compartirse por WhatsApp e Instagram y que buscadores y asistentes de IA describan el negocio con datos correctos.
+Estado: noviembre de 2026. Objetivo: que Lauren Repostería aparezca en búsquedas locales de Medellín («tortas personalizadas Medellín», «alfajores Medellín», «detalles de regalo Medellín»), que sus enlaces se vean bien al compartirse por WhatsApp e Instagram y que buscadores y asistentes de IA describan el negocio con datos correctos.
 
 ## Arquitectura de URL
 
@@ -11,6 +11,7 @@ Estado: octubre de 2026. Objetivo: que Lauren Repostería aparezca en búsquedas
 | `/alfajores/` | `alfajores/index.html` | Alfajores artesanales en Medellín |
 | `/brownies-galletas/` | `brownies-galletas/index.html` | Brownies y galletas en Medellín |
 | `/detalles/` | `detalles/index.html` | Detalles y regalos en Medellín |
+| `/preguntas/` | `preguntas/index.html` | Preguntas frecuentes (pedidos, domicilios y pagos) |
 
 - La portada ya no es una redirección a `/html/inicio.html`: el dominio raíz concentra la autoridad.
 - Las direcciones anteriores (`/html/*.html`) quedan como páginas de redirección inmediata con `canonical` hacia la nueva URL. GitHub Pages no permite 301; Google interpreta `meta refresh` con 0 segundos como redirección permanente. No borrarlas mientras sigan apareciendo en Search Console.
@@ -37,7 +38,7 @@ Ejecutar `seo.mjs` después de cambiar precios, productos, galerías, preguntas 
 - Al compartir, el título (`og:title`, `twitter:title`) empieza por la marca («Lauren Repostería · …», o `shareTitle` en `PAGES`); el `<title>` empieza por lo que se busca en Google. La imagen va con su huella (`inicio.jpg?v=…`): si cambia, WhatsApp y las redes la piden de nuevo en vez de mostrar la vieja.
 - Favicon SVG + `favicon.ico` + `apple-touch-icon` + `site.webmanifest` con iconos 192/512 y maskable.
 - JSON-LD (`@graph`):
-  - `Bakery` (`#bakery`): nombre, logo PNG, teléfono, correo, Medellín/Antioquia, horario lunes a sábado 9:00–18:00, rango de precios calculado, redes y `hasMenu`.
+  - `Bakery` (`#bakery`): nombre, logo PNG, teléfono, correo, Medellín/Antioquia, horario lunes a sábado 9:00–18:00 (domingos y festivos solo entregas agendadas; `BUSINESS.hours`), rango de precios calculado, redes y `hasMenu`.
   - `WebSite` y `WebPage`/`CollectionPage` + `FAQPage` con las preguntas visibles copiadas textualmente del HTML. Las preguntas de cada página las escribe el mismo script desde `js/faq-data.js` (las edita el centro de control).
   - Colecciones: `BreadcrumbList` y `MenuSection` con un `MenuItem` por producto (imágenes y `Offer` en COP con precio mínimo, rango y cantidad mínima). Se usa `Menu`/`MenuItem` y no `Product` porque las directrices de Google reservan los fragmentos de producto a páginas de un solo producto.
   - Portada: `Menu` con las cuatro secciones y `VideoObject` de la historia.
@@ -58,13 +59,22 @@ Estas pruebas no sustituyen la validación externa después de publicar (ver aba
 
 ## Tareas externas (requieren las cuentas del negocio)
 
-1. **Google Search Console**: verificar el dominio `laurenreposteria.com` (registro DNS TXT), enviar `https://laurenreposteria.com/sitemap.xml`, solicitar indexación de las cinco URL y revisar «Páginas» y «Mejoras» (migas de pan, vídeos). Usar «Cambio de dirección» no aplica: el dominio es el mismo.
+1. **Google Search Console**: verificar el dominio `laurenreposteria.com` (registro DNS TXT), enviar `https://laurenreposteria.com/sitemap.xml`, solicitar indexación de las seis URL y revisar «Páginas» y «Mejoras» (migas de pan, vídeos). Usar «Cambio de dirección» no aplica: el dominio es el mismo.
 2. **Perfil de Empresa de Google** (Google Maps): crear o reclamar «Lauren Repostería», categoría *Pastelería*/*Repostería*, área de servicio Medellín (sin dirección pública si atienden desde casa), horario lunes a sábado 9:00–18:00, teléfono, web `https://laurenreposteria.com/`, enlace de pedidos a WhatsApp, fotos reales y publicaciones periódicas. Es el factor con más peso en búsquedas locales.
 3. **Reseñas**: pedir reseñas en Google a clientes satisfechos (enlace corto del perfil en el mensaje de entrega). No marcar reseñas en JSON-LD propio: Google no muestra estrellas de reseñas autoservidas para negocios locales.
 4. **Bing Webmaster Tools**: importar desde Search Console; alimenta también a asistentes que usan Bing.
 5. **DNS**: confirmar que `www.laurenreposteria.com` redirige al dominio raíz (registro CNAME a `<usuario>.github.io` y «Enforce HTTPS» activo en GitHub Pages).
 6. **Coherencia NAP**: mismo nombre, teléfono y ciudad en Instagram, TikTok, WhatsApp Business y directorios.
 7. **Validar tras publicar**: [Prueba de resultados enriquecidos](https://search.google.com/test/rich-results), [validador de Schema.org](https://validator.schema.org/), [depurador de Facebook](https://developers.facebook.com/tools/debug/) para refrescar la vista previa, y PageSpeed Insights en móvil.
+
+## Estado en buscadores (10 de noviembre de 2026)
+
+- Google tiene indexadas `/`, `/tortas/`, `/detalles/` y `/preguntas/`; faltan `/alfajores/` y `/brownies-galletas/`, y el resultado de Tortas aún muestra un precio anterior. Las direcciones antiguas (`/html/*.html`) ya no aparecen.
+- Bing no tiene ninguna página.
+- El Perfil de Empresa de Google existe («Lauren Repostería · Tienda de postres», con el teléfono) pero sin sitio web, sin horario y sin reseñas. Al buscar «lauren repostería medellín» salen TikTok y Facebook antes que la web.
+- PageSpeed Insights, portada en móvil: SEO 100 (mediciones en [rendimiento](08-performance.md#mediciones)).
+
+Lo que corrige esto son las tareas externas 1, 2 y 4 de arriba.
 
 ## Siguientes mejoras con mayor impacto
 

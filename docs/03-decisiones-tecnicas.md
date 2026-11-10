@@ -46,6 +46,13 @@ cargaba Playfair + Inter (+ Manrope en un segundo `<link>` para el pie).
 **Decisión.** Estandarizar en **Playfair Display** (títulos display) e **Inter**
 (texto). Un único `<link>` de Google Fonts por página con `display=swap`.
 
+**Actualización (noviembre de 2026).** Las dos familias se sirven desde el propio
+sitio: tres archivos WOFF2 variables en `assets/fonts/` (los mismos de Google Fonts,
+subconjunto latino, licencia OFL) declarados con `@font-face` en `css/tokens.css` y
+`font-display: swap`. Ya no hay `<link>` ni conexión a otro servidor: la hoja de
+Google Fonts bloqueaba el primer pintado unos 0,7 s en móvil. La CSP queda en
+`style-src 'self'; font-src 'self'`.
+
 **Consecuencias.** Menos peticiones, comportamiento tipográfico predecible y
 consistente entre módulos. Los elementos que declaraban `Montserrat`/`Outfit`
 ya renderizaban con el fallback del sistema, así que la unificación no altera su

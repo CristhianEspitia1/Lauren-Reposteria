@@ -7,6 +7,14 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-11-10 — SEO: tipografías propias, contraste y horario]
+
+- Revisión de SEO en producción (106 pruebas, redirecciones, datos estructurados, PageSpeed Insights y estado en Google y Bing). Resultado y pendientes externos en [SEO](11-seo.md#estado-en-buscadores-10-de-noviembre-de-2026).
+- Playfair Display e Inter se sirven desde el sitio (`assets/fonts/`, `@font-face` en `css/tokens.css`): mismos archivos y mismo aspecto, sin la hoja de Google Fonts que bloqueaba el primer pintado en móvil. La CSP de todas las páginas queda en `style-src 'self'; font-src 'self'`.
+- Contraste: sobre los fondos de color (celebración, sabores, banner de invitación y preguntas) la tinta suave lleva 30 % de ciruela (`--color-text-soft-tinted`); pasa de 3,7–4,2:1 a 4,8–5,3:1. Lo señalaba PageSpeed en «¿Tienes otra pregunta?».
+- Horario confirmado por el negocio: lunes a sábado de 9:00 a. m. a 6:00 p. m.; domingos y festivos solo entregas agendadas. Los datos para Google (`openingHoursSpecification`), `llms.txt` y el README decían «todos los días» y contradecían la pregunta frecuente.
+- Documentación de SEO al día (página de preguntas, horario) y primeras mediciones en [rendimiento](08-performance.md#mediciones). Manual de marca 3.11.
+
 ## [2026-11-03 — Orden de los productos desde el centro de control]
 
 - Cada producto de la lista tiene flechas para subir y bajar, como las preguntas: el orden de cada grupo es el de su página en la web y el de la portada. Salen en «Todos» y en el filtro de cada página, sin buscar. Mover cuenta como un cambio; al publicar se lista «Orden de los productos: con cambios» y en «Versiones», «el orden de los productos». La sincronización del repositorio también lo dice.

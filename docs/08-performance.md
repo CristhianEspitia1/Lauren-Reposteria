@@ -8,7 +8,7 @@ El sitio no incorpora framework ni dependencias de cliente. Los principales cost
 - Las fotos nunca se ocultan con máscaras, opacidad o animaciones activadas por el scroll. Los efectos de interacción no retrasan la presentación del contenido.
 - Galerías paginadas por grupos de ocho. «Ver más creaciones» agrega las nuevas fotos conservando los nodos y las imágenes ya cargadas; no hay carruseles infinitos ni copias para animaciones continuas. Las galerías de las cuatro páginas de catálogo (`data-gallery-all`) muestran todas las fotos de una vez: las 8 primeras cargan de inmediato y el resto con `loading="lazy"`.
 - La historia carga su poster `assets/optimized/imagenes-inicio/historia-poster.webp`; el MP4 de unos 5 MB se solicita solo al reproducir. Se conserva el original horizontal, sin ampliación artificial para cubrir un marco.
-- Fuentes Playfair Display e Inter en una petición por página, con `display=swap` y preconexión.
+- Fuentes Playfair Display e Inter servidas desde el sitio (`assets/fonts/`, tres archivos WOFF2 variables, 126 KB en total), declaradas en `css/tokens.css` con `font-display: swap`: no dependen de otro servidor ni bloquean el primer pintado.
 - Scripts con `defer`; estilos divididos entre tokens, base, catálogo y diálogos. Se retiraron las capas de CSS/JS obsoletas.
 
 El servidor local admite rangos de bytes, necesarios para avanzar por el video sin descargar otra vez todo el archivo. El script de copias responsive usa `cwebp` y `webpinfo`; no es necesario para la vista previa.
@@ -27,4 +27,12 @@ Las fuentes incluidas suman 18,63 MB; sus versiones de 640 px, 5,63 MB (aproxima
 
 Comprobación focalizada de septiembre de 2026: fuentes existentes, sintaxis, inicio sin imágenes ocultas ni pendientes de scroll; galería de ocho a dieciséis imágenes y cambio de foto en el configurador. No se repitió una auditoría responsive completa.
 
-No se publican puntuaciones de Core Web Vitals porque esta revisión no incluyó mediciones de campo ni Lighthouse. Medir en el hosting real si se solicita optimización de campaña; no confundir una comprobación local sin errores con una puntuación de rendimiento.
+## Mediciones
+
+PageSpeed Insights (Lighthouse 13, Moto G Power emulado, 4G lenta), portada en producción. Son datos de laboratorio: Google aún no tiene datos de campo (CrUX) del sitio.
+
+| Fecha | Rendimiento | Accesibilidad | Recomendaciones | SEO | LCP | CLS | TBT |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 10 de noviembre de 2026, antes | 93 | 96 | 100 | 100 | 3,1 s | 0,01 | 0 ms |
+
+Ese día se quitó lo que señalaba la medición: la hoja de Google Fonts (780 ms de bloqueo) pasó a fuentes propias y el contraste de la tinta suave sobre fondos de color se corrigió. GitHub Pages guarda cada archivo 10 minutos y no permite cambiarlo; por eso CSS, JS e imágenes sociales llevan huella (`?v=`). Volver a medir tras cada cambio de estructura; no confundir una comprobación local sin errores con una puntuación de rendimiento.

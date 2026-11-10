@@ -25,6 +25,7 @@ js/image-variants.js             Anchos de las fotos para srcset (generado)
 js/flavors.js                    «Un sabor para recordar» (Tortas) desde el catálogo
 js/faq-data.js / faqs.js         Preguntas frecuentes (solo datos) y sus reglas: cada página, precios y enlaces
 assets/brand/                    Logotipos, sello e isotipo SVG
+assets/fonts/                    Tipografías WOFF2 (Inter y Playfair Display) y sus licencias OFL
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
 assets/optimized/                Video de la historia y su poster
 assets/favicon.svg               Marca vectorial de la pestaña

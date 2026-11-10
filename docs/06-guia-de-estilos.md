@@ -1,6 +1,6 @@
 # Manual de marca
 
-Versión 3.10 · noviembre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
+Versión 3.11 · noviembre de 2026. Es la referencia obligatoria para cualquier página, sección, componente, texto o pieza nueva del sitio. Todo lo que describe está en uso en la web. Versión visual para compartir: <https://claude.ai/artifact/QDVjXxqDnKd51uysq5t5Qk>.
 
 Si algo nuevo no está cubierto aquí, primero se define en este manual (y en la versión visual) y después se construye.
 
@@ -69,6 +69,7 @@ Tinta y apoyo:
 | --- | --- | --- |
 | `--color-text` | `#3F3047` | Texto, logo y foco. Nunca de fondo |
 | `--color-text-soft` | `#766A79` | Texto secundario |
+| `--color-text-soft-tinted` | tinta suave + 30 % de ciruela | Texto secundario sobre fondos de color. Lo ponen solas esas secciones (celebración, sabores, banner de invitación y preguntas): no se elige a mano |
 | `--color-white` | `#FFFDF9` | Tarjetas, campos y diálogos |
 | `--color-lilac-light` | `#EFE6F3` | Fondos suaves |
 | `--color-border` | `#DDD3DC` | Líneas y separadores |
@@ -76,11 +77,11 @@ Tinta y apoyo:
 
 - Jerarquía: crema dominante; lila de marca; albaricoque solo donde se toca o se resalta; ciruela para leer.
 - Fondos de sección: crema (base), lila 45 % + crema (celebración), durazno 35 % + crema (preguntas), lila (pie).
-- Contrastes aprobados: ciruela sobre crema 11,2:1, sobre albaricoque 7,1:1, sobre lila 6,5:1; tinta suave sobre crema 4,7:1. Texto blanco sobre lila o albaricoque no (1,9:1).
+- Contrastes aprobados: ciruela sobre crema 11,2:1, sobre albaricoque 7,1:1, sobre lila 6,5:1; tinta suave sobre crema 4,7:1. Sobre los fondos de color la tinta suave sola no alcanza (3,7:1 sobre lila 45 %): ahí va mezclada con 30 % de ciruela (4,8:1 sobre lila 45 %, 5,0:1 sobre durazno 55 %, 5,3:1 sobre durazno 35 %). Texto blanco sobre lila o albaricoque no (1,9:1).
 
 ## 5. Tipografía
 
-Google Fonts en todas las páginas, una petición con `display=swap`: **Playfair Display** 400 e itálica (`--font-display`) para titulares y nombres de producto; **Inter** 400 y 500 (`--font-sans`) para lectura, botones y formularios.
+Servidas desde el propio sitio en todas las páginas (`assets/fonts/`, declaradas en `css/tokens.css` con `font-display: swap`; son los archivos de Google Fonts, sin pedir nada a otro servidor): **Playfair Display** 400 e itálica (`--font-display`) para titulares y nombres de producto; **Inter** 400 y 500 (`--font-sans`) para lectura, botones y formularios.
 
 | Elemento | Estilo |
 | --- | --- |

@@ -3,6 +3,11 @@
    Durazno  PANTONE 7611 C · CMYK 11/25/25/1 · RGB 229/200/186 · #E5C8BA
    Albaricoque PANTONE 1555 C · CMYK 0/36/45/0 · RGB 248/184/144 · #F8B890
    Crema    PANTONE 7604 C · CMYK 3/4/9/0    · RGB 249/245/236 · #F9F5EC */
+/* Tipografías del manual servidas desde el sitio (assets/fonts/, licencia OFL): los mismos archivos variables
+   de Google Fonts, subconjunto latino. Así la página no espera a otro servidor antes de pintarse. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 600; font-display: swap; src: url(../assets/fonts/inter-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 600; font-display: swap; src: url(../assets/fonts/playfair-display-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400 500; font-display: swap; src: url(../assets/fonts/playfair-display-italic-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 :root {
     --color-lilac: #d0b4d7;
     --color-lilac-light: #efe6f3;
@@ -12,6 +17,7 @@
     --color-white: #fffdf9;
     --color-text: #3f3047;
     --color-text-soft: #766a79;
+    --color-text-soft-tinted: color-mix(in srgb, var(--color-text-soft) 70%, var(--color-text));
     --color-border: #ddd3dc;
     --color-error: #9b3048;
     --color-success: #3f634c;
@@ -41,6 +47,9 @@
     --z-nav: 20;
     --z-toast: 50;
 }
+/* Sobre fondos de color (lila 45 %, durazno 35 % y 55 %) la tinta suave lleva 30 % de ciruela: así se lee con
+   contraste de al menos 4,5:1 (docs/06-guia-de-estilos.md, «Color»). */
+.celebration-section, .flavor-section, .category-banner, .faq-section, .admin-faq-preview { --color-text-soft: var(--color-text-soft-tinted); }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: .01ms !important;
