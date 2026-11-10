@@ -14,6 +14,7 @@ que volver.
 - Contraste: sobre los fondos de color (celebración, sabores, banner de invitación y preguntas) la tinta suave lleva 30 % de ciruela (`--color-text-soft-tinted`); pasa de 3,7–4,2:1 a 4,8–5,3:1. Lo señalaba PageSpeed en «¿Tienes otra pregunta?».
 - Horario confirmado por el negocio: lunes a sábado de 9:00 a. m. a 6:00 p. m.; domingos y festivos solo entregas agendadas. Los datos para Google (`openingHoursSpecification`), `llms.txt` y el README decían «todos los días» y contradecían la pregunta frecuente.
 - Google Search Console: propiedad verificada con `googlefa5e2e2f32db3488.html`, sitemap enviado e indexación solicitada para Alfajores y Brownies y galletas, que Google no tenía.
+- Bing Webmaster Tools: sitio verificado con `BingSiteAuth.xml` y sitemap enviado. Erratas de dos preguntas frecuentes corregidas desde el centro de control.
 - Documentación de SEO al día (página de preguntas, horario) y primeras mediciones en [rendimiento](08-performance.md#mediciones). Manual de marca 3.11.
 
 ## [2026-11-03 — Orden de los productos desde el centro de control]

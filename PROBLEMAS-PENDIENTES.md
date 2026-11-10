@@ -14,7 +14,8 @@ Los teléfonos y redes del sitio vigente se conservaron. Las referencias discord
 
 - Estado al 10 de noviembre de 2026: Google tiene 4 de las 6 páginas (faltan Alfajores y Brownies y galletas), Bing ninguna, y el Perfil de Empresa de Google existe pero sin sitio web, horario ni reseñas ([detalle](docs/11-seo.md#estado-en-buscadores-10-de-noviembre-de-2026)).
 - Hecho el 10 de noviembre de 2026: propiedad `https://laurenreposteria.com/` verificada en Google Search Console, sitemap enviado e indexación solicitada para Alfajores y Brownies y galletas. Revisar en unos días que las seis páginas figuren como indexadas.
-- Completar el Perfil de Empresa de Google con la cuenta que lo administra (sitio web, horario lunes a sábado de 9:00 a. m. a 6:00 p. m.) y empezar a pedir reseñas; dar de alta el sitio en Bing Webmaster Tools. Pasos en [SEO](docs/11-seo.md#tareas-externas-requieren-las-cuentas-del-negocio).
+- Hecho el 10 de noviembre de 2026: sitio verificado en Bing Webmaster Tools (`BingSiteAuth.xml`) y sitemap enviado.
+- Completar el Perfil de Empresa de Google con la cuenta que lo administra (sitio web, horario lunes a sábado de 9:00 a. m. a 6:00 p. m.) y empezar a pedir reseñas. Pasos en [SEO](docs/11-seo.md#tareas-externas-requieren-las-cuentas-del-negocio).
 - La fecha de publicación del video en los datos estructurados (7 de julio de 2026) se tomó del historial de Git; corregirla en `scripts/seo.mjs` si el negocio indica otra.
 
 ## Contenido (decisiones del negocio, desde el centro de control)
