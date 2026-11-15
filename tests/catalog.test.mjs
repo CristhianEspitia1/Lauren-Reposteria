@@ -195,6 +195,18 @@ test('Cada tarjeta muestra el precio mínimo real y dice «Desde» cuando hay va
         assert.equal(label.from, min !== max, `${p.id}: «Desde»`);
     }
 });
+test('La ficha abre en la combinación más económica: su total es el «Desde» de la tarjeta', () => {
+    for (const p of Catalog.all().filter(p => !Catalog.quoteOnly(p) && Catalog.range(p))) assert.equal(Catalog.price(p, Catalog.starting(p)), Catalog.range(p).min, p.id);
+    // Los individuales abren en el alfajor más económico, no en el primero de la lista.
+    const individual = Catalog.get('alfajor-individual');
+    assert.equal(Catalog.price(individual, Catalog.defaults(individual)), 3000);
+    assert.equal(Catalog.price(individual, Catalog.starting(individual)), 2000);
+    // Si varias cuestan lo mismo, la primera del catálogo; lo que se cotiza entero abre en la primera elección de cada grupo.
+    const sencilla = Catalog.get('torta-sencilla');
+    assert.equal(JSON.stringify(Catalog.starting(sencilla)), JSON.stringify(Catalog.defaults(sencilla)));
+    const coronas = Catalog.get('extra-coronas');
+    assert.equal(JSON.stringify(Catalog.starting(coronas)), JSON.stringify(Catalog.defaults(coronas)));
+});
 test('Un precio vacío se cotiza por WhatsApp y no entra al pedido', () => {
     const torta = Catalog.get('torta-vintage');
     const porciones = torta.options.find(o => o.id === 'porciones');

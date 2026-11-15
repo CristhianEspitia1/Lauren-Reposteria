@@ -123,9 +123,9 @@
     const quote = (product, selection) => quoteOnly(product) || price(product, selection) === null;
     const minimum = product => Number.isInteger(product.minimum) && product.minimum > 0 ? product.minimum : 1;
     const maximum = 99;
-    /** Precio mínimo y máximo entre todas las combinaciones con precio; null si ninguna lo tiene. */
-    function range(product) {
-        if (quoteOnly(product)) return null;
+    /** Todas las combinaciones de las opciones de una sola elección (y los interruptores), en el orden del catálogo. */
+    function combinations(product) {
+        const base = defaults(product);
         const single = (product.options || []).filter(o => !o.multiple && (o.type === 'toggle' || o.choices?.length));
         let combos = [{}];
         for (const option of single) {
@@ -133,8 +133,27 @@
             combos = combos.flatMap(combo => values.map(value => ({ ...combo, [option.id]: value })));
             if (combos.length > 20000) throw new Error(`Demasiadas combinaciones en ${product.id}`);
         }
-        const prices = combos.map(selection => price(product, { ...defaults(product), ...selection })).filter(p => Number.isSafeInteger(p) && p > 0);
+        return combos.map(selection => ({ ...base, ...selection }));
+    }
+    /** Precio mínimo y máximo entre todas las combinaciones con precio; null si ninguna lo tiene. */
+    function range(product) {
+        if (quoteOnly(product)) return null;
+        const prices = combinations(product).map(selection => price(product, selection)).filter(p => Number.isSafeInteger(p) && p > 0);
         return prices.length ? { min: Math.min(...prices), max: Math.max(...prices), minimum: minimum(product) } : null;
+    }
+    /**
+     * Selección con la que abre la ficha: la combinación más económica, la del «Desde» de la tarjeta, para que el total
+     * con que abre sea el que la tarjeta anuncia. Si varias cuestan lo mismo, la primera del catálogo; si ninguna tiene
+     * precio, la primera elección de cada grupo.
+     */
+    function starting(product) {
+        if (quoteOnly(product)) return defaults(product);
+        let best = null, lowest = Infinity;
+        for (const selection of combinations(product)) {
+            const value = price(product, selection);
+            if (Number.isSafeInteger(value) && value > 0 && value < lowest) { lowest = value; best = selection; }
+        }
+        return best || defaults(product);
     }
     /** Precio de la tarjeta: «$22.000», «Desde $65.000», rango de un extra o «Cotiza por WhatsApp». */
     function priceLabel(product) {
@@ -259,5 +278,5 @@
             && (p.personalization === undefined || p.personalization === null || (typeof p.personalization === 'object' && !Array.isArray(p.personalization) && isList(p.personalization.fields)))
             && (p.options || []).every(option => option && typeof option === 'object' && typeof option.id === 'string' && typeof option.label === 'string' && isList(option.choices)
                 && (option.choices || []).every(choice => choice && typeof choice === 'object' && typeof choice.value === 'string' && typeof choice.label === 'string')));
-    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, maxOf, maxText, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, visible, priced, options, ordered, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, oneLine, wellFormed, custom };
+    window.Catalog = { TORTA_MESSAGE, advice, ADDONS, sizeOption, extraOf, maxOf, maxText, get, all, FEATURED, featurable, featured, resolve: expand, photo, money, quoteOnly, quote, defaults, starting, visible, priced, options, ordered, choices, price, range, priceLabel, priceRef, priceRefText, minimum, maximum, fields, validate, summary, personalText, oneLine, wellFormed, custom };
 })();
