@@ -7,6 +7,12 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-11-15 — Adicionales de las tortas: se reutilizan y sin avisos de más]
+
+- **«Usar los de las demás tortas»** en los adicionales de cada torta del centro de control: deja los mismos que tienen las otras tortas visibles (el nombre que más se usa) con el precio que más se repite en cada tamaño, después de preguntar con la lista. «Agregar adicionales» en una torta empieza igual. Así el Kit para decorar pasa de cinco adicionales sin precio a Moños $2.000, Mariposas $5.000, Happy Birthday $9.000, Perlas $5.000 y Glitter $5.000, al tocar el botón y publicar.
+- **Avisos que sobraban:** una torta que se cotiza entera ya no avisa además de sus adicionales sin precio (se cotizan con ella), y la vitrina de adicionales, que ya no sale en la web, no da avisos.
+- 1 prueba nueva (121 en total).
+
 ## [2026-11-15 — Auditoría del recorrido: ficha de producto y entrada al centro de control]
 
 - Auditoría del recorrido completo en producción (cliente y entrada al panel), en computador y teléfono: sin fallos graves. Lo que sigue son sus arreglos.

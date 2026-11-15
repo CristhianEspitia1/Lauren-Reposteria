@@ -1453,6 +1453,23 @@ function pickHTML(p, option, o) {
         <div class="admin-extra-sizes admin-max">${sizes.length ? sizes.map(c => input(c.value, c.label || 'Tamaño')).join('') : input('', 'Hasta')}</div>`;
 }
 
+// Adicionales de una torta: «Usar los de las demás tortas» los deja iguales a los que ya tienen las otras, con sus precios.
+const sameAddons = (a, b) => JSON.stringify(a.map(c => [c.label, c.extra ?? null])) === JSON.stringify(b.map(c => [c.label, c.extra ?? null]));
+function commonAddonsHTML(p, option, o) {
+    if (p.category !== 'tortas') return '';
+    const common = M.commonAddons(products, p);
+    if (!common.length || sameAddons(option.choices || [], common)) return '';
+    return `<p><button type="button" class="admin-add admin-add-small" data-action="common-addons" data-option="${o}">${icon('check')} Usar los de las demás tortas</button></p>`;
+}
+// Precio de un adicional para la confirmación: el de su único tamaño o «de … a … según el tamaño».
+function addonPriceText(p, choice) {
+    const size = M.sizeOf(p);
+    const values = (size ? size.choices.map(sz => typeof choice.extra === 'number' ? choice.extra : choice.extra?.[sz.value]) : [choice.extra]).filter(v => typeof v === 'number' && v > 0);
+    if (!values.length) return 'se cotiza por WhatsApp';
+    const [low, high] = [Math.min(...values), Math.max(...values)];
+    return low === high ? window.Catalog.money(low) : `de ${window.Catalog.money(low)} a ${window.Catalog.money(high)} según el tamaño`;
+}
+
 function groupsHTML(p, pricedOnes) {
     return (p.options || []).map((option, o) => [option, o]).filter(([option]) => (option.type !== 'toggle' && M.priced(option)) === pricedOnes).map(([option, o]) => {
         const path = `options.${o}`;
@@ -1475,6 +1492,7 @@ function groupsHTML(p, pricedOnes) {
             : option.addons ? '<p class="field-note">Detalles que el cliente puede sumar a su torta. Escribe su precio; si lo dejas vacío, se puede marcar, pero esa torta se consulta por WhatsApp.</p>'
             : option.multiple ? '' : '<p class="field-note">¿Alguna cuesta más, como un relleno premium? Escribe cuánto suma. Si lo dejas vacío, no suma nada.</p>';
         return `<div class="admin-option">${field('Título del grupo (lo ve el cliente)', `${path}.label`, option.label)}${depends}${multiplier}${pricedOnes ? '' : pickHTML(p, option, o)}${note}${body}
+            ${option.addons ? commonAddonsHTML(p, option, o) : ''}
             <div class="admin-option-actions">${option.multiplier ? '<span></span>' : `<button type="button" class="admin-add" data-action="add-choice" data-option="${o}">${icon('plus')} ${option.addons ? 'Agregar adicional' : 'Agregar opción'}</button>`}<button type="button" class="admin-danger" data-action="remove-option" data-option="${o}">Quitar este grupo</button></div></div>`;
     }).join('');
 }
@@ -1714,7 +1732,22 @@ editor.addEventListener('click', async event => {
     const option = edit.options?.[Number(button.dataset.option)];
     // Un tamaño nuevo lleva su identificador desde ya: los costos por tamaño de los sabores se guardan con él.
     if (action === 'add-choice') option.choices.push(M.priced(option) ? { value: M.unique('tamano', new Set(option.choices.map(c => c.value))), label: '', price: null } : { value: '', label: '' });
-    if (action === 'add-addons') { edit.options = [...(edit.options || []), M.addonsGroup([{ value: '', label: '' }])]; }
+    // En una torta, los adicionales empiezan como los de las demás tortas (con sus precios); en lo demás, uno en blanco.
+    if (action === 'add-addons') {
+        const common = edit.category === 'tortas' ? M.commonAddons(products, edit) : [];
+        edit.options = [...(edit.options || []), M.addonsGroup(common.length ? common : [{ value: '', label: '' }])];
+    }
+    if (action === 'common-addons') {
+        const common = M.commonAddons(products, edit);
+        const list = common.map(c => `<li>${esc(c.label)}: ${esc(addonPriceText(edit, c))}</li>`).join('');
+        if (!(await askConfirm({
+            title: `¿Usar los adicionales de las demás tortas en <em>${esc(edit.name || 'esta torta')}</em>?`,
+            body: `<p>Quedan los mismos que tienen las otras tortas, con el precio que más se usa en cada tamaño. Los que tiene ahora se reemplazan.</p><ul class="admin-confirm-notes">${list}</ul>`,
+            action: 'Usar estos',
+            cancel: 'Dejarlos como están'
+        }))) return;
+        option.choices = common;
+    }
     if (action === 'price-each') {
         // Ofertas: cada cantidad con su propio precio, empezando por lo que hoy cuesta (precio de una × cantidad).
         const unit = typeof edit.price === 'number' && edit.price > 0 ? edit.price : null;

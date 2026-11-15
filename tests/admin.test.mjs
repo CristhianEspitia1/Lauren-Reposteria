@@ -267,8 +267,37 @@ test('Avisos: lo que impide publicar va a su producto y lo que conviene revisar 
     assert.ok(warnings.some(t => t.includes(`«${sizes[0].label}» no tiene precio; se cotiza por WhatsApp.`)), warnings.join('\n'));
     assert.ok(warnings.some(t => t.includes(`adicionales sin precio para algún tamaño: «${addon.label}» en ${sizes[1].label}`)), warnings.join('\n'));
     assert.ok(warnings.filter(t => !t.includes('misma descripción')).length <= 3, 'un aviso por tema, no uno por opción');
+    // La vitrina de adicionales ya no sale en la web: sus productos no dan avisos.
     const vitrina = list.find(p => p.category === 'extras' && p.price === null);
-    assert.ok(M.warnings(list).some(w => w.id === vitrina.id && w.text.includes('Cotiza por WhatsApp')));
+    assert.ok(!M.warnings(list).some(w => w.id === vitrina.id));
+    for (const p of list) if (p.category === 'extras') p.visible = false;
+    assert.ok(!M.warnings(list).some(w => w.text.includes('vitrina')));
+    // Si toda la torta se cotiza, sus adicionales sin precio no dan un segundo aviso.
+    const quoted = list.find(p => p.id === 'torta-vintage');
+    quoted.options = quoted.options.filter(o => o.addons);
+    delete quoted.price;
+    for (const c of quoted.options[0].choices) delete c.extra;
+    const texts = M.warnings(list).filter(w => w.id === quoted.id).map(w => w.text);
+    assert.equal(texts.filter(t => !/se llama igual|misma descripción/.test(t)).length, 1, texts.join('\n'));
+    assert.match(texts[0], /no tiene precio; en la web dice «Cotiza por WhatsApp»/);
+});
+test('Adicionales: una torta reutiliza los de las demás, con el precio que más se usa en cada tamaño', () => {
+    const list = M.migrate(products());
+    const tortas = list.filter(p => p.category === 'tortas' && p.visible !== false && p.options?.some(o => o.addons));
+    const [a, b, c, target] = tortas;
+    const size = M.sizeOf(target).choices[0].value;
+    const addon = p => p.options.find(o => o.addons);
+    for (const p of [a, b, c]) addon(p).choices = [{ value: 'monos', label: 'Moños (lacitos)', extra: { [size]: 2000 } }, { value: 'glitter', label: p === c ? 'Glitter comestibles' : 'Glitter comestible', extra: { [size]: 5000 } }];
+    addon(c).choices[0].extra[size] = 3000;
+    for (const p of tortas.slice(4)) addon(p).choices = [];
+    addon(target).choices = [{ value: 'coronas', label: 'Coronas especiales' }];
+    const common = M.commonAddons(list, target);
+    assert.deepEqual([...common.map(x => x.label)], ['Moños (lacitos)', 'Glitter comestible'], 'el nombre que más se usa, sin repetir');
+    assert.equal(common[0].extra[size], 2000, 'el precio que más se repite');
+    assert.ok(!common.some(x => x.label === 'Coronas especiales'), 'nada de la propia torta ni sin precio');
+    addon(target).choices = common;
+    // Solo el tamaño que tienen las demás lleva precio: los otros siguen avisando, pero ya ninguno queda sin precio del todo.
+    assert.ok(!M.warnings(list).some(w => w.id === target.id && /adicionales? (sin precio \(|«)/.test(w.text)));
 });
 test('Toppings de varias: hasta un máximo según la cajita, y al menos uno', () => {
     const p = M.clone(context.catalogData.brownies);

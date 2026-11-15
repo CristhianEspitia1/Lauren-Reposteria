@@ -133,6 +133,45 @@
     /** Grupo de adicionales nuevo: se marcan varios y cada uno suma su precio (por tamaño, si el producto lo tiene). */
     const addonsGroup = (choices = []) => ({ id: 'adicionales', label: 'Adicionales', type: 'radio', required: false, multiple: true, addons: true, note: 'Detalles que le ponemos a tu torta. Marca los que quieras: cada uno suma su valor al total.', choices });
     /**
+     * Los adicionales con precio que ya tienen las demás tortas visibles, para reutilizarlos en `target`: cada uno con
+     * el nombre que más se usa («Glitter comestible» y «Glitter comestibles» son el mismo) y, para cada tamaño de
+     * `target`, el precio que más se repite en ese tamaño. En el orden en que suelen ir.
+     */
+    function commonAddons(products, target) {
+        const key = label => slug(String(label || '').replace(/\(.*?\)/g, ' ')).replace(/s$/, '');
+        const mode = values => {
+            const counts = new Map();
+            for (const v of values) counts.set(v, (counts.get(v) || 0) + 1);
+            return [...counts].reduce((best, entry) => entry[1] > best[1] ? entry : best, [undefined, 0])[0];
+        };
+        const positive = v => typeof v === 'number' && v > 0;
+        const found = new Map();
+        for (const p of products) {
+            if (p === target || (target?.id && p.id === target.id) || p.category !== 'tortas' || p.visible === false) continue;
+            (p.options || []).find(o => o.addons)?.choices?.forEach((choice, index) => {
+                const k = key(choice.label);
+                const flat = positive(choice.extra) ? [choice.extra] : [];
+                const sized = choice.extra && typeof choice.extra === 'object' ? Object.entries(choice.extra).filter(([, v]) => positive(v)) : [];
+                if (!k || (!flat.length && !sized.length)) return;
+                const entry = found.get(k) || { labels: [], positions: [], flat: [], sizes: new Map() };
+                entry.labels.push(clean(choice.label));
+                entry.positions.push(index);
+                entry.flat.push(...flat);
+                for (const [size, v] of sized) entry.sizes.set(size, [...(entry.sizes.get(size) || []), v]);
+                found.set(k, entry);
+            });
+        }
+        const size = target ? sizeOf(target) : null;
+        const average = list => list.reduce((a, b) => a + b, 0) / list.length;
+        return [...found.values()].sort((a, b) => average(a.positions) - average(b.positions)).map(entry => {
+            const label = mode(entry.labels);
+            const price = sizeValue => mode(entry.sizes.get(sizeValue) || entry.flat);
+            const extra = size ? Object.fromEntries(size.choices.map(sz => [sz.value, price(sz.value)]).filter(([, v]) => positive(v))) : mode(entry.flat);
+            const priced = size ? Object.keys(extra).length > 0 : positive(extra);
+            return { value: slug(label), label, ...(priced ? { extra } : {}) };
+        });
+    }
+    /**
      * Cada producto es independiente: lo que antes tomaba de su torta base (`basedOn`: porciones, precios, textos,
      * sabores) se copia en él, y los adicionales de la vitrina (productos «extras») se copian como grupo propio de cada
      * torta que aún no lo tiene. El panel lo hace al abrir; la web lo ve al publicar.
@@ -229,14 +268,14 @@
     /**
      * Avisos del centro de control, en palabras sencillas y con el producto al que llevan («Ir a arreglarlo»).
      * `problems`: lo que impide publicar (las mismas reglas de `validate`). `warnings`: lo que se puede publicar,
-     * pero conviene revisar (precios vacíos que se cotizan, adicionales sin precio para algún tamaño).
+     * pero conviene revisar (precios vacíos que se cotizan, adicionales sin precio en una torta que tiene precio).
      */
     function problems(products) {
         const named = products.map(p => [clean(p.name) || 'Producto sin nombre', p.id]).sort((a, b) => b[0].length - a[0].length);
         return validate(products).map(text => ({ id: named.find(([name]) => text.startsWith(`${name}:`) || text.startsWith(`${name} ·`))?.[1] || null, text }));
     }
     // Partes de la web que se arman con cada sección: sin productos visibles, se verían vacías.
-    const PAGES = [['La página de Tortas', ['tortas']], ['La vitrina de adicionales de Tortas', ['extras']], ['La página de Alfajores', ['alfajores']], ['La página de Brownies y galletas', ['brownies', 'galletas']], ['La página de Detalles', ['detalles']]];
+    const PAGES = [['La página de Tortas', ['tortas']], ['La página de Alfajores', ['alfajores']], ['La página de Brownies y galletas', ['brownies', 'galletas']], ['La página de Detalles', ['detalles']]];
     /** `all`: el catálogo completo, si `products` es solo la ficha que se está guardando (para comparar con los demás). */
     function warnings(products, all = products) {
         const list = [];
@@ -246,15 +285,16 @@
             if (p.visible === false) continue;
             const name = p.name?.trim() || 'Producto sin nombre';
             const add = text => list.push({ id: p.id || null, text: `${name}: ${text}` });
-            if (p.category === 'extras') {
-                if (!String(p.priceText || '').trim() && !amount(p.price)) add('no tiene precio; en la vitrina dice «Cotiza por WhatsApp».');
-                continue;
-            }
+            // La vitrina de adicionales ya no sale en la web: lo que se cobra va en los adicionales de cada torta.
+            if (p.category === 'extras') continue;
             // Un aviso por producto y por tema, no uno por cada opción.
             const pricedOptions = (p.options || []).filter(o => o.type !== 'toggle' && priced(o));
-            if (!pricedOptions.length && !amount(p.price)) add('no tiene precio; en la web dice «Cotiza por WhatsApp».');
+            const quoted = !pricedOptions.length && !amount(p.price);
+            if (quoted) add('no tiene precio; en la web dice «Cotiza por WhatsApp».');
             const empty = pricedOptions.flatMap(o => o.choices.filter(c => !amount(c.price)).map(c => c.label || 'una opción'));
             if (empty.length) add(`${names(empty)} ${empty.length === 1 ? 'no tiene precio; se cotiza' : 'no tienen precio; se cotizan'} por WhatsApp.`);
+            // Si todo el producto se cotiza, los adicionales también («los cotizamos contigo»): no hay nada que avisar.
+            if (quoted) continue;
             const size = sizeOf(p);
             const none = [], partial = [];
             for (const option of (p.options || []).filter(o => o.addons)) for (const choice of option.choices || []) {
@@ -344,5 +384,5 @@
             return product;
         });
     }
-    window.AdminModel = { SEASONAL, problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes, versionDate, versionChanges, uploadsIn, withoutPhotos };
+    window.AdminModel = { SEASONAL, problems, warnings, migrate, addonsGroup, commonAddons, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes, versionDate, versionChanges, uploadsIn, withoutPhotos };
 })();
