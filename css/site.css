@@ -117,6 +117,44 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .collections-section + .process-section { padding-top: var(--space-xl); }
 }
 .celebration-section { background: color-mix(in srgb, var(--color-lilac) 45%, var(--color-cream)); }
+/* Temporada de la portada: la primera sección mientras el centro de control tenga una encendida (js/season.js).
+   Compacta, sobre durazno 35 % + crema; hasta cuatro productos a la vista y «Ver toda la colección» para el resto.
+   Sus adornos los coloca js/brand-decor.js. */
+.season-section { padding-block: var(--space-3xl); background: color-mix(in srgb, var(--color-peach) 35%, var(--color-cream)); }
+.season-section { position: relative; isolation: isolate; overflow: clip; }
+/* Navidad («Luces»): arriba, el vino con luz desde arriba (más claro en el centro, más hondo abajo), la guirnalda de pino
+   con luces, las bolas que cuelgan de ella y brillan, y el titular en crema con la franja dorada; abajo, los productos
+   sobre verde menta, montados en el borde, con una segunda guirnalda que corre por el borde detrás de ellos. site.js
+   mide dónde cae el borde (--split) y ubica las bolas en el hueco entre el titular y la frase; si es angosto, cuelgan
+   más corto y no llegan al titular. En el teléfono queda solo la del borde. Colores de temporada: solo aquí y en su aviso. */
+.season-garland, .season-balls { display: none; position: absolute; z-index: -1; pointer-events: none; }
+.season-section[data-season="navidad"] { padding-top: 124px; background: linear-gradient(transparent var(--split, 62%), var(--color-season-mint) var(--split, 62%)), radial-gradient(120% 95% at 50% 0%, var(--color-season-wine-light) 0%, var(--color-season-wine) 52%, var(--color-season-wine-deep) 100%) 0 0 / 100% var(--split, 62%) no-repeat; }
+.season-section[data-season="navidad"] .section-heading { color: var(--color-cream); }
+.season-section[data-season="navidad"] .section-heading > p { color: color-mix(in srgb, var(--color-cream) 82%, transparent); }
+.season-section[data-season="navidad"] .eyebrow::before { background: var(--color-season-gold); }
+.season-section[data-season="navidad"] .section-heading h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-season-gold) 60%, transparent) 68% 92%, transparent 92%); }
+.season-section[data-season="navidad"] .product-image { box-shadow: 0 18px 36px -18px color-mix(in srgb, var(--color-text) 40%, transparent), 0 2px 6px -2px color-mix(in srgb, var(--color-text) 15%, transparent); }
+[data-season="navidad"] > .season-garland { display: block; inset: 0 0 auto 0; height: 76px; background: url(../assets/brand/temporada/guirnalda-navidad.svg) 0 0 / 220px 76px repeat-x; filter: drop-shadow(0 3px 3px color-mix(in srgb, var(--color-text) 25%, transparent)); }
+[data-season="navidad"] > .season-garland-edge { top: calc(var(--split, 62%) - 36px); bottom: auto; }
+[data-season="navidad"] > .season-balls { display: block; top: 36px; left: var(--x, 54%); }
+.season-ball { position: absolute; top: 0; left: var(--dx, 0); width: 1px; height: var(--h); background: linear-gradient(var(--color-season-champagne), var(--color-season-gold)); }
+.season-ball::before { content: ''; position: absolute; z-index: 1; left: 50%; top: calc(100% - 6px); width: 9px; height: 7px; translate: -50% 0; border-radius: 2px 2px 1px 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--color-season-gold) 80%, var(--color-text)), var(--color-season-champagne) 45%, color-mix(in srgb, var(--color-season-gold) 80%, var(--color-text))); }
+/* Cada bola con su reflejo, su brillo alrededor (como una luz) y una sombra suave. */
+.season-ball::after { content: ''; position: absolute; left: 50%; top: 100%; width: var(--d); height: var(--d); translate: -50% -2px; border-radius: 50%; background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--color-white) 85%, transparent) 0 9%, color-mix(in srgb, var(--color-white) 25%, transparent) 18%, transparent 30%), radial-gradient(circle at 50% 55%, var(--c) 45%, color-mix(in srgb, var(--c) 60%, var(--color-text)) 100%); box-shadow: 0 0 16px 4px color-mix(in srgb, var(--c) 55%, transparent), 0 6px 10px -4px color-mix(in srgb, var(--color-text) 35%, transparent); }
+.season-ball:nth-child(1) { --h: 96px; --d: 30px; --c: var(--color-season-gold); }
+.season-ball:nth-child(2) { --dx: 54px; --h: 132px; --d: 22px; --c: var(--color-white); }
+.season-ball:nth-child(3) { --dx: -48px; --h: 138px; --d: 20px; --c: var(--color-season-moss); }
+.season-balls.is-short .season-ball:nth-child(1) { --h: 44px; }
+.season-balls.is-short .season-ball:nth-child(2) { --h: 64px; }
+.season-balls.is-short .season-ball:nth-child(3) { --h: 56px; }
+.season-balls-edge { --x: 92%; }
+.season-balls-edge .season-ball:nth-child(1) { --h: 44px; --d: 20px; }
+@media (max-width: 800px) {
+    .season-section[data-season="navidad"] { padding-top: 108px; }
+    [data-season="navidad"] > .season-balls:not(.season-balls-edge) { display: none; }
+}
+.season-more { display: flex; justify-content: center; margin-top: var(--space-xl); }
+.season-more .text-link { padding: 0; background: transparent; }
 /* Tortas de la portada: sección compacta, con «Encuentra tu estilo» a la derecha del titular (en móvil, debajo). */
 .featured-cakes { padding-block: var(--space-3xl); }
 .featured-cakes .section-heading .btn { flex-shrink: 0; }
@@ -306,7 +344,7 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
     .footer-main { grid-template-columns: 1fr 1fr; gap: 40px 20px; padding-block: 44px; }
     .footer-brand { grid-column: 1 / -1; }
     .footer-group a, .footer-group p { font-size: .875rem; }
-    .featured-cakes { padding-block: var(--space-2xl); }
+    .featured-cakes, .season-section { padding-block: var(--space-2xl); }
     .footer-bottom { grid-template-columns: 1fr; gap: 4px; padding-bottom: 32px; }
     .footer-bottom > a { justify-self: start; margin-right: 0; }
     .footer-signature { display: none; }
@@ -335,5 +373,10 @@ h1 .eyebrow { font-family: var(--font-sans); line-height: 1.5; }
 /* Capa decorativa (js/brand-decor.js): el script calcula --x/--y para que cada gráfico quepa completo y no toque el contenido. Los sellos van sobre la esquina de una foto, como .hero-seal. */
 .has-decor { position: relative; isolation: isolate; overflow: clip; }
 .decor { position: absolute; z-index: -1; pointer-events: none; left: var(--x); top: var(--y); width: var(--w); height: var(--h); rotate: var(--r); scale: var(--flip, 1) 1; background: var(--c); -webkit-mask: var(--g) center / contain no-repeat; mask: var(--g) center / contain no-repeat; }
+/* Adornos de temporada: iconos de Trazo Lauren usados como dibujo; los grandes con trazo de ilustración y los pequeños, rellenos. */
+.decor-icon { background: none; -webkit-mask: none; mask: none; color: var(--c); }
+.decor-icon svg { display: block; width: 100%; height: 100%; }
+.decor-icon[data-thin] svg { stroke-width: var(--icon-stroke-display); }
+.decor-icon[data-fill] svg { fill: currentColor; }
 .decor-stamp { z-index: 2; background: var(--stamp); border: 6px solid var(--color-cream); border-radius: 50%; rotate: 0deg; -webkit-mask: none; mask: none; }
 .decor-stamp::before { content: ''; position: absolute; inset: 14%; background: var(--c); -webkit-mask: var(--g) center / contain no-repeat; mask: var(--g) center / contain no-repeat; }

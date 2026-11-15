@@ -11,7 +11,7 @@ import fs from 'node:fs';
 const context = { console, Intl, URL };
 context.window = context;
 vm.createContext(context);
-for (const file of ['catalog-data', 'catalog-model', 'admin-model', 'image-variants', 'brand-icons', 'ui', 'flavors']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
+for (const file of ['catalog-data', 'season-data', 'season', 'catalog-model', 'admin-model', 'image-variants', 'brand-icons', 'ui', 'flavors']) vm.runInContext(fs.readFileSync(new URL(`../js/${file}.js`, import.meta.url), 'utf8'), context);
 const { Catalog, AdminModel: M, LaurenFlavors: F, LaurenUI } = context;
 const real = () => Object.values(M.clone(context.catalogData));
 

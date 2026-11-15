@@ -21,6 +21,16 @@
     --color-border: #ddd3dc;
     --color-error: #9b3048;
     --color-success: #3f634c;
+    /* Colores de temporada: solo dentro de la sección y el aviso de temporada (manual de marca, sección 4). */
+    --color-season-wine: #8f2436;
+    --color-season-wine-light: #a12a3e;
+    --color-season-wine-deep: #761c2d;
+    --color-season-red: #a3293b;
+    --color-season-green: #2f5645;
+    --color-season-moss: #4e7a62;
+    --color-season-mint: #eef2e6;
+    --color-season-gold: #c9a35a;
+    --color-season-champagne: #ead7a8;
     --font-display: 'Playfair Display', Georgia, serif;
     --font-sans: 'Inter', Arial, sans-serif;
     --icon-stroke-display: 1.2;
@@ -49,7 +59,7 @@
 }
 /* Sobre fondos de color (lila 45 %, durazno 35 % y 55 %) la tinta suave lleva 30 % de ciruela: así se lee con
    contraste de al menos 4,5:1 (docs/06-guia-de-estilos.md, «Color»). */
-.celebration-section, .flavor-section, .category-banner, .faq-section, .admin-faq-preview { --color-text-soft: var(--color-text-soft-tinted); }
+.celebration-section, .flavor-section, .category-banner, .faq-section, .season-section, .admin-faq-preview { --color-text-soft: var(--color-text-soft-tinted); }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: .01ms !important;

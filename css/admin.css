@@ -2,7 +2,7 @@
    (.btn, .text-link, .choice, .toggle-option, campos de la ficha, .toast). Sección 9 del manual. */
 .admin { min-height: 100dvh; padding-bottom: 120px; }
 .admin h1 { font-size: clamp(2.5rem, 5vw, 3.75rem); }
-.admin h1 em, .admin-picker h2 em, .admin-confirm h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
+.admin h1 em, .admin-picker h2 em, .admin-confirm h2 em, .admin-preview-dialog h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; }
 .admin-header { border-bottom: 1px solid var(--color-border); background: var(--color-cream); }
 .admin-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 92px; padding-block: 8px; }
 .admin-session { display: flex; align-items: center; gap: 20px; font-size: .8125rem; color: var(--color-text-soft); min-width: 0; }
@@ -73,6 +73,41 @@ main:has(> #authView:not([hidden])) .admin-boot, main:has(> #appView:not([hidden
 .admin-faq-preview .faq-item > p { padding-right: 0; }
 .admin-faq-preview .field-error { padding-bottom: 16px; }
 .admin-price-picker { max-height: min(36dvh, 320px); overflow-y: auto; padding: 2px 6px 2px 2px; border-bottom: 1px solid var(--color-border); }
+
+/* Temporada: su fila usa la de las preguntas. Ficha con la portada de verdad en un marco (teléfono, a escala del
+   ancho de la columna; no se toca) y la foto del aviso, que se elige entre las de sus productos. */
+.admin-season-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+.admin-season-until { margin: -12px 0 16px; }
+.admin-side-preview .text-link { background: transparent; }
+.admin-season-frame { position: relative; overflow: hidden; aspect-ratio: 390 / 620; max-height: calc(92dvh - 330px); margin-block: 4px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-cream); }
+.admin-season-frame iframe { display: block; margin-inline: auto; border: 0; transform: scale(var(--s, 1)); transform-origin: 0 0; }
+.admin-season-photos { display: grid; grid-template-columns: repeat(auto-fill, 64px); gap: 10px; margin-bottom: 8px; }
+.admin-season-photo { position: relative; display: block; cursor: pointer; }
+.admin-season-photo input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.admin-season-photo img, .admin-season-photo span { display: grid; place-items: center; width: 64px; height: 80px; object-fit: cover; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-peach); color: var(--color-text-soft); font-size: .6875rem; text-align: center; transition: border-color var(--transition-fast); }
+.admin-season-photo span { background: var(--color-cream); }
+.admin-season-photo:hover img, .admin-season-photo:hover span { border-color: var(--color-lilac); }
+.admin-season-photo input:checked + * { outline: 2px solid var(--color-text); outline-offset: 2px; }
+.admin-season-photo input:focus-visible + * { outline: 2px solid var(--color-text); outline-offset: 5px; }
+/* «Ver en grande»: el marco a tamaño real (teléfono o computador), encima de la ficha. */
+.admin-preview-dialog { width: min(1360px, calc(100% - 32px)); height: min(94dvh, 1000px); max-height: none; }
+.admin-preview-body { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100%; }
+.admin-preview-head { position: relative; padding: clamp(20px, 3vw, 32px) clamp(20px, 3vw, 32px) 16px; }
+.admin-preview-head .eyebrow { margin-bottom: 12px; }
+.admin-preview-head h2 { font-size: clamp(1.625rem, 3vw, 2rem); padding-right: 48px; }
+.admin-preview-tools { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 16px; }
+.admin-preview-tools .personal-field { margin-bottom: 0; }
+.admin-preview-head > .field-note { margin: 12px 0 0; }
+/* Computador y teléfono, uno al lado del otro; en pantallas angostas, el teléfono primero y el computador debajo. */
+.admin-preview-frames { display: grid; grid-template-columns: minmax(0, 1fr) clamp(230px, 24%, 320px); gap: 16px; min-height: 0; padding: 0 clamp(12px, 3vw, 32px) clamp(12px, 3vw, 32px); }
+.admin-preview-frames figure { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 8px; min-width: 0; min-height: 0; }
+.admin-preview-frames figcaption { font: 500 .6875rem/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--color-text-soft); }
+.admin-preview-frames .admin-season-frame { aspect-ratio: auto; max-height: none; height: 100%; margin: 0; }
+@media (max-width: 800px) {
+    .admin-preview-frames { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+    .admin-preview-frames figure:last-child { order: -1; }
+    .admin-preview-frames .admin-season-frame { height: 72dvh; }
+}
 
 /* Barra de publicación: flota sobre la página como el aviso */
 .admin-savebar { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(760px, calc(100% - 32px)); display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px 14px 22px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-float); z-index: var(--z-toast); font-size: .8125rem; }
@@ -252,7 +287,7 @@ main:has(> #authView:not([hidden])) .admin-boot, main:has(> #appView:not([hidden
     .admin-savebar { flex-direction: column; align-items: stretch; bottom: 12px; }
     .admin .toast { bottom: 172px; }
     .admin-savebar > div .btn { flex: 1; }
-    .admin-editor, .admin-picker { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
+    .admin-editor, .admin-picker, .admin-preview-dialog { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
     .admin-editor form, .admin-picker-body { max-height: 100dvh; height: 100%; }
     .admin-choice { grid-template-columns: minmax(0, 1fr) 118px 44px; }
     .admin-gallery { grid-template-columns: minmax(0, 1fr); }

@@ -7,6 +7,26 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-11-15 — Auditoría del recorrido: ficha de producto y entrada al centro de control]
+
+- Auditoría del recorrido completo en producción (cliente y entrada al panel), en computador y teléfono: sin fallos graves. Lo que sigue son sus arreglos.
+- **La ficha abre en el precio de su tarjeta:** empieza con la combinación más económica marcada (`Catalog.starting`), así el total coincide con el «Desde». Antes abría en la primera opción de cada grupo: Detalle Golden decía «Desde $85.000» y abría en $88.000; pasaba igual en Golden Mostacho y en Kit para decorar.
+- **Brownies:** los toppings marcados ya no se pierden al pasar por «Vaso de 20 mini brownies» y volver a una caja.
+- **Productos que se cotizan enteros** (como «Otros diseños que te pueden gustar»): los adicionales dicen «Marca los que quieras y los cotizamos contigo», no que suman a un total que no existe.
+- **Centro de control:** «Entrar» sin correo o sin clave lo dice en la página, con el foco en el campo que falta, sin consultar a Firebase. El paso del código y el alta de la app de códigos tienen «Entrar con otra cuenta» para volver al correo y la clave.
+- 1 prueba nueva (120 en total).
+
+## [2026-11-15 — Temporada: sección en la portada, aviso al entrar y su manejo desde el centro de control]
+
+- **Temporada en la web:** con una temporada encendida (Navidad, Amor y Amistad, Día de la Madre, Halloween u otra celebración), la portada abre con su sección, justo después de la franja de valores: etiqueta, titular en dos tiempos, frase y sus productos en tarjetas compactas (una fila a la vista y «Ver toda la colección»), sobre durazno 35 % + crema y con adornos de su temporada. Cada persona ve además su aviso en el centro de la pantalla al entrar, una vez al día, en cualquier página (salvo la de error), con un solo botón.
+- **Centro de control:** filtro y grupo «Temporada» al principio de la lista, con una fila por temporada (encender o apagar con confirmación, solo una a la vez) y su ficha: último día opcional, textos de la sección, aviso (botón hacia la sección, una página o WhatsApp; foto elegida entre las de sus productos) y la portada de verdad en un marco, que cambia mientras se escribe («La sección» o «El aviso»; «Ver en grande» como teléfono o computador). Los productos de temporada se crean en blanco o con las opciones de un tipo de producto y solo se ven y se piden mientras su temporada está encendida.
+- Datos: campo `temporada` en `catalogo/actual` (reglas de Firestore al día: hay que publicarlas antes que la web), `js/season-data.js` como copia del repositorio (el workflow la trae) y `js/season.js` con las reglas. «Versiones» guarda y restaura la temporada. Los productos de temporada no entran al SEO.
+- Once iconos de temporada en Trazo Lauren y adornos que cambian con los datos en `js/brand-decor.js`.
+- Navidad con colores propios, elegidos por el negocio entre varias propuestas («Dos tonos»): arriba vino con la guirnalda de pino, luces y bolas colgando y el titular en crema; abajo, los productos sobre menta. El aviso lleva la franja vino con la guirnalda. Siete colores de temporada en `css/tokens.css`, solo para la sección y el aviso de Navidad.
+- Vista previa del panel: «Vista previa» en cada temporada muestra la portada en computador y teléfono a la vez (con productos de ejemplo si aún no tiene los suyos).
+- Acabado final elegido por el negocio, «Luces»: guirnalda frondosa con bayas y luces que brillan, bolas con reflejo y brillo, vino con luz desde arriba, segunda guirnalda por el borde detrás de los productos, titular con franja dorada y tarjetas con sombra suave.
+- Manual de marca 3.14. 13 pruebas nuevas (119 en total).
+
 ## [2026-11-10 — SEO: tipografías propias, contraste y horario]
 
 - Revisión de SEO en producción (106 pruebas, redirecciones, datos estructurados, PageSpeed Insights y estado en Google y Bing). Resultado y pendientes externos en [SEO](11-seo.md#estado-en-buscadores-10-de-noviembre-de-2026).

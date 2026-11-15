@@ -107,6 +107,166 @@
         catalogRenders.push(render);
     });
 
+    /*
+     * Temporada (js/season.js): mientras el centro de control tenga una encendida, la portada abre con su sección
+     * (`[data-season]`: etiqueta, titular, frase y sus productos, una fila a la vista) y cada persona ve su aviso
+     * al entrar, una vez al día, en cualquier página. El aviso espera a leer lo publicado (catalog-live.js) para no
+     * mostrar una temporada que ya se apagó. Dentro del marco de vista previa del centro de control, la página pinta
+     * el borrador que le envía el panel y no abre el aviso por su cuenta.
+     */
+    const Season = window.LaurenSeason;
+    if (Season) {
+        const section = document.querySelector('[data-season]');
+        const framed = window.parent !== window;
+        const seasonal = () => Season.active() ? Catalog.all().filter(p => p.category === Season.CATEGORY) : [];
+        // Adornos de cada temporada (manual de marca, sección 8): uno grande entre el titular y la frase, uno al final
+        // del titular y diez pequeños en los márgenes de arriba y de abajo. Los coloca js/brand-decor.js.
+        const DECOR = {
+            navidad: ['icon:pine', 'icon:sparkle', ['icon:sparkle', 'icon:snowflake', 'icon:sparkle', 'icon:ornament', 'icon:snowflake']],
+            'amor-y-amistad': ['icon:hearts', 'corazon', ['corazon']],
+            'dia-de-la-madre': ['icon:flower', 'corazon', ['corazon', 'icon:flower', 'corazon']],
+            halloween: ['icon:pumpkin', 'icon:sparkle', ['icon:moon', 'icon:sparkle', 'icon:candy', 'icon:sparkle', 'icon:ghost']],
+            celebracion: ['icon:gift', 'corazon', ['corazon', 'icon:sparkle']]
+        };
+        // [x, y] en fracciones de la sección, tamaño, giro, color y si queda en el teléfono.
+        const SPOTS = [[.03, .07, 16, -12, 'apricot', 1], [.2, .05, 13, 10, 'lilac'], [.44, .06, 15, -8, 'lilac', 1], [.68, .05, 20, 14, 'apricot'], [.9, .07, 14, -10, 'lilac', 1],
+            [.975, .5, 13, 8, 'apricot'], [.08, .955, 14, 12, 'lilac'], [.33, .96, 17, -14, 'apricot', 1], [.6, .955, 13, 6, 'lilac'], [.86, .96, 22, -6, 'apricot', 1]];
+        // Navidad («Luces»): las guirnaldas y las bolas van en CSS; abajo, sobre el verde menta, copos, pinos y chispas.
+        const NAVIDAD = [[.04, 'icon:snowflake', 26, 'season-moss', 0, 1], [.22, 'icon:sparkle', 18, 'season-gold', 1], [.4, 'icon:pine', 30, 'season-green', 1], [.6, 'icon:snowflake', 22, 'season-moss', 0], [.78, 'icon:sparkle', 20, 'season-red', 1, 1], [.96, 'icon:pine', 36, 'season-green', 1, 1]];
+        function decorate(id) {
+            const [big, end, small] = DECOR[id] || DECOR.celebracion;
+            section.decorItems = id === 'navidad' ? NAVIDAD.map(([x, graphic, w, c, fill, m]) => [graphic, { to: 'self', box: 1, at: [x, 1], d: [0, -1.2], w, c, m, fill, free: 1, reach: 60 }]) : [
+                [big, { between: ['[data-season-title]', '[data-season-text]'], desk: 1, d: [0, 0], w: 76, thin: 1, m: 1, alt: [{ to: '.section-heading', box: 1, at: [1, 0], d: [-.5, .5] }] }],
+                [end, { to: '[data-season-title]', end: 1, d: [1.2, -.1], w: 18, c: 'apricot', fill: 1, m: 1 }],
+                ...SPOTS.map(([x, y, w, r, c, m], i) => [small[i % small.length], { to: 'self', box: 1, at: [x, y], d: [0, 0], w, r, c, m, fill: 1, free: 1, reach: 70 }])
+            ];
+            section.setAttribute('data-decor', '');
+            section.dispatchEvent(new CustomEvent('decor:update', { bubbles: true }));
+        }
+        // Bolas de Navidad: cuelgan de la guirnalda en el centro del hueco entre el titular y la frase. Con un titular
+        // largo (hueco angosto) cuelgan más corto, por encima del titular.
+        const balls = section?.querySelector('[data-season-balls]');
+        const textRange = document.createRange();
+        function hang() {
+            if (!balls || section.hidden) return;
+            const box = section.getBoundingClientRect(), frame = section.querySelector('.container').getBoundingClientRect();
+            const text = section.querySelector('[data-season-text]');
+            textRange.selectNodeContents(section.querySelector('[data-season-title]'));
+            const right = Math.max(frame.left, ...[...textRange.getClientRects()].map(rect => rect.right));
+            const gap = (text.hidden ? frame.right : text.getBoundingClientRect().left) - right;
+            balls.classList.toggle('is-short', gap < 170);
+            balls.style.setProperty('--x', `${(gap < 170 ? frame.left + frame.width * .54 : right + gap / 2) - box.left}px`);
+            // El vino llega hasta un poco más abajo del borde de arriba de las fotos; el resto es verde menta. Por ese borde
+            // corre la segunda guirnalda, detrás de las tarjetas.
+            const grid = section.querySelector('[data-season-grid]').getBoundingClientRect();
+            section.style.setProperty('--split', `${grid.top - box.top + (narrow.matches ? 84 : 96)}px`);
+        }
+        if (section) new ResizeObserver(hang).observe(section);
+        document.fonts?.ready.then(hang);
+        // A la vista, una fila: cuatro productos, o dos en el teléfono (donde van de a dos por fila).
+        const narrow = matchMedia('(max-width: 800px)');
+        const limit = () => narrow.matches ? 2 : 4;
+        let expanded = false, jumped = false;
+        const title = (first, second) => [first && esc(first), second && `<em>${esc(second)}</em>`].filter(Boolean).join('<br>');
+        function renderSeason() {
+            if (!section) return;
+            const season = Season.active();
+            const products = seasonal();
+            section.hidden = !products.length;
+            if (!products.length) return;
+            if (section.dataset.season !== season.id) expanded = false;
+            const label = section.querySelector('[data-season-label]'), text = section.querySelector('[data-season-text]'), more = section.querySelector('.season-more');
+            label.textContent = season.etiqueta; label.hidden = !season.etiqueta;
+            section.querySelector('[data-season-title]').innerHTML = title(season.titulo, season.destacado);
+            text.textContent = season.texto; text.hidden = !season.texto;
+            section.querySelector('[data-season-grid]').innerHTML = (expanded ? products : products.slice(0, limit())).map(product => productCard(product, '(max-width: 800px) 45vw, (max-width: 1280px) 22vw, 280px', true)).join('');
+            more.hidden = expanded || products.length <= limit();
+            // En la vista previa del panel las fotos se piden de una vez: el marco no siempre avisa que ya se ven.
+            if (window.catalogPreview) section.querySelectorAll('[data-season-grid] img').forEach(image => { image.loading = 'eager'; });
+            if (section.dataset.season !== season.id) { section.dataset.season = season.id; decorate(season.id); }
+            // Quien llega desde el aviso de otra página (/#temporada) queda en la sección, que se arma después de cargar.
+            hang();
+            if (!jumped && location.hash === '#temporada') { jumped = true; requestAnimationFrame(() => section.scrollIntoView()); }
+        }
+        section?.querySelector('[data-season-more]').addEventListener('click', () => {
+            expanded = true; renderSeason();
+            section.querySelectorAll('.product-card')[limit()]?.querySelector('.product-name').focus({ preventScroll: true });
+        });
+        narrow.addEventListener('change', () => renderSeason());
+        renderSeason();
+        catalogRenders.push(renderSeason);
+
+        // Aviso de temporada: diálogo de la marca con el icono de la temporada, su titular en dos tiempos y un solo botón.
+        const ACCENTS = { navidad: ['sparkle', 'ornament'], 'amor-y-amistad': ['heart', 'heart'], 'dia-de-la-madre': ['heart', 'sparkle'], halloween: ['moon', 'sparkle'], celebracion: ['heart', 'sparkle'] };
+        let aviso = null;
+        function openAviso(season) {
+            if (!aviso) {
+                aviso = Object.assign(document.createElement('dialog'), { id: 'seasonDialog', className: 'season-dialog' });
+                aviso.setAttribute('aria-labelledby', 'seasonDialogTitle');
+                document.body.append(aviso);
+                LaurenUI.dialogEvents(aviso);
+                aviso.addEventListener('click', event => {
+                    const go = event.target.closest('[data-season-go]');
+                    if (!go) return;
+                    LaurenUI.close(aviso);
+                    // En la portada, el botón baja a la sección sin recargar la página.
+                    if (go.dataset.seasonGo === 'temporada' && section && !section.hidden) { event.preventDefault(); requestAnimationFrame(() => section.scrollIntoView()); }
+                });
+            }
+            const photo = Season.avisoPhoto(season);
+            const [key, , path] = Season.DESTINOS.find(([id]) => id === season.aviso.destino) || Season.DESTINOS[0];
+            const outside = key === 'whatsapp';
+            const href = outside ? wa('Hola, Laura. Vi el aviso en la web y quiero saber más.') : path;
+            aviso.classList.toggle('has-photo', Boolean(photo));
+            aviso.dataset.season = season.id;
+            aviso.innerHTML = `<button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar aviso">${icon('close')}</button><div class="season-dialog-layout">${photo ? `<img class="season-dialog-photo" ${imageAttributes(photo, '(max-width: 600px) 92vw, 340px')} alt="" width="720" height="900" decoding="async">` : ''}<div class="season-dialog-body"><span class="season-dialog-art" aria-hidden="true">${icon(season.icono)}${(ACCENTS[season.id] || ACCENTS.celebracion).map(name => `<span>${icon(name)}</span>`).join('')}</span>${season.etiqueta ? `<p class="eyebrow">${esc(season.etiqueta)}</p>` : ''}<h2 id="seasonDialogTitle">${title(season.aviso.titulo, season.aviso.destacado)}</h2>${season.aviso.texto ? `<p>${esc(season.aviso.texto)}</p>` : ''}<a class="btn" href="${esc(href)}" data-season-go="${esc(key)}"${outside ? ' target="_blank" rel="noopener noreferrer"' : ''}>${esc(season.aviso.boton || 'Ver la colección')} ${icon(key === 'temporada' ? 'arrow' : 'diagonal')}</a></div></div>`;
+            if (!aviso.open) LaurenUI.open(aviso);
+        }
+        // Una vez al día por persona: se anota al mostrarlo. Si el navegador no deja anotar, no se muestra (saldría en cada página).
+        const SEEN = 'lauren-aviso-temporada';
+        const seen = season => { try { const last = JSON.parse(localStorage.getItem(SEEN) || 'null'); return last?.id === season.id && last.dia === Season.today(); } catch { return true; } };
+        const remember = season => { try { localStorage.setItem(SEEN, JSON.stringify({ id: season.id, dia: Season.today() })); return true; } catch { return false; } };
+        function autoAviso() {
+            const season = Season.active();
+            if (framed || window.catalogPreview || document.body.dataset.page === 'error' || !season?.aviso.activo) return;
+            if (!season.aviso.titulo && !season.aviso.destacado) return;
+            // Si el botón lleva a la sección, tiene que haber sección; y nunca se abre encima de otro diálogo.
+            if ((season.aviso.destino === 'temporada' && !seasonal().length) || document.querySelector('dialog[open]')) return;
+            if (seen(season) || !remember(season)) return;
+            openAviso(season);
+        }
+        const settled = new Promise(resolve => {
+            if (window.catalogSettled) return resolve();
+            document.addEventListener('catalog:settled', resolve, { once: true });
+            setTimeout(resolve, 2500);
+        });
+        Promise.all([settled, new Promise(resolve => setTimeout(resolve, 1200))]).then(() => {
+            if (!document.hidden) return autoAviso();
+            document.addEventListener('visibilitychange', function show() {
+                if (document.hidden) return;
+                document.removeEventListener('visibilitychange', show);
+                autoAviso();
+            });
+        });
+        // Vista previa del centro de control: solo desde el propio sitio y desde la página que enmarca a esta.
+        if (framed) window.addEventListener('message', event => {
+            const message = event.data;
+            if (event.origin !== location.origin || event.source !== window.parent || message?.lauren !== 'vista-temporada') return;
+            if (!Catalog.wellFormed(message.catalogo) || !Season.valid(message.temporada)) return;
+            // La vista previa se mira, no se usa: ningún toque abre un producto, cambia el pedido ni sale a otra página.
+            if (!window.catalogPreview) document.addEventListener('click', click => { click.preventDefault(); click.stopImmediatePropagation(); }, true);
+            window.catalogPreview = true;
+            window.catalogData = message.catalogo;
+            window.seasonData = message.temporada;
+            document.dispatchEvent(new CustomEvent('catalog:updated'));
+            const season = Season.active();
+            if (message.ver === 'aviso' && season) return openAviso(season);
+            if (aviso?.open) aviso.close();
+            if (section && !section.hidden) section.scrollIntoView({ behavior: 'instant', block: 'start' });
+            else scrollTo({ top: 0, behavior: 'instant' });
+        });
+    }
+
     balance();
     catalogRenders.push(balance);
     const lightbox = document.getElementById('lightboxDialog');

@@ -41,3 +41,19 @@ test('Un «__proto__» o un identificador raro no llega a js/catalog-data.js ni 
     assert.deepEqual(revisar(adentro), ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).']);
     assert.deepEqual(revisar(catalog(), JSON.parse('{"temas":[],"preguntas":[],"__proto__":{"x":1}}')), ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).']);
 });
+
+test('La temporada publicada se revisa antes de llegar a js/season-data.js', () => {
+    const navidad = catalog();
+    navidad['galletas-navidad'] = { ...navidad['caja-x6'], id: 'galletas-navidad', name: 'Galletas navideñas', category: 'temporada', group: 'navidad', mainImage: '/assets/propuestas-fotograficas/galletas-de-navidad.webp', images: [] };
+    const season = { activa: 'navidad', temporadas: [{ id: 'navidad', titulo: 'Esta Navidad,', destacado: 'regala algo dulce.' }] };
+    assert.deepEqual(revisar(navidad, null, season), []);
+    assert.deepEqual(revisar(navidad, null, { activa: '', temporadas: [] }), []);
+    // Un producto de temporada sin su temporada, una temporada con otra forma o un «__proto__» no llegan.
+    const suelto = catalog();
+    suelto['galletas-navidad'] = { ...navidad['galletas-navidad'], group: 'verano' };
+    assert.ok(revisar(suelto, null, season).some(e => e.includes('elige su temporada')));
+    assert.deepEqual(revisar(navidad, null, { activa: 'verano', temporadas: [] }), ['La temporada publicada no tiene la forma esperada.']);
+    assert.deepEqual(revisar(navidad, null, JSON.parse('{"activa":"","temporadas":[],"__proto__":{"x":1}}')), ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).']);
+    // Encendida, con el aviso hacia la sección y sin productos visibles: el panel no lo publica y el workflow no lo trae.
+    assert.ok(revisar(catalog(), null, season).some(e => e.includes('no tiene productos visibles')));
+});

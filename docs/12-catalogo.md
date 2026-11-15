@@ -8,8 +8,8 @@
 | --- | --- | --- |
 | `id` | Sí | Identificador estable en kebab-case. No cambiarlo: lo usan los pedidos guardados |
 | `name` | Sí | Nombre en la tarjeta y la ficha |
-| `category` | Sí | `tortas`, `alfajores`, `brownies`, `galletas`, `detalles` o `extras`. Decide en qué página aparece |
-| `group` | No | Filtro dentro de la página: `cajas`, `especiales` (Alfajores); `osos`, `mix`, `golden` (Detalles) |
+| `category` | Sí | `tortas`, `alfajores`, `brownies`, `galletas`, `detalles`, `extras` o `temporada`. Decide en qué página aparece |
+| `group` | No | Filtro dentro de la página: `cajas`, `especiales` (Alfajores); `osos`, `mix`, `golden` (Detalles). En `temporada` es obligatorio: la temporada del producto (`navidad`, `amor-y-amistad`, `dia-de-la-madre`, `halloween`, `celebracion`) |
 | `visible` | Sí | `false` oculta el producto: no se muestra, no se pide y no entra al SEO |
 | `featured` | No | Solo tortas: `true` la muestra en «Una torta tan única como tu celebración» de la portada (cuatro como máximo; si faltan, se completan con las siguientes tortas). En otras secciones no tiene efecto |
 | `summary` | No | Frase corta de la tarjeta; sin ella se usa `description`. En las tarjetas de torta (compactas) solo se muestra si existe, nunca la descripción |
@@ -73,9 +73,23 @@ Si el producto se oculta o queda sin precio, el texto dice «precio a consultar�
 
 El orden de la lista es el de cada página. En el panel, los importes y enlaces se escriben en palabras («[precio de Torta Sencilla, 25 a 30 porciones]», «[precio más bajo de Brownies y Galletas]», «[página Tortas]») y se guardan con estas referencias.
 
+## Temporada
+
+`js/season-data.js` guarda solo datos (`window.seasonData`), con el mismo formato que publica el centro de control en el campo `temporada` de `catalogo/actual`; las reglas viven en `js/season.js`. Con una temporada encendida, `site.js` arma su sección al principio de la portada (`<section data-season>`, vacía y oculta en el HTML) y abre su aviso una vez al día en cualquier página.
+
+| Campo | Qué es |
+| --- | --- |
+| `activa` | La temporada encendida (su `id`) o vacío. Solo una a la vez |
+| `temporadas[].id` | `navidad`, `amor-y-amistad`, `dia-de-la-madre`, `halloween` o `celebracion` (la lista, con su icono y sus textos de partida, está en `LaurenSeason.SEASONS`). Solo se guardan las que el negocio ha editado |
+| `etiqueta`, `titulo`, `destacado`, `texto` | La sección de la portada: la etiqueta, el titular en dos tiempos (`destacado` va en `<em>`) y la frase |
+| `hasta` | Último día (`2026-12-24`) o vacío. Pasado ese día en Colombia, la temporada deja de verse sola |
+| `aviso` | `activo`, `titulo`, `destacado`, `texto`, `boton`, `destino` (`temporada`, `tortas`, `alfajores`, `brownies-galletas`, `detalles` o `whatsapp`) y `foto` (una de las fotos de sus productos visibles; si ya no lo es, el aviso va sin foto) |
+
+Los productos de una temporada son los del catálogo con `category: 'temporada'` y `group` igual a su `id`, en el orden del archivo. `Catalog.get` y `Catalog.all` solo los devuelven mientras esa temporada es la que se ve hoy (`LaurenSeason.active()`): con la temporada apagada o vencida no se muestran ni se pueden pedir, y un pedido guardado los suelta. No entran al SEO.
+
 ## Después de cambiar el catálogo
 
-Lo publicado desde el centro de control (catálogo y preguntas) llega solo al repositorio en menos de una hora (workflow «Catálogo publicado», ver [centro de control](13-centro-de-control.md#cómo-funciona)). Para traerlo ya, también regenera el SEO:
+Lo publicado desde el centro de control (catálogo, preguntas y temporada) llega solo al repositorio en menos de una hora (workflow «Catálogo publicado», ver [centro de control](13-centro-de-control.md#cómo-funciona)). Para traerlo ya, también regenera el SEO:
 
 ```bash
 node scripts/pull-catalog.mjs

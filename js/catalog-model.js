@@ -2,8 +2,12 @@
 (() => {
     'use strict';
     const money = value => '$' + new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value);
-    // Un producto oculto desde el centro de control no se muestra, no se pide y no se indexa.
-    const shown = product => product.visible !== false;
+    // Un producto oculto desde el centro de control no se muestra, no se pide y no se indexa. Los de temporada
+    // (`category: 'temporada'`, `group`: su temporada) solo existen en la web mientras esa temporada está encendida
+    // (js/season.js); sin ese módulo, no se muestran.
+    const SEASONAL = 'temporada';
+    const inSeason = product => product.category !== SEASONAL || window.LaurenSeason?.active()?.id === product.group;
+    const shown = product => product.visible !== false && inSeason(product);
     // `basedOn` (formato anterior): una torta tomaba de otra lo que no definía. El centro de control ya independiza
     // cada grupo al abrirse; esto solo sirve para leer un catálogo publicado antes de ese cambio.
     const inherited = ['description', 'includes', 'notes', 'price', 'priceSuffix', 'minimum', 'quantityLabel', 'options', 'personalization'];

@@ -323,7 +323,7 @@ test('Avisos: nombre o descripción repetidos y páginas que quedarían vacías'
     assert.ok(!M.warnings(list).some(w => w.id === b.id));
     for (const p of list) if (p.category === 'alfajores') p.visible = false;
     assert.ok(M.warnings(list).some(w => w.id === null && w.text === 'La página de Alfajores no tiene productos visibles: se verá vacía en la web.'));
-    assert.deepEqual({ ...M.LIMITS }, { catalog: 900000, faqs: 200000, document: 1000000 }, 'los mismos límites de firestore.rules y bajo 1 MiB');
+    assert.deepEqual({ ...M.LIMITS }, { catalog: 900000, faqs: 200000, season: 20000, document: 1000000 }, 'los mismos límites de firestore.rules y bajo 1 MiB');
     assert.match(fs.readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8'), /data\.json\.size\(\) < 900000[\s\S]*data\.preguntas\.size\(\) < 200000/);
 });
 

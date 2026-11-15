@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Trae al repositorio el catálogo y las preguntas frecuentes publicados desde el centro de control (Firestore
- * `catalogo/actual`, de lectura pública) y vuelve a generar lo que sale de ellos: las preguntas de cada página, datos
- * estructurados, sitemap.xml y llms.txt (scripts/seo.mjs).
+ * Trae al repositorio el catálogo, las preguntas frecuentes y la temporada publicados desde el centro de control
+ * (Firestore `catalogo/actual`, de lectura pública) y vuelve a generar lo que sale de ellos: las preguntas de cada
+ * página, datos estructurados, sitemap.xml y llms.txt (scripts/seo.mjs).
  * Así la primera pintura de la web, Google y los asistentes ven lo mismo que la web en vivo.
  *
- *   node scripts/pull-catalog.mjs           revisa lo publicado, escribe js/catalog-data.js y js/faq-data.js y ejecuta scripts/seo.mjs
+ *   node scripts/pull-catalog.mjs           revisa lo publicado, escribe js/catalog-data.js, js/faq-data.js y js/season-data.js y ejecuta scripts/seo.mjs
  *   node scripts/pull-catalog.mjs --check   no escribe nada; sale con 1 si el repositorio está atrasado
  *
  * Antes de escribir, revisa lo publicado con las mismas reglas que el panel aplica al publicar (admin-model.js):
@@ -21,23 +21,27 @@ import { fileURLToPath } from 'node:url';
 const PUBLISHED = 'https://firestore.googleapis.com/v1/projects/lauren-reposteria/databases/(default)/documents/catalogo/actual';
 const file = fileURLToPath(new URL('../js/catalog-data.js', import.meta.url));
 const faqFile = fileURLToPath(new URL('../js/faq-data.js', import.meta.url));
+const seasonFile = fileURLToPath(new URL('../js/season-data.js', import.meta.url));
 const source = name => readFileSync(fileURLToPath(new URL(`../js/${name}.js`, import.meta.url)), 'utf8');
 
-/** Problemas del catálogo (y de las preguntas, si llegan) publicados, en palabras del panel; vacío si se puede traer. */
-export function revisar(published, faqs = null) {
+/** Problemas del catálogo (y de las preguntas y la temporada, si llegan) publicados, en palabras del panel; vacío si se puede traer. */
+export function revisar(published, faqs = null, season = null) {
     if (!published || typeof published !== 'object' || Array.isArray(published) || !Object.keys(published).length) return ['El catálogo publicado llegó vacío.'];
     // Identificadores como los que crea el panel (AdminModel.slug): así ninguno es «__proto__» ni rompe el archivo.
     const broken = Object.entries(published).filter(([id, p]) => !/^[a-z0-9-]{1,80}$/.test(id) || !p || typeof p !== 'object' || p.id !== id || typeof p.name !== 'string' || typeof p.category !== 'string');
     if (broken.length) return broken.map(([id]) => `«${id}»: le falta su identificador, su nombre o su sección.`);
-    const context = { Intl, catalogData: published };
+    const context = { Intl, catalogData: published, seasonData: season || { activa: '', temporadas: [] } };
     context.window = context;
     vm.createContext(context);
     try {
         // Un «__proto__» escrito en js/catalog-data.js o js/faq-data.js cambiaría el prototipo del objeto al cargarlo.
         const unsafe = value => Boolean(value) && typeof value === 'object' && Object.keys(value).some(key => key === '__proto__' || unsafe(value[key]));
-        if (unsafe(published) || unsafe(faqs)) return ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).'];
-        for (const name of ['catalog-model', 'admin-model', 'faqs']) vm.runInContext(source(name), context);
+        if (unsafe(published) || unsafe(faqs) || unsafe(season)) return ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).'];
+        for (const name of ['season', 'catalog-model', 'admin-model', 'faqs']) vm.runInContext(source(name), context);
+        // La temporada se revisa primero: de ella depende qué productos de temporada cuentan como visibles.
+        if (season && !context.LaurenSeason.valid(season)) return ['La temporada publicada no tiene la forma esperada.'];
         const errors = [...context.AdminModel.validate(Object.values(published))];
+        if (season) errors.push(...context.LaurenSeason.problems(season, published).map(problem => problem.text));
         // La web debe poder dibujar el precio de cada tarjeta sin fallar.
         for (const product of context.Catalog.all()) context.Catalog.priceLabel(product);
         if (faqs) {
@@ -53,7 +57,7 @@ export function revisar(published, faqs = null) {
 async function main() {
     const check = process.argv.includes('--check');
     const fail = message => { console.error(message); process.exit(2); };
-    let document, published, faqs = null;
+    let document, published, faqs = null, season = null;
     try {
         const response = await fetch(PUBLISHED);
         if (!response.ok) fail(`No pudimos leer el catálogo publicado (HTTP ${response.status}).`);
@@ -61,6 +65,8 @@ async function main() {
         published = JSON.parse(document.fields?.json?.stringValue ?? 'null');
         // Las preguntas llegan solo si ya se publicaron desde el panel; si no, se quedan las del repositorio.
         if (document.fields?.preguntas?.stringValue) faqs = JSON.parse(document.fields.preguntas.stringValue);
+        // Igual la temporada: llega desde la primera vez que se guarda una en el panel.
+        if (document.fields?.temporada?.stringValue) season = JSON.parse(document.fields.temporada.stringValue);
     } catch (error) { fail(`No pudimos leer el catálogo publicado: ${error.message}`); }
     if (!published || typeof published !== 'object' || Array.isArray(published) || !Object.keys(published).length) fail('El catálogo publicado llegó vacío; no se cambia nada.');
 
@@ -78,21 +84,25 @@ async function main() {
     const next = `${text.slice(0, text.indexOf('window.catalogData = '))}window.catalogData = ${JSON.stringify(published, null, 4)};\n`;
     const faqText = readFileSync(faqFile, 'utf8');
     const faqNext = faqs ? `${faqText.slice(0, faqText.indexOf('window.faqData = '))}window.faqData = ${JSON.stringify(faqs, null, 4)};\n` : faqText;
+    const seasonText = readFileSync(seasonFile, 'utf8');
+    const seasonNext = season ? `${seasonText.slice(0, seasonText.indexOf('window.seasonData = '))}window.seasonData = ${JSON.stringify(season, null, 4)};\n` : seasonText;
 
     // Sin el correo de quien publicó: este texto termina en el historial público del repositorio.
     console.log(`Publicado el ${document.fields.updatedAt?.timestampValue ?? '¿?'}: ${ids(published).length} productos${faqs ? ` y ${faqs.preguntas.length} preguntas` : ''}.`);
-    if (next === text && faqNext === faqText) { console.log('El repositorio ya tiene el catálogo publicado.'); process.exit(0); }
+    if (next === text && faqNext === faqText && seasonNext === seasonText) { console.log('El repositorio ya tiene el catálogo publicado.'); process.exit(0); }
     // Subir o bajar productos en el centro de control solo cambia su orden.
     const kept = data => ids(data).filter(id => current[id] && published[id]).join('\n');
     if (next !== text) console.log(`Nuevos: ${names(added)}\nEliminados: ${names(removed)}\nCon cambios: ${names(changed)}${kept(published) !== kept(current) ? '\nOrden de los productos: con cambios' : ''}`);
     if (faqNext !== faqText) console.log('Preguntas frecuentes: con cambios');
+    if (seasonNext !== seasonText) console.log(`Temporada: con cambios${season.activa ? ` (encendida: ${season.activa})` : ' (ninguna encendida)'}`);
     if (check) { console.error('El repositorio está atrasado: ejecuta node scripts/pull-catalog.mjs'); process.exit(1); }
 
-    const problems = revisar(published, faqs);
+    const problems = revisar(published, faqs, season);
     if (problems.length) fail(`El catálogo publicado tiene problemas; no se cambia nada:\n- ${problems.slice(0, 10).join('\n- ')}`);
     if (next !== text) writeFileSync(file, next);
     if (faqNext !== faqText) writeFileSync(faqFile, faqNext);
-    console.log(`${[next !== text && 'js/catalog-data.js', faqNext !== faqText && 'js/faq-data.js'].filter(Boolean).join(' y ')} al día. Generando SEO…`);
+    if (seasonNext !== seasonText) writeFileSync(seasonFile, seasonNext);
+    console.log(`${[next !== text && 'js/catalog-data.js', faqNext !== faqText && 'js/faq-data.js', seasonNext !== seasonText && 'js/season-data.js'].filter(Boolean).join(' y ')} al día. Generando SEO…`);
     execFileSync(process.execPath, [fileURLToPath(new URL('./seo.mjs', import.meta.url))], { stdio: 'inherit' });
 }
 

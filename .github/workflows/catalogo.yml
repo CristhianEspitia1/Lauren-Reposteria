@@ -1,9 +1,9 @@
 # Catálogo publicado: trae al repositorio lo que se publica desde el centro de control (Firestore catalogo/actual:
-# catálogo y preguntas frecuentes)
+# catálogo, preguntas frecuentes y temporada)
 # y regenera el SEO (JSON-LD, sitemap.xml, llms.txt), para que la primera pintura de la web, Google y los asistentes
 # vean lo mismo que la web en vivo. Guía en docs/13-centro-de-control.md.
 #
-# Cada hora, una revisión liviana (solo tres archivos) compara lo publicado con js/catalog-data.js y js/faq-data.js. Si el repositorio
+# Cada hora, una revisión liviana (solo cuatro archivos) compara lo publicado con js/catalog-data.js, js/faq-data.js y js/season-data.js. Si el repositorio
 # quedó atrás, otro trabajo trae el repositorio completo, ejecuta scripts/pull-catalog.mjs, corre las pruebas y, solo
 # si todo pasa, hace commit y push a main y pide la publicación de GitHub Pages. Si algo falla, no cambia nada.
 # Las acciones van fijadas a su commit, no a una etiqueta que su autor puede mover: este trabajo puede escribir en main.
@@ -35,6 +35,7 @@ jobs:
             scripts/pull-catalog.mjs
             js/catalog-data.js
             js/faq-data.js
+            js/season-data.js
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:

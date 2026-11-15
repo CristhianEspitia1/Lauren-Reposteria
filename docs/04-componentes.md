@@ -5,16 +5,19 @@ Los scripts clásicos se cargan con `defer`, en el orden declarado en cada pági
 | Módulo | Interfaz | Responsabilidad |
 | --- | --- | --- |
 | `catalog-data.js` | `catalogData` | Datos comerciales únicos, sin lógica ([formato](12-catalogo.md)) |
-| `catalog-model.js` | `Catalog` | `get`, `all` (solo visibles), `defaults`, `price`, `quote`, `range`, `priceLabel`, `priceRefText`, `minimum`, `validate`, `fields`, `summary` |
+| `season-data.js` | `seasonData` | La temporada publicada: cuál está encendida, sus textos y su aviso ([formato](12-catalogo.md#temporada)) |
+| `season.js` | `LaurenSeason` | `active` (la que se ve hoy), `get`, `valid`, `tidy`, `avisoPhoto`, fechas (`parseDate`, `formatDate`) y lo que revisa el panel (`problems`, `warnings`, `changes`, `summary`) |
+| `catalog-model.js` | `Catalog` | `get`, `all` (solo visibles; los de temporada, solo con su temporada encendida), `defaults`, `starting` (la combinación más económica, con la que abre la ficha), `price`, `quote`, `range`, `priceLabel`, `priceRefText`, `minimum`, `validate`, `fields`, `summary` |
 | `brand-icons.js` | `LaurenIcons(nombre)`, `LaurenIcons.names` | SVG por nombre semántico e inventario inmutable; nombres desconocidos devuelven cadena vacía |
 | `ui.js` | `LaurenUI` | `escape`, `imagePath`, `stripArrow` y `centerInStrip` (fila de fotos), `wa`, `open`, `close`, `dialogEvents`, `toast` |
 | `cart-manager.js` | `cartManager` | Estado, persistencia, edición y resumen de WhatsApp |
 | `quick-view-modal.js` | `quickView` | Configurar o editar un producto; foto principal y fila de fotos con flechas, miniaturas y deslizar |
 | `cart-ui.js` | `cartUI` | Diálogo lateral, lista, cantidades, eliminar/deshacer y subtotal |
 | `gallery-data.js` | `galleryData` | Referencias reales por colección |
-| `catalog-live.js` | Evento `catalog:updated` | Lee lo publicado en el centro de control y avisa si cambió |
+| `catalog-live.js` | Eventos `catalog:updated` y `catalog:settled` | Lee lo publicado en el centro de control (catálogo, preguntas y temporada), avisa si cambió y avisa al terminar |
 | `admin-model.js`, `admin.js` | `AdminModel`, página `/admin/` | Centro de control: acceso con doble factor, borrador y publicación ([detalle](13-centro-de-control.md)) |
-| `site.js` | Atributos `data-*` | Navegación, productos por `data-category` o `data-featured`, filtros por `group`, importes `data-price`, galería y video |
+| `site.js` | Atributos `data-*` | Navegación, productos por `data-category` o `data-featured`, filtros por `group`, importes `data-price`, galería y video; sección de temporada (`data-season`) y aviso de temporada (`#seasonDialog`) |
+| `brand-decor.js` | `section.decorItems` + evento `decor:update` | Coloca los dibujos del sistema gráfico por sección; la sección de temporada le dice qué adornos lleva y se recolocan con las mismas reglas |
 
 ## Producto y pedido
 

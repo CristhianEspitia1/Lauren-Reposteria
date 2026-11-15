@@ -1,7 +1,8 @@
 rules_version = '2';
 
 // Centro de control de Lauren Repostería.
-// - catalogo/actual: el catálogo publicado (`json`) y las preguntas frecuentes (`preguntas`). Lo lee cualquiera (la web lo muestra);
+// - catalogo/actual: el catálogo publicado (`json`), las preguntas frecuentes (`preguntas`) y la temporada (`temporada`:
+//   cuál está encendida, sus textos y su aviso). Lo lee cualquiera (la web lo muestra);
 //   solo lo escribe un administrador con sesión iniciada y doble factor (app de códigos).
 //   No guarda el correo de quien publica, porque es de lectura pública (si llega, debe ser el suyo).
 // - historial: copia de cada versión guardada, con el correo de quien la publicó, para poder deshacer.
@@ -28,11 +29,12 @@ service cloud.firestore {
 
     function version() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['json', 'preguntas', 'updatedAt', 'updatedBy'])
+      return data.keys().hasOnly(['json', 'preguntas', 'temporada', 'updatedAt', 'updatedBy'])
         && data.json is string
         && data.json.size() > 2
         && data.json.size() < 900000
         && (!('preguntas' in data) || (data.preguntas is string && data.preguntas.size() > 2 && data.preguntas.size() < 200000))
+        && (!('temporada' in data) || (data.temporada is string && data.temporada.size() > 2 && data.temporada.size() < 20000))
         && data.updatedAt == request.time
         && (!('updatedBy' in data) || data.updatedBy == request.auth.token.email);
     }

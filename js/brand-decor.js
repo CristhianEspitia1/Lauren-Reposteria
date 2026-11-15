@@ -13,7 +13,8 @@
         'porcion-torta': 47.6 / 42.8, 'mano-flor': 40 / 80.2, brownie: 40.6 / 31.2, 'para-ti': 65.8 / 16.4,
         'dosis-de-encanto': 73.7 / 27, grateful: 40.5 / 29.6, reposteria: 53.3 / 19, 'sello-ovalado': 52 / 59.5
     };
-    const colors = { lilac: 'var(--color-lilac)', white: 'var(--color-white)', apricot: 'var(--color-apricot)' };
+    // Los colores de temporada solo los usan los adornos de la sección de temporada.
+    const colors = { lilac: 'var(--color-lilac)', white: 'var(--color-white)', apricot: 'var(--color-apricot)', 'season-green': 'var(--color-season-green)', 'season-moss': 'var(--color-season-moss)', 'season-gold': 'var(--color-season-gold)', 'season-red': 'var(--color-season-red)' };
     // Fila del título: el gráfico se alinea abajo a la derecha de la fila; si choca, sigue al final del título.
     const row = (w, extra = {}) => ({ to: '.section-heading', box: 1, at: [1, 1], d: [-.5, -.5], w, alt: { to: '.section-heading h2', end: 1, d: [.9, -.35] }, ...extra });
     /*
@@ -104,24 +105,31 @@
     const mobile = matchMedia('(max-width: 800px)');
     const sections = [];
 
-    Object.entries(layout).forEach(([selector, items]) => {
-        document.querySelectorAll(selector).forEach(section => {
-            section.classList.add('has-decor');
-            const decor = items.map(([graphic, options]) => {
-                const element = document.createElement('span');
-                element.className = options.stamp ? 'decor decor-stamp' : 'decor';
-                element.setAttribute('aria-hidden', 'true');
-                element.hidden = true;
-                element.style.setProperty('--g', `url(/assets/brand/sistema/${graphic}.svg)`);
-                element.style.setProperty('--c', colors[options.c || 'lilac']);
-                element.style.setProperty('--r', `${options.r || 0}deg`);
-                if (options.flip) element.style.setProperty('--flip', '-1');
-                if (options.stamp) element.style.setProperty('--stamp', colors[options.stamp]);
-                section.prepend(element);
-                return { element, ratio: options.stamp ? 1 : ratios[graphic], small: graphic === 'corazon', ...options };
-            });
-            sections.push({ section, decor });
+    // Un adorno es un dibujo del sistema gráfico (máscara) o, en la temporada, un icono de Trazo Lauren («icon:pine»):
+    // thin lo dibuja con el trazo de ilustración (desde 40 px) y fill lo rellena (los pequeños, de 12 a 22 px).
+    function build(section, items) {
+        section.classList.add('has-decor');
+        return items.map(([graphic, options]) => {
+            const element = document.createElement('span');
+            const glyph = graphic.startsWith('icon:') ? graphic.slice(5) : '';
+            element.className = options.stamp ? 'decor decor-stamp' : glyph ? 'decor decor-icon' : 'decor';
+            element.setAttribute('aria-hidden', 'true');
+            element.hidden = true;
+            if (glyph) {
+                element.innerHTML = window.LaurenIcons(glyph);
+                if (options.thin) element.dataset.thin = '';
+                if (options.fill) element.dataset.fill = '';
+            } else element.style.setProperty('--g', `url(/assets/brand/sistema/${graphic}.svg)`);
+            element.style.setProperty('--c', colors[options.c || 'lilac']);
+            element.style.setProperty('--r', `${options.r || 0}deg`);
+            if (options.flip) element.style.setProperty('--flip', '-1');
+            if (options.stamp) element.style.setProperty('--stamp', colors[options.stamp]);
+            section.prepend(element);
+            return { element, ratio: options.stamp || glyph ? 1 : ratios[graphic], small: graphic === 'corazon' || options.w <= 24, ...options };
         });
+    }
+    Object.entries(layout).forEach(([selector, items]) => {
+        document.querySelectorAll(selector).forEach(section => sections.push({ section, decor: build(section, items) }));
     });
 
     const range = document.createRange();
@@ -134,7 +142,7 @@
         });
         while (walker.nextNode()) { range.selectNodeContents(walker.currentNode); [...range.getClientRects()].forEach(rect => add(rect, 'text')); }
         section.querySelectorAll('*').forEach(element => {
-            if (element.classList.contains('decor') || (element.tagName !== 'svg' && element.closest('svg'))) return;
+            if (element.closest('.decor') || (element.tagName !== 'svg' && element.closest('svg'))) return;
             if (pictures.has(element.tagName)) { add(element.getBoundingClientRect(), 'picture'); return; }
             if (controls.has(element.tagName) || element.matches('.btn') || element.matches(solid)) { add(element.getBoundingClientRect(), 'hard'); return; }
             const style = getComputedStyle(element);
@@ -254,6 +262,17 @@
     layoutAll();
     const observer = new ResizeObserver(layoutAll);
     sections.forEach(({ section }) => observer.observe(section));
+    // Adornos que cambian con los datos (la sección de temporada): la sección dice cuáles lleva en `decorItems` y avisa
+    // con el evento `decor:update` (site.js); se quitan los anteriores y se colocan los nuevos con las mismas reglas.
+    function live(section) {
+        let entry = sections.find(item => item.live && item.section === section);
+        if (entry) entry.decor.forEach(item => item.element.remove());
+        else { entry = { section, live: true, decor: [] }; sections.push(entry); observer.observe(section); }
+        entry.decor = build(section, section.decorItems || []);
+        layoutAll();
+    }
+    document.querySelectorAll('[data-decor]').forEach(live);
+    document.addEventListener('decor:update', event => live(event.target));
     addEventListener('load', layoutAll);
     document.fonts?.ready.then(layoutAll);
     document.addEventListener('toggle', layoutAll, true);

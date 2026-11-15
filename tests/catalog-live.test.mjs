@@ -8,21 +8,24 @@ import fs from 'node:fs';
 const read = file => fs.readFileSync(new URL(file, import.meta.url), 'utf8');
 const fixture = () => { const context = {}; context.window = context; vm.createContext(context); vm.runInContext(read('./fixtures/catalog-data.js'), context); return JSON.parse(JSON.stringify(context.catalogData)); };
 
-async function publish(published) {
+async function publish(published, season) {
     const events = [];
     const context = { console, Intl, URL, AbortController, setTimeout, clearTimeout };
     context.window = context;
     context.document = { dispatchEvent: event => events.push(event.type) };
     context.CustomEvent = class { constructor(type) { this.type = type; } };
     const text = typeof published === 'string' ? published : JSON.stringify(published);
-    context.fetch = async () => ({ ok: true, json: async () => ({ fields: { json: { stringValue: text } } }) });
+    context.fetch = async () => ({ ok: true, json: async () => ({ fields: { json: { stringValue: text }, ...(season === undefined ? {} : { temporada: { stringValue: typeof season === 'string' ? season : JSON.stringify(season) } }) } }) });
     vm.createContext(context);
     vm.runInContext(read('./fixtures/catalog-data.js'), context);
-    vm.runInContext(read('../js/catalog-model.js'), context);
-    const local = context.catalogData;
+    for (const file of ['season-data', 'season', 'catalog-model']) vm.runInContext(read(`../js/${file}.js`), context);
+    const local = context.catalogData, localSeason = context.seasonData;
     vm.runInContext(read('../js/catalog-live.js'), context);
     await new Promise(resolve => setTimeout(resolve, 20));
-    return { replaced: context.catalogData !== local, events };
+    // Al terminar de leer lo publicado, con cambios o sin ellos, la página recibe `catalog:settled` (de ahí sale el aviso de temporada).
+    assert.equal(events.pop(), 'catalog:settled');
+    assert.equal(context.catalogSettled, true);
+    return { replaced: context.catalogData !== local, season: context.seasonData !== localSeason, active: context.LaurenSeason.active()?.id || '', shown: context.Catalog.all().map(p => p.id), events };
 }
 
 test('Un catálogo publicado con cambios válidos reemplaza la copia local y avisa a la página', async () => {
@@ -70,4 +73,28 @@ test('JSON dañado o con __proto__ no cambia nada ni contamina los objetos', asy
         assert.equal(result.replaced, false, text);
     }
     assert.equal({}.polluted, undefined);
+});
+
+test('La temporada publicada llega a la página y sus productos solo existen mientras está encendida', async () => {
+    const data = fixture();
+    data['galletas-navidad'] = { ...data['caja-x6'], id: 'galletas-navidad', name: 'Galletas navideñas', category: 'temporada', group: 'navidad' };
+    const off = await publish(data, { activa: '', temporadas: [] });
+    assert.equal(off.replaced, true);
+    assert.equal(off.shown.includes('galletas-navidad'), false);
+    const on = await publish(data, { activa: 'navidad', temporadas: [{ id: 'navidad', titulo: 'Esta Navidad,' }] });
+    assert.deepEqual([on.season, on.active, on.shown.includes('galletas-navidad')], [true, 'navidad', true]);
+    assert.deepEqual(on.events, ['catalog:updated']);
+    // Otra temporada encendida no muestra los productos de Navidad; una que ya pasó su último día, tampoco.
+    assert.equal((await publish(data, { activa: 'halloween', temporadas: [] })).shown.includes('galletas-navidad'), false);
+    assert.equal((await publish(data, { activa: 'navidad', temporadas: [{ id: 'navidad', hasta: '2020-12-24' }] })).shown.includes('galletas-navidad'), false);
+});
+
+test('Una temporada dañada o escrita sin pasar por el panel deja la web como estaba', async () => {
+    const broken = ['{', '[]', 'null', { activa: 'verano', temporadas: [] }, { activa: 'navidad' }, { activa: 'navidad', temporadas: [{ id: 'navidad', titulo: ['x'] }] },
+        { activa: '', temporadas: [{ id: 'navidad', hasta: '24/12/2026' }] }, { activa: '', temporadas: [{ id: 'navidad', aviso: { destino: 'https://otro-sitio.com' } }] },
+        { activa: '', temporadas: [{ id: 'navidad', texto: 'x'.repeat(5000) }] }, { activa: '', temporadas: [{ id: 'navidad' }, { id: 'navidad' }] }];
+    for (const season of broken) {
+        const result = await publish(fixture(), season);
+        assert.deepEqual([result.season, result.active], [false, ''], JSON.stringify(season));
+    }
 });

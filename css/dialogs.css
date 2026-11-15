@@ -129,6 +129,36 @@ dialog[open] { animation: dialog-in 260ms ease both; }
 .cart-notice { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: color-mix(in srgb, var(--color-apricot) 35%, var(--color-white)); margin: 8px 20px; padding: 8px 14px; font-size: .75rem; border-radius: var(--radius-sm); }
 .cart-notice button { background: none; padding: 10px 4px; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
 .storage-warning { margin-top: 14px; padding: 12px; background: var(--color-lilac-light); color: var(--color-text); font-size: .75rem; }
+/* Aviso de temporada: en el centro de la pantalla, una vez al día por persona (js/site.js). Con foto, dos columnas
+   en escritorio (la foto en 4:5) y, en el teléfono, la foto arriba en 3:2. */
+.season-dialog { width: min(480px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow: hidden auto; overscroll-behavior: contain; box-shadow: var(--shadow-float); }
+.season-dialog.has-photo { width: min(760px, calc(100% - 32px)); }
+.season-dialog-layout { display: grid; }
+.season-dialog.has-photo .season-dialog-layout { grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); }
+.season-dialog-photo { width: 100%; height: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--color-peach); }
+.season-dialog-body { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--space-md); padding: clamp(28px, 7vw, 44px); overflow-wrap: anywhere; }
+.season-dialog-art { position: relative; display: inline-flex; padding: 6px 30px 0 0; color: var(--color-lilac); }
+.season-dialog-art > svg { width: 56px; height: 56px; stroke-width: var(--icon-stroke-display); }
+.season-dialog-art span { position: absolute; display: flex; color: var(--color-apricot); }
+.season-dialog-art span svg { width: 100%; height: 100%; fill: currentColor; }
+.season-dialog-art span:nth-of-type(1) { top: 0; right: 8px; width: 16px; height: 16px; }
+.season-dialog-art span:nth-of-type(2) { top: 30px; right: 0; width: 11px; height: 11px; }
+.season-dialog h2 { font-size: clamp(1.75rem, 5vw, 2.25rem); }
+.season-dialog h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-apricot) 55%, transparent) 68% 92%, transparent 92%); padding-inline: .06em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.season-dialog-body > p:not(.eyebrow) { color: var(--color-text-soft); font-size: .9375rem; }
+.season-dialog .btn { margin-top: var(--space-xs); }
+/* Aviso de Navidad: arriba, una franja vino con la guirnalda (como la sección); el texto, sobre blanco cálido. */
+.season-dialog[data-season="navidad"] .season-dialog-body { padding-top: 96px; background: url(../assets/brand/temporada/guirnalda-navidad.svg) 0 0 / 176px 61px repeat-x, radial-gradient(120% 140% at 50% 0%, var(--color-season-wine-light), var(--color-season-wine) 60%, var(--color-season-wine-deep)) 0 0 / 100% 60px no-repeat; }
+.season-dialog[data-season="navidad"] .eyebrow::before { background: var(--color-season-gold); }
+.season-dialog[data-season="navidad"] h2 em { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--color-season-gold) 45%, transparent) 68% 92%, transparent 92%); }
+.season-dialog[data-season="navidad"] .season-dialog-art { color: var(--color-season-green); }
+.season-dialog[data-season="navidad"] .season-dialog-art span { color: var(--color-season-gold); }
+.season-dialog[data-season="navidad"] .season-dialog-art span:nth-of-type(2) { color: var(--color-season-red); }
+@media (max-width: 600px) {
+    .season-dialog.has-photo .season-dialog-layout { grid-template-columns: minmax(0, 1fr); }
+    .season-dialog-photo { height: auto; aspect-ratio: 3 / 2; }
+    .season-dialog .btn { width: 100%; justify-content: space-between; }
+}
 /* Imagen ampliada, con descripción y navegación. */
 .lightbox-dialog { width: min(780px, calc(100% - 40px)); max-height: 94dvh; background: var(--color-cream); }
 .lightbox-image { width: 100%; height: min(73dvh, 740px); object-fit: contain; background: color-mix(in srgb, var(--color-peach) 35%, var(--color-cream)); }

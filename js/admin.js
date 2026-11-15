@@ -21,6 +21,7 @@ if (window.top !== window.self) {
 await new Promise(resolve => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', resolve, { once: true }) : resolve());
 const { escape: esc, icon, imagePath } = LaurenUI;
 const M = window.AdminModel;
+const S = window.LaurenSeason;
 const $ = id => document.getElementById(id);
 const app = initializeApp(window.firebaseConfig);
 // La sesión vive solo en esta pestaña: al cerrarla, la clave y el código se piden de nuevo. Así no queda guardada en el
@@ -115,9 +116,15 @@ setInterval(closeIfIdle, 30000);
 views.login.addEventListener('submit', async event => {
     event.preventDefault();
     showError('loginError', '');
+    // Lo que falta se dice aquí mismo, con el foco en ese campo, sin preguntarle a Firebase.
+    const emailInput = $('loginEmail'), passwordInput = $('loginPassword');
+    const email = emailInput.value.trim(), password = passwordInput.value;
+    const emailOk = Boolean(email) && emailInput.checkValidity();
+    const missing = !email && !password ? 'Escribe tu correo y tu clave.' : !emailOk ? authMessage({ code: 'auth/invalid-email' }) : !password ? authMessage({ code: 'auth/missing-password' }) : '';
+    if (missing) { showError('loginError', missing); (emailOk ? passwordInput : emailInput).focus(); return; }
     const button = views.login.querySelector('button'); button.disabled = true;
     try {
-        await signInWithEmailAndPassword(auth, $('loginEmail').value.trim(), $('loginPassword').value);
+        await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
         if (error.code === 'auth/multi-factor-auth-required') {
             resolver = getMultiFactorResolver(auth, error);
@@ -140,6 +147,16 @@ views.code.addEventListener('submit', async event => {
     finally { button.disabled = false; }
 });
 
+// «Entrar con otra cuenta», en el paso del código y en el alta del doble factor: vuelve al correo y la clave. En el
+// alta ya hay una sesión a medias (solo con la clave), así que además se cierra.
+document.querySelectorAll('[data-auth-restart]').forEach(button => button.addEventListener('click', async () => {
+    resolver = null;
+    $('codeInput').value = '';
+    showError('codeError', '');
+    if (auth.currentUser) await signOut(auth);
+    else showAuth('login', 'Entra con tu correo y tu clave.');
+}));
+
 // El secreto del doble factor (código QR, enlace y clave escrita) solo está en la página mientras se configura.
 function clearEnrollment() {
     $('enrollSecret').textContent = '';
@@ -156,7 +173,7 @@ async function startEnrollment(user) {
     enrollParts().forEach(el => { el.hidden = false; });
     if (!user.emailVerified) {
         enrollParts().forEach(el => { el.hidden = true; });
-        views.enroll.insertAdjacentHTML('beforeend', `<div id="verifyBox"><p class="field-note">Antes, confirma tu correo: te enviamos un enlace a <strong>${esc(user.email)}</strong>. Ábrelo, toca el enlace y vuelve aquí. Si no lo ves, revisa la carpeta de spam.</p><button type="button" class="btn" id="verifyDone">Ya lo confirmé ${icon('arrow')}</button><p><button type="button" class="text-link" id="verifyResend">Enviar el correo otra vez</button></p></div>`);
+        views.enroll.querySelector('[data-auth-restart]').parentElement.insertAdjacentHTML('beforebegin', `<div id="verifyBox"><p class="field-note">Antes, confirma tu correo: te enviamos un enlace a <strong>${esc(user.email)}</strong>. Ábrelo, toca el enlace y vuelve aquí. Si no lo ves, revisa la carpeta de spam.</p><button type="button" class="btn" id="verifyDone">Ya lo confirmé ${icon('arrow')}</button><p><button type="button" class="text-link" id="verifyResend">Enviar el correo otra vez</button></p></div>`);
         const send = async () => {
             try { await sendEmailVerification(user); LaurenUI.toast('Te enviamos el correo de confirmación.'); }
             catch (error) { showError('enrollError', authMessage(error)); }
@@ -248,10 +265,17 @@ let loadedJson = null;
 let products = [];
 const fresh = new Set();
 let filter = 'all';
+// Temporada (js/season.js): cuál está encendida, sus textos y su aviso. Se publica junto con el catálogo.
+const seasonSnapshot = M.clone(window.seasonData);
+let seasonOriginal = M.clone(seasonSnapshot);
+let season = M.clone(seasonSnapshot);
+let loadedSeason = null;
+const seasonChanges = () => S.changes(seasonOriginal, season);
 const sectionName = id => M.SECTIONS.find(([key]) => key === id)?.[1] || 'Sin sección';
 const hasChanges = () => totalChanges() > 0;
 // El modelo del catálogo lee window.catalogData: se apunta al borrador para calcular precios y herencias.
-const useDraft = () => { window.catalogData = M.toCatalog(M.clone(products)); };
+// También la temporada del borrador: de ella depende qué productos de temporada cuentan como visibles.
+const useDraft = () => { window.catalogData = M.toCatalog(M.clone(products)); window.seasonData = M.clone(season); };
 // Un texto publicado (catálogo o preguntas) ya leído, o null si no existe o tiene un error.
 const read = (text, ok) => { if (typeof text !== 'string') return null; try { const value = JSON.parse(text); return ok(value) ? value : null; } catch { return null; } };
 
@@ -259,27 +283,34 @@ async function loadCatalog() {
     $('list').innerHTML = '<li class="admin-count">Cargando tus productos…</li>';
     // Lo publicado con un error (escrito sin pasar por el panel) no se abre: se edita la copia de la web y todo cuenta
     // como cambio, para que «Publicar cambios» lo reemplace.
-    let draft = snapshot, draftFaqs = faqSnapshot, damaged = false;
+    let draft = snapshot, draftFaqs = faqSnapshot, draftSeason = seasonSnapshot, damaged = false;
     try {
         const published = await getDoc(catalogRef);
         loadedJson = published.exists() ? published.data().json : null;
         // Las preguntas se publican desde el panel desde octubre de 2026; antes de eso, las de la web.
         loadedFaqs = published.exists() ? published.data().preguntas ?? null : null;
+        // La temporada se publica desde el panel desde noviembre de 2026; antes de eso, la de la web (ninguna encendida).
+        loadedSeason = published.exists() ? published.data().temporada ?? null : null;
         const catalog = loadedJson ? read(loadedJson, window.Catalog.wellFormed) : null;
         const questions = loadedFaqs ? read(loadedFaqs, F.valid) : null;
-        damaged = Boolean((loadedJson && !catalog) || (loadedFaqs && !questions));
+        const seasons = loadedSeason ? read(loadedSeason, S.valid) : null;
+        damaged = Boolean((loadedJson && !catalog) || (loadedFaqs && !questions) || (loadedSeason && !seasons));
         original = loadedJson ? catalog || {} : M.clone(snapshot);
         faqOriginal = loadedFaqs ? questions || { temas: [], preguntas: [] } : M.clone(faqSnapshot);
+        seasonOriginal = loadedSeason ? seasons || { activa: '', temporadas: [] } : M.clone(seasonSnapshot);
         draft = catalog || snapshot;
         draftFaqs = questions || faqSnapshot;
+        draftSeason = seasons || seasonSnapshot;
     } catch {
         warn('No pudimos leer lo que está publicado. Revisa tu conexión y recarga la página.');
         loadedJson = undefined;
         original = M.clone(snapshot);
         faqOriginal = M.clone(faqSnapshot);
+        seasonOriginal = M.clone(seasonSnapshot);
     }
     products = M.migrate(Object.values(M.clone(draft)));
     faqs = M.clone(draftFaqs);
+    season = M.clone(draftSeason);
     if (damaged) warn('Lo publicado tiene un error y no se pudo abrir. Te mostramos la copia de la web: revísala y toca «Publicar cambios» para reemplazarlo.');
     fresh.clear();
     freshFaqs.clear();
@@ -289,22 +320,26 @@ async function loadCatalog() {
 }
 
 // Un filtro por tipo de producto: todas las tortas y la vitrina de adicionales en Tortas; brownies y galletas, cada uno en el suyo.
-const PAGES = { tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
+const PAGES = { temporada: ['Temporada', [S.CATEGORY]], tortas: ['Tortas', ['tortas', 'extras']], alfajores: ['Alfajores', ['alfajores']], brownies: ['Brownies', ['brownies']], galletas: ['Galletas', ['galletas']], detalles: ['Detalles', ['detalles']] };
 const FILTERS = [['all', 'Todos'], ...Object.entries(PAGES).map(([id, [label]]) => [id, label]), ['faqs', 'Preguntas'], ['home', 'En portada'], ['hidden', 'Ocultos'], ['changed', 'Con cambios']];
 // La portada muestra hasta cuatro tortas marcadas con «Portada» (Catalog.FEATURED).
 const onHome = p => p.featured === true && window.Catalog.featurable(p);
 // La lista se agrupa como la web: todas las tortas juntas (primero las que fijan los precios), los adicionales y cada sección.
-const groupOf = p => p.category === 'extras' ? 'Vitrina de adicionales (Tortas)' : sectionName(p.category);
-const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0);
-const inFilter = (p, id, changed) => id === 'all' || (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : id !== 'faqs' && PAGES[id][1].includes(p.category));
+const groupOf = p => p.category === 'extras' ? 'Vitrina de adicionales (Tortas)' : p.category === S.CATEGORY ? `Temporada · ${S.name(p.group) || 'Sin temporada'}` : sectionName(p.category);
+// Los productos de temporada van juntos por temporada, en el orden de las temporadas.
+const order = p => M.SECTIONS.findIndex(([id]) => id === p.category) * 3 + (p.basedOn ? 1 : 0) + (p.category === S.CATEGORY ? (S.SEASONS.findIndex(s => s.id === p.group) + 1) / 10 : 0);
+// En «Todos», de las temporadas solo cuenta la encendida: los productos de las demás esperan en «Temporada».
+const inFilter = (p, id, changed) => id === 'all' ? !offSeason(p) : (id === 'hidden' ? p.visible === false : id === 'changed' ? changed.includes(p.id) : id === 'home' ? onHome(p) : id !== 'faqs' && PAGES[id][1].includes(p.category));
 // Preguntas que salen con el filtro: todas en «Todos» y «Preguntas»; en «Con cambios», las nuevas o cambiadas.
 const faqInFilter = (q, id, changedFaqs) => id === 'all' || id === 'faqs' || (id === 'changed' && changedFaqs.includes(q.id));
 const faqChangedIds = () => { const c = faqChanges(); return [...c.added, ...c.changed]; };
 function renderFilters() {
     const { changed } = M.changes(original, products);
     const changedFaqs = faqChangedIds();
+    const seasonDiff = seasonChanges();
+    const changedSeasons = new Set([...seasonDiff.changed, seasonDiff.on, seasonDiff.off].filter(Boolean)).size;
     $('filters').innerHTML = FILTERS.map(([id, label]) => {
-        const count = products.filter(p => inFilter(p, id, changed)).length + faqs.preguntas.filter(q => faqInFilter(q, id, changedFaqs)).length;
+        const count = products.filter(p => inFilter(p, id, changed)).length + faqs.preguntas.filter(q => faqInFilter(q, id, changedFaqs)).length + (id === 'changed' ? changedSeasons : 0);
         return (id === 'hidden' || id === 'changed') && !count && filter !== id ? '' : `<button type="button" data-filter="${id}" aria-pressed="${filter === id}">${esc(label)} <span class="admin-filter-count">${count}</span></button>`;
     }).join('');
 }
@@ -325,11 +360,12 @@ function render() {
         .map((p, i) => [p, i]).sort(([a, i], [b, j]) => order(a) - order(b) || i - j).map(([p]) => p);
     const changedFaqs = faqChangedIds();
     const shownFaqs = faqs.preguntas.filter(q => faqInFilter(q, filter, changedFaqs) && (!search || normalizeText(`${q.pregunta} ${q.respuesta} preguntas frecuentes`).includes(search)));
-    const found = shown.length + shownFaqs.length;
+    const seasons = seasonRows(search);
+    const found = shown.length + shownFaqs.length + seasons.count;
     $('count').textContent = search ? `${found} ${found === 1 ? 'resultado' : 'resultados'}` : '';
     let group = '';
     const sortable = !search && (filter === 'all' || filter in PAGES);
-    $('list').innerHTML = shown.map(p => {
+    $('list').innerHTML = seasons.html + shown.map((p, at) => {
         let label = 'Revisa sus opciones';
         try { label = window.Catalog.priceLabel(window.Catalog.resolve(window.catalogData[p.id])).text; } catch { /* «Avisos» dice qué pasa */ }
         const tags = [p.visible === false && '<span class="admin-tag">Oculto</span>', fresh.has(p.id) && '<span class="admin-tag admin-tag-change">Nuevo</span>', !fresh.has(p.id) && changed.includes(p.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
@@ -337,13 +373,13 @@ function render() {
         const homeId = `home-${esc(p.id)}`;
         const home = window.Catalog.featurable(p) ? `<label class="toggle-option" for="${homeId}"><input id="${homeId}" type="checkbox" data-home="${esc(p.id)}" ${onHome(p) ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Portada</span></label>` : '';
         // Subir y bajar: solo con toda la sección a la vista (Todos o el filtro de su página, sin buscar), para que la fila se mueva donde se ve.
-        const mates = sortable ? products.filter(x => x.category === p.category) : [];
+        const mates = sortable ? products.filter(x => lane(x) === lane(p)) : [];
         const name = esc(p.name || 'este producto');
         const move = sortable ? `<span class="admin-move"><button type="button" class="icon-button admin-move-up" data-move="-1" data-product="${esc(p.id)}" aria-label="Subir «${name}»" ${mates[0] === p ? 'disabled' : ''}>${icon('arrow')}</button><button type="button" class="icon-button admin-move-down" data-move="1" data-product="${esc(p.id)}" aria-label="Bajar «${name}»" ${mates.at(-1) === p ? 'disabled' : ''}>${icon('arrow')}</button></span>` : '';
         const heading = groupOf(p) !== group ? `<li class="admin-group"><p class="eyebrow">${esc(group = groupOf(p))} · ${shown.filter(x => groupOf(x) === group).length}</p></li>` : '';
-        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions">${move}<label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>`;
+        return `${heading}<li class="admin-row${p.visible === false ? ' is-hidden' : ''}">${p.category === 'extras' ? `<span class="admin-row-icon" aria-hidden="true">${icon(p.icon || 'gift')}</span>` : `<img src="${esc(imagePath(p.mainImage))}" alt="" width="56" height="70" loading="lazy">`}<div><h2><button type="button" class="admin-row-name" data-edit="${esc(p.id)}">${esc(p.name || 'Sin nombre')}</button>${tags}</h2><p>${esc(label)}</p></div><div class="admin-row-actions">${move}<label class="toggle-option" for="${visibleId}"><input id="${visibleId}" type="checkbox" data-visible="${esc(p.id)}" ${p.visible !== false ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Visible</span></label>${home}<button type="button" class="text-link" data-edit="${esc(p.id)}" aria-label="Editar ${esc(p.name || 'producto')}">Editar ${icon('arrow')}</button></div></li>${p.category === S.CATEGORY && !search && ['all', 'temporada'].includes(filter) && (!shown[at + 1] || groupOf(shown[at + 1]) !== groupOf(p)) ? seasonAdd(p.group) : ''}`;
     }).join('') + faqRows(shownFaqs, changedFaqs) + (['all', 'faqs'].includes(filter) && !search ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : '');
-    if (!shown.length && !shownFaqs.length) $('list').innerHTML = `<li class="admin-empty">${search ? 'No encontramos productos ni preguntas con esas palabras. Prueba con otra.' : 'No hay nada aquí.'}</li>${filter === 'faqs' ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : ''}`;
+    if (!shown.length && !shownFaqs.length && !seasons.html) $('list').innerHTML = `<li class="admin-empty">${search ? 'No encontramos productos ni preguntas con esas palabras. Prueba con otra.' : 'No hay nada aquí.'}</li>${filter === 'faqs' ? `<li class="admin-faq-add"><button type="button" class="admin-add" data-faq-new>${icon('plus')} Agregar una pregunta</button></li>` : ''}`;
     const total = totalChanges();
     $('saveBar').hidden = total === 0;
     $('saveCount').textContent = total === 1 ? '1 cambio sin publicar.' : `${total} cambios sin publicar.`;
@@ -351,6 +387,8 @@ function render() {
     updateNotices();
 }
 $('list').addEventListener('change', event => {
+    const seasonInput = event.target.closest('[data-season-on]');
+    if (seasonInput) return toggleSeason(seasonInput);
     const homeInput = event.target.closest('[data-home]');
     if (homeInput) return toggleHome(homeInput);
     const input = event.target.closest('[data-visible]');
@@ -403,7 +441,7 @@ $('list').addEventListener('click', event => {
     const from = products.findIndex(p => p.id === move.dataset.product);
     const step = Number(move.dataset.move);
     let to = from + step;
-    while (to >= 0 && to < products.length && products[to].category !== products[from].category) to += step;
+    while (to >= 0 && to < products.length && lane(products[to]) !== lane(products[from])) to += step;
     if (from < 0 || to < 0 || to >= products.length) return;
     const list = [...products];
     [list[from], list[to]] = [list[to], list[from]];
@@ -425,7 +463,7 @@ $('discard').addEventListener('click', async () => {
         cancel: 'Conservarlos'
     }))) return;
     products = M.migrate(Object.values(M.clone(original))); fresh.clear(); pendingDeletes.clear();
-    faqs = M.clone(faqOriginal); freshFaqs.clear(); render();
+    faqs = M.clone(faqOriginal); freshFaqs.clear(); season = M.clone(seasonOriginal); render();
 });
 window.addEventListener('beforeunload', event => { if (hasChanges()) event.preventDefault(); });
 
@@ -434,7 +472,7 @@ $('publish').addEventListener('click', async () => {
     if (preview) { LaurenUI.toast('Vista previa: aquí no se publica.'); return; }
     // Si algo impide publicar, se abren los avisos con «Ir a arreglarlo» en cada uno.
     useDraft();
-    if (M.validate(products).length || F.problems(faqs).length || F.broken(faqs, M.SECTIONS).length) {
+    if (M.validate(products).length || F.problems(faqs).length || F.broken(faqs, M.SECTIONS).length || S.problems(season, window.catalogData).length) {
         LaurenUI.toast('Antes de publicar falta arreglar algo. Te lo mostramos en «Avisos».');
         $('noticesButton').click();
         return;
@@ -446,10 +484,12 @@ $('publish').addEventListener('click', async () => {
     const faqDiff = faqChanges();
     const questionOf = id => `«${faqName(faqs.preguntas.find(q => q.id === id) || faqOriginal.preguntas.find(q => q.id === id))}»`;
     const faqNotes = [...faqDiff.added.map(id => `${questionOf(id)}: nueva`), ...faqDiff.changed.map(id => `${questionOf(id)}: con cambios`), ...faqDiff.removed.map(id => `${questionOf(id)}: se elimina`), ...(faqDiff.moved ? ['Orden de las preguntas: con cambios'] : [])];
-    const pending = M.warnings(products).length + F.warnings(faqs).length;
+    const seasonDiff = seasonChanges();
+    const seasonNotes = [seasonDiff.on && `${S.name(seasonDiff.on)}: se enciende`, seasonDiff.off && `${S.name(seasonDiff.off)}: se apaga`, ...seasonDiff.changed.map(id => `${S.name(id)}: con cambios`)].filter(Boolean);
+    const pending = M.warnings(products).length + F.warnings(faqs).length + S.warnings(season, window.catalogData).length;
     if (!(await askConfirm({
         title: `¿Publicar <em>${total === 1 ? 'tu cambio' : `tus ${total} cambios`}</em>?`,
-        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`), ...(moved ? ['<li>Orden de los productos: con cambios</li>'] : []), ...faqNotes.map(text => `<li>${esc(text)}</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
+        body: `<p>Se verán en la web al instante.</p><ul class="admin-confirm-notes">${[...changed.map(id => `<li>${esc(nameOf(id))}: con cambios</li>`), ...removed.map(id => `<li>${esc(nameOf(id))}: se elimina</li>`), ...(moved ? ['<li>Orden de los productos: con cambios</li>'] : []), ...[...seasonNotes, ...faqNotes].map(text => `<li>${esc(text)}</li>`)].slice(0, 10).join('')}</ul>${total > 10 ? `<p>Y ${total - 10} más.</p>` : ''}${pending ? `<p class="field-note">Hay ${pending === 1 ? 'algo' : `${pending} cosas`} para revisar en «Avisos» (por ejemplo, precios vacíos que se cotizan). Se puede publicar igual.</p>` : ''}`,
         action: 'Publicar',
         cancel: 'Todavía no'
     }))) return;
@@ -460,23 +500,27 @@ $('publish').addEventListener('click', async () => {
         const json = JSON.stringify(data);
         const faqData = { temas: faqs.temas, preguntas: faqs.preguntas.map(cleanFaq) };
         const preguntas = JSON.stringify(faqData);
+        // La temporada va en lo publicado desde la primera vez que se guarda una; antes, el documento sigue sin ese campo.
+        const seasonData = S.tidy(season);
+        const temporada = loadedSeason !== null || seasonData.activa || seasonData.temporadas.length ? JSON.stringify(seasonData) : null;
         // Los mismos límites de las reglas de Firestore (firestore.rules) y del documento (1 MiB), contados en bytes para no
         // quedarse corto: así se dice qué pasa en vez de un permiso negado.
         const size = text => new TextEncoder().encode(text).length;
-        if (size(json) >= M.LIMITS.catalog || size(preguntas) >= M.LIMITS.faqs || size(json) + size(preguntas) >= M.LIMITS.document) {
+        if (size(json) >= M.LIMITS.catalog || size(preguntas) >= M.LIMITS.faqs || size(temporada || '') >= M.LIMITS.season || size(json) + size(preguntas) + size(temporada || '') >= M.LIMITS.document) {
             warn(`No pudimos publicar: ${size(preguntas) >= M.LIMITS.faqs ? 'las preguntas frecuentes quedaron demasiado largas' : 'el catálogo quedó demasiado largo'}. Acorta los textos más extensos e inténtalo otra vez.`);
             return;
         }
         await runTransaction(db, async transaction => {
             const current = await transaction.get(catalogRef);
             const now = current.exists() ? current.data() : {};
-            if ((now.json ?? null) !== loadedJson || (now.preguntas ?? null) !== loadedFaqs) throw Object.assign(new Error('conflict'), { code: 'conflict' });
+            if ((now.json ?? null) !== loadedJson || (now.preguntas ?? null) !== loadedFaqs || (now.temporada ?? null) !== loadedSeason) throw Object.assign(new Error('conflict'), { code: 'conflict' });
             // Lo publicado es de lectura pública: no lleva el correo de quien publica. El historial, que solo leen
             // los administradores, sí lo guarda.
-            transaction.set(catalogRef, { json, preguntas, updatedAt: serverTimestamp() });
-            transaction.set(doc(collection(db, 'historial')), { json, preguntas, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
+            const version = temporada ? { json, preguntas, temporada } : { json, preguntas };
+            transaction.set(catalogRef, { ...version, updatedAt: serverTimestamp() });
+            transaction.set(doc(collection(db, 'historial')), { ...version, updatedAt: serverTimestamp(), updatedBy: auth.currentUser.email });
         });
-        published = { data, json, faqData, preguntas };
+        published = { data, json, faqData, preguntas, seasonData, temporada };
     } catch (error) {
         if (error.code === 'conflict') warn('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
         else if (error.code === 'permission-denied') {
@@ -489,6 +533,7 @@ $('publish').addEventListener('click', async () => {
     // Ya se ve en la web: el panel queda al día con lo publicado (si algo falla desde aquí, lo publicado ya está bien).
     original = published.data; loadedJson = published.json; products = M.migrate(Object.values(M.clone(published.data))); fresh.clear();
     faqOriginal = M.clone(published.faqData); loadedFaqs = published.preguntas; faqs = M.clone(published.faqData); freshFaqs.clear();
+    seasonOriginal = M.clone(published.seasonData); loadedSeason = published.temporada; season = M.clone(published.seasonData);
     if (filter === 'changed') filter = 'all';
     render();
     const erased = await erasePending();
@@ -524,7 +569,8 @@ function noticeList() {
     useDraft();
     // Las de las preguntas llevan «faq:» delante, para que «Ir a arreglarlo» abra la pregunta.
     const faqNotes = list => list.map(({ id, text }) => ({ id: id ? `faq:${id}` : null, text }));
-    return { problems: [...M.problems(products), ...faqNotes([...F.problems(faqs), ...F.broken(faqs, M.SECTIONS)])], warnings: [...M.warnings(products), ...flavorWarnings(), ...faqNotes(F.warnings(faqs))] };
+    // Las de la temporada llevan «season:» delante y abren su ficha.
+    return { problems: [...S.problems(season, window.catalogData), ...M.problems(products), ...faqNotes([...F.problems(faqs), ...F.broken(faqs, M.SECTIONS)])], warnings: [...S.warnings(season, window.catalogData), ...M.warnings(products), ...flavorWarnings(), ...faqNotes(F.warnings(faqs))] };
 }
 function updateNotices() {
     const { problems, warnings } = noticeList();
@@ -537,7 +583,7 @@ function updateNotices() {
 function renderNotices() {
     const { problems, warnings } = noticeList();
     const time = at => at.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
-    const item = ({ id, text, at }) => `<li><span>${esc(text)}${at ? ` <small>${time(at)}</small>` : ''}</span>${id && (products.some(p => p.id === id) || faqs.preguntas.some(q => `faq:${q.id}` === id)) ? `<button type="button" class="text-link" data-fix="${esc(id)}">Ir a arreglarlo ${icon('arrow')}</button>` : ''}</li>`;
+    const item = ({ id, text, at }) => `<li><span>${esc(text)}${at ? ` <small>${time(at)}</small>` : ''}</span>${id && (products.some(p => p.id === id) || faqs.preguntas.some(q => `faq:${q.id}` === id) || S.SEASONS.some(s => `season:${s.id}` === id)) ? `<button type="button" class="text-link" data-fix="${esc(id)}">Ir a arreglarlo ${icon('arrow')}</button>` : ''}</li>`;
     const group = (title, note, list) => list.length ? `<section><p class="eyebrow">${title} · ${list.length}</p><p class="field-note">${note}</p><ul class="admin-notice-list">${list.map(item).join('')}</ul></section>` : '';
     const empty = !problems.length && !warnings.length && !events.length;
     noticesDialog.innerHTML = `<form method="dialog"><h2 id="noticesTitle">${empty ? 'Todo <em>en orden.</em>' : 'Tus <em>avisos.</em>'}</h2><div class="admin-confirm-body">
@@ -558,6 +604,7 @@ noticesDialog.addEventListener('click', event => {
     const fix = event.target.closest('[data-fix]');
     if (!fix) return;
     noticesDialog.close();
+    if (fix.dataset.fix.startsWith('season:')) return openSeasonEditor(fix.dataset.fix.slice(7));
     const question = faqs.preguntas.find(q => `faq:${q.id}` === fix.dataset.fix);
     if (question) return openFaqEditor(question);
     const product = products.find(p => p.id === fix.dataset.fix);
@@ -575,10 +622,10 @@ let versionsTicket = 0;
 // Lo que hoy se ve en la web, leído al abrir «Versiones», y las fotos subidas que siguen guardadas.
 let liveNow = {};
 let photoCheck = null;
-const sameAsLive = v => v.json === liveNow.json && v.preguntas === (liveNow.preguntas ?? null);
+const sameAsLive = v => v.json === liveNow.json && v.preguntas === (liveNow.preguntas ?? null) && v.temporada === (liveNow.temporada ?? null);
 function renderVersions() {
     // Si lo publicado ya no es lo que abrió el panel, alguien publicó desde otro equipo: primero hay que recargar.
-    const stale = loadedJson === undefined || (liveNow.json ?? null) !== loadedJson || (liveNow.preguntas ?? null) !== loadedFaqs;
+    const stale = loadedJson === undefined || (liveNow.json ?? null) !== loadedJson || (liveNow.preguntas ?? null) !== loadedFaqs || (liveNow.temporada ?? null) !== loadedSeason;
     const live = versions.findIndex(sameAsLive);
     const me = String(auth.currentUser?.email || '').toLowerCase();
     const rows = versions.slice(0, VERSIONS).map((v, i) => {
@@ -615,8 +662,10 @@ $('versionsButton').addEventListener('click', async () => {
                 by: typeof data.updatedBy === 'string' ? data.updatedBy : '',
                 json: data.json,
                 preguntas: data.preguntas ?? null,
+                temporada: data.temporada ?? null,
                 catalog: read(data.json, window.Catalog.wellFormed),
-                faqs: read(data.preguntas, F.valid)
+                faqs: read(data.preguntas, F.valid),
+                season: read(data.temporada, S.valid)
             };
         });
     } catch (error) {
@@ -672,7 +721,8 @@ async function restoreVersion(version) {
     const notes = [
         total ? `<p>${total === 1 ? 'Tienes un cambio sin publicar: se pierde' : `Tienes ${total} cambios sin publicar: se pierden`} al volver.</p>` : '',
         missing.length ? `<p>${missing.length === 1 ? 'Usa una foto que se borró: la traemos de vuelta si se borró' : `Usa ${missing.length} fotos que se borraron: las traemos de vuelta si se borraron`} hace menos de 30 días.</p>` : '',
-        version.faqs ? '' : '<p>Es de antes de que las preguntas frecuentes se editaran aquí: las preguntas se quedan como están en la web.</p>'
+        version.faqs ? '' : '<p>Es de antes de que las preguntas frecuentes se editaran aquí: las preguntas se quedan como están en la web.</p>',
+        version.season || loadedSeason === null ? '' : '<p>Es de antes de que la temporada se manejara aquí: la temporada se queda como está en la web.</p>'
     ].join('');
     if (!(await askConfirm({
         title: `¿Volver a la versión del <em>${esc(when)}</em>?`,
@@ -690,6 +740,7 @@ async function restoreVersion(version) {
     const lost = new Set(gone);
     products = M.withoutPhotos(restored, lost);
     faqs = M.clone(version.faqs || faqOriginal);
+    season = M.clone(version.season || seasonOriginal);
     fresh.clear(); freshFaqs.clear(); pendingDeletes.clear();
     versionsDialog.close();
     render();
@@ -712,7 +763,7 @@ let faqs = M.clone(faqSnapshot);
 let loadedFaqs = null;
 const freshFaqs = new Set();
 const faqChanges = () => F.changes(faqOriginal, faqs);
-const totalChanges = () => M.changes(original, products).total + faqChanges().total;
+const totalChanges = () => M.changes(original, products).total + faqChanges().total + seasonChanges().total;
 const faqName = q => q?.pregunta?.trim() || 'esta pregunta';
 const topicName = id => faqs.temas.find(t => t.id === id)?.nombre || '';
 // «Portada · Tortas · Página de preguntas (Pedidos y fechas)»
@@ -937,6 +988,337 @@ function askPrice() {
     }, { once: true }));
 }
 
+/* ---------- Temporada ---------- */
+// Una sección al principio de la portada y un aviso al entrar, que se encienden y se apagan desde aquí (js/season.js).
+// Solo hay una temporada encendida a la vez; sus productos son los de la sección «Temporada» con esa temporada.
+const draftCatalog = () => M.toCatalog(products);
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+// La temporada `id` con lo que cambia, dentro del borrador.
+const withSeason = (id, patch, activa = season.activa) => S.tidy({ activa, temporadas: [...season.temporadas.filter(item => item.id !== id), { ...S.get(id, season), ...patch }] });
+const offSeason = p => p.category === S.CATEGORY && p.group !== season.activa;
+// En la lista, cada temporada es un carril: sus productos suben y bajan entre ellos.
+const lane = p => p.category === S.CATEGORY ? `${p.category}:${p.group}` : p.category;
+const seasonAdd = id => `<li class="admin-faq-add"><button type="button" class="admin-add" data-season-new="${esc(id)}">${icon('plus')} Agregar un producto de ${esc(S.name(id))}</button></li>`;
+// Filas de temporada: las cinco en «Temporada»; en «Todos», solo la encendida (o una fila que lleva a las temporadas).
+function seasonRows(search) {
+    const diff = seasonChanges();
+    const touched = id => diff.changed.includes(id) || diff.on === id || diff.off === id;
+    const list = filter === 'temporada' ? S.SEASONS : filter === 'all' ? S.SEASONS.filter(item => item.id === season.activa) : filter === 'changed' ? S.SEASONS.filter(item => touched(item.id)) : [];
+    const rows = list.filter(item => !search || normalizeText(`temporada ${item.nombre}`).includes(search)).map(item => {
+        const on = season.activa === item.id;
+        const tags = [on && '<span class="admin-tag admin-tag-change">Encendida</span>', touched(item.id) && '<span class="admin-tag admin-tag-change">Con cambios</span>'].filter(Boolean).join('');
+        const name = esc(item.nombre);
+        return `<li class="admin-row admin-faq-row admin-season-row"><span class="admin-row-icon" aria-hidden="true">${icon(item.icono)}</span><div><h2><button type="button" class="admin-row-name" data-season-edit="${item.id}">${name}</button>${tags}</h2><p>${esc(S.summary(item.id, season, window.catalogData))}</p></div><div class="admin-row-actions"><label class="toggle-option" for="season-on-${item.id}"><input id="season-on-${item.id}" type="checkbox" data-season-on="${item.id}" ${on ? 'checked' : ''}><span class="toggle-mark" aria-hidden="true">${icon('check')}</span><span>Encendida</span></label><button type="button" class="text-link" data-season-view="${item.id}" aria-label="Ver cómo queda ${name} en teléfono y computador">Vista previa ${icon('arrow')}</button><button type="button" class="text-link" data-season-edit="${item.id}" aria-label="Editar ${name}">Editar ${icon('arrow')}</button></div></li>`;
+    });
+    const count = rows.length;
+    if (filter === 'all' && !season.activa && !search) rows.push(`<li class="admin-row admin-faq-row admin-season-row"><span class="admin-row-icon" aria-hidden="true">${icon('sparkle')}</span><div><h2><button type="button" class="admin-row-name" data-filter-go="temporada">Sin temporada encendida</button></h2><p>Enciende Navidad, Amor y Amistad, Día de la Madre o Halloween cuando llegue su fecha.</p></div><div class="admin-row-actions"><button type="button" class="text-link" data-filter-go="temporada">Ver temporadas ${icon('arrow')}</button></div></li>`);
+    // La temporada encendida que aún no tiene productos ofrece agregar el primero.
+    if (season.activa && ['all', 'temporada'].includes(filter) && !search && !S.products(season.activa, window.catalogData).length) rows.push(seasonAdd(season.activa));
+    return { count, html: rows.length ? `<li class="admin-group"><p class="eyebrow">Temporada de la web</p></li>${rows.join('')}` : '' };
+}
+$('list').addEventListener('click', event => {
+    const go = event.target.closest('[data-filter-go]');
+    if (go) { filter = go.dataset.filterGo; render(); $('filters').querySelector('[aria-pressed="true"]')?.focus(); return; }
+    const open = event.target.closest('[data-season-edit]');
+    if (open) return openSeasonEditor(open.dataset.seasonEdit);
+    const view = event.target.closest('[data-season-view]');
+    if (view) return openSeasonPreview('seccion', S.get(view.dataset.seasonView, season));
+    const add = event.target.closest('[data-season-new]');
+    if (add) startSeasonProduct(add.dataset.seasonNew);
+});
+// Encender o apagar desde la lista: pregunta antes y dice qué pasa en la web.
+async function toggleSeason(input) {
+    const id = input.dataset.seasonOn;
+    const item = S.get(id, season);
+    if (!input.checked) {
+        if (!(await askConfirm({
+            title: `¿Apagar <em>${esc(item.nombre)}</em>?`,
+            body: '<p>Cuando publiques, sale de la portada, su aviso deja de salir y sus productos no se pueden pedir. Todo queda guardado para volver a encenderla.</p>',
+            action: 'Apagarla',
+            cancel: 'Dejarla encendida'
+        }))) { input.checked = true; return; }
+        season = { ...season, activa: '' };
+        render();
+        LaurenUI.toast(`${item.nombre} quedará apagada cuando publiques.`);
+        return;
+    }
+    const shown = S.visibleProducts(id, draftCatalog()).length;
+    const other = season.activa && season.activa !== id ? S.name(season.activa) : '';
+    const expired = S.expired(item);
+    if (!(await askConfirm({
+        title: `¿Encender <em>${esc(item.nombre)}</em>?`,
+        body: `<p>Cuando publiques, ${shown ? `la portada abrirá con su sección (${plural(shown, 'producto', 'productos')})` : 'su sección saldrá en la portada en cuanto tenga productos visibles'}${item.aviso.activo ? ' y cada persona verá su aviso al entrar, una vez al día' : ''}.</p>
+            ${other ? `<p>«${esc(other)}» se apaga: solo hay una temporada encendida a la vez.</p>` : ''}
+            ${expired ? `<p>Su último día (${esc(S.formatDate(item.hasta))}) ya pasó: lo quitamos para que se vea. Puedes poner otro en «Editar».</p>` : ''}`,
+        action: 'Encenderla',
+        cancel: 'Todavía no'
+    }))) { input.checked = false; return; }
+    season = expired ? withSeason(id, { hasta: '' }, id) : { ...season, activa: id };
+    render();
+    const issue = S.problems(season, draftCatalog())[0];
+    LaurenUI.toast(issue ? `${item.nombre} quedó encendida en tu borrador. Antes de publicar: ${issue.text.replace(/^[^:]*: /, '')}` : `${item.nombre} se verá en la web cuando publiques.`);
+}
+
+// Ficha de temporada: a la izquierda, si está encendida, la sección y el aviso; a la derecha, la portada de verdad con el borrador.
+const seasonEditor = $('seasonEditor');
+LaurenUI.dialogEvents(seasonEditor);
+let seasonEdit = null;
+let seasonPristine = '';
+function openSeasonEditor(id) {
+    const item = S.get(id, season);
+    if (!item) return;
+    // La foto del aviso se elige entre las de sus productos visibles; una que ya no está, se suelta.
+    const photos = seasonPhotos(id);
+    seasonEdit = { ...M.clone(item), encendida: season.activa === id, hastaTexto: season.activa !== id && S.expired(item) ? '' : S.shortDate(item.hasta) };
+    if (!photos.includes(seasonEdit.aviso.foto)) seasonEdit.aviso.foto = '';
+    seasonPristine = JSON.stringify(seasonEdit);
+    renderSeasonEditor(photos);
+    LaurenUI.open(seasonEditor);
+}
+const seasonPhotos = id => [...new Set(S.visibleProducts(id, draftCatalog()).flatMap(M.photos))].slice(0, 30);
+function untilNote() {
+    const date = S.parseDate(seasonEdit.hastaTexto);
+    if (date === null) return 'Escríbelo así: 24/12/2026.';
+    if (!date) return 'Vacío: sigue encendida hasta que la apagues.';
+    return date < S.today() ? `El ${S.formatDate(date)} ya pasó: escribe un día que venga o déjalo vacío.` : `Se apaga sola al terminar el ${S.formatDate(date)}. Sus textos y productos quedan guardados.`;
+}
+function seasonProductsNote(id) {
+    const all = S.products(id, draftCatalog()), shown = all.filter(p => p.visible !== false);
+    if (!all.length) return 'Aún no tiene productos. Sin productos visibles, la sección no se muestra.';
+    const names = shown.map(p => `«${p.name}»`).join(', ').replace(/, ([^,]*)$/, ' y $1');
+    return `${shown.length ? `En la sección ${shown.length === 1 ? 'sale' : 'salen'} ${names}` : 'Ninguno de sus productos está visible: la sección no se muestra'}${all.length > shown.length ? `; ${plural(all.length - shown.length, 'está oculto', 'están ocultos')}` : ''}. Se editan y se ordenan en la lista, bajo «${S.name(id)}».`;
+}
+// La vista previa es la portada misma (/?vista=temporada) dentro de un marco, con el borrador que le envía el panel.
+const PREVIEW_URL = '/?vista=temporada';
+const VIEWS = [['seccion', 'La sección'], ['aviso', 'El aviso']];
+const previewFrame = (ver, width) => `<iframe data-season-frame data-ver="${ver}" data-width="${width}" src="${PREVIEW_URL}" title="Vista previa de la portada" tabindex="-1"></iframe>`;
+function renderSeasonEditor(photos) {
+    const item = seasonEdit, max = S.LIMITS;
+    // En pantallas angostas la ficha no lleva el marco: «Ver cómo queda» lo abre en grande.
+    const wide = matchMedia('(min-width: 961px)').matches;
+    const photo = (src, label) => `<label class="admin-season-photo"><input type="radio" name="f-aviso.foto" value="${esc(src)}" data-path="aviso.foto" data-kind="text" ${item.aviso.foto === src ? 'checked' : ''}>${src ? `<img src="${esc(imagePath(src))}" alt="${esc(label)}" width="64" height="80" loading="lazy">` : '<span>Sin foto</span>'}</label>`;
+    seasonEditor.innerHTML = `<form novalidate>
+        <div class="dialog-scroll">
+            <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
+            <p class="eyebrow">Temporada</p>
+            <h2 id="seasonEditorTitle">${esc(item.nombre)}</h2>
+            <div class="admin-editor-layout admin-season-layout"><div class="admin-editor-main">
+            <fieldset class="admin-fieldset"><legend>En la web</legend>
+                <div class="admin-toggles">${check('Encendida en la web', 'encendida', item.encendida)}</div>
+                <p class="field-note admin-featured-note">Encendida, la portada abre con su sección y sus productos se pueden pedir. Solo hay una temporada encendida a la vez.</p>
+                ${field('Último día (opcional)', 'hastaTexto', item.hastaTexto, { placeholder: 'Ej.: 24/12/2026', attrs: 'maxlength="30" autocomplete="off"' })}
+                <p class="field-note admin-season-until" id="seasonUntil" aria-live="polite">${esc(untilNote())}</p>
+            </fieldset>
+            <fieldset class="admin-fieldset"><legend>La sección de la portada</legend>
+                ${field('Etiqueta', 'etiqueta', item.etiqueta, { attrs: `maxlength="${max.etiqueta}"`, note: 'La línea pequeña sobre el titular.' })}
+                <div class="admin-grid">${field('Titular', 'titulo', item.titulo, { attrs: `maxlength="${max.titulo}"` })}${field('Parte resaltada', 'destacado', item.destacado, { attrs: `maxlength="${max.destacado}"`, note: 'Va en cursiva, sobre la franja albaricoque.' })}</div>
+                ${field('Frase', 'texto', item.texto, { area: true, attrs: `maxlength="${max.texto}" rows="3"`, note: 'Corta. Si hay una fecha límite para pedir, escríbela aquí.' })}
+                <p class="field-note">${esc(seasonProductsNote(item.id))}</p>
+                <p><button type="button" class="admin-add" data-action="season-add-product">${icon('plus')} Guardar y agregar un producto</button></p>
+            </fieldset>
+            <fieldset class="admin-fieldset"><legend>El aviso al entrar</legend>
+                <div class="admin-toggles">${check('Mostrar el aviso al entrar a la web', 'aviso.activo', item.aviso.activo)}</div>
+                <p class="field-note admin-featured-note">Sale en el centro de la pantalla, una vez al día por persona, mientras la temporada esté encendida.</p>
+                <div class="admin-grid">${field('Titular', 'aviso.titulo', item.aviso.titulo, { attrs: `maxlength="${max.aviso.titulo}"` })}${field('Parte resaltada', 'aviso.destacado', item.aviso.destacado, { attrs: `maxlength="${max.aviso.destacado}"` })}</div>
+                ${field('Texto', 'aviso.texto', item.aviso.texto, { area: true, attrs: `maxlength="${max.aviso.texto}" rows="3"` })}
+                ${field('Texto del botón', 'aviso.boton', item.aviso.boton, { attrs: `maxlength="${max.aviso.boton}"`, placeholder: 'Ver la colección' })}
+                ${choices('A dónde lleva el botón', 'aviso.destino', item.aviso.destino, S.DESTINOS.map(([key, label]) => [key, label]))}
+                <fieldset class="personal-field admin-choice-field"><legend>Foto del aviso (opcional)</legend>
+                    <div class="admin-season-photos">${photo('', '')}${photos.map((src, i) => photo(src, `Foto ${i + 1}`)).join('')}</div>
+                    <p class="field-note">${photos.length ? 'Se elige entre las fotos de sus productos visibles.' : 'Cuando tenga productos visibles, aquí salen sus fotos para elegir una.'}</p>
+                </fieldset>
+            </fieldset>
+            <p class="field-error" id="seasonEditorError" role="alert" tabindex="-1" hidden></p>
+            </div>
+            <aside class="admin-editor-side" aria-label="Vista previa">
+                <div class="admin-side-track"><div class="admin-side-sticky">
+                <fieldset class="admin-fieldset admin-side-preview"><legend>Así se verá en la web</legend>
+                    ${wide ? `${choices('Qué quieres ver', 'ver', 'seccion', VIEWS)}<div class="admin-season-frame" inert>${previewFrame('seccion', 390)}</div>` : ''}
+                    <p><button type="button" class="text-link" data-action="season-preview">Ver en teléfono y computador ${icon('arrow')}</button></p>
+                    <p class="field-note">Es la portada de verdad con lo que llevas escrito, como si la temporada estuviera encendida.</p>
+                    <p class="field-note" data-preview-sample hidden>Aún no tiene productos visibles: la sección se muestra con productos de ejemplo.</p>
+                </fieldset>
+                </div></div>
+            </aside></div>
+        </div>
+        <div class="admin-editor-actions">
+            <div><button type="button" class="btn btn-secondary" data-close-dialog>Cancelar</button><button type="submit" class="btn">Guardar ${icon('check')}</button></div>
+        </div>
+    </form>`;
+    watchFrames(seasonEditor);
+}
+// El marco se dibuja a su ancho real (teléfono 390, computador 1280) y se reduce al espacio que tiene.
+const frameSizes = new ResizeObserver(entries => entries.forEach(entry => fitFrame(entry.target)));
+function fitFrame(box) {
+    const frame = box.querySelector('iframe');
+    if (!frame || !box.clientWidth) return;
+    const width = Number(frame.dataset.width);
+    const scale = Math.min(1, box.clientWidth / width);
+    frame.style.width = `${width}px`;
+    frame.style.height = `${box.clientHeight / scale}px`;
+    frame.style.setProperty('--s', scale);
+}
+const watchFrames = root => root.querySelectorAll('.admin-season-frame').forEach(box => { frameSizes.observe(box); fitFrame(box); });
+// La temporada que se está viendo: la de la ficha abierta (con lo que se va escribiendo) o la de «Vista previa» de su fila.
+let previewItem = null;
+const previewing = () => seasonEditor.open && seasonEdit ? seasonEdit : previewItem;
+/**
+ * Una temporada sin productos visibles no tendría sección: para ver su decoración, la vista previa le presta hasta
+ * cuatro productos de la web, uno de cada página. Solo existen en el marco; nada se guarda ni se publica.
+ */
+function previewCatalog(id) {
+    const catalogo = draftCatalog();
+    if (S.visibleProducts(id, catalogo).length) return { catalogo, sample: false };
+    const shown = products.filter(p => p.visible !== false && p.category !== S.CATEGORY && p.category !== 'extras' && M.photos(p).length);
+    const picks = ['tortas', 'alfajores', 'galletas', 'detalles', 'brownies'].map(category => shown.find(p => p.category === category)).filter(Boolean).slice(0, 4);
+    const samples = Object.fromEntries(picks.map((p, i) => [`ejemplo-${i + 1}`, { ...M.clone(p), id: `ejemplo-${i + 1}`, category: S.CATEGORY, group: id, featured: undefined }]));
+    return { catalogo: { ...catalogo, ...samples }, sample: picks.length > 0 };
+}
+// Lo que se envía a la portada del marco: el catálogo del borrador y la temporada, encendida y sin último día.
+function sendPreview(frame) {
+    const item = previewing();
+    if (!item || !frame.contentWindow) return;
+    const temporada = S.tidy({ activa: item.id, temporadas: [...season.temporadas.filter(other => other.id !== item.id), { ...item, hasta: '' }] });
+    const { catalogo, sample } = previewCatalog(item.id);
+    document.querySelectorAll('[data-preview-sample]').forEach(note => { note.hidden = !sample; });
+    try { frame.contentWindow.postMessage({ lauren: 'vista-temporada', catalogo, temporada, ver: frame.dataset.ver }, location.origin); }
+    catch { /* se pone al día con el siguiente cambio */ }
+}
+let previewTimer = 0;
+const refreshPreviews = () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => document.querySelectorAll('[data-season-frame]').forEach(sendPreview), 250); };
+// Cada marco pide el borrador al terminar de cargar la portada.
+document.addEventListener('load', event => { if (event.target.matches?.('[data-season-frame]')) sendPreview(event.target); }, true);
+function showInFrame(root, ver) {
+    const radio = root.querySelector(`[data-path="ver"][value="${ver}"]`);
+    if (radio) radio.checked = true;
+    root.querySelectorAll('[data-season-frame]').forEach(frame => { if (frame.dataset.ver !== ver) { frame.dataset.ver = ver; sendPreview(frame); } });
+}
+seasonEditor.addEventListener('input', event => {
+    const input = event.target.closest('[data-path]');
+    if (!input) return;
+    const path = input.dataset.path;
+    if (path === 'ver') return showInFrame(seasonEditor, input.value);
+    setPath(seasonEdit, path, readInput(input));
+    if (path === 'hastaTexto') seasonEditor.querySelector('#seasonUntil').textContent = untilNote();
+    // La vista previa sigue lo que se está escribiendo: la sección o el aviso.
+    if (path.startsWith('aviso.')) showInFrame(seasonEditor, 'aviso');
+    else if (['etiqueta', 'titulo', 'destacado', 'texto'].includes(path)) showInFrame(seasonEditor, 'seccion');
+    refreshPreviews();
+});
+async function leaveSeasonEditor() {
+    if (JSON.stringify(seasonEdit) !== seasonPristine && !(await askConfirm({
+        title: `¿Salir sin guardar <em>${esc(seasonEdit.nombre)}</em>?`,
+        body: '<p>Lo que cambiaste en esta temporada se pierde. Para conservarlo, toca «Seguir editando» y luego «Guardar».</p>',
+        action: 'Salir sin guardar',
+        cancel: 'Seguir editando'
+    }))) return;
+    LaurenUI.close(seasonEditor);
+}
+seasonEditor.addEventListener('click', event => {
+    const bounds = seasonEditor.getBoundingClientRect();
+    const outside = event.target === seasonEditor && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+    if (!outside && !event.target.closest('[data-close-dialog]')) return;
+    event.stopImmediatePropagation();
+    leaveSeasonEditor();
+}, true);
+seasonEditor.addEventListener('cancel', event => { event.preventDefault(); leaveSeasonEditor(); });
+// Guarda la ficha en el borrador; false si falta algo (lo dice en la ficha) o no se confirmó.
+async function saveSeason() {
+    const item = seasonEdit;
+    const fail = (message, path) => { showError('seasonEditorError', message); (seasonEditor.querySelector(`[data-path="${path}"]`) || $('seasonEditorError')).focus(); return false; };
+    const hasta = S.parseDate(item.hastaTexto);
+    if (hasta === null) return fail('Escribe el último día así: 24/12/2026 (o déjalo vacío).', 'hastaTexto');
+    if (hasta && hasta < S.today()) return fail(`El ${S.formatDate(hasta)} ya pasó. Escribe un día que venga o déjalo vacío.`, 'hastaTexto');
+    if (!M.clean(item.titulo) && !M.clean(item.destacado)) return fail('Escribe el titular de la sección.', 'titulo');
+    if (item.aviso.activo && !M.clean(item.aviso.titulo) && !M.clean(item.aviso.destacado)) return fail('Escribe el titular del aviso, o desmarca «Mostrar el aviso al entrar a la web».', 'aviso.titulo');
+    if (item.aviso.activo && !M.clean(item.aviso.boton)) return fail('Escribe el texto del botón del aviso.', 'aviso.boton');
+    const other = item.encendida && season.activa && season.activa !== item.id ? S.name(season.activa) : '';
+    if (other && !(await askConfirm({
+        title: `¿Encender <em>${esc(item.nombre)}</em>?`,
+        body: `<p>«${esc(other)}» se apaga: solo hay una temporada encendida a la vez. Sus textos y productos quedan guardados.</p>`,
+        action: 'Encenderla',
+        cancel: 'Seguir editando'
+    }))) return false;
+    showError('seasonEditorError', '');
+    season = withSeason(item.id, { ...item, hasta }, item.encendida ? item.id : season.activa === item.id ? '' : season.activa);
+    return true;
+}
+seasonEditor.addEventListener('submit', async event => {
+    event.preventDefault();
+    const item = seasonEdit;
+    if (!(await saveSeason())) return;
+    LaurenUI.close(seasonEditor);
+    render();
+    const issue = item.encendida ? S.problems(season, draftCatalog())[0] : null;
+    LaurenUI.toast(issue ? `Guardada. Antes de publicar: ${issue.text.replace(/^[^:]*: /, '')}` : !hasChanges() ? 'Guardada. No hay cambios por publicar.'
+        : item.encendida ? 'Guardada. Toca «Publicar cambios» para que se vea en la web.' : 'Guardada. Enciéndela cuando llegue su fecha y publica.');
+});
+seasonEditor.addEventListener('click', async event => {
+    const action = event.target.closest('[data-action]')?.dataset.action;
+    if (action === 'season-preview') openSeasonPreview(seasonEditor.querySelector('[data-path="ver"]:checked')?.value || 'seccion', seasonEdit);
+    if (action === 'season-add-product') {
+        const id = seasonEdit.id;
+        if (!(await saveSeason())) return;
+        LaurenUI.close(seasonEditor);
+        render();
+        startSeasonProduct(id);
+    }
+});
+// Vista previa en grande: la portada como se ve en un computador y en un teléfono, una al lado de la otra (en pantallas
+// angostas, una debajo de la otra). Se abre desde la ficha (encima de ella) o desde «Vista previa» en la fila.
+const seasonPreview = $('seasonPreview');
+LaurenUI.dialogEvents(seasonPreview);
+function openSeasonPreview(ver, item) {
+    if (!item) return;
+    previewItem = item;
+    const frame = (label, width) => `<figure><figcaption>${label}</figcaption><div class="admin-season-frame">${previewFrame(ver, width)}</div></figure>`;
+    seasonPreview.innerHTML = `<div class="admin-preview-body"><div class="admin-preview-head">
+        <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar la vista previa">${icon('close')}</button>
+        <p class="eyebrow">Vista previa · ${esc(item.nombre)}</p>
+        <h2 id="seasonPreviewTitle">Así se verá <em>en la web.</em></h2>
+        <div class="admin-preview-tools">${choices('Qué quieres ver', 'ver', ver, VIEWS)}</div>
+        <p class="field-note" data-preview-sample hidden>Aún no tiene productos visibles: la sección se muestra con productos de ejemplo.</p>
+        </div><div class="admin-preview-frames">${frame('Computador', 1280)}${frame('Teléfono', 390)}</div></div>`;
+    seasonPreview.showModal();
+    watchFrames(seasonPreview);
+}
+seasonPreview.addEventListener('input', event => {
+    const input = event.target.closest('[data-path="ver"]');
+    if (input) showInFrame(seasonPreview, input.value);
+});
+seasonPreview.addEventListener('close', () => { seasonPreview.innerHTML = ''; previewItem = null; });
+
+/**
+ * Producto nuevo de temporada: se elige para qué temporada es y cómo empieza (en blanco o con las opciones de un tipo
+ * de producto de la web: porciones, sabores, presentaciones), con los precios vacíos. Empieza visible: se ve en la web
+ * solo mientras su temporada esté encendida.
+ */
+const SEASON_BASES = [['', 'En blanco'], ['tortas', 'Como una torta'], ['alfajores', 'Como unos alfajores'], ['brownies', 'Como unos brownies'], ['galletas', 'Como unas galletas'], ['detalles', 'Como un detalle']];
+function askSeasonProduct(id) {
+    if (confirmDialog.open) return Promise.resolve(null);
+    const radios = (name, list, chosen) => list.map(([value, text]) => `<label class="choice"><input type="radio" name="${name}" value="${esc(value)}" ${value === chosen ? 'checked' : ''}><span>${esc(text)}</span></label>`).join('');
+    const bases = SEASON_BASES.filter(([key]) => !key || products.some(p => p.category === key));
+    confirmDialog.innerHTML = `<form method="dialog"><h2 id="confirmTitle">Nuevo producto <em>de temporada.</em></h2><div class="admin-confirm-body">
+        <fieldset class="personal-field admin-choice-field"><legend>¿Para qué temporada?</legend><div class="choice-list">${radios('seasonFor', S.SEASONS.map(item => [item.id, item.nombre]), S.name(id) ? id : season.activa || S.SEASONS[0].id)}</div></fieldset>
+        <fieldset class="personal-field admin-choice-field"><legend>¿Cómo empieza?</legend><div class="choice-list">${radios('seasonBase', bases, '')}</div></fieldset>
+        <p class="field-note">«En blanco» empieza con nombre, precio, fotos y textos. Las demás traen ya las opciones de ese tipo de producto (porciones, sabores, presentaciones), con los precios vacíos.</p>
+        </div><div class="admin-confirm-actions"><button type="submit" class="btn btn-secondary" value="cancel">Cancelar</button><button type="submit" class="btn" value="ok">Crear producto ${icon('check')}</button></div></form>`;
+    confirmDialog.returnValue = '';
+    confirmDialog.showModal();
+    confirmDialog.querySelector('[value="cancel"]').focus();
+    return new Promise(resolve => confirmDialog.addEventListener('close', () => resolve(confirmDialog.returnValue === 'ok'
+        ? { season: confirmDialog.querySelector('[name="seasonFor"]:checked')?.value, base: confirmDialog.querySelector('[name="seasonBase"]:checked')?.value || '' } : null), { once: true }));
+}
+async function startSeasonProduct(id) {
+    const choice = await askSeasonProduct(id);
+    if (!choice?.season) return;
+    // De ese tipo, el producto con más tamaños: así trae todas las porciones o presentaciones.
+    const base = choice.base && products.filter(p => p.category === choice.base && !p.basedOn).sort((a, b) => (M.sizeOf(b)?.choices.length || 0) - (M.sizeOf(a)?.choices.length || 0))[0];
+    const product = base ? M.template(choice.base, [base]) : { options: [], personalization: null };
+    for (const key of ['summary', 'includes', 'notes']) delete product[key];
+    openEditor({ ...product, id: '', name: '', category: S.CATEGORY, group: choice.season, visible: true, description: '', mainImage: '', images: [], price: null }, true);
+}
+
 /* ---------- Editor ---------- */
 const editor = $('editor');
 LaurenUI.dialogEvents(editor);
@@ -963,6 +1345,8 @@ editor.addEventListener('click', event => {
 editor.addEventListener('cancel', event => { event.preventDefault(); leaveEditor(); });
 
 $('newProduct').addEventListener('click', () => {
+    // En «Temporada», el producto nuevo pregunta para qué temporada es y cómo empieza.
+    if (filter === 'temporada') return startSeasonProduct(season.activa);
     const category = M.SECTIONS.some(([id]) => id === filter) ? filter : 'tortas';
     openEditor(M.template(category, products), true);
 });
@@ -1123,7 +1507,8 @@ function cardPreview(p) {
     return `<article class="product-card"><div class="product-image">${src ? `<img src="${esc(imagePath(src))}" alt="" width="600" height="680">${LaurenUI.moreDesigns(photos)}` : '<span class="admin-card-empty">Sin foto</span>'}<span class="product-open">${icon('diagonal')}</span></div><div class="product-meta"><h3 class="product-name">${esc(p.name || 'Sin nombre')}</h3><p class="product-price">${quoted ? 'A tu medida' : price}</p></div>${cardText(r) ? `<p class="product-description">${esc(cardText(r))}</p>` : ''}<span class="text-link">${quoted ? 'Consultar diseño' : 'Elegir detalles'} ${icon('arrow')}</span></article>`;
 }
 // Igual que la web: las tarjetas de torta (compactas) solo llevan la frase corta; las demás, la frase o la descripción.
-const cardText = r => r.category === 'tortas' ? r.summary || '' : r.summary || r.description || '';
+const compact = p => p.category === 'tortas' || p.category === S.CATEGORY;
+const cardText = r => compact(r) ? r.summary || '' : r.summary || r.description || '';
 const previewTitle = p => `Así se verá en la web <span class="admin-tag"${p.visible === false ? '' : ' data-off'}>Oculto</span>`;
 
 function renderEditor() {
@@ -1139,11 +1524,13 @@ function renderEditor() {
     const personal = window.Catalog.fields(p, window.Catalog.defaults(p)).map(f => `«${f.label}» (hasta ${f.maxLength || 100} letras)`).join(', ');
     const advice = window.Catalog.advice(p) && p.category !== 'tortas' ? '<p class="field-note">Lo que va escrito en la torta (frase, número o letras) no se escribe en la web: se acuerda en la asesoría.</p>' : '';
     const section = choices('Sección de la web', 'category', p.category, M.SECTIONS);
-    const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? choices('Filtro en la página', 'group', p.group, [['', 'Ninguno'], ...groups]) : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
+    // Un producto de temporada sale en la sección de su temporada, mientras esté encendida.
+    const seasonal = p.category === S.CATEGORY;
+    const where = `<fieldset class="admin-fieldset admin-side-where"><legend>Dónde aparece</legend><div class="admin-grid">${section}${groups ? choices(seasonal ? 'Temporada' : 'Filtro en la página', 'group', p.group, seasonal ? groups : [['', 'Ninguno'], ...groups]) : ''}</div>${editingId ? '<p class="field-note">Cambia la sección solo si el producto pasa a otra página de la web.</p>' : ''}</fieldset>`;
     editor.innerHTML = `<form novalidate>
         <div class="dialog-scroll">
             <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Cerrar">${icon('close')}</button>
-            <p class="eyebrow">${editingId ? sectionName(p.category) : 'Nuevo producto'}</p>
+            <p class="eyebrow">${seasonal ? `${editingId ? 'Temporada ·' : 'Nuevo producto de'} ${esc(S.name(p.group))}` : editingId ? sectionName(p.category) : 'Nuevo producto'}</p>
             <h2 id="editorTitle">${esc(p.name || 'Sin nombre')}</h2>
             <div class="admin-editor-layout"><div class="admin-editor-main">
             <fieldset class="admin-fieldset"><legend>Lo básico</legend>
@@ -1152,7 +1539,7 @@ function renderEditor() {
             ${pricesHTML(p)}
             ${p.category === 'extras' ? '' : photosHTML(p)}
             <fieldset class="admin-fieldset"><legend>Textos</legend>
-                ${field('Frase corta de la tarjeta', 'summary', p.summary, { note: p.category === 'tortas' ? 'Una línea que invite, bajo el nombre de la torta. Si la dejas vacía, la tarjeta muestra solo el nombre y el precio.' : 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
+                ${field('Frase corta de la tarjeta', 'summary', p.summary, { note: compact(p) ? `Una línea que invite, bajo el nombre${seasonal ? '' : ' de la torta'}. Si la dejas vacía, la tarjeta muestra solo el nombre y el precio.` : 'Una línea que invite. Si la dejas vacía, se usa la descripción.', attrs: 'maxlength="90"' })}
                 ${field('Descripción', 'description', p.description, { area: true, attrs: rows(Array(Math.ceil(String(p.description || '').length / 70)).fill(0)) })}
                 ${field('Qué incluye (una cosa por línea)', 'includes', (p.includes || []).join('\n'), { type: 'lines', area: true, attrs: rows(p.includes || []) })}
                 ${field('Notas en la ficha (una por línea)', 'notes', (p.notes || []).join('\n'), { type: 'lines', area: true, note: 'Aclaraciones que se ven bajo las opciones.', attrs: rows(Array(Math.ceil((p.notes || []).join(' ').length / 70)).fill(0), 2) })}
@@ -1168,9 +1555,10 @@ function renderEditor() {
             </div>
             <aside class="admin-editor-side" aria-label="Vista previa y estado">
                 <div class="admin-side-track"><div class="admin-side-sticky">
-                <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview${p.category === 'tortas' ? ' four-columns' : ''}" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
+                <fieldset class="admin-fieldset admin-side-preview"><legend id="cardPreviewTitle">${previewTitle(p)}</legend><div class="admin-card-preview${compact(p) ? ' four-columns' : ''}" id="cardPreview" aria-hidden="true">${cardPreview(p)}</div></fieldset>
                 <fieldset class="admin-fieldset admin-side-state"><legend>En la web</legend>
                     <div class="admin-toggles">${check('Visible en la web', 'visible', p.visible !== false)}${homeable ? check('Mostrar en la portada', 'featured', p.featured === true, full) : ''}</div>
+                    ${seasonal ? `<p class="field-note admin-featured-note">Se ve en la web mientras «${esc(S.name(p.group))}» esté encendida${season.activa === p.group ? '' : ' (ahora está apagada)'}.</p>` : ''}
                     ${homeable ? `<p class="field-note admin-featured-note">${full ? `La portada ya tiene sus ${max} tortas: ${esc(names(others))}. Desmarca una de ellas para poner esta.` : `En la portada caben ${max} tortas. Ahora hay ${others.length + (p.featured === true ? 1 : 0)}; si faltan, la web la completa con las siguientes del catálogo.`}</p>` : ''}
                 </fieldset>
                 </div></div>
@@ -1233,7 +1621,7 @@ editor.addEventListener('input', event => {
         const before = edit.category;
         askConfirm({
             title: `¿Pasar <em>${esc(edit.name?.trim() || 'este producto')}</em> a ${esc(sectionName(value))}?`,
-            body: `<p>Deja de verse en ${esc(sectionName(before))} y aparece en la página de ${esc(sectionName(value))} cuando guardes y publiques.</p>`,
+            body: `<p>Deja de verse en ${esc(sectionName(before))} y aparece en ${value === S.CATEGORY ? 'la sección de temporada de la portada, mientras su temporada esté encendida,' : `la página de ${esc(sectionName(value))}`} cuando guardes y publiques.</p>`,
             action: 'Pasarlo',
             cancel: 'Dejarlo donde está'
         }).then(ok => {
@@ -1257,8 +1645,8 @@ function applyInput(path, value, input) {
         const option = edit.options[Number(path.split('.')[1])];
         if (value) option.maxSelection = 1; else { delete option.multiple; delete option.maxSelection; }
     }
-    if (path === 'category' || path === 'featured' || path.endsWith('.multiple')) {
-        if (path === 'category') delete edit.group;
+    if (path === 'category' || path === 'featured' || path.endsWith('.multiple') || (path === 'group' && edit.category === S.CATEGORY)) {
+        if (path === 'category') { delete edit.group; if (value === S.CATEGORY) edit.group = season.activa || S.SEASONS[0].id; }
         const scroll = editor.querySelector('.dialog-scroll').scrollTop;
         const top = input.closest('label').getBoundingClientRect().top;
         renderEditor();
@@ -1470,7 +1858,9 @@ editor.addEventListener('submit', async event => {
     const saved = M.clone(edit);
     if (editingId) products[products.findIndex(p => p.id === editingId)] = saved;
     else {
-        const last = products.findLastIndex(p => p.category === saved.category);
+        // Al final de su sección; en temporada, al final de su temporada.
+        let last = products.findLastIndex(p => lane(p) === lane(saved));
+        if (last < 0) last = products.findLastIndex(p => p.category === saved.category);
         products.splice(last + 1, 0, saved);
     }
     photoFates.forEach((fate, src) => { if (fate === 'borrar') pendingDeletes.add(src); else pendingDeletes.delete(src); });
@@ -1490,7 +1880,8 @@ editor.addEventListener('submit', async event => {
     const cited = new Set([saved.id, ...gone].flatMap(id => F.citing(id, faqs).map(q => q.id)));
     const broken = F.broken(faqs, M.SECTIONS).filter(item => cited.has(item.id));
     const next = broken.length ? `Antes de publicar, cambia la respuesta de ${broken.map(item => `«${faqName(faqs.preguntas.find(q => q.id === item.id))}»`).join(' y ')}: cita un precio que ya no se puede mostrar.`
-        : saved.visible === false ? 'Está oculto: marca «Visible» y publica para que se vea en la web.' : 'Toca «Publicar cambios» para que se vea en la web.';
+        : saved.visible === false ? 'Está oculto: marca «Visible» y publica para que se vea en la web.'
+        : offSeason(saved) ? `Se verá en la web cuando enciendas «${S.name(saved.group)}» y publiques.` : 'Toca «Publicar cambios» para que se vea en la web.';
     LaurenUI.toast(joined.length ? `Listo: ${joined.map(n => `«${n}»`).join(', ').replace(/, ([^,]*)$/, ' y $1')} ${joined.length === 1 ? 'quedó' : 'quedaron'} dentro de «${saved.name}». ${next}` : `Guardado. ${next}`);
 });
 

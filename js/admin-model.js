@@ -1,22 +1,26 @@
 /** Reglas del centro de control: plantillas, identificadores, lectura de precios y validación. Sin interfaz. */
 (() => {
     'use strict';
+    // «Temporada» va primero, como en la portada: sus productos salen en la sección de temporada mientras esté encendida.
+    const SEASONAL = 'temporada';
     const SECTIONS = [
-        ['tortas', 'Tortas'], ['extras', 'Adicionales de torta'], ['alfajores', 'Alfajores'],
+        [SEASONAL, 'Temporada'], ['tortas', 'Tortas'], ['extras', 'Adicionales de torta'], ['alfajores', 'Alfajores'],
         ['brownies', 'Brownies'], ['galletas', 'Galletas'], ['detalles', 'Detalles']
     ];
+    // Filtros dentro de cada página; en «Temporada», el grupo de un producto es su temporada (js/season.js).
     const GROUPS = {
+        [SEASONAL]: (window.LaurenSeason?.SEASONS || []).map(s => [s.id, s.nombre]),
         alfajores: [['cajas', 'Cajas y minis'], ['especiales', 'Especiales']],
         detalles: [['osos', 'Con ositos'], ['mix', 'Mix y mensajes'], ['golden', 'Golden y tortas']]
     };
     // Secciones que se piden por cantidad: solo en ellas el panel muestra cantidad mínima y su nombre.
-    const QUANTITY = ['alfajores', 'brownies', 'galletas', 'detalles'];
+    const QUANTITY = [SEASONAL, 'alfajores', 'brownies', 'galletas', 'detalles'];
     // Fotos de la web: las del inventario y las subidas desde el panel, que guarda y sirve el worker de fotos (worker/fotos). Igual que LaurenUI.imagePath.
     const UPLOADED = 'https://lauren-reposteria.crizczi22.workers.dev/f/';
     const IMAGE = /^(?:\/assets\/(?:optimized|propuestas-fotograficas)\/[a-z0-9/_.-]+\.(?:webp|png|jpg)|https:\/\/lauren-reposteria\.crizczi22\.workers\.dev\/f\/[a-z0-9-]{1,80}\.(?:webp|jpg))$/;
-    // Tamaño máximo de lo publicado, igual que firestore.rules (`json` y `preguntas` de catalogo/actual); juntos, por debajo
-    // del máximo de un documento de Firestore (1 MiB).
-    const LIMITS = { catalog: 900000, faqs: 200000, document: 1000000 };
+    // Tamaño máximo de lo publicado, igual que firestore.rules (`json`, `preguntas` y `temporada` de catalogo/actual);
+    // juntos, por debajo del máximo de un documento de Firestore (1 MiB).
+    const LIMITS = { catalog: 900000, faqs: 200000, season: 20000, document: 1000000 };
     const clone = value => JSON.parse(JSON.stringify(value));
     // Caracteres que no se ven (espacios de ancho cero, marcas y controles de dirección del texto): un nombre hecho solo de
     // ellos parecería vacío, y un control de dirección desordena lo que se lee en la web o en el mensaje de WhatsApp.
@@ -176,6 +180,7 @@
             if (p.id && ids.has(p.id)) errors.push(`${name}: el identificador «${p.id}» está repetido.`);
             if (p.id) ids.add(p.id);
             if (!sections.has(p.category)) errors.push(`${name}: elige una sección.`);
+            if (p.category === SEASONAL && !GROUPS[SEASONAL].some(([id]) => id === p.group)) errors.push(`${name}: elige su temporada.`);
             if (p.basedOn && !all.some(base => base.id === p.basedOn && !base.basedOn)) errors.push(`${name}: la torta base ya no existe.`);
             money(p.price, name);
             money(p.priceMax, `${name} (precio máximo)`);
@@ -302,8 +307,8 @@
     const someNames = names => names.length <= 3 ? names.join(', ').replace(/, ([^,]*)$/, ' y $1') : `${names.slice(0, 2).join(', ')} y ${names.length - 2} más`;
     /**
      * Qué cambió una versión frente a la anterior, en pocas palabras: «Con cambios: Torta Sencilla, Oso Grande y 2 más ·
-     * 3 preguntas · Se eliminó: Oso con Fresas». Cada una es { catalog, faqs }, ya leídas (las de antes de octubre de 2026
-     * no tienen preguntas). Sin la anterior, es la primera que se guardó.
+     * 3 preguntas · Se eliminó: Oso con Fresas». Cada una es { catalog, faqs, season }, ya leídas (las de antes de octubre
+     * de 2026 no tienen preguntas y las de antes de la temporada no la tienen). Sin la anterior, es la primera que se guardó.
      */
     function versionChanges(version, previous) {
         if (!previous) return 'La primera que se guardó';
@@ -311,6 +316,9 @@
         const name = (catalog, id) => clean(catalog[id]?.name) || 'Producto sin nombre';
         const { changed, removed, moved } = changes(previous.catalog, Object.values(version.catalog));
         const parts = changed.length ? [someNames(changed.map(id => name(version.catalog, id)))] : moved ? ['el orden de los productos'] : [];
+        // La temporada (cuál está encendida, sus textos o su aviso), si las dos versiones la tienen.
+        const S = window.LaurenSeason;
+        if (S && version.season && previous.season && S.changes(previous.season, version.season).total) parts.push('la temporada');
         const F = window.LaurenFaqs;
         if (F && version.faqs && previous.faqs) {
             const diff = F.changes(previous.faqs, version.faqs);
@@ -336,5 +344,5 @@
             return product;
         });
     }
-    window.AdminModel = { problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes, versionDate, versionChanges, uploadsIn, withoutPhotos };
+    window.AdminModel = { SEASONAL, problems, warnings, migrate, addonsGroup, choicePhotos, FLAVOR_PHOTOS, sizeOf, SECTIONS, GROUPS, QUANTITY, IMAGE, UPLOADED, LIMITS, clean, photos, takenPhotos, photoName, clone, slug, unique, parseMoney, formatMoney, priced, template, normalize, toCatalog, unusedUploads, validate, changes, versionDate, versionChanges, uploadsIn, withoutPhotos };
 })();

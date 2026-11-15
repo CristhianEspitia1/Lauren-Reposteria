@@ -24,6 +24,7 @@ js/gallery-data.js / site.js      Fotografías e interacción del sitio
 js/image-variants.js             Anchos de las fotos para srcset (generado)
 js/flavors.js                    «Un sabor para recordar» (Tortas) desde el catálogo
 js/faq-data.js / faqs.js         Preguntas frecuentes (solo datos) y sus reglas: cada página, precios y enlaces
+js/season-data.js / season.js    Temporada (solo datos) y sus reglas: cuál se ve hoy, sección, aviso y fechas
 assets/brand/                    Logotipos, sello e isotipo SVG
 assets/fonts/                    Tipografías WOFF2 (Inter y Playfair Display) y sus licencias OFL
 assets/propuestas-fotograficas/  Fotografías WebP, copias responsive y manifest.json
@@ -34,7 +35,7 @@ admin/ / css/admin.css           Centro de control (/admin/, no se indexa)
 js/admin.js / admin-model.js      Panel: acceso, ficha, fotos y reglas del borrador
 js/firebase-config.js / catalog-live.js  Proyecto de Firebase y lectura en vivo de lo publicado
 worker/fotos/                    Cloudflare Worker que guarda y sirve las fotos subidas desde /admin/ (no se publica en Pages)
-.github/workflows/catalogo.yml   Trae cada hora el catálogo publicado y regenera el SEO
+.github/workflows/catalogo.yml   Trae cada hora el catálogo, las preguntas y la temporada publicados y regenera el SEO
 tests/                           Pruebas de lógica y de SEO (Node)
 tests/fixtures/catalog-data.js   Catálogo de prueba fijo para las reglas de precios y del panel
 tests/catalogo-real.test.mjs     Reglas que debe cumplir el catálogo real, sin importes fijos

@@ -23,6 +23,18 @@
         'birthday-topper': '<path d="M8 16.5v5m8-5v5M12 2.5c5.1 0 9 2.9 9 7s-3.9 7-9 7-9-2.9-9-7 3.9-7 9-7Z"/><path d="M7 7v5m3-5v5M7 9.5h3M13.5 7v5h2.2a1.25 1.25 0 0 0 0-2.5h-2.2m2.2 0a1.25 1.25 0 0 0 0-2.5h-2.2"/>',
         pearls: '<circle cx="10" cy="9" r="5.5"/><circle cx="18.5" cy="16" r="3.5"/><circle cx="7" cy="19" r="2.5"/><path d="M7.2 8A3 3 0 0 1 10 6"/>',
         crown: '<path d="m3 7 5 4 4-6 4 6 5-4-2.5 12h-13L3 7ZM5 16h14"/><circle cx="12" cy="3" r=".9" fill="currentColor" stroke="none"/><circle cx="2.6" cy="4.9" r=".9" fill="currentColor" stroke="none"/><circle cx="21.4" cy="4.9" r=".9" fill="currentColor" stroke="none"/>',
+        // Temporadas: adornos de la sección y del aviso de temporada, y su fila en el centro de control.
+        sparkle: '<path d="M12 3c.5 4.9 2.9 7.9 9 9-6.1 1.1-8.5 4.1-9 9-.5-4.9-2.9-7.9-9-9 6.1-1.1 8.5-4.1 9-9Z"/>',
+        snowflake: '<path d="M12 2.5v19M3.8 7.25l16.4 9.5M20.2 7.25 3.8 16.75M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5M17.25 6.1l-.9 3.4 3.4.9M19.75 13.6l-3.4.9.9 3.4M6.75 6.1l.9 3.4-3.4.9M4.25 13.6l3.4.9-.9 3.4"/>',
+        pine: '<path d="M12 3.5 8 8.5h2L6.5 13h2.2L5 18h14l-3.7-5h2.2L14 8.5h2L12 3.5ZM12 18v3"/>',
+        ornament: '<circle cx="12" cy="14" r="6.5"/><path d="M10.25 7.6V5.5h3.5v2.1M12 5.5V3M5.7 12.6c3.6 1.7 9 1.7 12.6 0"/>',
+        bell: '<path d="M12 4.5A5.5 5.5 0 0 0 6.5 10c0 3.6-.9 5.4-2.5 7h16c-1.6-1.6-2.5-3.4-2.5-7A5.5 5.5 0 0 0 12 4.5ZM12 4.5V3M10 19.5a2 2 0 0 0 4 0"/>',
+        hearts: '<path d="M9.5 20.5S3 16.5 3 12.1a3.46 3.46 0 0 1 6.5-1.6 3.46 3.46 0 0 1 6.5 1.6c0 4.5-6.5 8.4-6.5 8.4ZM18 9.5s-3.24-2-3.24-4.2A1.73 1.73 0 0 1 18 4.5a1.73 1.73 0 0 1 3.24.8c0 2.2-3.24 4.2-3.24 4.2Z"/>',
+        flower: '<path d="M12 13.5c-3 0-5-2.2-5-5.2V4.5l2.5 2 2.5-3 2.5 3 2.5-2v3.8c0 3-2 5.2-5 5.2ZM12 13.5v8M12 19.5c-.6-2.3-2.3-3.5-5-3.5.3 2.6 2.2 3.9 5 3.5ZM12 17.5c.6-2 2.1-3 4.5-3-.3 2.3-1.9 3.4-4.5 3Z"/>',
+        pumpkin: '<ellipse cx="12" cy="13.5" rx="3.4" ry="6.6"/><path d="M9.6 8.2C6.5 7.2 4 9.8 4 13.5s2.5 6.3 5.6 5.3M14.4 8.2c3.1-1 5.6 1.6 5.6 5.3s-2.5 6.3-5.6 5.3M12 6.9c0-1.8.8-3 2.3-3.6"/>',
+        moon: '<path d="M12.5 3.5a6.5 6.5 0 0 0 8 8 8.5 8.5 0 1 1-8-8Z"/>',
+        ghost: '<path d="M6 20.5V11a6 6 0 0 1 12 0v9.5l-2-1.6-2 1.6-2-1.6-2 1.6-2-1.6-2 1.6Z"/><circle cx="9.8" cy="11" r=".9" fill="currentColor" stroke="none"/><circle cx="14.2" cy="11" r=".9" fill="currentColor" stroke="none"/>',
+        candy: '<circle cx="12" cy="12" r="4"/><path d="M8.3 10.4 4 8v8l4.3-2.4M15.7 10.4 20 8v8l-4.3-2.4"/>',
         // Navegación y acciones: geometría regular, lectura inmediata a 20–24 px.
         arrow: '<path d="M3.5 12h16.8M14.8 6.5l5.5 5.5-5.5 5.5"/>',
         diagonal: '<path d="M5.5 18.5 18.5 5.5M8 5.5h10.5V16"/>',
