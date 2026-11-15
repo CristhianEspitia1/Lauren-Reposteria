@@ -135,7 +135,12 @@ main:has(> #authView:not([hidden])) .admin-boot, main:has(> #appView:not([hidden
 .admin-card-preview { pointer-events: none; max-width: 200px; }
 .admin-card-preview .product-card .text-link { display: none; }
 .admin-card-preview .product-image { cursor: default; }
+/* La vista previa mide 200 px, como una tarjeta angosta del teléfono: el nombre va encima del precio, así nunca se parte
+   a mitad de palabra junto a «Cotiza por WhatsApp». */
+.admin-card-preview .product-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
 .admin-card-empty { display: grid; place-items: center; aspect-ratio: 4 / 5; color: var(--color-text-soft); font-size: .75rem; }
+/* Lo que aún falta (sin nombre) se lee en tinta suave, como «Sin foto». */
+.admin-card-preview .is-missing { color: var(--color-text-soft); }
 .admin-editor-side .admin-grid { grid-template-columns: minmax(0, 1fr); }
 .admin-editor-side .admin-toggles { flex-direction: column; gap: 0; }
 .admin-editor form { display: grid; grid-template-rows: minmax(0, 1fr) auto; max-height: min(92dvh, 960px); }

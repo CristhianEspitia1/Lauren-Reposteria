@@ -15,6 +15,7 @@ que volver.
 - **Productos que se cotizan enteros** (como «Otros diseños que te pueden gustar»): los adicionales dicen «Marca los que quieras y los cotizamos contigo», no que suman a un total que no existe.
 - **Centro de control:** «Entrar» sin correo o sin clave lo dice en la página, con el foco en el campo que falta, sin consultar a Firebase. El paso del código y el alta de la app de códigos tienen «Entrar con otra cuenta» para volver al correo y la clave.
 - 1 prueba nueva (120 en total).
+- **Vista previa de la ficha del panel:** el nombre va encima del precio. Antes, junto a «Cotiza por WhatsApp», un nombre como «Sin nombre» se partía letra por letra («Sin / nombr / e»). Mientras el producto no tiene nombre, «Sin nombre» se ve en tinta suave, como «Sin foto».
 
 ## [2026-11-15 — Tortas sin «Adicionales para tu torta»]
 
