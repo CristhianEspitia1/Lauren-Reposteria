@@ -1806,7 +1806,7 @@ window.catalogData = {
         "visible": true,
         "description": "Acá puedes encontrar otros tipos de diseños que realizamos, su cotización se hará durante la asesoría mediante WhatsApp donde también nos podrás enviar una foto de referencia si deseas un diseño que no veas acá.",
         "notes": [
-            "El precio corresponde a lo descrito y las porciones elegidas. Los cambios de diseño y los adicionales se confirman en la asesoría."
+            "Los cambios de diseño y los adicionales se confirman en la asesoría."
         ],
         "price": null,
         "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/otras-disenos-que-te-pueden-gustar-mvssr4mecf3dc7.webp",
@@ -1889,7 +1889,7 @@ window.catalogData = {
         "icon": "butterfly",
         "options": [],
         "personalization": null,
-        "priceText": "$5.000 a $10.000"
+        "priceText": "De $5.000 a $10.000"
     },
     "extra-hbd": {
         "id": "extra-hbd",
@@ -1902,7 +1902,7 @@ window.catalogData = {
         "icon": "birthday-topper",
         "options": [],
         "personalization": null,
-        "priceText": "$9.000 a $18.000"
+        "priceText": "De $9.000 a $18.000"
     },
     "extra-perlas": {
         "id": "extra-perlas",
@@ -1914,7 +1914,8 @@ window.catalogData = {
         "priceMax": 10000,
         "icon": "pearls",
         "options": [],
-        "personalization": null
+        "personalization": null,
+        "priceText": "De $5.000 a $10.000"
     },
     "extra-coronas": {
         "id": "extra-coronas",
