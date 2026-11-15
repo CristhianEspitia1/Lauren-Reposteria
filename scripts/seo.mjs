@@ -70,7 +70,7 @@ export const PAGES = [
         title: 'Tortas personalizadas en Medellín | Lauren Repostería',
         description: () => `Tortas personalizadas en Medellín desde ${money(lowest(['tortas']))}: vintage o sencillas, de 4 a 30 porciones. Elige bizcocho, relleno y adicionales; pide por WhatsApp.`,
         imageAlt: 'Torta de dos pisos con rosas y mariposas doradas de Lauren Repostería',
-        categories: ['tortas', 'extras'], gallery: 'tortas'
+        categories: ['tortas'], gallery: 'tortas'
     },
     {
         key: 'alfajores', file: 'alfajores/index.html', path: '/alfajores/', type: 'CollectionPage', name: 'Alfajores',

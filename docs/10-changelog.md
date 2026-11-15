@@ -16,6 +16,11 @@ que volver.
 - **Centro de control:** «Entrar» sin correo o sin clave lo dice en la página, con el foco en el campo que falta, sin consultar a Firebase. El paso del código y el alta de la app de códigos tienen «Entrar con otra cuenta» para volver al correo y la clave.
 - 1 prueba nueva (120 en total).
 
+## [2026-11-15 — Tortas sin «Adicionales para tu torta»]
+
+- Por pedido del negocio, sale de /tortas/ la sección «Adicionales para tu torta» (la vitrina de moños, mariposas, Happy Birthday, perlas y coronas). Los adicionales se siguen eligiendo en la ficha de cada torta, en «Adicionales». Sus productos se conservan en el panel, pero ya no se ven en la web ni en los datos estructurados de Tortas.
+- Manual de marca 3.15.
+
 ## [2026-11-15 — Temporada: sección en la portada, aviso al entrar y su manejo desde el centro de control]
 
 - **Temporada en la web:** con una temporada encendida (Navidad, Amor y Amistad, Día de la Madre, Halloween u otra celebración), la portada abre con su sección, justo después de la franja de valores: etiqueta, titular en dos tiempos, frase y sus productos en tarjetas compactas (una fila a la vista y «Ver toda la colección»), sobre durazno 35 % + crema y con adornos de su temporada. Cada persona ve además su aviso en el centro de la pantalla al entrar, una vez al día, en cualquier página (salvo la de error), con un solo botón.

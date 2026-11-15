@@ -40,11 +40,6 @@
         '.process-section': [
             ['mucho-encanto', row(204, { d: [-.5, -.9], m: 1 })]
         ],
-        // Adicionales de Tortas («Adicionales para tu torta»): el isotipo en el hueco entre el título y la frase;
-        // en móvil, donde la frase va debajo del título, al final de la frase.
-        '#complementos': [
-            ['isotipo-circulo', { between: ['.section-heading h2', '.section-heading > p'], desk: 1, d: [0, 0], w: 84, c: 'white', m: 1, alt: [{ to: '.section-heading > p', end: 1, d: [.9, -.3] }] }]
-        ],
         '.story-section': [
             ['corazon', { to: 'h2', end: 1, d: [1.2, -.1], w: 18, c: 'apricot', m: 1 }],
             ['dosis-de-encanto', { to: '.story-media', box: 1, at: [1, 1], d: [-.5, .9], w: 150, m: 1 }]

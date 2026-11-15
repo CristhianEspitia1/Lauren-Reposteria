@@ -90,9 +90,9 @@
         document.querySelectorAll('[data-faq-topics]').forEach(nav => { nav.innerHTML = LaurenFaqs.topicsHtml(); });
         hideEmptyFaqs();
     });
-    // Filas parejas (bizcochos, rellenos, adicionales): cada cuadrícula sabe cuántos tiene (--n) para repartir sus filas.
+    // Filas parejas (bizcochos y rellenos): cada cuadrícula sabe cuántos tiene (--n) para repartir sus filas.
     // Va por el CSSOM: la política de seguridad de la web no deja estilos escritos en el HTML.
-    const balance = () => document.querySelectorAll('.flavor-grid, .filling-grid, .extras-grid').forEach(grid => grid.style.setProperty('--n', grid.children.length));
+    const balance = () => document.querySelectorAll('.flavor-grid, .filling-grid').forEach(grid => grid.style.setProperty('--n', grid.children.length));
     // Importes dentro de textos («desde $58.000»): salen del catálogo vigente, no del HTML.
     const renderPrices = () => document.querySelectorAll('[data-price]').forEach(element => { element.textContent = Catalog.priceRefText(element.dataset.price); });
     renderPrices();
@@ -100,11 +100,6 @@
     document.addEventListener('click', event => {
         const button = event.target.closest('[data-product]');
         if (button) window.quickView.open(button.dataset.product);
-    });
-    document.querySelectorAll('[data-extras]').forEach(grid => {
-            const render = () => { const extras = Catalog.all().filter(p => p.category === 'extras'); grid.innerHTML = extras.map(p => `<article class="extra"><span class="extra-symbol" aria-hidden="true">${icon(p.icon || 'gift')}</span><h3>${esc(p.name)}</h3><p>${esc(Catalog.priceLabel(p).text)}</p><a class="text-link" href="${esc(wa(`Hola, Laura. Quisiera agregar ${Catalog.oneLine(p.name)} a mi torta. ¿Me ayudas a cotizarlo?`))}" target="_blank" rel="noopener noreferrer">Consultar ${icon('diagonal')}</a></article>`).join(''); };
-        render();
-        catalogRenders.push(render);
     });
 
     /*
