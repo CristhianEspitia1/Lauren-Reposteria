@@ -7,6 +7,11 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-11-16 — Publicar con la temporada]
+
+- **No se podía publicar nada que llevara la temporada:** las reglas de Firestore desplegadas eran las del 22 de octubre y no aceptaban el campo `temporada`, así que Firebase negaba el permiso a las dos cuentas. Se desplegaron las de `firestore.rules` (`firebase deploy --only firestore:rules`), que faltó hacer al salir la temporada el 15 de noviembre.
+- El panel decía «Tu usuario no tiene permiso para publicar», aunque las dos cuentas son administradoras. Ahora dice que Firebase no aceptó la publicación y que los cambios siguen en el borrador.
+
 ## [2026-11-15 — Adicionales de las tortas: se reutilizan y sin avisos de más]
 
 - **«Usar los de las demás tortas»** en los adicionales de cada torta del centro de control: deja los mismos que tienen las otras tortas visibles (el nombre que más se usa) con el precio que más se repite en cada tamaño, después de preguntar con la lista. «Agregar adicionales» en una torta empieza igual. Así el Kit para decorar pasa de cinco adicionales sin precio a Moños $2.000, Mariposas $5.000, Happy Birthday $9.000, Perlas $5.000 y Glitter $5.000, al tocar el botón y publicar.

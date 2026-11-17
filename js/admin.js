@@ -524,8 +524,10 @@ $('publish').addEventListener('click', async () => {
     } catch (error) {
         if (error.code === 'conflict') warn('Alguien publicó cambios mientras editabas. Recarga la página para verlos antes de publicar.');
         else if (error.code === 'permission-denied') {
-            // Con la sesión al día, el permiso negado es de la cuenta: no está en la lista de administradores (config/admins).
-            if (await auth.currentUser?.getIdToken(true).then(() => true, () => false)) warn('Tu usuario no tiene permiso para publicar. Pide que lo agreguen a la lista de administradores.');
+            // Con la sesión al día, el permiso negado viene de las reglas de Firebase: la cuenta no está en la lista de
+            // administradores (config/admins) o las reglas desplegadas no aceptan lo que se publica (el 16 de noviembre de
+            // 2026 seguían sin `temporada`). Las dos cuentas del panel son administradoras: casi siempre es lo segundo.
+            if (await auth.currentUser?.getIdToken(true).then(() => true, () => false)) warn('Firebase no aceptó la publicación. Tus cambios siguen en tu borrador: avísanos para revisarlo.');
             else { warn('Tu sesión venció. Entra de nuevo con tu clave y el código.'); await signOut(auth); }
         } else warn('No pudimos publicar. Revisa tu conexión e inténtalo de nuevo.');
     } finally { button.disabled = false; }
