@@ -55,5 +55,6 @@ test('La temporada publicada se revisa antes de llegar a js/season-data.js', () 
     assert.deepEqual(revisar(navidad, null, { activa: 'verano', temporadas: [] }), ['La temporada publicada no tiene la forma esperada.']);
     assert.deepEqual(revisar(navidad, null, JSON.parse('{"activa":"","temporadas":[],"__proto__":{"x":1}}')), ['El catálogo publicado tiene un nombre de campo no permitido («__proto__»).']);
     // Encendida, con el aviso hacia la sección y sin productos visibles: el panel no lo publica y el workflow no lo trae.
-    assert.ok(revisar(catalog(), null, season).some(e => e.includes('no tiene productos visibles')));
+    const sinTemporada = Object.fromEntries(Object.entries(catalog()).filter(([, p]) => p.category !== 'temporada'));
+    assert.ok(revisar(sinTemporada, null, season).some(e => e.includes('no tiene productos visibles')));
 });

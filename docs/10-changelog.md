@@ -7,6 +7,11 @@ Git con su fecha (por ejemplo, `2026-10-17`; si hay otra salida el mismo día,
 `2026-10-17-2`) y una versión en GitHub con sus notas, para tener un punto fijo al
 que volver.
 
+## [2026-11-17 — Navidad en la web]
+
+- **Catálogo y temporada al día con el centro de control:** la temporada «Navidad en Lauren» queda encendida con su aviso, y llegan Detalle Mix, Detalle Buzón, Detalle Red, Árbol de alfajor 3D, Esfera, Cupcakes y Alfajores navideños. Salen las galletas sueltas y la caja surtida de galletas; queda «Galletas» con sus cambios. 42 productos y 14 preguntas.
+- **El workflow «Catálogo publicado» fallaba desde el 17 de noviembre** y no traía nada: dos pruebas daban por hecho que la temporada del repositorio estaba apagada. Ahora una temporada dañada deja la web con la que ya tenía, esté encendida o no, y la prueba de «sin productos visibles» usa el catálogo sin los productos de temporada.
+
 ## [2026-11-16 — Publicar con la temporada]
 
 - **No se podía publicar nada que llevara la temporada:** las reglas de Firestore desplegadas eran las del 22 de octubre y no aceptaban el campo `temporada`, así que Firebase negaba el permiso a las dos cuentas. Se desplegaron las de `firestore.rules` (`firebase deploy --only firestore:rules`), que faltó hacer al salir la temporada el 15 de noviembre.

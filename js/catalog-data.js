@@ -4,6 +4,211 @@
  * Las reglas (precios, validaciones, etiquetas) viven en js/catalog-model.js.
  */
 window.catalogData = {
+    "detalle-mix": {
+        "options": [],
+        "personalization": null,
+        "id": "detalle-mix",
+        "name": "Detalle Mix",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Detalle ideal para compartir con nuestros familiares, amigos o compañeros de trabajo en estas fechas de recogimiento. Pensado para Endulzar reuniones especiales como las novenas.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-mix-mwjxcendf7c4a1.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-mix-mwjxcendf7c4a1.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-mix-mwjxcl0rb3b6a4.webp"
+        ],
+        "price": 98000,
+        "includes": [
+            "10 trufas de coco.",
+            "9 galletas minis de Red Velvet.",
+            "6 mini cupcakes de vainilla con crema de chocolate blanco.",
+            "6 mini brownies con arequipe.",
+            "6 galletas de pistachos.",
+            "6 alfajores pequeños en forma de árbol."
+        ]
+    },
+    "detalle-buzon": {
+        "options": [],
+        "personalization": null,
+        "id": "detalle-buzon",
+        "name": "Detalle Buzón",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Detalle ideal para sorprender o agradecer a esas personas importantes que durante todo el año nos acompañan.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-buzon-mwjxklor263547.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-buzon-mwjxklor263547.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-buzon-mwjxksmhb4bf3b.webp"
+        ],
+        "price": 78000,
+        "includes": [
+            "Torta mini de vainilla con crema de chocolate blanco.",
+            "Alfajor en forma de Papá Noel.",
+            "Galleta de Red Velvet.",
+            "3 Fresas cubiertas de chocolate blanco."
+        ]
+    },
+    "detalle-red": {
+        "options": [],
+        "personalization": null,
+        "id": "detalle-red",
+        "name": "Detalle Red",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Detalle ideal para sorprender o agradecer a esas personas importantes que durante todo el año nos acompañan.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-red-mwjxt5ypdbcff4.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-red-mwjxt5ypdbcff4.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/detalle-red-mwjxth7m51590e.webp"
+        ],
+        "price": 23000,
+        "includes": [
+            "Bizcocho de vainilla con arequipe.",
+            "Alfajor de Papá Noel.",
+            "Galleta de Red Velvet.",
+            "Fresa cubierta de chocolate blanco."
+        ]
+    },
+    "arbol-de-alfajor-3d": {
+        "options": [],
+        "personalization": null,
+        "id": "arbol-de-alfajor-3d",
+        "name": "Árbol de alfajor 3D",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Alfajor en forma de árbol 3D con capas de muestra masa de maicena y capas de arequipe.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/arbol-de-alfajor-3d-mwjx7f3g7c95f1.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/arbol-de-alfajor-3d-mwjx7f3g7c95f1.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/arbol-de-alfajor-3d-mwjx7qy37db06e.webp"
+        ],
+        "price": 20000,
+        "includes": [
+            "Alfajor en forma de Árbol.",
+            "Relleno de arequipe.",
+            "Caja ideal para un regalo."
+        ]
+    },
+    "esfera": {
+        "options": [],
+        "personalization": null,
+        "id": "esfera",
+        "name": "Esfera",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Esfera de acrílico con alfajores y trufas, detalle ideal para regalos corporativos.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/esfera-mwjyhye900d5a5.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/esfera-mwjyhye900d5a5.webp"
+        ],
+        "price": 18000,
+        "includes": [
+            "3 alfajores minis navideños.",
+            "3 trufas de coco."
+        ]
+    },
+    "cupcakes": {
+        "options": [
+            {
+                "id": "sabor-bizcocho",
+                "label": "Sabor bizcocho",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "vainilla",
+                        "label": "Vainilla"
+                    },
+                    {
+                        "value": "chocolate",
+                        "label": "Chocolate"
+                    }
+                ]
+            },
+            {
+                "id": "diseno",
+                "label": "Diseño",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "arbolito-de-navidad",
+                        "label": "Arbolito de navidad"
+                    },
+                    {
+                        "value": "copo-de-nieve",
+                        "label": "Copo de nieve"
+                    }
+                ]
+            }
+        ],
+        "personalization": null,
+        "id": "cupcakes",
+        "name": "Cupcakes",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Cupcakes con decoración navideña",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/cupcakes-mwjxwret43e2a6.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/cupcakes-mwjxwret43e2a6.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/cupcakes-mwjxzlun29720f.webp"
+        ],
+        "price": 13000,
+        "includes": [
+            "Bizcocho a elección.",
+            "Crema de Chocolate blanco.",
+            "Caja para presentación individual."
+        ]
+    },
+    "alfajores-navidenos": {
+        "options": [
+            {
+                "id": "tamano",
+                "label": "Tamaño",
+                "type": "radio",
+                "required": true,
+                "choices": [
+                    {
+                        "value": "alfajor-grande-de-reno-o-papa-noel",
+                        "label": "Alfajor grande de reno o papá noel",
+                        "price": 6000
+                    },
+                    {
+                        "value": "tamano",
+                        "label": "Alfajor mini individual",
+                        "price": 2000
+                    }
+                ]
+            }
+        ],
+        "personalization": null,
+        "id": "alfajores-navidenos",
+        "name": "Alfajores navideños",
+        "category": "temporada",
+        "group": "navidad",
+        "visible": true,
+        "description": "Alfajores navideños en diferentes formas como reno, papá Noel, estrellas y demás.",
+        "mainImage": "https://lauren-reposteria.crizczi22.workers.dev/f/alfajores-navidenos-mwjypot03504d1.webp",
+        "images": [
+            "https://lauren-reposteria.crizczi22.workers.dev/f/alfajores-navidenos-mwjypot03504d1.webp",
+            "https://lauren-reposteria.crizczi22.workers.dev/f/alfajores-navidenos-mwjyytohb55013.webp"
+        ],
+        "price": 6000,
+        "includes": [
+            "Alfajor en el tamaño a elección.",
+            "Empacados en bolsa individual."
+        ],
+        "minimum": 6,
+        "notes": [
+            "La cantidad mínima por referencia es de 6 unidades"
+        ]
+    },
     "mini-cake": {
         "id": "mini-cake",
         "name": "Mini cake",
@@ -2251,302 +2456,97 @@ window.catalogData = {
     },
     "galleta-chips": {
         "id": "galleta-chips",
-        "name": "Galleta Chips con nueces",
+        "name": "Galletas",
         "category": "galletas",
         "visible": true,
         "summary": "Con relleno de Nutella.",
-        "description": "Galleta artesanal de chips con nueces y un centro suave de Nutella. Horneada con ingredientes premium.",
+        "description": "Galletas Artesanales crujientes por fuera y suaves por dentro con diferentes rellenos o sabores.",
         "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Relleno de Nutella",
-            "Horneada fresca bajo pedido"
+            "Caja de galletas de la presentación que elijas con los sabores de preferencia"
         ],
         "notes": [
             "Mínimo 3 galletas."
         ],
         "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
+        "mainImage": "/assets/propuestas-fotograficas/galleta-nutella-mano.webp",
         "images": [
-            "/assets/propuestas-fotograficas/galleta-nutella-corte.webp",
-            "/assets/propuestas-fotograficas/galleta-nutella-mano.webp"
-        ],
-        "options": [
-            {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "3",
-                        "label": "3 galletas"
-                    },
-                    {
-                        "value": "6",
-                        "label": "6 galletas"
-                    },
-                    {
-                        "value": "12",
-                        "label": "12 galletas"
-                    }
-                ],
-                "multiplier": true
-            }
-        ],
-        "personalization": null
-    },
-    "galleta-red-velvet": {
-        "id": "galleta-red-velvet",
-        "name": "Galleta Red Velvet",
-        "category": "galletas",
-        "visible": true,
-        "summary": "Chips blancos y crema de queso.",
-        "description": "Galleta artesanal de red velvet con chips blancos y relleno de crema de queso. Horneada con ingredientes premium.",
-        "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Relleno de crema de queso",
-            "Horneada fresca bajo pedido"
-        ],
-        "notes": [
-            "Mínimo 3 galletas."
-        ],
-        "price": 8000,
-        "mainImage": "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galeria-galletas-01.webp"
-        ],
-        "options": [
-            {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "3",
-                        "label": "3 galletas"
-                    },
-                    {
-                        "value": "6",
-                        "label": "6 galletas"
-                    },
-                    {
-                        "value": "12",
-                        "label": "12 galletas"
-                    }
-                ],
-                "multiplier": true
-            }
-        ],
-        "personalization": null
-    },
-    "galleta-cocoa": {
-        "id": "galleta-cocoa",
-        "name": "Galleta Cocoa",
-        "category": "galletas",
-        "visible": true,
-        "summary": "Chocolate semiamargo y al 70 %.",
-        "description": "Galleta artesanal de cocoa con chocolate semiamargo y al 70 %. Horneada con ingredientes premium.",
-        "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Chocolate semiamargo y al 70 %",
-            "Horneada fresca bajo pedido"
-        ],
-        "notes": [
-            "Mínimo 3 galletas."
-        ],
-        "price": 8000,
-        "mainImage": "/assets/propuestas-fotograficas/galleta-chocolate.webp",
-        "images": [
+            "/assets/propuestas-fotograficas/galleta-nutella-mano.webp",
+            "/assets/propuestas-fotograficas/galeria-galletas-01.webp",
+            "/assets/propuestas-fotograficas/galleta-pistacho.webp",
+            "/assets/propuestas-fotograficas/galletas.webp",
+            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp",
             "/assets/propuestas-fotograficas/galleta-chocolate.webp",
-            "/assets/propuestas-fotograficas/galeria-galletas-02-r2.webp"
-        ],
-        "options": [
-            {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "3",
-                        "label": "3 galletas"
-                    },
-                    {
-                        "value": "6",
-                        "label": "6 galletas"
-                    },
-                    {
-                        "value": "12",
-                        "label": "12 galletas"
-                    }
-                ],
-                "multiplier": true
-            }
-        ],
-        "personalization": null
-    },
-    "galleta-pistachos": {
-        "id": "galleta-pistachos",
-        "name": "Galleta de Pistachos",
-        "category": "galletas",
-        "visible": true,
-        "summary": "Con chocolate blanco.",
-        "description": "Galleta artesanal de pistachos con chocolate blanco. Horneada con ingredientes premium.",
-        "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Chocolate blanco",
-            "Horneada fresca bajo pedido"
-        ],
-        "notes": [
-            "Mínimo 3 galletas."
-        ],
-        "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galleta-pistacho.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galleta-pistacho.webp"
-        ],
-        "options": [
-            {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
-                "type": "radio",
-                "required": true,
-                "choices": [
-                    {
-                        "value": "3",
-                        "label": "3 galletas"
-                    },
-                    {
-                        "value": "6",
-                        "label": "6 galletas"
-                    },
-                    {
-                        "value": "12",
-                        "label": "12 galletas"
-                    }
-                ],
-                "multiplier": true
-            }
-        ],
-        "personalization": null
-    },
-    "galleta-chocolate-blanco": {
-        "id": "galleta-chocolate-blanco",
-        "name": "Galleta de Chocolate blanco",
-        "category": "galletas",
-        "visible": true,
-        "summary": "Con mermelada de frambuesa.",
-        "description": "Galleta artesanal de trozos de chocolate blanco y mermelada de frambuesa. Horneada con ingredientes premium.",
-        "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Mermelada de frambuesa",
-            "Horneada fresca bajo pedido"
-        ],
-        "notes": [
-            "Mínimo 3 galletas."
-        ],
-        "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas-especiales.webp",
-        "images": [
+            "/assets/propuestas-fotograficas/galeria-galletas-02-r2.webp",
             "/assets/propuestas-fotograficas/galletas-especiales.webp"
         ],
         "options": [
             {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
+                "id": "tamano",
+                "label": "Tamaño",
                 "type": "radio",
                 "required": true,
                 "choices": [
                     {
-                        "value": "3",
-                        "label": "3 galletas"
+                        "value": "caja-x3",
+                        "label": "Caja x3",
+                        "price": 30000
                     },
                     {
-                        "value": "6",
-                        "label": "6 galletas"
+                        "value": "tamano",
+                        "label": "Caja x4",
+                        "price": 35000
                     },
                     {
-                        "value": "12",
-                        "label": "12 galletas"
+                        "value": "tamano-2",
+                        "label": "Caja x6",
+                        "price": 47000
                     }
-                ],
-                "multiplier": true
-            }
-        ],
-        "personalization": null
-    },
-    "galleta-panelita": {
-        "id": "galleta-panelita",
-        "name": "Galleta de Panelita Copelia",
-        "category": "galletas",
-        "visible": true,
-        "summary": "Con relleno de arequipe.",
-        "description": "Galleta artesanal de Panelita Copelia y relleno de arequipe. Horneada con ingredientes premium.",
-        "includes": [
-            "Galleta artesanal",
-            "Ingredientes premium",
-            "Relleno de arequipe",
-            "Horneada fresca bajo pedido"
-        ],
-        "notes": [
-            "Mínimo 3 galletas."
-        ],
-        "price": 10000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galletas.webp"
-        ],
-        "options": [
+                ]
+            },
             {
-                "id": "cantidad",
-                "label": "Número de galletas (mínimo 3)",
+                "id": "sabor-de-galletas",
+                "label": "Sabor de Galletas",
                 "type": "radio",
                 "required": true,
                 "choices": [
                     {
-                        "value": "3",
-                        "label": "3 galletas"
+                        "value": "chips-con-nueces-rellena-de-nutella",
+                        "label": "Chips con nueces rellena de Nutella"
                     },
                     {
-                        "value": "6",
-                        "label": "6 galletas"
+                        "value": "red-velvet-rellena-con-crema-de-queso",
+                        "label": "Red Velvet rellena con crema de queso"
                     },
                     {
-                        "value": "12",
-                        "label": "12 galletas"
+                        "value": "cocoa-con-trozos-de-chocolate-semiamargo",
+                        "label": "Cocoa con trozos de chocolate semiamargo"
+                    },
+                    {
+                        "value": "chocolate-blanco-con-mermelada-de-frutos-rojos",
+                        "label": "Chocolate blanco con mermelada de frutos rojos"
+                    },
+                    {
+                        "value": "panela-copelia-con-arequipe",
+                        "label": "Panela Copelia con arequipe"
+                    },
+                    {
+                        "value": "pistacho-con-chocolate-blanco",
+                        "label": "Pistacho con chocolate blanco.",
+                        "extra": {
+                            "tamano": 3000,
+                            "tamano-2": 3000,
+                            "caja-x3": 3000
+                        }
                     }
                 ],
-                "multiplier": true
+                "multiple": true,
+                "maxSelection": {
+                    "caja-x3": 3,
+                    "tamano": 4,
+                    "tamano-2": 6
+                }
             }
         ],
-        "personalization": null
-    },
-    "galletas-caja-surtida": {
-        "id": "galletas-caja-surtida",
-        "name": "Caja surtida de galletas",
-        "category": "galletas",
-        "visible": true,
-        "featured": true,
-        "summary": "Los seis sabores en una sola caja.",
-        "description": "Seis galletas artesanales, una de cada sabor: tres tradicionales y tres especiales. Horneadas con ingredientes premium.",
-        "includes": [
-            "6 galletas, una de cada sabor",
-            "Ingredientes premium",
-            "Relleno especial según sabor",
-            "Horneadas frescas bajo pedido"
-        ],
-        "price": 46000,
-        "mainImage": "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp",
-        "images": [
-            "/assets/propuestas-fotograficas/galletas-tres-chocolates.webp"
-        ],
-        "options": [],
         "personalization": null
     },
     "oso-pequeno": {

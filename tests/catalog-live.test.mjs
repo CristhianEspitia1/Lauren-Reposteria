@@ -19,13 +19,13 @@ async function publish(published, season) {
     vm.createContext(context);
     vm.runInContext(read('./fixtures/catalog-data.js'), context);
     for (const file of ['season-data', 'season', 'catalog-model']) vm.runInContext(read(`../js/${file}.js`), context);
-    const local = context.catalogData, localSeason = context.seasonData;
+    const local = context.catalogData, localSeason = context.seasonData, before = context.LaurenSeason.active()?.id || '';
     vm.runInContext(read('../js/catalog-live.js'), context);
     await new Promise(resolve => setTimeout(resolve, 20));
     // Al terminar de leer lo publicado, con cambios o sin ellos, la página recibe `catalog:settled` (de ahí sale el aviso de temporada).
     assert.equal(events.pop(), 'catalog:settled');
     assert.equal(context.catalogSettled, true);
-    return { replaced: context.catalogData !== local, season: context.seasonData !== localSeason, active: context.LaurenSeason.active()?.id || '', shown: context.Catalog.all().map(p => p.id), events };
+    return { replaced: context.catalogData !== local, season: context.seasonData !== localSeason, before, active: context.LaurenSeason.active()?.id || '', shown: context.Catalog.all().map(p => p.id), events };
 }
 
 test('Un catálogo publicado con cambios válidos reemplaza la copia local y avisa a la página', async () => {
@@ -95,6 +95,7 @@ test('Una temporada dañada o escrita sin pasar por el panel deja la web como es
         { activa: '', temporadas: [{ id: 'navidad', texto: 'x'.repeat(5000) }] }, { activa: '', temporadas: [{ id: 'navidad' }, { id: 'navidad' }] }];
     for (const season of broken) {
         const result = await publish(fixture(), season);
-        assert.deepEqual([result.season, result.active], [false, ''], JSON.stringify(season));
+        // La temporada que ya tenía la web (la de js/season-data.js, encendida o no) sigue igual.
+        assert.deepEqual([result.season, result.active], [false, result.before], JSON.stringify(season));
     }
 });
